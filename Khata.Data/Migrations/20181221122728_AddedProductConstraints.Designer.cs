@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20181221063646_AddedCustomUserClass")]
-    partial class AddedCustomUserClass
+    [Migration("20181221122728_AddedProductConstraints")]
+    partial class AddedProductConstraints
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,43 @@ namespace Khata.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Khata.Domain.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Khata.Domain.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<string>("Manufacturer")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -202,6 +239,40 @@ namespace Khata.Data.Migrations
                     b.Property<int>("Role");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Khata.Domain.Category", b =>
+                {
+                    b.HasOne("Khata.Domain.Product")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("Khata.Domain.Product", b =>
+                {
+                    b.OwnsOne("Khata.Domain.Metadata", "Metadata", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<DateTimeOffset>("CreationTime");
+
+                            b1.Property<string>("Creator");
+
+                            b1.Property<DateTimeOffset>("ModificationTime");
+
+                            b1.Property<string>("Modifier");
+
+                            b1.HasKey("Id");
+
+                            b1.ToTable("Products");
+
+                            b1.HasOne("Khata.Domain.Product")
+                                .WithOne("Metadata")
+                                .HasForeignKey("Khata.Domain.Metadata", "Id")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

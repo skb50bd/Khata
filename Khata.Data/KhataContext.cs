@@ -13,7 +13,20 @@ namespace Khata.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Customer>(entity =>
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.OwnsOne(p => p.Metadata);
+                entity.Property(p => p.Name)
+                    .IsRequired()
+                    .HasMaxLength(120);
+                entity.Property(p => p.Manufacturer)
+                    .HasMaxLength(120);
+            });
+
+            #region Reference Code
+
+            // modelBuilder.Entity<Customer>(entity =>
             //{
             //    entity.Property(e => e.Id).HasColumnName("CustomerID");
 
@@ -195,18 +208,13 @@ namespace Khata.Data
             //    entity.Property(e => e.Deleted);
 
             //    entity.Ignore(s => s.FullName);
-            //});
+            //}); 
+
+            #endregion
         }
 
-        //public virtual DbSet<Customer> Customer { get; set; }
-        //public virtual DbSet<Order> Order { get; set; }
-        //public virtual DbSet<OrderItem> OrderItem { get; set; }
-        //public virtual DbSet<Product> Product { get; set; }
-        //public virtual DbSet<PerishableProduct> PerishableProduct { get; set; }
-        //public virtual DbSet<SalesGroup> SalesGroup { get; set; }
-        //public virtual DbSet<Salesperson> Salesperson { get; set; }
-
         public virtual DbSet<ApplicationUser> AppUsers { get; set; }
-        
+        public virtual DbSet<Product> Products { get; set; }
+
     }
 }

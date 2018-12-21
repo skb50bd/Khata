@@ -1,4 +1,5 @@
 using Khata.Data;
+using Khata.Web.PagingSortingSearching;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,16 +29,13 @@ namespace Khata.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddDbContext<KhataContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDefaultIdentity<ApplicationUser>()
-            //    .AddDefaultUI(UIFramework.Bootstrap4)
-            //    .AddEntityFrameworkStores<KhataContext>();
-            services.ConfigureData(
-                Configuration.GetConnectionString("DefaultConnection"));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.ConfigureData(connectionString);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.ConfigureSieve();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
