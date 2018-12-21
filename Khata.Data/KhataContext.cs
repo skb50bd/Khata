@@ -1,13 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Khata.Domain;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Khata.Data
 {
-    public partial class KhataContext : DbContext
+    public class KhataContext : IdentityDbContext
     {
         public KhataContext(DbContextOptions<KhataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<Customer>(entity =>
             //{
             //    entity.Property(e => e.Id).HasColumnName("CustomerID");
@@ -200,5 +205,8 @@ namespace Khata.Data
         //public virtual DbSet<PerishableProduct> PerishableProduct { get; set; }
         //public virtual DbSet<SalesGroup> SalesGroup { get; set; }
         //public virtual DbSet<Salesperson> Salesperson { get; set; }
+
+        public virtual DbSet<ApplicationUser> AppUsers { get; set; }
+        
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <NullableReferenceTypes>true</NullableReferenceTypes>
   </PropertyGroup>
 
@@ -13,6 +13,12 @@
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.7.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Identity.Stores">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.identity.stores\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

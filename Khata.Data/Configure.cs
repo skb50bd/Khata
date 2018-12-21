@@ -1,14 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Khata.Domain;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Khata.Data
 {
     public static class Configure
     {
-        public static IServiceCollection ConfureData(IServiceCollection services, string conncectionstring)
+        public static IServiceCollection ConfigureData(
+            this IServiceCollection services, 
+            string conncectionString)
         {
-            services.AddDbContext<KhataContext>(options => options.UseSqlServer(conncectionstring));
+            services.AddDbContext<KhataContext>(options =>
+                options.UseSqlServer(conncectionString));
 
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<KhataContext>();
 
             return services;
         }
