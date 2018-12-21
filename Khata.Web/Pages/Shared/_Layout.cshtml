@@ -13,7 +13,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -51,7 +51,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2018 - Khata.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-6">
+                    &copy; 2018 - Khata - <a asp-area="" asp-page="/Privacy">Privacy</a>
+                </div>
+                <div class="col-6 text-right">
+                    Made with ❤ by <a href="https://fb.com/skb50bd">skb50bd</a>
+                </div>
+            </div>
         </div>
     </footer>
 

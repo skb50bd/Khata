@@ -1,4 +1,5 @@
-﻿using System.Text.Encodings.Web;
+﻿using System.IO;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using Khata.Domain;
@@ -45,22 +46,33 @@ namespace Khata.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser
+                var user = new ApplicationUser
                 {
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     UserName = Input.Username,
                     Email = Input.Email
                 };
-                IdentityResult result = await _userManager.CreateAsync(user, Input.Password);
+
+                if (Input.Avatar.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await Input.Avatar.CopyToAsync(memoryStream);
+                        user.Avatar = memoryStream.ToArray();
+                    }
+                }
+
+                var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    string callbackUrl = Url.Page(
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { userId = user.Id, code = code },
@@ -72,7 +84,7 @@ namespace Khata.Web.Areas.Identity.Pages.Account
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
-                foreach (IdentityError error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }

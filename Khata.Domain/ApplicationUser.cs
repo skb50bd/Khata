@@ -7,5 +7,6 @@ namespace Khata.Domain
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Role Role { get; set; }
+        public byte[] Avatar { get; set; }
     }
 }

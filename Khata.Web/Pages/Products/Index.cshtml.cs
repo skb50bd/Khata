@@ -12,9 +12,9 @@ namespace Khata.Web.Pages.Products
 {
     public class IndexModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
+        private readonly KhataContext _context;
 
-        public IndexModel(Khata.Data.KhataContext context)
+        public IndexModel(KhataContext context)
         {
             _context = context;
         }

@@ -13,9 +13,9 @@ namespace Khata.Web.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
+        private readonly KhataContext _context;
 
-        public EditModel(Khata.Data.KhataContext context)
+        public EditModel(KhataContext context)
         {
             _context = context;
         }

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Http;
+
 namespace Khata.Web.Areas.Identity.Pages.Account
 {
     public partial class RegisterModel
@@ -34,6 +36,8 @@ namespace Khata.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public IFormFile Avatar { get; set; }
         }
     }
 }

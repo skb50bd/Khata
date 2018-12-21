@@ -20,4 +20,9 @@
     <ProjectReference Include="..\Khata.Domain\Khata.Domain.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Tools\" />
+  </ItemGroup>
+
 </Project>

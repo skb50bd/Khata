@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Threading.Tasks;
+
 using Khata.Data;
 using Khata.Domain;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Khata.Web.Pages.Products
 {
     public class CreateModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
+        private readonly KhataContext _context;
 
-        public CreateModel(Khata.Data.KhataContext context)
+        public CreateModel(KhataContext context)
         {
             _context = context;
         }

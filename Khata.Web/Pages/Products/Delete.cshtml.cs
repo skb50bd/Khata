@@ -12,9 +12,9 @@ namespace Khata.Web.Pages.Products
 {
     public class DeleteModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
+        private readonly KhataContext _context;
 
-        public DeleteModel(Khata.Data.KhataContext context)
+        public DeleteModel(KhataContext context)
         {
             _context = context;
         }
