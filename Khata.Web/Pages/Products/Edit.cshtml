@@ -1,5 +1,5 @@
 ﻿@page
-@model Khata.Web.Pages.Products.EditModel
+@model _4._Web.Pages.Products.EditModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -19,9 +19,14 @@
                 <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Product.Manufacturer" class="control-label"></label>
-                <input asp-for="Product.Manufacturer" class="form-control" />
-                <span asp-validation-for="Product.Manufacturer" class="text-danger"></span>
+                <label asp-for="Product.Description" class="control-label"></label>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Unit" class="control-label"></label>
+                <input asp-for="Product.Unit" class="form-control" />
+                <span asp-validation-for="Product.Unit" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

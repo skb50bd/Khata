@@ -1,48 +1,169 @@
 ﻿@page
-@model Khata.Web.Pages.Products.IndexModel
+@model _4._Web.Pages.Products.IndexModel
+@using static Khata.Domain.StockStatus
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Products";
 }
 
-<h1>Index</h1>
+<h1 class="display-4 text-dark">Products</h1>
+<p></p>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<div class="row">
+    <div class="col-md-6">
+        <form asp-page="./Index" method="get">
+            <div class="input-group">
+                <input asp-for="@Model.CurrentFilter"
+                       name="SearchString"
+                       value="@Model.CurrentFilter"
+                       placeholder="Search products..."
+                       class="form-control"
+                       aria-label="Search keyword" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary"
+                            type="submit"
+                            id="searchButton">
+                        Go
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            <a asp-page="Create" class="btn btn-primary">Create new</a>
+        </p>
+    </div>
+</div>
+
+<hr />
+
+<table class="table table-borderless table-responsive-sm table-hover table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Manufacturer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Deleted)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].TotalStock)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].Unit)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].PriceRetail)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].PriceBulk)</th>
+            <th>@Html.DisplayNameFor(model => model.Products[0].PriceMargin)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manufacturer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deleted)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Products)
+        {
+            string status;
+            if (item.Status == LowStock) { status = "warning"; }
+            else if (item.Status >= Empty) { status = "danger"; }
+            else { status = ""; }
+
+            <tr class="table-@status">
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.TotalStock)</td>
+                <td>@Html.DisplayFor(modelItem => item.Unit)</td>
+                <td>@Html.DisplayFor(modelItem => item.PriceRetail)</td>
+                <td>@Html.DisplayFor(modelItem => item.PriceBulk)</td>
+                <td>@Html.DisplayFor(modelItem => item.PriceMargin)</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevButton = Model.HasPrevPage ? "" : "disabled";
+    var nextButton = Model.HasNextPage ? "" : "disabled";
+}
+
+<div class="row text-center">
+    <div class="col">
+        <nav aria-label="pagination">
+            <ul class="pagination">
+
+                <li class="page-item">
+                    <a asp-page="./Index"
+                       asp-route-SearchString="@Model.CurrentFilter"
+                       asp-route-PageSize="@Model.PageSize"
+                       asp-route-PageIndex="1"
+                       class="page-link">First</a>
+                </li>
+
+                <li class="page-item @prevButton">
+                    <a asp-page="./Index"
+                       asp-route-PageSize="@Model.PageSize"
+                       asp-route-PageIndex="@(Model.PageIndex - 1)"
+                       class="page-link">Previous</a>
+                </li>
+                @{
+                    int i = Model.PageIndex - 3;
+                    while (i <= 0) { i++; }
+                }
+
+                @while (i < Model.PageIndex)
+                {
+                    <li class="page-item">
+                        <a asp-page="./Index"
+                           asp-route-SearchString="@Model.CurrentFilter"
+                           asp-route-PageSize="@Model.PageSize"
+                           asp-route-PageIndex="@i"
+                           class="page-link">
+                            @i
+                        </a>
+                    </li>
+                    i++;
+                }
+
+                <li class="page-item active" aria-current="page">
+                    <a asp-page="./Index"
+                       asp-route-SearchString="@Model.CurrentFilter"
+                       asp-route-PageSize="@Model.PageSize"
+                       asp-route-PageIndex="@Model.PageIndex"
+                       class="page-link">
+                        @Model.PageIndex
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+
+                @for (i = Model.PageIndex + 1; Model.HasPage(i) && i <= Model.PageIndex + 3; i++)
+                {
+                    <li class="page-item">
+                        <a asp-page="./Index"
+                           asp-route-SearchString="@Model.CurrentFilter"
+                           asp-route-PageSize="@Model.PageSize"
+                           asp-route-PageIndex="@i"
+                           class="page-link">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @nextButton">
+                    <a asp-page="./Index"
+                       asp-route-SearchString="@Model.CurrentFilter"
+                       asp-route-PageSize="@Model.PageSize"
+                       asp-route-PageIndex="@(Model.PageIndex + 1)"
+                       class="page-link">Next</a>
+                </li>
+
+                <li class="page-item">
+                    <a asp-page="./Index"
+                       asp-route-SearchString="@Model.CurrentFilter"
+                       asp-route-PageSize="@Model.PageSize"
+                       asp-route-PageIndex="@Model.TotalPages"
+                       class="page-link">Last</a>
+                </li>
+            </ul>
+        </nav>
+        <p>
+            Showing @Model.RecordsHere  of total @Model.TotalRecords records
+        </p>
+    </div>
+</div> 

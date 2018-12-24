@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Khata.Data;
 using Khata.Domain;
 
-namespace Khata.Web.Pages.Products
+namespace _4._Web.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        private readonly KhataContext _context;
+        private readonly Khata.Data.KhataContext _context;
 
-        public DetailsModel(KhataContext context)
+        public DetailsModel(Khata.Data.KhataContext context)
         {
             _context = context;
         }

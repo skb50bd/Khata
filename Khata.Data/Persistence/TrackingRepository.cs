@@ -1,10 +1,10 @@
-﻿using Khata.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+
+using Khata.Domain;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Khata.Data
 {
@@ -18,56 +18,56 @@ namespace Khata.Data
     /// <typeparam name="T"></typeparam>
     public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEntity
     {
-        protected KhataContext _context;
+        protected KhataContext Context;
         public TrackingRepository(KhataContext context)
         {
-            _context = context;
+            Context = context;
         }
 
-        public virtual void Add(T Item)
+        public virtual void Add(T item)
         {
-            _context.Add(Item);
+            Context.Add(item);
         }
 
-        public virtual void AddAll(IEnumerable<T> Items)
+        public virtual void AddAll(IEnumerable<T> items)
         {
-            _context.AddRange(Items);
+            Context.AddRange(items);
         }
 
-        public virtual async Task Delete(int Id)
+        public virtual async Task Delete(int id)
         {
-            var item = await GetByID(Id);
+            var item = await GetById(id);
             item.Deleted = true;
         }
 
         public virtual IQueryable<T> Get()
         {
-            return _context.Set<T>().Where(e => !e.Deleted);
+            return Context.Set<T>().Where(e => !e.Deleted);
         }
 
         public virtual async Task<List<T>> GetAll()
         {
-            return await _context.Set<T>().Where(e => !e.Deleted).ToListAsync();
+            return await Context.Set<T>().Where(e => !e.Deleted).ToListAsync();
         }
 
-        public virtual async Task<T> GetByID(int Id)
+        public virtual async Task<T> GetById(int id)
         {
-            return await _context.Set<T>().FindAsync(Id);
+            return await Context.Set<T>().FindAsync(id);
         }
 
-        public virtual void Save(T Item)
+        public virtual void Save(T item)
         {
-            _context.Update(Item);
+            Context.Update(item);
         }
 
-        public virtual void SaveAll(IEnumerable<T> Items)
+        public virtual void SaveAll(IEnumerable<T> items)
         {
-            _context.UpdateRange(Items);
+            Context.UpdateRange(items);
         }
 
         public virtual Task SaveChanges()
         {
-            return _context.SaveChangesAsync();
+            return Context.SaveChangesAsync();
         }
     }
 }

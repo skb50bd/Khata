@@ -33,8 +33,6 @@ namespace Khata.Web.PagingSortingSearching
             #endregion
 
             mapper.Property<Product>(p => p.Name).CanFilter().CanSort();
-            mapper.Property<Product>(p => p.Manufacturer).CanFilter().CanSort();
-            mapper.Property<Product>(p => p.Categories).CanFilter();
 
             return mapper;
         }

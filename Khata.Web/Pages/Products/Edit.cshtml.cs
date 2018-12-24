@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Khata.Data;
 using Khata.Domain;
 
-namespace Khata.Web.Pages.Products
+namespace _4._Web.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly KhataContext _context;
+        private readonly Khata.Data.KhataContext _context;
 
-        public EditModel(KhataContext context)
+        public EditModel(Khata.Data.KhataContext context)
         {
             _context = context;
         }

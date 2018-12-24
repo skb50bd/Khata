@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AtomicRepository.cs" />
-    <Compile Remove="IRepository.cs" />
-    <Compile Remove="ITrackingRepository.cs" />
-    <Compile Remove="TrackingRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
@@ -26,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Khata.Domain\Khata.Domain.csproj" />
+    <ProjectReference Include="..\Khata.Domain\1. Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
-
-namespace Khata.Domain
+﻿namespace Khata.Domain
 {
     public class Product : TrackedEntity
     {
         public string Name { get; set; }
-        public string Manufacturer { get; set; }
-        public virtual IList<Category> Categories { get; set; } = new List<Category>();
+
+        public string Description { get; set; }
+
+        public Inventory Inventory { get; set; }
+
+        public string Unit { get; set; }
+
+        public Pricing Price { get; set; }
+
         public Metadata Metadata { get; set; }
     }
 }

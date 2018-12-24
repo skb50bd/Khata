@@ -1,5 +1,9 @@
+using System.Globalization;
+
 using Khata.Data;
+using Khata.Services.Mapper;
 using Khata.Web.PagingSortingSearching;
+using Khata.Web.Swagger;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Khata.Web
 {
     public class Startup
@@ -15,6 +21,7 @@ namespace Khata.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-BD");
         }
 
         public IConfiguration Configuration { get; }
@@ -29,13 +36,22 @@ namespace Khata.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration
+                .GetConnectionString("DefaultConnection");
+
             services.ConfigureData(connectionString);
 
-            services.ConfigureSieve();
+            services.ConfigureSieve(Configuration);
+
+            services.ConfigureMapper();
 
             services.AddMvc()
+                .AddJsonOptions(options =>
+                    options.SerializerSettings.ContractResolver =
+                        new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.RegisterSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +76,8 @@ namespace Khata.Web
             app.UseAuthentication();
 
             app.UseMvc();
+
+            app.EngageSwagger();
         }
     }
 }

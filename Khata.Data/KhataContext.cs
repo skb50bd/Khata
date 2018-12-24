@@ -16,12 +16,18 @@ namespace Khata.Data
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.OwnsOne(p => p.Metadata);
                 entity.Property(p => p.Name)
                     .IsRequired()
                     .HasMaxLength(120);
-                entity.Property(p => p.Manufacturer)
-                    .HasMaxLength(120);
+
+                entity.Property(p => p.Description)
+                    .HasMaxLength(500);
+
+                entity.OwnsOne(p => p.Metadata);
+
+                entity.OwnsOne(p => p.Price);
+
+                entity.OwnsOne(p => p.Inventory);
             });
 
             #region Reference Code

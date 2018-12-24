@@ -1,5 +1,5 @@
 ﻿@page
-@model Khata.Web.Pages.Products.DetailsModel
+@model _4._Web.Pages.Products.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
@@ -18,10 +18,16 @@
             @Html.DisplayFor(model => model.Product.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Manufacturer)
+            @Html.DisplayNameFor(model => model.Product.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.Manufacturer)
+            @Html.DisplayFor(model => model.Product.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Unit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Unit)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Product.Deleted)

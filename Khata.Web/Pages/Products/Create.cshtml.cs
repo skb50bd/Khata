@@ -1,20 +1,27 @@
 ﻿using System.Threading.Tasks;
 
-using Khata.Data;
-using Khata.Domain;
+using AutoMapper;
 
+using Khata.Domain;
+using Khata.Domain.ViewModels;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Khata.Web.Pages.Products
+namespace _4._Web.Pages.Products
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly KhataContext _context;
+        private readonly Khata.Data.KhataContext _context;
+        private readonly IMapper _mapper;
 
-        public CreateModel(KhataContext context)
+        public CreateModel(Khata.Data.KhataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+            Product = new ProductViewModel();
         }
 
         public IActionResult OnGet()
@@ -23,7 +30,7 @@ namespace Khata.Web.Pages.Products
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public ProductViewModel Product { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -31,8 +38,11 @@ namespace Khata.Web.Pages.Products
             {
                 return Page();
             }
+            var product = _mapper.Map<Product>(Product);
+            var inventory = product.Inventory;
+            product.Metadata = Metadata.CreatedNew(User.Identity.Name);
+            _context.Products.Add(product);
 
-            _context.Products.Add(Product);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
