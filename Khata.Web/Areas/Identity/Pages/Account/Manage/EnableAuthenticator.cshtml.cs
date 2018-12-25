@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Khata.Web.Areas.Identity.Pages.Account.Manage
+namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
@@ -148,7 +148,7 @@ namespace Khata.Web.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Khata.Web"),
+                _urlEncoder.Encode("WebUI"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

@@ -2,26 +2,27 @@
 
 using AutoMapper;
 
+using Khata.Data.Core;
 using Khata.Domain;
-using Khata.Domain.ViewModels;
+using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace _4._Web.Pages.Products
+namespace WebUI.Pages.Products
 {
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
+        private readonly IUnitOfWork _db;
         private readonly IMapper _mapper;
 
-        public CreateModel(Khata.Data.KhataContext context, IMapper mapper)
+        public CreateModel(IUnitOfWork db, IMapper mapper)
         {
-            _context = context;
+            _db = db;
             _mapper = mapper;
-            Product = new ProductViewModel();
+            ProductVM = new ProductViewModel();
         }
 
         public IActionResult OnGet()
@@ -30,7 +31,11 @@ namespace _4._Web.Pages.Products
         }
 
         [BindProperty]
-        public ProductViewModel Product { get; set; }
+        public ProductViewModel ProductVM { get; set; }
+
+        [TempData] public string Message { get; set; }
+        [TempData] public string MessageType { get; set; }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -38,12 +43,15 @@ namespace _4._Web.Pages.Products
             {
                 return Page();
             }
-            var product = _mapper.Map<Product>(Product);
+            var product = _mapper.Map<Product>(ProductVM);
             var inventory = product.Inventory;
             product.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _context.Products.Add(product);
+            _db.Products.Add(product);
+            await _db.CompleteAsync();
 
-            await _context.SaveChangesAsync();
+            Message = $"Product: {product.Id} - {product.Name} created!";
+            MessageType = "success";
+
 
             return RedirectToPage("./Index");
         }

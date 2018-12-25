@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Khata.Web.Areas.Identity.Pages.Account.Manage
+namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
@@ -134,7 +134,7 @@ namespace Khata.Web.Areas.Identity.Pages.Account.Manage
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId = userId, code = code },
+                values: new { userId, code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,

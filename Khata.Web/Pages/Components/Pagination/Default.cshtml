@@ -1,0 +1,82 @@
+﻿@model PaginationModel
+
+@{
+    var prevButton = Model.HasPrevPage ? "" : "disabled";
+    var nextButton = Model.HasNextPage ? "" : "disabled";
+}
+
+<nav aria-label="pagination">
+    <ul class="pagination">
+
+        <li class="page-item">
+            <a asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-PageSize="@Model.PageSize"
+               asp-route-PageIndex="1"
+               class="page-link">First</a>
+        </li>
+
+        <li class="page-item @prevButton">
+            <a asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-PageSize="@Model.PageSize"
+               asp-route-PageIndex="@(Model.PageIndex - 1)"
+               class="page-link">Previous</a>
+        </li>
+        @{
+            int i = Model.PageIndex - 3;
+            while (i <= 0) { i++; }
+        }
+
+        @while (i < Model.PageIndex)
+        {
+            <li class="page-item">
+                <a asp-route-SearchString="@Model.CurrentFilter"
+                   asp-route-PageSize="@Model.PageSize"
+                   asp-route-PageIndex="@i"
+                   class="page-link">
+                    @i
+                </a>
+            </li>
+            i++;
+        }
+
+        <li class="page-item active" aria-current="page">
+            <a asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-PageSize="@Model.PageSize"
+               asp-route-PageIndex="@Model.PageIndex"
+               class="page-link">
+                @Model.PageIndex
+                <span class="sr-only">(current)</span>
+            </a>
+        </li>
+
+
+        @for (i = Model.PageIndex + 1; Model.HasPage(i) && i <= Model.PageIndex + 3; i++)
+        {
+            <li class="page-item">
+                <a asp-page="./Index"
+                   asp-route-SearchString="@Model.CurrentFilter"
+                   asp-route-PageSize="@Model.PageSize"
+                   asp-route-PageIndex="@i"
+                   class="page-link">
+                    @i
+                </a>
+            </li>
+        }
+
+        <li class="page-item @nextButton">
+            <a asp-page="./Index"
+               asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-PageSize="@Model.PageSize"
+               asp-route-PageIndex="@(Model.PageIndex + 1)"
+               class="page-link">Next</a>
+        </li>
+
+        <li class="page-item">
+            <a asp-page="./Index"
+               asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-PageSize="@Model.PageSize"
+               asp-route-PageIndex="@Model.TotalPages"
+               class="page-link">Last (@Model.TotalPages)</a>
+        </li>
+    </ul>
+</nav>

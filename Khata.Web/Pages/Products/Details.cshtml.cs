@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
+using AutoMapper;
+
+using Khata.Data.Core;
+using Khata.DTOs;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Khata.Data;
-using Khata.Domain;
 
-namespace _4._Web.Pages.Products
+namespace WebUI.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        private readonly Khata.Data.KhataContext _context;
-
-        public DetailsModel(Khata.Data.KhataContext context)
+        private readonly IUnitOfWork _db;
+        private readonly IMapper _mapper;
+        public DetailsModel(IUnitOfWork db, IMapper mapper)
         {
-            _context = context;
+            _db = db;
+            _mapper = mapper;
         }
 
-        public Product Product { get; set; }
+        public ProductDto Product { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,12 +29,14 @@ namespace _4._Web.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _db.Products.GetById((int)id);
 
-            if (Product == null)
+            if (product == null)
             {
                 return NotFound();
             }
+
+            Product = _mapper.Map<ProductDto>(product);
             return Page();
         }
     }

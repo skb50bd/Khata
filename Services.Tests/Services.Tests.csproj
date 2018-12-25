@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Khata.Domain\1. Domain.csproj" />
-    <ProjectReference Include="..\Khata.Services\3. Services.csproj" />
+    <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
+    <ProjectReference Include="..\Khata.Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

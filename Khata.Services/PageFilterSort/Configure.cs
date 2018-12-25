@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Sieve.Services;
 
-namespace Khata.Web.PagingSortingSearching
+namespace WebUI.PagingSortingSearching
 {
     public static class Configure
     {

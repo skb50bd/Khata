@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Khata.Web.Swagger
+namespace WebUI.Swagger
 {
     public static class SwaggerConfig 
     {

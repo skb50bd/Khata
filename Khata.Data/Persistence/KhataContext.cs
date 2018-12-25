@@ -4,7 +4,7 @@ using Khata.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Khata.Data
+namespace Khata.Data.Persistence
 {
     public class KhataContext : IdentityDbContext
     {

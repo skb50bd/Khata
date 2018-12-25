@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Khata.Web.Areas.Identity.Pages.Account.Manage
+namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {

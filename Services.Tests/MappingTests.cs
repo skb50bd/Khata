@@ -2,7 +2,7 @@
 using AutoMapper;
 
 using Khata.Domain;
-using Khata.Domain.ViewModels;
+using Khata.ViewModels;
 
 using Xunit;
 
@@ -36,7 +36,7 @@ namespace Services.Tests
             var product = new Product()
             {
                 Id = 1,
-                Deleted = false,
+                IsRemoved = false,
                 Name = ProductName,
                 Description = ProductDescription,
                 Inventory = new Inventory

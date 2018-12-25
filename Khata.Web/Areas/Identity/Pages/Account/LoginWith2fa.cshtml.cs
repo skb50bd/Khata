@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Khata.Web.Areas.Identity.Pages.Account
+namespace WebUI.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginWith2faModel : PageModel

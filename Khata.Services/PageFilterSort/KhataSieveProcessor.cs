@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace Khata.Web.PagingSortingSearching
+namespace WebUI.PagingSortingSearching
 {
     public class KhataSieveProcessor : SieveProcessor
     {

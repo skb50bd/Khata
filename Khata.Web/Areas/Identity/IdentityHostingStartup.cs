@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-[assembly: HostingStartup(typeof(Khata.Web.Areas.Identity.IdentityHostingStartup))]
-namespace Khata.Web.Areas.Identity
+[assembly: HostingStartup(typeof(WebUI.Areas.Identity.IdentityHostingStartup))]
+namespace WebUI.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

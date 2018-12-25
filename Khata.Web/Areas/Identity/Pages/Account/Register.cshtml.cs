@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Khata.Web.Areas.Identity.Pages.Account
+namespace WebUI.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public partial class RegisterModel : PageModel
@@ -75,7 +75,7 @@ namespace Khata.Web.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { userId = user.Id, code = code },
+                        values: new { userId = user.Id, code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",

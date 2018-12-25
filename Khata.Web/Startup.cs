@@ -1,9 +1,9 @@
 using System.Globalization;
 
-using Khata.Data;
+using Khata.Data.Persistence;
 using Khata.Services.Mapper;
-using Khata.Web.PagingSortingSearching;
-using Khata.Web.Swagger;
+using WebUI.PagingSortingSearching;
+using WebUI.Swagger;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Serialization;
 
-namespace Khata.Web
+namespace WebUI
 {
     public class Startup
     {

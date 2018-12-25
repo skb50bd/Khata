@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Khata.Data.Core;
 using Khata.Domain;
 
-using Microsoft.EntityFrameworkCore;
-
-namespace Khata.Data
+namespace Khata.Data.Persistence
 {
     /// <summary>
     /// This Repository Removes Unit of Work from the Repository and forces actions to be 
@@ -16,65 +12,26 @@ namespace Khata.Data
     /// this allows the business layer to ignore the 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AtomicRepository<T> : IRepository<T> where T : Entity
+    public class AtomicRepository<T> : Repository<T>, IRepository<T> where T : Entity
     {
-        protected KhataContext Context;
-        public AtomicRepository(KhataContext context)
+        public AtomicRepository(KhataContext context) : base(context) { }
+
+        public override async void Add(T item)
         {
-            Context = context;
+            base.Add(item);
+            await _context.SaveChangesAsync();
         }
 
-        public virtual async Task Add(T item)
+        public override async void AddAll(IEnumerable<T> items)
         {
-            Context.Add(item);
-            await Context.SaveChangesAsync();
+            base.AddAll(items);
+            await _context.SaveChangesAsync();
         }
 
-        public virtual async Task AddAll(IEnumerable<T> items)
+        public override async Task Delete(int id)
         {
-            Context.AddRange(items);
-            await Context.SaveChangesAsync();
-        }
-
-        public virtual async Task Delete(int id)
-        {
-            Context.Remove(await GetById(id));
-            await Context.SaveChangesAsync();
-        }
-
-        public virtual async Task<List<T>> Get<T2>(
-            Expression<Func<T, 
-            bool>> predicate, 
-            Expression<Func<T, T2>> order)
-        {
-            return await Context
-                .Set<T>()
-                .AsNoTracking()
-                .Where(predicate)
-                .OrderBy(order)
-                .ToListAsync();
-        }
-
-        public virtual async Task<List<T>> GetAll()
-        {
-            return await Context.Set<T>().AsNoTracking().ToListAsync();
-        }
-
-        public virtual async Task<T> GetById(int id)
-        {
-            return await Context.Set<T>().FindAsync(id);
-        }
-
-        public virtual async Task Save(T item)
-        {
-            Context.Update(item);
-            await Context.SaveChangesAsync();
-        }
-
-        public virtual async Task SaveAll(IEnumerable<T> items)
-        {
-            Context.UpdateRange(items);
-            await Context.SaveChangesAsync();
+            await base.Delete(id);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -2,7 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Khata.Data</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Persistence\Migrations\20181225042812_ModelChanged.cs" />
+    <Compile Remove="Persistence\Migrations\20181225042812_ModelChanged.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
@@ -19,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Khata.Domain\1. Domain.csproj" />
+    <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +35,12 @@
     <Reference Include="Microsoft.AspNetCore.Identity.UI">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.identity.ui\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.UI.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Persistence\Migrations\20181225043159_ChangedDeletedToIsRemoved.Designer.cs">
+      <DependentUpon>20181225043159_ChangedDeletedToIsRemoved.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

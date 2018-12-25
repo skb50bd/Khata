@@ -1,29 +1,31 @@
 ﻿using System.Threading.Tasks;
 
+using Khata.Data.Core;
 using Khata.Domain;
 
-namespace Khata.Data
+namespace Khata.Data.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public ITrackingRepository<Product> Products { get; set; }
+        protected readonly KhataContext _context;
+
+        public ITrackingRepository<Product> Products { get; }
 
 
-        protected KhataContext Context { get; }
         public UnitOfWork(KhataContext context, ITrackingRepository<Product> products)
         {
-            Context = context;
+            _context = context;
             Products = products;
         }
 
         public void Complete()
         {
-            Context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public async Task CompleteAsync()
         {
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

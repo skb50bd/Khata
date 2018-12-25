@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Khata.Data.Core;
 using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Khata.Data
+namespace Khata.Data.Persistence
 {
     /// <summary>
     /// This is a repository and UOW on top of entity framework.
@@ -16,58 +19,41 @@ namespace Khata.Data
     /// like last updated time and user on a lot of different entities.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEntity
+    public class TrackingRepository<T> : Repository<T>, ITrackingRepository<T> where T : TrackedEntity
     {
-        protected KhataContext Context;
-        public TrackingRepository(KhataContext context)
+        public TrackingRepository(KhataContext context) : base(context) { }
+
+        public override async Task<IList<T>> Get<T2>(
+            Expression<Func<T, bool>> predicate,
+            Expression<Func<T, T2>> order,
+            int pageIndex,
+            int pageSize)
         {
-            Context = context;
+            Expression<Func<T, bool>> newPredicate = 
+                i => !i.IsRemoved && predicate.Compile().Invoke(i);
+            return await base.Get(newPredicate, order, pageIndex, pageSize);
         }
 
-        public virtual void Add(T item)
-        {
-            Context.Add(item);
-        }
+        public override async Task<IList<T>> GetAll()
+            => await _context.Set<T>()
+                        .AsNoTracking()
+                        .Where(e => !e.IsRemoved)
+                        .ToListAsync();
 
-        public virtual void AddAll(IEnumerable<T> items)
-        {
-            Context.AddRange(items);
-        }
+        public virtual async Task<IList<T>> GetRemovedItems()
+            => await _context.Set<T>()
+                        .AsNoTracking()
+                        .Where(e => e.IsRemoved)
+                        .ToListAsync();
 
-        public virtual async Task Delete(int id)
+        public virtual async Task Remove(int id)
         {
             var item = await GetById(id);
-            item.Deleted = true;
+            item.IsRemoved = true;
         }
 
-        public virtual IQueryable<T> Get()
-        {
-            return Context.Set<T>().Where(e => !e.Deleted);
-        }
-
-        public virtual async Task<List<T>> GetAll()
-        {
-            return await Context.Set<T>().Where(e => !e.Deleted).ToListAsync();
-        }
-
-        public virtual async Task<T> GetById(int id)
-        {
-            return await Context.Set<T>().FindAsync(id);
-        }
-
-        public virtual void Save(T item)
-        {
-            Context.Update(item);
-        }
-
-        public virtual void SaveAll(IEnumerable<T> items)
-        {
-            Context.UpdateRange(items);
-        }
-
-        public virtual Task SaveChanges()
-        {
-            return Context.SaveChangesAsync();
-        }
+        public virtual async Task<bool> IsRemoved(int id)
+            => await _context.Set<T>()
+            .AnyAsync(e => e.Id == id && e.IsRemoved);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
-namespace Khata.Web.Pages
+namespace WebUI.Pages
 {
     public class IndexModel : PageModel
     {

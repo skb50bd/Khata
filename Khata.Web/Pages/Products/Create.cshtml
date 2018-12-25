@@ -1,5 +1,5 @@
 ﻿@page
-@model _4._Web.Pages.Products.CreateModel
+@model WebUI.Pages.Products.CreateModel
 
 @{
     ViewData["Title"] = "Create";
@@ -8,96 +8,11 @@
 <h1 class="display-4">Create a Product</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form method="post">
-            @{
-                var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
-            }
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <input type="hidden" asp-for="Product.Id" />
-
-            <div class="form-group">
-                <label asp-for="Product.Name" class="control-label"></label>
-                <input asp-for="Product.Name" class="form-control required" />
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.Description" class="control-label"></label>
-                <textarea asp-for="Product.Description" class="form-control"></textarea>
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.Unit" class="control-label"></label>
-                <input asp-for="Product.Unit" class="form-control" />
-                <span asp-validation-for="Product.Unit" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.PriceRetail" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
-                    </div>
-                    <input asp-for="Product.PriceRetail" class="form-control" />
-                    <span asp-validation-for="Product.PriceRetail" class="text-danger"></span>
-                </div>
-
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.PriceBulk" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
-                    </div>
-                    <input asp-for="Product.PriceBulk" class="form-control" />
-                    <span asp-validation-for="Product.PriceBulk" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.PriceMargin" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
-                    </div>
-                    <input asp-for="Product.PriceMargin" class="form-control" />
-                    <span asp-validation-for="Product.PriceMargin" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.PricePurchase" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
-                    </div>
-                    <input asp-for="Product.PricePurchase" class="form-control" />
-                    <span asp-validation-for="Product.PricePurchase" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.InventoryStock" class="control-label"></label>
-                <input asp-for="Product.InventoryStock" class="form-control" />
-                <span asp-validation-for="Product.InventoryStock" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.InventoryGodown" class="control-label"></label>
-                <input asp-for="Product.InventoryGodown" class="form-control" />
-                <span asp-validation-for="Product.InventoryGodown" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Product.InventoryAlertAt" class="control-label"></label>
-                <input asp-for="Product.InventoryAlertAt" class="form-control" />
-                <span asp-validation-for="Product.InventoryAlertAt" class="text-danger"></span>
-            </div>
+            @await Component.InvokeAsync(
+                nameof(WebUI.Pages.Components.ProductForm),
+                new { product = Model.ProductVM })
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary btn-lg" />
@@ -110,6 +25,4 @@
     <a asp-page="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+

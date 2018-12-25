@@ -1,13 +1,15 @@
 ﻿using System.Threading.Tasks;
+
 using Khata.Domain;
 
-namespace Khata.Data
+namespace Khata.Data.Core
 {
     public interface IUnitOfWork
     {
-        ITrackingRepository<Product> Products { get; set; }
+        ITrackingRepository<Product> Products { get; }
 
         void Complete();
+
         Task CompleteAsync();
     }
 }

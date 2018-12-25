@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Khata.Services</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Khata.Data\2. Data.csproj" />
-    <ProjectReference Include="..\Khata.Domain\1. Domain.csproj" />
+    <ProjectReference Include="..\Khata.Data\Data.csproj" />
+    <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
   </ItemGroup>
 
 </Project>

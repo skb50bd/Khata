@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 
 using Khata.Domain;
-using Khata.Domain.ViewModels;
 using Khata.DTOs;
+using Khata.ViewModels;
 
 namespace Khata.Services.Mapper
 {
@@ -37,6 +37,10 @@ namespace Khata.Services.Mapper
                 .ForMember(
                     dest => dest.Modifier,
                     opt => opt.MapFrom(src => src.Metadata.Modifier)
+                )
+                .ForMember(
+                    dest => dest.Modified,
+                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
                 )
                 .ForMember(
                     dest => dest.Stock,

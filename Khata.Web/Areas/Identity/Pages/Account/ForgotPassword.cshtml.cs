@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Khata.Web.Areas.Identity.Pages.Account
+namespace WebUI.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel

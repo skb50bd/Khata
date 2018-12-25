@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-namespace Khata.Web.Areas.Identity.Pages.Account.Manage
+namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {

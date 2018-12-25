@@ -2,8 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UserSecretsId>aspnet-Khata.Web-DF575269-9032-4970-8BC0-9ED19B4E0B6F</UserSecretsId>
+    <UserSecretsId>aspnet-WebUI-DF575269-9032-4970-8BC0-9ED19B4E0B6F</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>WebUI</RootNamespace>
+    <AssemblyName>WebUI</AssemblyName>
   </PropertyGroup>
 
 
@@ -17,14 +19,10 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Khata.Data\2. Data.csproj" />
-    <ProjectReference Include="..\Khata.Domain\1. Domain.csproj" />
-    <ProjectReference Include="..\Khata.Services\3. Services.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="API\" />
+    <ProjectReference Include="..\..\StonedExtensions\StonedExtensions\StonedExtensions.csproj" />
+    <ProjectReference Include="..\Khata.Data\Data.csproj" />
+    <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
+    <ProjectReference Include="..\Khata.Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 {
     public class TrackedEntity : Entity
     {
-        public bool Deleted { get; set; }
+        public bool IsRemoved { get; set; }
 
     }
 }

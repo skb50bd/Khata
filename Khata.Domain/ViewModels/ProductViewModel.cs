@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Khata.Domain.ViewModels
+using Khata.Domain;
+
+namespace Khata.ViewModels
 {
     public class ProductViewModel
     {
