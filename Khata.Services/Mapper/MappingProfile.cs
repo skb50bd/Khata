@@ -18,7 +18,7 @@ namespace Khata.Services.Mapper
                     opt => opt.MapFrom(src => new Inventory
                     {
                         Stock = src.InventoryStock,
-                        Godown = src.InventoryGodown,
+                        Warehouse = src.InventoryWarehouse,
                         AlertAt = src.InventoryAlertAt
                     })
                 )
@@ -47,8 +47,8 @@ namespace Khata.Services.Mapper
                     opt => opt.MapFrom(src => src.Inventory.Stock)
                 )
                 .ForMember(
-                    dest => dest.Godown,
-                    opt => opt.MapFrom(src => src.Inventory.Godown)
+                    dest => dest.Warehouse,
+                    opt => opt.MapFrom(src => src.Inventory.Warehouse)
                 )
                 .ForMember(
                     dest => dest.TotalStock,
@@ -57,6 +57,20 @@ namespace Khata.Services.Mapper
                 .ForMember(
                     dest => dest.Status,
                     opt => opt.MapFrom(src => src.Inventory.Status)
+                );
+            #endregion
+
+            #region Service Mapping
+            CreateMap<Service, ServiceViewModel>();
+            CreateMap<ServiceViewModel, Service>();
+            CreateMap<Service, ServiceDto>()
+                .ForMember(
+                    dest => dest.Modifier,
+                    opt => opt.MapFrom(src => src.Metadata.Modifier)
+                )
+                .ForMember(
+                    dest => dest.ModificationTime,
+                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
                 );
             #endregion
         }

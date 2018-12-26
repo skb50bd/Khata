@@ -7,6 +7,7 @@ namespace Khata.Data.Core
     public interface IUnitOfWork
     {
         ITrackingRepository<Product> Products { get; }
+        ITrackingRepository<Service> Services { get; }
 
         void Complete();
 

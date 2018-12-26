@@ -30,6 +30,9 @@ namespace Khata.Data.Persistence
                 entity.OwnsOne(p => p.Inventory);
             });
 
+            modelBuilder.Entity<Service>().OwnsOne(s => s.Metadata);
+
+
             #region Reference Code
 
             // modelBuilder.Entity<Customer>(entity =>
@@ -221,6 +224,7 @@ namespace Khata.Data.Persistence
 
         public virtual DbSet<ApplicationUser> AppUsers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
 
     }
 }

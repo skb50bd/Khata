@@ -1,0 +1,13 @@
+﻿@page
+
+@model WebUI.Pages.Services.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@await Component.InvokeAsync(
+    nameof(Components.ServiceInfo.ServiceInfo),
+        new { service = Model.Service }
+    )

@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Khata.Data.Core;
 
@@ -23,22 +22,11 @@ namespace WebUI.API
         public async Task<IActionResult> Remove(int id)
         {
             if (!await _db.Products.Exists(id))
-            {
                 return NotFound();
-            }
-            else
-            {
-                try
-                {
-                    await _db.Products.Remove(id);
-                    await _db.CompleteAsync();
-                    return Ok();
-                }
-                catch (DBConcurrencyException)
-                {
-                    throw;
-                }
-            }
+
+            await _db.Products.Remove(id);
+            await _db.CompleteAsync();
+            return Ok();
         }
 
     }

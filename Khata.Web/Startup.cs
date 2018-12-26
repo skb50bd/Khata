@@ -2,7 +2,7 @@ using System.Globalization;
 
 using Khata.Data.Persistence;
 using Khata.Services.Mapper;
-using WebUI.PagingSortingSearching;
+using Khata.Services.PageFilterSort;
 using WebUI.Swagger;
 
 using Microsoft.AspNetCore.Builder;

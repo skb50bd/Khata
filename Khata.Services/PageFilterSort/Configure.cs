@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Sieve.Services;
 
-namespace WebUI.PagingSortingSearching
+namespace Khata.Services.PageFilterSort
 {
     public static class Configure
     {

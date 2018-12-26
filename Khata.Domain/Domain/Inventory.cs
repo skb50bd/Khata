@@ -6,11 +6,11 @@ namespace Khata.Domain
     {
         public decimal Stock { get; set; }
 
-        public decimal Godown { get; set; }
+        public decimal Warehouse { get; set; }
 
         public decimal AlertAt { get; set; }
 
-        public decimal TotalStock => Stock + Godown;
+        public decimal TotalStock => Stock + Warehouse;
 
         public StockStatus Status
         {
@@ -29,15 +29,15 @@ namespace Khata.Domain
             if (Stock < quantity) return false;
 
             Stock -= quantity;
-            Godown += quantity;
+            Warehouse += quantity;
             return true;
         }
 
         public bool MoveToStock(decimal quantity)
         {
-            if (Godown < quantity) return false;
+            if (Warehouse < quantity) return false;
 
-            Godown -= quantity;
+            Warehouse -= quantity;
             Stock += quantity;
             return true;
         }

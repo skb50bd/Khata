@@ -42,7 +42,7 @@ namespace Services.Tests
                 Inventory = new Inventory
                 {
                     AlertAt = InventoryAlertAt,
-                    Godown = InventoryGodown,
+                    Warehouse = InventoryGodown,
                     Stock = InventoryStock,
                 },
                 Unit = ProductUnit,

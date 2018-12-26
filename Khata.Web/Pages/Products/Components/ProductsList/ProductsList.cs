@@ -1,11 +1,8 @@
-﻿
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Khata.DTOs;
-
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Pages.Components.ProductsList
+namespace WebUI.Pages.Products.Components.ProductsList
 {
     public class ProductsList : ViewComponent
     {

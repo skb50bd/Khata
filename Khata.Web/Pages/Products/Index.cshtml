@@ -1,5 +1,5 @@
-﻿
-@page
+﻿@page
+@using WebUI.Pages.Products.Components.ProductsList
 @model WebUI.Pages.Products.IndexModel
 
 @{
@@ -53,7 +53,7 @@
 <div>
     <div>
         @await Component.InvokeAsync(
-            nameof(WebUI.Pages.Components.ProductsList),
+            nameof(ProductsList),
             new { products = Model.Products })
 
         @await  Component.InvokeAsync(

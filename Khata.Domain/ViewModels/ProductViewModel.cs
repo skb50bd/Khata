@@ -31,10 +31,12 @@ namespace Khata.ViewModels
         public decimal PriceBulk { get; set; }
 
         [Display(Name = "Purchase Price")]
+        [Range(0, double.MaxValue)]
         [DataType(DataType.Currency)]
         public decimal PricePurchase { get; set; } = 0;
 
         [Display(Name = "Minimum Price")]
+        [Range(0, double.MaxValue)]
         [DataType(DataType.Currency)]
         public decimal PriceMargin { get; set; } = 0;
 
@@ -42,8 +44,8 @@ namespace Khata.ViewModels
         [Display(Name = "Stock")]
         public decimal InventoryStock { get; set; } = 0;
 
-        [Display(Name = "Godown")]
-        public decimal InventoryGodown { get; set; } = 0;
+        [Display(Name = "Warehouse")]
+        public decimal InventoryWarehouse { get; set; } = 0;
 
         [Display(Name = "Minimum Total Stock Required")]
         public decimal InventoryAlertAt { get; set; } = 0;

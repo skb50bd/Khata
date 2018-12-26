@@ -8,14 +8,32 @@ $(document).ready(function () {
     });
 
     $(".js-remove-item").click(function (e) {
-        if (confirm("Are you sure you want to remove the item?")) {
-            $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
-                .done(function () {
-                    alert("Success!");
-                })
-                .fail(function () {
-                    alert("Something Failed");
-                });
-        }
+        swal({
+            title: "Are you sure?",
+            text: "The item will be removed from records!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
+                        .done(function () {
+                            swal("Poof! The item is removed!", {
+                                icon: "success"
+                            })
+                                .then((value) => {
+                                    if (value)
+                                        window.location = $(e.target).attr("data-returnUrl");
+                                });
+                        })
+                        .fail(function () {
+                            swal("Fail", "Could not delete the item.", "error");
+                        });
+
+                } else {
+                    swal("The item is safe!");
+                }
+            });
     });
 });

@@ -32,10 +32,10 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Services/Index">Services</a>
                         </li>
                     </ul>
                 </div>
@@ -82,6 +82,8 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
     </environment>
+    <script src="~/lib/bootbox/bootbox.min.js"></script>
+    <script src="~/lib/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

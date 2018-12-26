@@ -1,11 +1,9 @@
 ﻿using Khata.Domain;
-
 using Microsoft.Extensions.Options;
-
 using Sieve.Models;
 using Sieve.Services;
 
-namespace WebUI.PagingSortingSearching
+namespace Khata.Services.PageFilterSort
 {
     public class KhataSieveProcessor : SieveProcessor
     {

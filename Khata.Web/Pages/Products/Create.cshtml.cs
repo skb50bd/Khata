@@ -44,7 +44,6 @@ namespace WebUI.Pages.Products
                 return Page();
             }
             var product = _mapper.Map<Product>(ProductVM);
-            var inventory = product.Inventory;
             product.Metadata = Metadata.CreatedNew(User.Identity.Name);
             _db.Products.Add(product);
             await _db.CompleteAsync();

@@ -1,4 +1,4 @@
-﻿@model ProductDto
+﻿@model Khata.DTOs.ProductDto
 
 <div class="card" style="width:40rem">
     <div class="card-header">
@@ -21,8 +21,8 @@
                         <td>@Model.Stock</td>
                     </tr>
                     <tr>
-                        <td>Godown</td>
-                        <td>@Model.Godown</td>
+                        <td>Warehouse</td>
+                        <td>@Model.Warehouse</td>
                     </tr>
                     <tr>
                         <td>Low Stock At</td>
@@ -65,7 +65,8 @@
 
                 <a href="#"
                    class="card-link text-danger btn btn-link btn-danger js-remove-item"
-                   data-href="@Url.Action("Remove", "Products", new { id = Model.Id })">
+                   data-href="@Url.Action("Remove", "Products", new { id = Model.Id })"
+                   data-returnUrl="@Url.Page("./Index")">
                     Remove
                 </a>
             </div>
@@ -84,9 +85,3 @@
         </small>
     </div>
 </div>
-
-@section scripts {
-    <script>
-        
-    </script>
-}

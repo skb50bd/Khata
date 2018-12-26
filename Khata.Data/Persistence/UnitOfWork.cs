@@ -10,12 +10,16 @@ namespace Khata.Data.Persistence
         protected readonly KhataContext _context;
 
         public ITrackingRepository<Product> Products { get; }
+        public ITrackingRepository<Service> Services { get; }
 
 
-        public UnitOfWork(KhataContext context, ITrackingRepository<Product> products)
+        public UnitOfWork(KhataContext context,
+            ITrackingRepository<Product> products,
+            ITrackingRepository<Service> services)
         {
             _context = context;
             Products = products;
+            Services = services;
         }
 
         public void Complete()

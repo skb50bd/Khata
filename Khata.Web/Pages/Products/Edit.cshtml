@@ -11,7 +11,7 @@
     <div class="col-md-8">
         <form method="post">
             @await Component.InvokeAsync(
-                nameof(WebUI.Pages.Components.ProductForm),
+                nameof(Components.ProductForm.ProductForm),
                 new { product = Model.ProductVM })
 
             <div class="form-group">

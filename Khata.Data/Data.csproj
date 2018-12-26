@@ -41,6 +41,9 @@
     <Compile Update="Persistence\Migrations\20181225043159_ChangedDeletedToIsRemoved.Designer.cs">
       <DependentUpon>20181225043159_ChangedDeletedToIsRemoved.cs</DependentUpon>
     </Compile>
+    <Compile Update="Persistence\Migrations\20181225190924_AddedServiceEntity.Designer.cs">
+      <DependentUpon>20181225190924_AddedServiceEntity.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

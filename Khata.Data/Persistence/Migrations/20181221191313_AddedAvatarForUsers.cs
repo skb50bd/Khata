@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Khata.Data.Migrations
+namespace Khata.Data.Persistence.Migrations
 {
     public partial class AddedAvatarForUsers : Migration
     {

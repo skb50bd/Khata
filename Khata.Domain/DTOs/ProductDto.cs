@@ -17,7 +17,7 @@ namespace Khata.DTOs
 
         public decimal Stock { get; set; }
 
-        public decimal Godown { get; set; }
+        public decimal Warehouse { get; set; }
 
         public decimal AlertAt { get; set; }
 

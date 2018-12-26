@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Khata.Data.Migrations
+namespace Khata.Data.Persistence.Migrations
 {
     public partial class AddedInventoryAndProductProperties : Migration
     {

@@ -22,6 +22,7 @@ namespace Khata.Data.Persistence
                 .AddEntityFrameworkStores<KhataContext>();
 
             services.AddScoped<ITrackingRepository<Product>, TrackingRepository<Product>>();
+            services.AddScoped<ITrackingRepository<Service>, TrackingRepository<Service>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

@@ -1,8 +1,7 @@
 ﻿using Khata.ViewModels;
-
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Pages.Components.ProductForm
+namespace WebUI.Pages.Products.Components.ProductForm
 {
     public class ProductForm : ViewComponent
     {

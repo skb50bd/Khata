@@ -79,7 +79,7 @@ namespace WebUI.Pages.Products
                 }
             }
 
-            //Message = $"Product: {product.Id} - {product.Name} updated!";
+            Message = $"Product: {newProduct.Id} - {newProduct.Name} updated!";
             MessageType = "success";
 
             return RedirectToPage("./Index");
