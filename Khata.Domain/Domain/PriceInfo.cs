@@ -7,7 +7,7 @@
         public decimal Bulk { get; set; }
         public decimal Margin { get; set; }
 
-        public decimal ProfitIfSellingPrice(decimal sellingPrice) => sellingPrice - Purchase;
-        public bool IsSaleAllowed(decimal sellingPrice) => sellingPrice >= Margin;
+        public decimal ProfitIfSellingPriceIs(decimal sellingPrice) => sellingPrice - Purchase;
+        public bool IsPriceAllowed(decimal sellingPrice) => sellingPrice >= Margin;
     }
 }

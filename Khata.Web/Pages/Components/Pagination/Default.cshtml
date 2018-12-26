@@ -1,4 +1,4 @@
-﻿@model PaginationModel
+﻿@model Khata.Services.PageFilterSort.Sieve
 
 @{
     var prevButton = Model.HasPrevPage ? "" : "disabled";
@@ -9,14 +9,14 @@
     <ul class="pagination">
 
         <li class="page-item">
-            <a asp-route-SearchString="@Model.CurrentFilter"
+            <a asp-route-SearchString="@Model.Filter"
                asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="1"
                class="page-link">First</a>
         </li>
 
         <li class="page-item @prevButton">
-            <a asp-route-SearchString="@Model.CurrentFilter"
+            <a asp-route-SearchString="@Model.Filter"
                asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="@(Model.PageIndex - 1)"
                class="page-link">Previous</a>
@@ -29,7 +29,7 @@
         @while (i < Model.PageIndex)
         {
             <li class="page-item">
-                <a asp-route-SearchString="@Model.CurrentFilter"
+                <a asp-route-SearchString="@Model.Filter"
                    asp-route-PageSize="@Model.PageSize"
                    asp-route-PageIndex="@i"
                    class="page-link">
@@ -40,7 +40,7 @@
         }
 
         <li class="page-item active" aria-current="page">
-            <a asp-route-SearchString="@Model.CurrentFilter"
+            <a asp-route-SearchString="@Model.Filter"
                asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="@Model.PageIndex"
                class="page-link">
@@ -54,7 +54,7 @@
         {
             <li class="page-item">
                 <a asp-page="./Index"
-                   asp-route-SearchString="@Model.CurrentFilter"
+                   asp-route-SearchString="@Model.Filter"
                    asp-route-PageSize="@Model.PageSize"
                    asp-route-PageIndex="@i"
                    class="page-link">
@@ -65,7 +65,7 @@
 
         <li class="page-item @nextButton">
             <a asp-page="./Index"
-               asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-SearchString="@Model.Filter"
                asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="@(Model.PageIndex + 1)"
                class="page-link">Next</a>
@@ -73,10 +73,12 @@
 
         <li class="page-item">
             <a asp-page="./Index"
-               asp-route-SearchString="@Model.CurrentFilter"
+               asp-route-SearchString="@Model.Filter"
                asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="@Model.TotalPages"
                class="page-link">Last (@Model.TotalPages)</a>
         </li>
     </ul>
 </nav>
+
+<p class="text-center">Showing @Model.SentCount  of total @Model.ResultsCount results</p>

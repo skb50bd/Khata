@@ -2,10 +2,11 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Pages.Components.Pagination
+namespace WebUI.Pages.Components.Search
 {
-    public class Pagination : ViewComponent
+    public class Search : ViewComponent
     {
+        public string PlaceHolder { get; set; }
         public IViewComponentResult Invoke(Sieve model)
         {
             return View("Default", model);

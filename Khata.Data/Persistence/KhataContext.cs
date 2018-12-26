@@ -32,6 +32,8 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Service>().OwnsOne(s => s.Metadata);
 
+            modelBuilder.Seed();
+
 
             #region Reference Code
 

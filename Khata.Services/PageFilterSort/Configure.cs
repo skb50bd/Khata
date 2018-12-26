@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sieve.Services;
 
 namespace Khata.Services.PageFilterSort
 {
@@ -8,8 +7,10 @@ namespace Khata.Services.PageFilterSort
     {
         public static IServiceCollection ConfigureSieve(this IServiceCollection services, IConfiguration Config)
         {
-            //services.Configure<SieveOptions>(Config.GetSection("Sieve"));
-            services.AddScoped<ISieveProcessor, KhataSieveProcessor>();
+            //services.Configure<SieveOptions>(Config.GetSection("SieveService"));
+            //services.AddScoped<ISieveProcessor, KhataSieveProcessor>();
+            services.AddScoped<SieveService>();
+
 
             return services;
         }

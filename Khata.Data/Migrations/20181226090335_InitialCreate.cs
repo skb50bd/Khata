@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Khata.Data.Persistence.Migrations
+namespace Khata.Data.Migrations
 {
-    public partial class InitialCreateWithIdentityAndProductModel : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,7 +44,8 @@ namespace Khata.Data.Persistence.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    Role = table.Column<int>(nullable: true)
+                    Role = table.Column<int>(nullable: true),
+                    Avatar = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,9 +58,17 @@ namespace Khata.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Deleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Manufacturer = table.Column<string>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 120, nullable: false),
+                    Description = table.Column<string>(maxLength: 500, nullable: true),
+                    Inventory_Stock = table.Column<decimal>(nullable: false),
+                    Inventory_Warehouse = table.Column<decimal>(nullable: false),
+                    Inventory_AlertAt = table.Column<decimal>(nullable: false),
+                    Unit = table.Column<string>(nullable: true),
+                    Price_Purchase = table.Column<decimal>(nullable: false),
+                    Price_Retail = table.Column<decimal>(nullable: false),
+                    Price_Bulk = table.Column<decimal>(nullable: false),
+                    Price_Margin = table.Column<decimal>(nullable: false),
                     Metadata_Creator = table.Column<string>(nullable: true),
                     Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
                     Metadata_Modifier = table.Column<string>(nullable: true),
@@ -68,6 +77,26 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: false),
+                    Metadata_Creator = table.Column<string>(nullable: true),
+                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
+                    Metadata_Modifier = table.Column<string>(nullable: true),
+                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,26 +205,6 @@ namespace Khata.Data.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Category_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -234,11 +243,6 @@ namespace Khata.Data.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Category_ProductId",
-                table: "Category",
-                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -259,16 +263,16 @@ namespace Khata.Data.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Services");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }

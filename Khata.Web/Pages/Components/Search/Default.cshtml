@@ -1,0 +1,26 @@
+﻿@model Khata.Services.PageFilterSort.Sieve
+<form asp-page="./Index" method="get">
+    <div class="input-group">
+        <input asp-for="@Model.Filter"
+               name="SearchString"
+               value="@Model.Filter"
+               placeholder="Search for @Model.SearchArea..."
+               class="form-control"
+               aria-label="Search keyword" />
+        <input asp-for="@Model.PageSize"
+               name="PageSize"
+               value="@Model.PageSize"
+               class="form-control" hidden />
+        <input asp-for="@Model.PageIndex"
+               name="PageSize"
+               value="@Model.PageIndex"
+               class="form-control" hidden />
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary"
+                    type="submit"
+                    id="searchButton">
+                Go
+            </button>
+        </div>
+    </div>
+</form>

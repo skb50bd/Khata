@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Persistence\Migrations\20181225042812_ModelChanged.cs" />
-    <Compile Remove="Persistence\Migrations\20181225042812_ModelChanged.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
@@ -38,11 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Persistence\Migrations\20181225043159_ChangedDeletedToIsRemoved.Designer.cs">
-      <DependentUpon>20181225043159_ChangedDeletedToIsRemoved.cs</DependentUpon>
+    <Compile Update="Migrations\20181226090335_InitialCreate.Designer.cs">
+      <DependentUpon>20181226090335_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Update="Persistence\Migrations\20181225190924_AddedServiceEntity.Designer.cs">
-      <DependentUpon>20181225190924_AddedServiceEntity.cs</DependentUpon>
+    <Compile Update="Migrations\20181226101759_AddedSeedDataForProducts2.Designer.cs">
+      <DependentUpon>20181226101759_AddedSeedDataForProducts2.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

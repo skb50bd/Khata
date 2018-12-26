@@ -57,7 +57,7 @@ namespace WebUI.Areas.Identity.Pages.Account
                     Email = Input.Email
                 };
 
-                if (Input.Avatar.Length > 0)
+                if (Input.Avatar?.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
