@@ -7,29 +7,32 @@ namespace Khata.Data.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
-        protected readonly KhataContext _context;
+        protected readonly KhataContext Context;
 
         public ITrackingRepository<Product> Products { get; }
         public ITrackingRepository<Service> Services { get; }
+        public ITrackingRepository<Customer> Customers { get; }
 
 
         public UnitOfWork(KhataContext context,
             ITrackingRepository<Product> products,
-            ITrackingRepository<Service> services)
+            ITrackingRepository<Service> services,
+            ITrackingRepository<Customer> customers)
         {
-            _context = context;
+            Context = context;
             Products = products;
             Services = services;
+            Customers = customers;
         }
 
         public void Complete()
         {
-            _context.SaveChanges();
+            Context.SaveChanges();
         }
 
         public async Task CompleteAsync()
         {
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

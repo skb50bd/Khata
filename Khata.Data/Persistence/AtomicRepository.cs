@@ -19,19 +19,19 @@ namespace Khata.Data.Persistence
         public override async void Add(T item)
         {
             base.Add(item);
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         public override async void AddAll(IEnumerable<T> items)
         {
             base.AddAll(items);
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         public override async Task Delete(int id)
         {
             await base.Delete(id);
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

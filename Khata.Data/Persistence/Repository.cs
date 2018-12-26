@@ -13,10 +13,10 @@ namespace Khata.Data.Persistence
 {
     public class Repository<T> : IRepository<T> where T : Entity
     {
-        protected readonly KhataContext _context;
+        protected readonly KhataContext Context;
         public Repository(KhataContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public virtual async Task<IList<T>> Get<T2>(
@@ -24,7 +24,7 @@ namespace Khata.Data.Persistence
             Expression<Func<T, T2>> order,
             int pageIndex,
             int pageSize)
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .AsNoTracking()
                         .Where(predicate)
                         .OrderBy(order)
@@ -33,28 +33,28 @@ namespace Khata.Data.Persistence
                         .ToListAsync();
 
         public virtual async Task<IList<T>> GetAll()
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .AsNoTracking()
                         .ToListAsync();
 
         public virtual async Task<T> GetById(int id)
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .FindAsync(id);
 
         public virtual void Add(T item)
-            => _context.Add(item);
+            => Context.Add(item);
 
         public virtual void AddAll(IEnumerable<T> items)
-            => _context.AddRange(items);
+            => Context.AddRange(items);
 
         public virtual async Task<bool> Exists(int id)
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .AnyAsync(e => e.Id == id);
 
         public virtual async Task Delete(int id)
-            => _context.Remove(await GetById(id));
+            => Context.Remove(await GetById(id));
 
         public async Task<int> Count()
-            => await _context.Set<T>().CountAsync();
+            => await Context.Set<T>().CountAsync();
     }
 }

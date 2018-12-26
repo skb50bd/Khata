@@ -32,6 +32,8 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Service>().OwnsOne(s => s.Metadata);
 
+            modelBuilder.Entity<Customer>().OwnsOne(c => c.Metadata);
+
             modelBuilder.Seed();
 
 
@@ -227,6 +229,7 @@ namespace Khata.Data.Persistence
         public virtual DbSet<ApplicationUser> AppUsers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
 
     }
 }

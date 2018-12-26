@@ -12,17 +12,19 @@ namespace Khata.Data.Persistence
     {
         public static IServiceCollection ConfigureData(
             this IServiceCollection services,
-            string conncectionString)
+            string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlServer(conncectionString));
+                options.UseSqlServer(cnnString));
+            //options.UseInMemoryDatabase("Khata"));
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<KhataContext>();
+            .AddDefaultUI(UIFramework.Bootstrap4)
+            .AddEntityFrameworkStores<KhataContext>();
 
             services.AddScoped<ITrackingRepository<Product>, TrackingRepository<Product>>();
             services.AddScoped<ITrackingRepository<Service>, TrackingRepository<Service>>();
+            services.AddScoped<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

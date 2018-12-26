@@ -35,13 +35,13 @@ namespace Khata.Data.Persistence
         }
 
         public override async Task<IList<T>> GetAll()
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .AsNoTracking()
                         .Where(e => !e.IsRemoved)
                         .ToListAsync();
 
         public virtual async Task<IList<T>> GetRemovedItems()
-            => await _context.Set<T>()
+            => await Context.Set<T>()
                         .AsNoTracking()
                         .Where(e => e.IsRemoved)
                         .ToListAsync();
@@ -53,7 +53,7 @@ namespace Khata.Data.Persistence
         }
 
         public virtual async Task<bool> IsRemoved(int id)
-            => await _context.Set<T>()
+            => await Context.Set<T>()
             .AnyAsync(e => e.Id == id && e.IsRemoved);
     }
 }

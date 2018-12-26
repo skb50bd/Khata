@@ -15,48 +15,56 @@ namespace Khata.Services.Mapper
             CreateMap<ProductViewModel, Product>()
                 .ForMember(
                     dest => dest.Inventory,
-                    opt => opt.MapFrom(src => new Inventory
-                    {
-                        Stock = src.InventoryStock,
-                        Warehouse = src.InventoryWarehouse,
-                        AlertAt = src.InventoryAlertAt
-                    })
+                    opt => opt.MapFrom(
+                        src => new Inventory
+                        {
+                            Stock = src.InventoryStock,
+                            Warehouse = src.InventoryWarehouse,
+                            AlertAt = src.InventoryAlertAt
+                        })
                 )
                 .ForMember(
                     dest => dest.Price,
-                    opt => opt.MapFrom(src => new Pricing
-                    {
-                        Purchase = src.PricePurchase,
-                        Margin = src.PriceMargin,
-                        Bulk = src.PriceBulk,
-                        Retail = src.PriceRetail
-                    })
+                    opt => opt.MapFrom(
+                        src => new Pricing
+                        {
+                            Purchase = src.PricePurchase,
+                            Margin = src.PriceMargin,
+                            Bulk = src.PriceBulk,
+                            Retail = src.PriceRetail
+                        })
                 );
 
             CreateMap<Product, ProductDto>()
                 .ForMember(
                     dest => dest.Modifier,
-                    opt => opt.MapFrom(src => src.Metadata.Modifier)
+                    opt => opt.MapFrom(
+                        src => src.Metadata.Modifier)
                 )
                 .ForMember(
                     dest => dest.Modified,
-                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
+                    opt => opt.MapFrom(
+                        src => src.Metadata.ModificationTime)
                 )
                 .ForMember(
                     dest => dest.Stock,
-                    opt => opt.MapFrom(src => src.Inventory.Stock)
+                    opt => opt.MapFrom(
+                        src => src.Inventory.Stock)
                 )
                 .ForMember(
                     dest => dest.Warehouse,
-                    opt => opt.MapFrom(src => src.Inventory.Warehouse)
+                    opt => opt.MapFrom(
+                        src => src.Inventory.Warehouse)
                 )
                 .ForMember(
                     dest => dest.TotalStock,
-                    opt => opt.MapFrom(src => src.Inventory.TotalStock)
+                    opt => opt.MapFrom(
+                        src => src.Inventory.TotalStock)
                 )
                 .ForMember(
                     dest => dest.Status,
-                    opt => opt.MapFrom(src => src.Inventory.Status)
+                    opt => opt.MapFrom(
+                        src => src.Inventory.Status)
                 );
             #endregion
 
@@ -66,12 +74,29 @@ namespace Khata.Services.Mapper
             CreateMap<Service, ServiceDto>()
                 .ForMember(
                     dest => dest.Modifier,
-                    opt => opt.MapFrom(src => src.Metadata.Modifier)
+                    opt => opt.MapFrom(
+                        src => src.Metadata.Modifier)
                 )
                 .ForMember(
                     dest => dest.ModificationTime,
-                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
+                    opt => opt.MapFrom(
+                        src => src.Metadata.ModificationTime)
                 );
+            #endregion
+
+            #region Customer Mapping
+
+            CreateMap<CustomerViewModel, Customer>();
+            CreateMap<Customer, CustomerDto>()
+               .ForMember(
+                    dest => dest.MetadataModifier,
+                    opt => opt.MapFrom(
+                        src => src.Metadata.ModificationTime))
+              .ForMember(
+                   dest => dest.MetadataModificationTime,
+                   opt => opt.MapFrom(
+                       src => src.Metadata.ModificationTime));
+
             #endregion
         }
     }
