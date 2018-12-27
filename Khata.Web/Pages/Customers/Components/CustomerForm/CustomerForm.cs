@@ -1,13 +1,14 @@
 ﻿using Khata.ViewModels;
+
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Pages.Shared.Components.CustomerForm
+namespace WebUI.Pages.Customers.Components.CustomerForm
 {
     public class CustomerForm : ViewComponent
     {
         public IViewComponentResult Invoke(CustomerViewModel customer)
         {
-            return View("Default", customer);
+            return View(nameof(CustomerForm), customer);
         }
     }
 }

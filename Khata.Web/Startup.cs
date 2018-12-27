@@ -49,11 +49,21 @@ namespace WebUI
                     options.SerializerSettings.ContractResolver =
                         new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //services.AddResponseCompression(options =>
+            //{
+            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+            //    {
+            //        MediaTypeNames.Application.Octet,
+            //        WasmMediaTypeNames.Application.Wasm,
+            //    });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //app.UseResponseCompression();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,7 +73,7 @@ namespace WebUI
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                // app.UseHsts();
             }
 
             app.UseHttpsRedirection();
@@ -73,6 +83,7 @@ namespace WebUI
             app.UseAuthentication();
 
             app.UseMvc();
+            //app.UseBlazor<Khata.Client.Startup>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace WebUI.Pages.Services.Components.ServiceInfo
     {
         public IViewComponentResult Invoke(ServiceDto service)
         {
-            return View("Default", service);
+            return View(nameof(ServiceInfo), service);
         }
 
     }

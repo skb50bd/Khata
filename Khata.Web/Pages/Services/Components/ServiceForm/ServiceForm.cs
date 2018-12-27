@@ -1,4 +1,5 @@
 ﻿using Khata.ViewModels;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Pages.Services.Components.ServiceForm
@@ -7,7 +8,7 @@ namespace WebUI.Pages.Services.Components.ServiceForm
     {
         public IViewComponentResult Invoke(ServiceViewModel service)
         {
-            return View("Default", service);
+            return View(nameof(ServiceForm), service);
         }
     }
 }

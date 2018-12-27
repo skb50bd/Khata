@@ -8,7 +8,7 @@ namespace WebUI.Pages.Components.Pagination
     {
         public IViewComponentResult Invoke(Sieve model)
         {
-            return View("Default", model);
+            return View(nameof(Pagination), model);
         }
     }
 }

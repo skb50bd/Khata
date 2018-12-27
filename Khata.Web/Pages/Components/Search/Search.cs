@@ -9,7 +9,7 @@ namespace WebUI.Pages.Components.Search
         public string PlaceHolder { get; set; }
         public IViewComponentResult Invoke(Sieve model)
         {
-            return View("Default", model);
+            return View(nameof(Search), model);
         }
     }
 }

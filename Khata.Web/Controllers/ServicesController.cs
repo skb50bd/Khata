@@ -16,34 +16,38 @@ using Microsoft.AspNetCore.Mvc;
 
 using StonedExtensions;
 
-namespace WebApi.Controllers
+namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class ServicesController : ControllerBase
     {
         private readonly IUnitOfWork _db;
         private readonly IMapper _mapper;
         private readonly SieveService _sieveService;
 
-        public CustomersController(IUnitOfWork db, IMapper mapper, SieveService sieveService)
+        public ServicesController(
+            IUnitOfWork db,
+            IMapper mapper,
+            SieveService sieveService)
         {
             _db = db;
             _mapper = mapper;
             _sieveService = sieveService;
         }
 
-        //// GET: api/Customers
+
+        //// GET: api/Services
         //[HttpGet]
-        //public async Task<IEnumerable<CustomerDto>> Get()
+        //public async Task<IEnumerable<ServiceDto>> Get()
         //{
-        //    return (await _db.Customers.GetAll()).Select(m =>
-        //        _mapper.Map<CustomerDto>(m));
+        //    return (await _db.Services.GetAll()).Select(m =>
+        //        _mapper.Map<ServiceDto>(m));
         //}
 
-        // GET: api/Customers
+        // GET: api/Services
         [HttpGet]
-        public async Task<IEnumerable<CustomerDto>> Get(
+        public async Task<IEnumerable<ServiceDto>> Get(
             string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
@@ -51,43 +55,41 @@ namespace WebApi.Controllers
             searchString = searchString?.ToLowerInvariant();
 
             var filter = string.IsNullOrEmpty(searchString)
-                ? (Expression<Func<Customer, bool>>)(p => true)
+                ? (Expression<Func<Service, bool>>)(p => true)
                 : p => p.Id.ToString() == searchString
-                    || p.FullName.ToLowerInvariant().Contains(searchString)
-                    || p.CompanyName.ToLowerInvariant().Contains(searchString)
-                    || p.Phone.Contains(searchString)
-                    || p.Email.Contains(searchString);
+                    || p.Name.ToLowerInvariant().Contains(searchString);
 
             var resultsCount =
-                (await _db.Customers.Get(filter,
+                (await _db.Services.Get(filter,
                     p => p.Id,
                     1,
                     0))
                .Count();
 
-            var customers = new List<CustomerDto>();
+            var services = new List<ServiceDto>();
 
             var sieve = _sieveService.CreateNewModel(
                 searchString,
-                nameof(customers),
+                nameof(services),
                 resultsCount,
                 0,
                 pageIndex,
                 pageSize);
 
-            (await _db.Customers.Get(
+            (await _db.Services.Get(
                     filter,
                     p => p.Id,
                     sieve.PageIndex,
                     sieve.PageSize))
                .ForEach(c =>
-                    customers.Add(_mapper.Map<CustomerDto>(c)));
+                    services.Add(_mapper.Map<ServiceDto>(c)));
 
-            sieve.SentCount = customers.Count();
-            return customers;
+            sieve.SentCount = services.Count();
+            return services;
         }
 
-        // GET: api/Customers/5
+        // GET: api/Services/5
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute]int id)
         {
@@ -97,32 +99,30 @@ namespace WebApi.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var customer = _mapper.Map<CustomerDto>(
-                await _db.Customers.GetById(id));
-            return Ok(customer);
+            var service = _mapper.Map<ServiceDto>(
+                await _db.Services.GetById(id));
+            return Ok(service);
         }
 
-        // POST: api/Customers
+        // POST: api/Services
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CustomerViewModel model)
+        public async Task<IActionResult> Post([FromBody] ServiceViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var dm = _mapper.Map<Customer>(model);
-            dm.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Customers.Add(dm);
+            var dm = _mapper.Map<Service>(model);
+            _db.Services.Add(dm);
             await _db.CompleteAsync();
 
             return CreatedAtAction(nameof(Get),
                 new { id = dm.Id },
-                _mapper.Map<CustomerDto>(dm));
+                _mapper.Map<ServiceDto>(dm));
         }
 
-        // PUT: api/Customers/5
-
+        // PUT: api/Services/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]CustomerViewModel model)
+        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]ServiceViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -132,18 +132,18 @@ namespace WebApi.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var newCustomer = _mapper.Map<Customer>(model);
-            var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
-            var meta = originalCustomer.Metadata.Modified(User.Identity.Name);
-            originalCustomer.SetValuesFrom(newCustomer);
-            originalCustomer.Metadata = meta;
+            var newService = _mapper.Map<Service>(model);
+            var originalService = await _db.Services.GetById(newService.Id);
+            var meta = originalService.Metadata.Modified(User.Identity.Name);
+            originalService.SetValuesFrom(newService);
+            originalService.Metadata = meta;
 
             await _db.CompleteAsync();
 
-            return Ok(_mapper.Map<CustomerDto>(originalCustomer));
+            return Ok(_mapper.Map<ServiceDto>(originalService));
         }
 
-        // DELETE: api/Customers/5
+        // DELETE: api/Services/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
@@ -151,16 +151,16 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
 
             if (!(await Exists(id))
-            || await _db.Customers.IsRemoved(id))
+            || await _db.Services.IsRemoved(id))
                 return NotFound();
 
-            await _db.Customers.Remove(id);
+            await _db.Services.Remove(id);
             await _db.CompleteAsync();
 
-            return Ok(_mapper.Map<CustomerDto>(await _db.Customers.GetById(id)));
+            return Ok(_mapper.Map<ServiceDto>(await _db.Services.GetById(id)));
         }
 
-        // DELETE: api/Customers/Permanent/5
+        // DELETE: api/Services/Permanent/5
         [HttpDelete("Permanent/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -170,14 +170,14 @@ namespace WebApi.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = _mapper.Map<CustomerDto>(await _db.Customers.GetById(id));
-            await _db.Customers.Delete(id);
+            var dto = _mapper.Map<ServiceDto>(await _db.Services.GetById(id));
+            await _db.Services.Delete(id);
             await _db.CompleteAsync();
 
             return Ok(dto);
         }
 
         private async Task<bool> Exists(int id) =>
-            await _db.Customers.Exists(id);
+            await _db.Services.Exists(id);
     }
 }

@@ -10,7 +10,7 @@ namespace WebUI.Pages.Services.Components.ServicesList
     {
         public IViewComponentResult Invoke(IEnumerable<ServiceDto> services)
         {
-            return View("Default", services);
+            return View(nameof(ServicesList), services);
         }
     }
 }

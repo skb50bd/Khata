@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using StonedExtensions;
 
-namespace WebApi.Controllers
+namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
