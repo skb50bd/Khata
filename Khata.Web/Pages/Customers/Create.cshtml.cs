@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Pages.Products
+namespace WebUI.Pages.Customers
 {
     [Authorize]
     public class CreateModel : PageModel
@@ -22,16 +22,16 @@ namespace WebUI.Pages.Products
         {
             _db = db;
             _mapper = mapper;
-            ProductVm = new ProductViewModel();
         }
 
         public IActionResult OnGet()
         {
+            CustomerVm = new CustomerViewModel();
             return Page();
         }
 
         [BindProperty]
-        public ProductViewModel ProductVm { get; set; }
+        public CustomerViewModel CustomerVm { get; set; }
 
         [TempData] public string Message { get; set; }
         [TempData] public string MessageType { get; set; }
@@ -43,12 +43,12 @@ namespace WebUI.Pages.Products
             {
                 return Page();
             }
-            var product = _mapper.Map<Product>(ProductVm);
-            product.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Products.Add(product);
+            var customer = _mapper.Map<Customer>(CustomerVm);
+            customer.Metadata = Metadata.CreatedNew(User.Identity.Name);
+            _db.Customers.Add(customer);
             await _db.CompleteAsync();
 
-            Message = $"Product: {product.Id} - {product.Name} created!";
+            Message = $"Customer: {customer.Id} - {customer.FullName} created!";
             MessageType = "success";
 
 

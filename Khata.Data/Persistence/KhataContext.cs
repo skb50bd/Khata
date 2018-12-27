@@ -32,10 +32,13 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Service>().OwnsOne(s => s.Metadata);
 
-            modelBuilder.Entity<Customer>().OwnsOne(c => c.Metadata);
+            modelBuilder.Entity<Customer>(entity =>
+                {
+                    entity.OwnsOne(c => c.Metadata);
+                    entity.Ignore(e => e.Debt);
+                });
 
             modelBuilder.Seed();
-
 
             #region Reference Code
 

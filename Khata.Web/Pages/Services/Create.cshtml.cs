@@ -22,7 +22,7 @@ namespace WebUI.Pages.Services
         {
             _db = db;
             _mapper = mapper;
-            ServiceVM = new ServiceViewModel();
+            ServiceVm = new ServiceViewModel();
         }
 
         public IActionResult OnGet()
@@ -31,7 +31,7 @@ namespace WebUI.Pages.Services
         }
 
         [BindProperty]
-        public ServiceViewModel ServiceVM { get; set; }
+        public ServiceViewModel ServiceVm { get; set; }
 
         [TempData] public string Message { get; set; }
         [TempData] public string MessageType { get; set; }
@@ -43,7 +43,7 @@ namespace WebUI.Pages.Services
             {
                 return Page();
             }
-            var service = _mapper.Map<Service>(ServiceVM);
+            var service = _mapper.Map<Service>(ServiceVm);
             service.Metadata = Metadata.CreatedNew(User.Identity.Name);
             _db.Services.Add(service);
             await _db.CompleteAsync();

@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace WebUI.Swagger
+namespace WebApi.Swagger
 {
-    public static class SwaggerConfig 
+    public static class SwaggerConfig
     {
         public static IServiceCollection RegisterSwagger(this IServiceCollection services)
         {

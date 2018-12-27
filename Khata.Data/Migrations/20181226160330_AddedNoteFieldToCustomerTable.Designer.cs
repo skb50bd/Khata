@@ -4,14 +4,16 @@ using Khata.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Khata.Data.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20181226160330_AddedNoteFieldToCustomerTable")]
+    partial class AddedNoteFieldToCustomerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,8 @@ namespace Khata.Data.Migrations
                     b.Property<decimal>("Balance");
 
                     b.Property<string>("CompanyName");
+
+                    b.Property<decimal>("Debt");
 
                     b.Property<string>("Email");
 
@@ -907,177 +911,177 @@ namespace Khata.Data.Migrations
                                 new
                                 {
                                     Id = 1,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 318, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 771, DateTimeKind.Unspecified).AddTicks(7975), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(336), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(1612), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 2,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2556), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4575), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2563), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4586), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 3,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2581), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4609), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2582), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4610), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 4,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2584), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4612), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2585), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4613), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 5,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2586), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4614), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2587), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4616), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 6,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2589), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4618), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2590), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4619), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 7,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2592), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4620), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2593), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4621), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 8,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2594), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4623), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2596), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4624), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 9,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2597), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4625), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2599), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4626), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 10,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2600), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4628), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2601), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4629), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 11,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2603), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4630), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2604), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4631), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 12,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2605), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4633), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2606), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4634), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 13,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2608), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4635), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2609), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4636), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 14,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2610), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4638), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2611), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4639), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 15,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2615), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4640), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2616), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4642), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 16,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2618), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4643), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2619), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 17,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2623), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4646), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2624), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4647), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 18,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2625), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4648), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2626), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4649), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 19,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2628), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4651), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2629), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4652), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 20,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2631), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4653), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2632), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4654), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 21,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2635), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4656), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2636), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4657), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 },
                                 new
                                 {
                                     Id = 22,
-                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2638), new TimeSpan(0, 6, 0, 0, 0)),
+                                    CreationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4658), new TimeSpan(0, 6, 0, 0, 0)),
                                     Creator = "admin",
-                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 45, 35, 321, DateTimeKind.Unspecified).AddTicks(2639), new TimeSpan(0, 6, 0, 0, 0)),
+                                    ModificationTime = new DateTimeOffset(new DateTime(2018, 12, 26, 22, 3, 29, 775, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 6, 0, 0, 0)),
                                     Modifier = "admin"
                                 });
                         });

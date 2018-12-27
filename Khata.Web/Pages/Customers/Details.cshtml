@@ -1,0 +1,14 @@
+﻿@page
+@using WebUI.Pages.Shared.Components.CustomerInfo
+@model WebUI.Pages.Customers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@await Component.InvokeAsync(
+    nameof(CustomerInfo),
+    new { customer = Model.Customer }
+    )

@@ -3,7 +3,6 @@ using System.Globalization;
 using Khata.Data.Persistence;
 using Khata.Services.Mapper;
 using Khata.Services.PageFilterSort;
-using WebUI.Swagger;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,8 +49,6 @@ namespace WebUI
                     options.SerializerSettings.ContractResolver =
                         new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.RegisterSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,8 +73,6 @@ namespace WebUI
             app.UseAuthentication();
 
             app.UseMvc();
-
-            app.EngageSwagger();
         }
     }
 }

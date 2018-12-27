@@ -91,7 +91,7 @@ namespace Khata.Services.Mapper
                .ForMember(
                     dest => dest.MetadataModifier,
                     opt => opt.MapFrom(
-                        src => src.Metadata.ModificationTime))
+                        src => src.Metadata.Modifier))
               .ForMember(
                    dest => dest.MetadataModificationTime,
                    opt => opt.MapFrom(

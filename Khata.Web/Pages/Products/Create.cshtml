@@ -12,7 +12,7 @@
         <form method="post">
             @await Component.InvokeAsync(
                 nameof(Components.ProductForm.ProductForm),
-                new { product = Model.ProductVM })
+                new { product = Model.ProductVm })
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary btn-lg" />

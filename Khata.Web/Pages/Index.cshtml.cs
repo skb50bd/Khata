@@ -5,10 +5,10 @@ namespace WebUI.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IConfiguration Config;
+        private readonly IConfiguration _config;
         public IndexModel(IConfiguration config)
         {
-            Config = config;
+            _config = config;
         }
 
         public string Title { get; set; }
@@ -17,8 +17,8 @@ namespace WebUI.Pages
 
         public void OnGet()
         {
-            Title = Config.GetValue<string>("OutletInfo:Title");
-            ShortDescription = Config.GetValue<string>("OutletInfo:ShortDescription");
+            Title = _config.GetValue<string>("OutletInfo:Title");
+            ShortDescription = _config.GetValue<string>("OutletInfo:ShortDescription");
         }
     }
 }

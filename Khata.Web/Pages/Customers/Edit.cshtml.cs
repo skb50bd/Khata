@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 using StonedExtensions;
 
-namespace WebUI.Pages.Services
+namespace WebUI.Pages.Customers
 {
     public class EditModel : PageModel
     {
@@ -26,7 +26,7 @@ namespace WebUI.Pages.Services
         }
 
         [BindProperty]
-        public ServiceViewModel ServiceVm { get; set; }
+        public CustomerViewModel CustomerVm { get; set; }
 
         [TempData] public string Message { get; set; }
         [TempData] public string MessageType { get; set; }
@@ -39,14 +39,14 @@ namespace WebUI.Pages.Services
                 return NotFound();
             }
 
-            var service = await _db.Services.GetById((int)id);
+            var customer = await _db.Customers.GetById((int)id);
 
-            if (service == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            ServiceVm = _mapper.Map<ServiceViewModel>(service);
+            CustomerVm = _mapper.Map<CustomerViewModel>(customer);
             return Page();
         }
 
@@ -57,11 +57,11 @@ namespace WebUI.Pages.Services
                 return Page();
             }
 
-            var newService = _mapper.Map<Service>(ServiceVm);
-            var originalService = await _db.Services.GetById(newService.Id);
-            var meta = originalService.Metadata.Modified(User.Identity.Name);
-            originalService.SetValuesFrom(newService);
-            originalService.Metadata = meta;
+            var newCustomer = _mapper.Map<Customer>(CustomerVm);
+            var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
+            var meta = originalCustomer.Metadata.Modified(User.Identity.Name);
+            originalCustomer.SetValuesFrom(newCustomer);
+            originalCustomer.Metadata = meta;
 
             try
             {
@@ -69,7 +69,7 @@ namespace WebUI.Pages.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await ProductExists(newService.Id))
+                if (!await CustomerExists(newCustomer.Id))
                 {
                     return NotFound();
                 }
@@ -79,15 +79,15 @@ namespace WebUI.Pages.Services
                 }
             }
 
-            Message = $"Service: {newService.Id} - {newService.Name} updated!";
+            Message = $"Customer: {newCustomer.Id} - {newCustomer.FullName} updated!";
             MessageType = "success";
 
             return RedirectToPage("./Index");
         }
 
-        private async Task<bool> ProductExists(int id)
+        private async Task<bool> CustomerExists(int id)
         {
-            return await _db.Products.Exists(id);
+            return await _db.Customers.Exists(id);
         }
     }
 }

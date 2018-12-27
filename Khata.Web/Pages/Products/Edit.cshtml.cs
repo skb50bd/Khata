@@ -26,7 +26,7 @@ namespace WebUI.Pages.Products
         }
 
         [BindProperty]
-        public ProductViewModel ProductVM { get; set; }
+        public ProductViewModel ProductVm { get; set; }
 
         [TempData] public string Message { get; set; }
         [TempData] public string MessageType { get; set; }
@@ -46,7 +46,7 @@ namespace WebUI.Pages.Products
                 return NotFound();
             }
 
-            ProductVM = _mapper.Map<ProductViewModel>(product);
+            ProductVm = _mapper.Map<ProductViewModel>(product);
             return Page();
         }
 
@@ -57,7 +57,7 @@ namespace WebUI.Pages.Products
                 return Page();
             }
 
-            var newProduct = _mapper.Map<Product>(ProductVM);
+            var newProduct = _mapper.Map<Product>(ProductVm);
             var originalProduct = await _db.Products.GetById(newProduct.Id);
             var meta = originalProduct.Metadata.Modified(User.Identity.Name);
             originalProduct.SetValuesFrom(newProduct);

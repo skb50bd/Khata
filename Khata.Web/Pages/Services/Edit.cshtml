@@ -12,7 +12,7 @@
         <form method="post">
             @await Component.InvokeAsync(
                 nameof(Components.ServiceForm.ServiceForm),
-                new { service = Model.ServiceVM })
+                new { service = Model.ServiceVm })
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary btn-lg" />

@@ -1,18 +1,19 @@
 ﻿@page
-@model WebUI.Pages.Products.EditModel
+@using WebUI.Pages.Shared.Components.CustomerForm
+@model WebUI.Pages.Customers.EditModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1 class="display-4">Edit Product</h1>
+<h1 class="display-4">Edit Customer</h1>
 <hr />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-4">
         <form method="post">
             @await Component.InvokeAsync(
-                nameof(Components.ProductForm.ProductForm),
-                new { product = Model.ProductVm })
+                nameof(CustomerForm),
+                new { customer = Model.CustomerVm })
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary btn-lg" />
