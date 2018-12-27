@@ -12,12 +12,7 @@ namespace Khata.Domain
         public string CompanyName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public decimal Balance { get; set; }
-        public decimal Debt
-        {
-            get => -1M * Balance;
-            set => Balance = -1M * value;
-        }
+        public decimal Debt { get; set; }
 
         public string Note { get; set; }
 

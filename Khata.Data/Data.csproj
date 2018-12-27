@@ -36,17 +36,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Migrations\20181226090335_InitialCreate.Designer.cs">
-      <DependentUpon>20181226090335_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Migrations\20181226101759_AddedSeedDataForProducts2.Designer.cs">
-      <DependentUpon>20181226101759_AddedSeedDataForProducts2.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Migrations\20181226160330_AddedNoteFieldToCustomerTable.Designer.cs">
-      <DependentUpon>20181226160330_AddedNoteFieldToCustomerTable.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Migrations\20181226164535_SeedProducts.Designer.cs">
-      <DependentUpon>20181226164535_SeedProducts.cs</DependentUpon>
+    <Folder Include="Persistence\MIgrations\" />
+    <Folder Include="Persistence\SeedScripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Persistence\MIgrations\20181227194716_InitialCreate.Designer.cs">
+      <DependentUpon>20181227194716_InitialCreate.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

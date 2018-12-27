@@ -24,9 +24,6 @@ namespace Khata.DTOs
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [DataType(DataType.Currency)]
-        public decimal Balance { get; set; }
-
         [Display(Name = "Due")]
         [DataType(DataType.Currency)]
         public decimal Debt { get; set; }

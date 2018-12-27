@@ -1,0 +1,10 @@
+﻿Use Khata
+
+SET IDENTITY_INSERT [dbo].[Customers] ON
+INSERT INTO [dbo].[Customers] ([Id], [IsRemoved], [FirstName], [LastName], [Address], [CompanyName], [Phone], [Email], [Debt], [Metadata_Creator], [Metadata_CreationTime], [Metadata_Modifier], [Metadata_ModificationTime], [Note]) VALUES (1, 0, N'Fazlul', N'Karim', N'Aftabnagar, Dhaka -1212.
+', N'East West University', N'01776203752', N'fazlul@gmail.com', CAST(500.00 AS Decimal(18, 2)), N'skb50bd', N'26-Dec-18 10:26:22 PM +06:00', N'skb50bd', N'26-Dec-18 10:26:22 PM +06:00', N'Lot of notes')
+INSERT INTO [dbo].[Customers] ([Id], [IsRemoved], [FirstName], [LastName], [Address], [CompanyName], [Phone], [Email], [Debt], [Metadata_Creator], [Metadata_CreationTime], [Metadata_Modifier], [Metadata_ModificationTime], [Note]) VALUES (2, 0, N'Ahsan', N'Ali Soikat', N'Ahsan Manjil, Dhaka', N'Miah Corp', N'01913752166', N'ahsanali@gmail.com', CAST(0.00 AS Decimal(18, 2)), N'skb50bd', N'26-Dec-18 10:30:41 PM +06:00', N'skb50bd', N'26-Dec-18 10:30:41 PM +06:00', N'created')
+INSERT INTO [dbo].[Customers] ([Id], [IsRemoved], [FirstName], [LastName], [Address], [CompanyName], [Phone], [Email], [Debt], [Metadata_Creator], [Metadata_CreationTime], [Metadata_Modifier], [Metadata_ModificationTime], [Note]) VALUES (3, 0, N'Rafiq', N'Uddin', N'East Arichpur, Tongi, Gazipur.', N'Rafiq Garments', N'01945855532', N'rafiqbhu@gmail.com', CAST(0.00 AS Decimal(18, 2)), N'skb50bd', N'26-Dec-18 10:32:06 PM +06:00', N'skb50bd', N'26-Dec-18 10:32:06 PM +06:00', N'Loyal Customer
+')
+INSERT INTO [dbo].[Customers] ([Id], [IsRemoved], [FirstName], [LastName], [Address], [CompanyName], [Phone], [Email], [Debt], [Metadata_Creator], [Metadata_CreationTime], [Metadata_Modifier], [Metadata_ModificationTime], [Note]) VALUES (4, 0, N'Faizul ', N'Hasan', N'Miami, Florida, USA', N'Frikin Awesome Corp.', N'+1 6321455595', N'faizulhasan@gmail.com', CAST(10000.00 AS Decimal(18, 2)), N'skb50bd', N'28-Dec-18 12:45:48 AM +06:00', N'skb50bd', N'28-Dec-18 12:45:48 AM +06:00', N'A very loyal customer.')
+SET IDENTITY_INSERT [dbo].[Customers] OFF
