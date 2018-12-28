@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Khata.Services\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StonedExtensions", "..\StonedExtensions\StonedExtensions\StonedExtensions.csproj", "{306642D1-8395-4B42-A3E8-55A1571DBA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "..\StonedExtensions\StonedExtensions\SharedLibrary.csproj", "{306642D1-8395-4B42-A3E8-55A1571DBA3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

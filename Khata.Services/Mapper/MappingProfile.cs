@@ -85,8 +85,8 @@ namespace Khata.Services.Mapper
             #endregion
 
             #region Customer Mapping
-
             CreateMap<CustomerViewModel, Customer>();
+            CreateMap<Customer, CustomerViewModel>();
             CreateMap<Customer, CustomerDto>()
                .ForMember(
                     dest => dest.MetadataModifier,
@@ -96,6 +96,25 @@ namespace Khata.Services.Mapper
                    dest => dest.MetadataModificationTime,
                    opt => opt.MapFrom(
                        src => src.Metadata.ModificationTime));
+            #endregion
+
+            #region Debt Payment
+
+            CreateMap<DebtPaymentViewModel, DebtPayment>();
+            CreateMap<DebtPayment, DebtPaymentDto>()
+               .ForMember(
+                    dest => dest.MetadataModifier,
+                    opt => opt.MapFrom(src => src.Metadata.Modifier)
+                    )
+               .ForMember(dest => dest.MetadataModificationTime,
+                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
+                    );
+
+            #endregion
+
+            #region Sale
+
+            CreateMap<Sale, SaleDto>();
 
             #endregion
         }

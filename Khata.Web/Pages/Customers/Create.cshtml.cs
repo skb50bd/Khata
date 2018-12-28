@@ -43,6 +43,9 @@ namespace WebUI.Pages.Customers
             {
                 return Page();
             }
+
+
+
             var customer = _mapper.Map<Customer>(CustomerVm);
             customer.Metadata = Metadata.CreatedNew(User.Identity.Name);
             _db.Customers.Add(customer);

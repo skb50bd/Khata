@@ -14,7 +14,7 @@ using Khata.Services.PageFilterSort;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using StonedExtensions;
+using SharedLibrary;
 
 namespace WebUI.Pages.Customers
 {

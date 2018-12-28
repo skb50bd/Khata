@@ -16,8 +16,6 @@ namespace Khata.Domain
 
         public string Note { get; set; }
 
-        public Metadata Metadata { get; set; }
-
         public virtual ICollection<Sale> Purchases { get; set; }
         public virtual ICollection<DebtPayment> DebtPayments { get; set; }
     }

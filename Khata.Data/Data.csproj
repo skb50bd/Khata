@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\StonedExtensions\StonedExtensions\SharedLibrary.csproj" />
     <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
   </ItemGroup>
 
@@ -43,6 +44,9 @@
   <ItemGroup>
     <Compile Update="Persistence\MIgrations\20181227194716_InitialCreate.Designer.cs">
       <DependentUpon>20181227194716_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Persistence\MIgrations\20181227204358_AddedForeignKeyToDebtPayment.Designer.cs">
+      <DependentUpon>20181227204358_AddedForeignKeyToDebtPayment.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

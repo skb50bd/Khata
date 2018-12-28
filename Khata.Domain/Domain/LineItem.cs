@@ -4,7 +4,7 @@
     {
         public LineItem(Product product, decimal quantity, decimal unitPrice)
         {
-            _isProduct = true;
+            Type = LineItemType.Product;
             ItemId = product.Id;
             Name = product.Name;
             Quantity = quantity;
@@ -14,7 +14,7 @@
 
         public LineItem(Service service, decimal price)
         {
-            _isProduct = false;
+            Type = LineItemType.Service;
             ItemId = service.Id;
             Name = service.Name;
             Quantity = 1;
@@ -22,14 +22,16 @@
             Price = price;
         }
 
+        private LineItem() { }
 
-        public string Name { get; }
-        public decimal Quantity { get; }
-        public decimal Price { get; }
-        public decimal NetPrice { get; }
 
-        public int ItemId { get; set; }
+        public string Name { get; private set; }
+        public decimal Quantity { get; private set; }
+        public decimal Price { get; private set; }
+        public decimal NetPrice { get; private set; }
 
-        private readonly bool _isProduct;
+        public int ItemId { get; private set; }
+
+        public LineItemType Type { get; private set; }
     }
 }

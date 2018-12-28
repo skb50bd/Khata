@@ -9,6 +9,8 @@ using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
+using SharedLibrary;
+
 namespace Khata.Data.Persistence
 {
     /// <summary>
@@ -23,13 +25,13 @@ namespace Khata.Data.Persistence
     {
         public TrackingRepository(KhataContext context) : base(context) { }
 
-        public override async Task<IList<T>> Get<T2>(
+        public override async Task<IPagedList<T>> Get<T2>(
             Expression<Func<T, bool>> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
             int pageSize)
         {
-            Expression<Func<T, bool>> newPredicate = 
+            Expression<Func<T, bool>> newPredicate =
                 i => !i.IsRemoved && predicate.Compile().Invoke(i);
             return await base.Get(newPredicate, order, pageIndex, pageSize);
         }

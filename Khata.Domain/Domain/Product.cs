@@ -11,7 +11,5 @@
         public string Unit { get; set; }
 
         public Pricing Price { get; set; }
-
-        public Metadata Metadata { get; set; }
     }
 }

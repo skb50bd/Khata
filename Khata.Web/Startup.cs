@@ -1,6 +1,7 @@
 using System.Globalization;
 
 using Khata.Data.Persistence;
+using Khata.Services.CRUD;
 using Khata.Services.Mapper;
 using Khata.Services.PageFilterSort;
 
@@ -11,7 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace WebUI
 {
@@ -44,11 +48,32 @@ namespace WebUI
 
             services.ConfigureMapper();
 
+            services.ConfigureCrudServices();
+
             services.AddMvc()
                 .AddJsonOptions(options =>
-                    options.SerializerSettings.ContractResolver =
-                        new DefaultContractResolver())
+                     {
+                         options.SerializerSettings.ContractResolver =
+                             new DefaultContractResolver();
+                         options.SerializerSettings.ReferenceLoopHandling =
+                             ReferenceLoopHandling.Serialize;
+                         options.SerializerSettings.NullValueHandling =
+                             NullValueHandling.Ignore;
+                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddHttpContextAccessor();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new Info
+                    {
+                        Title = "Khata_API",
+                        Version = "v1"
+                    });
+            }
+            );
 
             //services.AddResponseCompression(options =>
             //{
@@ -83,6 +108,12 @@ namespace WebUI
             app.UseAuthentication();
 
             app.UseMvc();
+
+            app.UseSwagger().UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Khata_API");
+            });
             //app.UseBlazor<Khata.Client.Startup>();
         }
     }

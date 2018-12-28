@@ -2,10 +2,10 @@
 {
     public class DebtPayment : TrackedEntity
     {
+        public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-        public decimal PreviousDebt { get; set; }
+        public decimal DebtBefore { get; set; }
         public decimal Amount { get; set; }
-        public decimal NewDebt => PreviousDebt - Amount;
-        public Metadata Metadata { get; set; }
+        public decimal DebtAfter => DebtBefore - Amount;
     }
 }

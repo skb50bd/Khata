@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
-using Khata.Domain;
 using Khata.DTOs;
+using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
-
-using StonedExtensions;
 
 namespace WebUI.Controllers
 {
@@ -22,15 +14,13 @@ namespace WebUI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
+        private readonly ICustomerService _customers;
         private readonly SieveService _sieveService;
 
-        public CustomersController(IUnitOfWork db, IMapper mapper, SieveService sieveService)
+        public CustomersController(SieveService sieveService, ICustomerService customers)
         {
-            _db = db;
-            _mapper = mapper;
             _sieveService = sieveService;
+            _customers = customers;
         }
 
         //// GET: api/Customers
@@ -47,45 +37,9 @@ namespace WebUI.Controllers
             string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
-        {
-            searchString = searchString?.ToLowerInvariant();
-
-            var filter = string.IsNullOrEmpty(searchString)
-                ? (Expression<Func<Customer, bool>>)(p => true)
-                : p => p.Id.ToString() == searchString
-                    || p.FullName.ToLowerInvariant().Contains(searchString)
-                    || p.CompanyName.ToLowerInvariant().Contains(searchString)
-                    || p.Phone.Contains(searchString)
-                    || p.Email.Contains(searchString);
-
-            var resultsCount =
-                (await _db.Customers.Get(filter,
-                    p => p.Id,
-                    1,
-                    0))
-               .Count();
-
-            var customers = new List<CustomerDto>();
-
-            var sieve = _sieveService.CreateNewModel(
-                searchString,
-                nameof(customers),
-                resultsCount,
-                0,
-                pageIndex,
-                pageSize);
-
-            (await _db.Customers.Get(
-                    filter,
-                    p => p.Id,
-                    sieve.PageIndex,
-                    sieve.PageSize))
-               .ForEach(c =>
-                    customers.Add(_mapper.Map<CustomerDto>(c)));
-
-            sieve.SentCount = customers.Count();
-            return customers;
-        }
+            => await _customers.Get(
+                _sieveService.CreateNewPf(
+                    searchString, pageIndex, pageSize));
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
@@ -97,9 +51,7 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var customer = _mapper.Map<CustomerDto>(
-                await _db.Customers.GetById(id));
-            return Ok(customer);
+            return Ok(await _customers.Get(id));
         }
 
         // POST: api/Customers
@@ -109,38 +61,36 @@ namespace WebUI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var dm = _mapper.Map<Customer>(model);
-            dm.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Customers.Add(dm);
-            await _db.CompleteAsync();
+            var dto = await _customers.Add(model);
+
+            if (dto == null)
+                return BadRequest();
 
             return CreatedAtAction(nameof(Get),
-                new { id = dm.Id },
-                _mapper.Map<CustomerDto>(dm));
+                new { id = dto.Id },
+                dto);
         }
 
         // PUT: api/Customers/5
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]CustomerViewModel model)
+        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]CustomerViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (id != model.Id)
+
+            if (id != vm.Id)
                 return BadRequest();
 
             if (!(await Exists(id)))
                 return NotFound();
 
-            var newCustomer = _mapper.Map<Customer>(model);
-            var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
-            var meta = originalCustomer.Metadata.Modified(User.Identity.Name);
-            originalCustomer.SetValuesFrom(newCustomer);
-            originalCustomer.Metadata = meta;
+            var dto = await _customers.Update(vm);
 
-            await _db.CompleteAsync();
+            if (dto == null)
+                return BadRequest();
 
-            return Ok(_mapper.Map<CustomerDto>(originalCustomer));
+            return Ok(dto);
         }
 
         // DELETE: api/Customers/5
@@ -150,14 +100,12 @@ namespace WebUI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!(await Exists(id))
-            || await _db.Customers.IsRemoved(id))
-                return NotFound();
+            var dto = await _customers.Remove(id);
 
-            await _db.Customers.Remove(id);
-            await _db.CompleteAsync();
+            if (dto == null)
+                return BadRequest();
 
-            return Ok(_mapper.Map<CustomerDto>(await _db.Customers.GetById(id)));
+            return Ok(dto);
         }
 
         // DELETE: api/Customers/Permanent/5
@@ -170,14 +118,15 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = _mapper.Map<CustomerDto>(await _db.Customers.GetById(id));
-            await _db.Customers.Delete(id);
-            await _db.CompleteAsync();
+            var dto = await _customers.Delete(id);
+
+            if (dto == null)
+                return BadRequest();
 
             return Ok(dto);
         }
 
         private async Task<bool> Exists(int id) =>
-            await _db.Customers.Exists(id);
+            await _customers.Exists(id);
     }
 }

@@ -36,8 +36,19 @@ namespace Khata.Data.Persistence
             modelBuilder.Entity<Customer>()
                         .OwnsOne(c => c.Metadata);
 
-            modelBuilder.Entity<DebtPayment>()
-                        .OwnsOne(d => d.Metadata);
+            modelBuilder.Entity<DebtPayment>(entity =>
+            {
+                entity.Property(d => d.CustomerId).IsRequired();
+                entity.OwnsOne(d => d.Metadata);
+            });
+
+            modelBuilder.Entity<Sale>(entity =>
+            {
+                entity.OwnsOne(s => s.Payment);
+                entity.OwnsOne(s => s.Metadata);
+                entity.OwnsMany(s => s.Cart).HasKey(li => li.Id);
+            });
+
 
             #region Reference Code
 
@@ -232,6 +243,8 @@ namespace Khata.Data.Persistence
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<DebtPayment> DebtPayments { get; set; }
+        public virtual DbSet<Sale> Sales { get; set; }
 
     }
 }

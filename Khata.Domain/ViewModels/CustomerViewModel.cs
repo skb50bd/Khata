@@ -32,7 +32,9 @@ namespace Khata.ViewModels
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public decimal Debt { get; set; }
+
+        public decimal Debt { get; set; } = 0M;
+
         public string Note { get; set; }
     }
 }

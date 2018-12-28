@@ -4,14 +4,16 @@ using Khata.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20181228051840_AddedFunctionalityToSaleModel")]
+    partial class AddedFunctionalityToSaleModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -459,19 +461,7 @@ namespace Khata.Data.Persistence.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("ItemId");
-
-                            b1.Property<string>("Name");
-
-                            b1.Property<decimal>("NetPrice");
-
-                            b1.Property<decimal>("Price");
-
-                            b1.Property<decimal>("Quantity");
-
                             b1.Property<int>("SaleId");
-
-                            b1.Property<int>("Type");
 
                             b1.HasKey("Id");
 
@@ -494,6 +484,8 @@ namespace Khata.Data.Persistence.Migrations
                             b1.Property<decimal>("DiscountCash");
 
                             b1.Property<decimal>("Paid");
+
+                            b1.Property<decimal>("PreviousDebt");
 
                             b1.Property<decimal>("SubTotal");
 
