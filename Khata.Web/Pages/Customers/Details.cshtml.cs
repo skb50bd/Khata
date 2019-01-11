@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
 using Khata.DTOs;
+using Khata.Services.CRUD;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,31 +10,28 @@ namespace WebUI.Pages.Customers
 {
     public class DetailsModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
-        public DetailsModel(IUnitOfWork db, IMapper mapper)
+        private readonly ICustomerService _customers;
+        public DetailsModel(ICustomerService customers)
         {
-            _db = db;
-            _mapper = mapper;
+            _customers = customers;
         }
 
         public CustomerDto Customer { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var customer = await _db.Customers.GetById((int)id);
+            var Customer = await _customers.Get((int)id);
 
-            if (customer == null)
+            if (Customer is null)
             {
                 return NotFound();
             }
 
-            Customer = _mapper.Map<CustomerDto>(customer);
             return Page();
         }
     }

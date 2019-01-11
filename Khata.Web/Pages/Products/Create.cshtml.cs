@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
@@ -15,14 +12,11 @@ namespace WebUI.Pages.Products
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
-
-        public CreateModel(IUnitOfWork db, IMapper mapper)
+        private readonly IProductService _products;
+        public CreateModel(IProductService products)
         {
-            _db = db;
-            _mapper = mapper;
             ProductVm = new ProductViewModel();
+            _products = products;
         }
 
         public IActionResult OnGet()
@@ -43,10 +37,7 @@ namespace WebUI.Pages.Products
             {
                 return Page();
             }
-            var product = _mapper.Map<Product>(ProductVm);
-            product.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Products.Add(product);
-            await _db.CompleteAsync();
+            var product = await _products.Add(ProductVm);
 
             Message = $"Product: {product.Id} - {product.Name} created!";
             MessageType = "success";

@@ -7,7 +7,7 @@ namespace Khata.Domain
         public SaleType Type { get; set; }
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-        public ICollection<LineItem> Cart { get; set; }
+        public virtual ICollection<SaleLineItem> Cart { get; set; }
         public PaymentInfo Payment { get; set; }
     }
 }

@@ -17,16 +17,16 @@ namespace Khata.DTOs
 
         public string Unit { get; set; }
 
-        public decimal Stock { get; set; }
+        public decimal InventoryStock { get; set; }
 
-        public decimal Warehouse { get; set; }
+        public decimal InventoryWarehouse { get; set; }
 
-        public decimal AlertAt { get; set; }
+        public decimal InventoryAlertAt { get; set; }
 
         [Display(Name = "Total Stock")]
-        public decimal TotalStock { get; set; }
+        public decimal InventoryTotalStock { get; set; }
 
-        public StockStatus Status { get; set; }
+        public StockStatus InventoryStockStatus { get; set; }
 
         [Display(Name = "Retail Price")]
         [DataType(DataType.Currency)]

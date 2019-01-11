@@ -1,0 +1,45 @@
+﻿@using Khata.ViewModels
+@using static Khata.Domain.SaleType
+@model SaleViewModel
+
+
+@{
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="SaleDate" class="control-label"></label>
+            <input asp-for="SaleDate" class="form-control" id="datepicker" placeholder="DD/MM/YYYY" />
+            <span asp-validation-for="SaleDate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Type" class="control-label"></label>
+            <br />
+            <div class="form-check form-check-inline">
+                <input asp-for="Type" class="form-check-input" type="radio" id="retail" value="1" checked>
+                <label class="form-check-label" for="retail">
+                    Retail
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input asp-for="Type" class="form-check-input" type="radio" id="bulk" value="2">
+                <label class="form-check-label" for="bulk">
+                    Whole Sale
+                </label>
+            </div>
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

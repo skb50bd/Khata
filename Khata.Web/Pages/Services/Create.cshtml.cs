@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +12,11 @@ namespace WebUI.Pages.Services
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
+        private readonly IServiceService _services;
 
-        public CreateModel(IUnitOfWork db, IMapper mapper)
+        public CreateModel(IServiceService services)
         {
-            _db = db;
-            _mapper = mapper;
+            _services = services;
             ServiceVm = new ServiceViewModel();
         }
 
@@ -43,12 +38,10 @@ namespace WebUI.Pages.Services
             {
                 return Page();
             }
-            var service = _mapper.Map<Service>(ServiceVm);
-            service.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Services.Add(service);
-            await _db.CompleteAsync();
 
-            Message = $"Service: {service.Id} - {service.Name} created!";
+            var dto = await _services.Add(ServiceVm);
+
+            Message = $"Service: {dto.Id} - {dto.Name} created!";
             MessageType = "success";
 
 

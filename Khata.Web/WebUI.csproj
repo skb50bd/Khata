@@ -6,7 +6,23 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>WebUI</RootNamespace>
     <AssemblyName>WebUI</AssemblyName>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Sales\Components\SaleInfo\**" />
+    <Content Remove="Pages\Sales\Components\SaleInfo\**" />
+    <EmbeddedResource Remove="Pages\Sales\Components\SaleInfo\**" />
+    <None Remove="Pages\Sales\Components\SaleInfo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Sales\Details.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Sales\Details.cshtml" />
+  </ItemGroup>
 
 
   <ItemGroup>

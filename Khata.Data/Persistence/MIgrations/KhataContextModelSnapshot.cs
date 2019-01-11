@@ -69,6 +69,25 @@ namespace Khata.Data.Persistence.Migrations
                     b.ToTable("DebtPayments");
                 });
 
+            modelBuilder.Entity("Khata.Domain.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsRemoved");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("Khata.Domain.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -108,6 +127,33 @@ namespace Khata.Data.Persistence.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("Khata.Domain.SaleLineItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ItemId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Quantity");
+
+                    b.Property<int?>("SaleId");
+
+                    b.Property<int>("Type");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.Property<decimal>("UnitPurchasePrice");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("SaleLineItem");
                 });
 
             modelBuilder.Entity("Khata.Domain.Service", b =>
@@ -373,6 +419,33 @@ namespace Khata.Data.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Khata.Domain.Expense", b =>
+                {
+                    b.OwnsOne("Khata.Domain.Metadata", "Metadata", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<DateTimeOffset>("CreationTime");
+
+                            b1.Property<string>("Creator");
+
+                            b1.Property<DateTimeOffset>("ModificationTime");
+
+                            b1.Property<string>("Modifier");
+
+                            b1.HasKey("Id");
+
+                            b1.ToTable("Expenses");
+
+                            b1.HasOne("Khata.Domain.Expense")
+                                .WithOne("Metadata")
+                                .HasForeignKey("Khata.Domain.Metadata", "Id")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
             modelBuilder.Entity("Khata.Domain.Product", b =>
                 {
                     b.OwnsOne("Khata.Domain.Inventory", "Inventory", b1 =>
@@ -453,38 +526,6 @@ namespace Khata.Data.Persistence.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsMany("Khata.Domain.LineItem", "Cart", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<int>("ItemId");
-
-                            b1.Property<string>("Name");
-
-                            b1.Property<decimal>("NetPrice");
-
-                            b1.Property<decimal>("Price");
-
-                            b1.Property<decimal>("Quantity");
-
-                            b1.Property<int>("SaleId");
-
-                            b1.Property<int>("Type");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("SaleId");
-
-                            b1.ToTable("LineItem");
-
-                            b1.HasOne("Khata.Domain.Sale")
-                                .WithMany("Cart")
-                                .HasForeignKey("SaleId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
                     b.OwnsOne("Khata.Domain.PaymentInfo", "Payment", b1 =>
                         {
                             b1.Property<int>("SaleId")
@@ -530,6 +571,13 @@ namespace Khata.Data.Persistence.Migrations
                                 .HasForeignKey("Khata.Domain.Metadata", "Id")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
+                });
+
+            modelBuilder.Entity("Khata.Domain.SaleLineItem", b =>
+                {
+                    b.HasOne("Khata.Domain.Sale")
+                        .WithMany("Cart")
+                        .HasForeignKey("SaleId");
                 });
 
             modelBuilder.Entity("Khata.Domain.Service", b =>

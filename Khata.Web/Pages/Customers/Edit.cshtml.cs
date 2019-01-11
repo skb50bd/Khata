@@ -2,26 +2,24 @@
 
 using AutoMapper;
 
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.DTOs;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-using SharedLibrary;
-
 namespace WebUI.Pages.Customers
 {
     public class EditModel : PageModel
     {
-        private readonly IUnitOfWork _db;
+        private readonly ICustomerService _customers;
         private readonly IMapper _mapper;
 
-        public EditModel(IUnitOfWork db, IMapper mapper)
+        public EditModel(ICustomerService customers, IMapper mapper)
         {
-            _db = db;
+            _customers = customers;
             _mapper = mapper;
         }
 
@@ -39,7 +37,7 @@ namespace WebUI.Pages.Customers
                 return NotFound();
             }
 
-            var customer = await _db.Customers.GetById((int)id);
+            var customer = await _customers.Get((int)id);
 
             if (customer == null)
             {
@@ -56,20 +54,14 @@ namespace WebUI.Pages.Customers
             {
                 return Page();
             }
-
-            var newCustomer = _mapper.Map<Customer>(CustomerVm);
-            var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
-            var meta = originalCustomer.Metadata.Modified(User.Identity.Name);
-            originalCustomer.SetValuesFrom(newCustomer);
-            originalCustomer.Metadata = meta;
-
+            CustomerDto customer;
             try
             {
-                await _db.CompleteAsync();
+                customer = await _customers.Update(CustomerVm);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await CustomerExists(newCustomer.Id))
+                if (!await CustomerExists((int)CustomerVm.Id))
                 {
                     return NotFound();
                 }
@@ -79,7 +71,7 @@ namespace WebUI.Pages.Customers
                 }
             }
 
-            Message = $"Customer: {newCustomer.Id} - {newCustomer.FullName} updated!";
+            Message = $"Customer: {customer.Id} - {customer.FullName} updated!";
             MessageType = "success";
 
             return RedirectToPage("./Index");
@@ -87,7 +79,7 @@ namespace WebUI.Pages.Customers
 
         private async Task<bool> CustomerExists(int id)
         {
-            return await _db.Customers.Exists(id);
+            return await _customers.Exists(id);
         }
     }
 }

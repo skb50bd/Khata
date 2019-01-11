@@ -3,6 +3,12 @@
 
 
 $(document).ready(function () {
+    $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        todayHighlight: true
+        
+    });
+
     $(".js-clickable-row").click(function () {
         window.location = $(this).data("href");
     });
@@ -37,3 +43,4 @@ $(document).ready(function () {
             });
     });
 });
+

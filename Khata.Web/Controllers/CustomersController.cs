@@ -15,11 +15,11 @@ namespace WebUI.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customers;
-        private readonly SieveService _sieveService;
+        private readonly PfService _pfService;
 
-        public CustomersController(SieveService sieveService, ICustomerService customers)
+        public CustomersController(PfService pfService, ICustomerService customers)
         {
-            _sieveService = sieveService;
+            _pfService = pfService;
             _customers = customers;
         }
 
@@ -38,7 +38,7 @@ namespace WebUI.Controllers
             int pageSize = 0,
             int pageIndex = 1)
             => await _customers.Get(
-                _sieveService.CreateNewPf(
+                _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
         // GET: api/Customers/5

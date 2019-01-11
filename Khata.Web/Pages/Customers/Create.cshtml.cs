@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +12,11 @@ namespace WebUI.Pages.Customers
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
+        private readonly ICustomerService _customers;
 
-        public CreateModel(IUnitOfWork db, IMapper mapper)
+        public CreateModel(ICustomerService customers)
         {
-            _db = db;
-            _mapper = mapper;
+            _customers = customers;
         }
 
         public IActionResult OnGet()
@@ -44,16 +39,10 @@ namespace WebUI.Pages.Customers
                 return Page();
             }
 
-
-
-            var customer = _mapper.Map<Customer>(CustomerVm);
-            customer.Metadata = Metadata.CreatedNew(User.Identity.Name);
-            _db.Customers.Add(customer);
-            await _db.CompleteAsync();
+            var customer = await _customers.Add(CustomerVm);
 
             Message = $"Customer: {customer.Id} - {customer.FullName} created!";
             MessageType = "success";
-
 
             return RedirectToPage("./Index");
         }

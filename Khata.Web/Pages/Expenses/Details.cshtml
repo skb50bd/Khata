@@ -1,0 +1,14 @@
+﻿@page
+@using WebUI.Pages.Expenses.Components.ExpenseInfo
+@model WebUI.Pages.Expenses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@await Component.InvokeAsync(
+    nameof(ExpenseInfo),
+    new { expense = Model.Expense }
+    )

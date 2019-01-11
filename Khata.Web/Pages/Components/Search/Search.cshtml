@@ -1,10 +1,10 @@
-﻿@model Khata.Services.PageFilterSort.Sieve
+﻿@model Khata.Services.PageFilterSort.PageFilter
 <form asp-page="./Index" method="get">
     <div class="input-group">
         <input asp-for="@Model.Filter"
                name="SearchString"
                value="@Model.Filter"
-               placeholder="Search for @Model.SearchArea..."
+               placeholder="Search..."
                class="form-control"
                aria-label="Search keyword" />
         <input asp-for="@Model.PageSize"

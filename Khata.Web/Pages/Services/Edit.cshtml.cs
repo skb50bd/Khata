@@ -2,26 +2,22 @@
 
 using AutoMapper;
 
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-
-using SharedLibrary;
 
 namespace WebUI.Pages.Services
 {
     public class EditModel : PageModel
     {
-        private readonly IUnitOfWork _db;
+        private readonly IServiceService _services;
         private readonly IMapper _mapper;
 
-        public EditModel(IUnitOfWork db, IMapper mapper)
+        public EditModel(IServiceService services, IMapper mapper)
         {
-            _db = db;
+            _services = services;
             _mapper = mapper;
         }
 
@@ -39,14 +35,14 @@ namespace WebUI.Pages.Services
                 return NotFound();
             }
 
-            var service = await _db.Services.GetById((int)id);
+            ServiceVm = _mapper.Map<ServiceViewModel>(
+                await _services.Get((int)id));
 
-            if (service == null)
+            if (ServiceVm == null)
             {
                 return NotFound();
             }
 
-            ServiceVm = _mapper.Map<ServiceViewModel>(service);
             return Page();
         }
 
@@ -57,37 +53,12 @@ namespace WebUI.Pages.Services
                 return Page();
             }
 
-            var newService = _mapper.Map<Service>(ServiceVm);
-            var originalService = await _db.Services.GetById(newService.Id);
-            var meta = originalService.Metadata.Modified(User.Identity.Name);
-            originalService.SetValuesFrom(newService);
-            originalService.Metadata = meta;
+            var service = await _services.Update(ServiceVm);
 
-            try
-            {
-                await _db.CompleteAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await ProductExists(newService.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            Message = $"Service: {newService.Id} - {newService.Name} updated!";
+            Message = $"Service: {service.Id} - {service.Name} updated!";
             MessageType = "success";
 
             return RedirectToPage("./Index");
-        }
-
-        private async Task<bool> ProductExists(int id)
-        {
-            return await _db.Products.Exists(id);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace Khata.Services.PageFilterSort
     {
         public static IServiceCollection ConfigureSieve(this IServiceCollection services, IConfiguration Config)
         {
-            //services.Configure<SieveOptions>(Config.GetSection("SieveService"));
+            //services.Configure<SieveOptions>(Config.GetSection("PfService"));
             //services.AddScoped<ISieveProcessor, KhataSieveProcessor>();
-            services.AddScoped<SieveService>();
+            services.AddScoped<PfService>();
 
 
             return services;

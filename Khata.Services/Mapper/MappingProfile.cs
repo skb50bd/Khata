@@ -47,25 +47,26 @@ namespace Khata.Services.Mapper
                         src => src.Metadata.ModificationTime)
                 )
                 .ForMember(
-                    dest => dest.Stock,
+                    dest => dest.InventoryStock,
                     opt => opt.MapFrom(
                         src => src.Inventory.Stock)
                 )
                 .ForMember(
-                    dest => dest.Warehouse,
+                    dest => dest.InventoryWarehouse,
                     opt => opt.MapFrom(
                         src => src.Inventory.Warehouse)
                 )
                 .ForMember(
-                    dest => dest.TotalStock,
+                    dest => dest.InventoryTotalStock,
                     opt => opt.MapFrom(
                         src => src.Inventory.TotalStock)
                 )
                 .ForMember(
-                    dest => dest.Status,
+                    dest => dest.InventoryStockStatus,
                     opt => opt.MapFrom(
                         src => src.Inventory.Status)
                 );
+            CreateMap<ProductDto, ProductViewModel>();
             #endregion
 
             #region Service Mapping
@@ -82,6 +83,7 @@ namespace Khata.Services.Mapper
                     opt => opt.MapFrom(
                         src => src.Metadata.ModificationTime)
                 );
+            CreateMap<ServiceDto, ServiceViewModel>();
             #endregion
 
             #region Customer Mapping
@@ -96,6 +98,7 @@ namespace Khata.Services.Mapper
                    dest => dest.MetadataModificationTime,
                    opt => opt.MapFrom(
                        src => src.Metadata.ModificationTime));
+            CreateMap<CustomerDto, CustomerViewModel>();
             #endregion
 
             #region Debt Payment
@@ -109,12 +112,23 @@ namespace Khata.Services.Mapper
                .ForMember(dest => dest.MetadataModificationTime,
                     opt => opt.MapFrom(src => src.Metadata.ModificationTime)
                     );
+            CreateMap<DebtPaymentDto, DebtPaymentViewModel>();
 
             #endregion
 
             #region Sale
 
             CreateMap<Sale, SaleDto>();
+            CreateMap<SaleViewModel, Sale>();
+            CreateMap<SaleDto, SaleViewModel>();
+
+            #endregion
+
+            #region Expense
+
+            CreateMap<ExpenseViewModel, Expense>();
+            CreateMap<Expense, ExpenseDto>();
+            CreateMap<ExpenseDto, ExpenseViewModel>();
 
             #endregion
         }

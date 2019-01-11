@@ -1,0 +1,12 @@
+﻿@page
+@model WebUI.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@await Component.InvokeAsync(
+    nameof(Components.ProductInfo.ProductInfo),
+        new { product = Model.Product }
+    )

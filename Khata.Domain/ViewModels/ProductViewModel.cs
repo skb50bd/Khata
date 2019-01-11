@@ -20,6 +20,19 @@ namespace Khata.ViewModels
         public string Unit { get; set; } = "Piece";
 
         [Required]
+        [Display(Name = "Stock")]
+        public decimal InventoryStock { get; set; } = 0;
+
+        [Display(Name = "Warehouse")]
+        public decimal InventoryWarehouse { get; set; } = 0;
+
+        [Display(Name = "Minimum Total Stock Required")]
+        public decimal InventoryAlertAt { get; set; } = 0;
+
+        [Display(Name = "Status")]
+        public StockStatus InventoryStockStatus { get; private set; }
+
+        [Required]
         [Display(Name = "Retail Price")]
         [Range(0, double.MaxValue)]
         [DataType(DataType.Currency)]
@@ -39,18 +52,5 @@ namespace Khata.ViewModels
         [Range(0, double.MaxValue)]
         [DataType(DataType.Currency)]
         public decimal PriceMargin { get; set; } = 0;
-
-        [Required]
-        [Display(Name = "Stock")]
-        public decimal InventoryStock { get; set; } = 0;
-
-        [Display(Name = "Warehouse")]
-        public decimal InventoryWarehouse { get; set; } = 0;
-
-        [Display(Name = "Minimum Total Stock Required")]
-        public decimal InventoryAlertAt { get; set; } = 0;
-
-        [Display(Name = "Status")]
-        public StockStatus InventoryStockStatus { get; private set; }
     }
 }

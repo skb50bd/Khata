@@ -9,6 +9,9 @@ namespace Khata.Data.Core
         ITrackingRepository<Product> Products { get; }
         ITrackingRepository<Service> Services { get; }
         ITrackingRepository<Customer> Customers { get; }
+        ITrackingRepository<Sale> Sales { get; }
+        ITrackingRepository<DebtPayment> DebtPayments { get; }
+        ITrackingRepository<Expense> Expenses { get; }
 
         void Complete();
 

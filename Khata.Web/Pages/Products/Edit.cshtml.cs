@@ -2,26 +2,24 @@
 
 using AutoMapper;
 
-using Khata.Data.Core;
-using Khata.Domain;
+using Khata.DTOs;
+using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-using SharedLibrary;
-
 namespace WebUI.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly IUnitOfWork _db;
+        private readonly IProductService _products;
         private readonly IMapper _mapper;
 
-        public EditModel(IUnitOfWork db, IMapper mapper)
+        public EditModel(IProductService products, IMapper mapper)
         {
-            _db = db;
+            _products = products;
             _mapper = mapper;
         }
 
@@ -34,14 +32,14 @@ namespace WebUI.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var product = await _db.Products.GetById((int)id);
+            var product = await _products.Get((int)id);
 
-            if (product == null)
+            if (product is null)
             {
                 return NotFound();
             }
@@ -57,19 +55,15 @@ namespace WebUI.Pages.Products
                 return Page();
             }
 
-            var newProduct = _mapper.Map<Product>(ProductVm);
-            var originalProduct = await _db.Products.GetById(newProduct.Id);
-            var meta = originalProduct.Metadata.Modified(User.Identity.Name);
-            originalProduct.SetValuesFrom(newProduct);
-            originalProduct.Metadata = meta;
+            ProductDto product;
 
             try
             {
-                await _db.CompleteAsync();
+                product = await _products.Update(ProductVm);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await ProductExists(newProduct.Id))
+                if (!await ProductExists(ProductVm.Id))
                 {
                     return NotFound();
                 }
@@ -79,7 +73,7 @@ namespace WebUI.Pages.Products
                 }
             }
 
-            Message = $"Product: {newProduct.Id} - {newProduct.Name} updated!";
+            Message = $"Product: {product.Id} - {product.Name} updated!";
             MessageType = "success";
 
             return RedirectToPage("./Index");
@@ -87,7 +81,7 @@ namespace WebUI.Pages.Products
 
         private async Task<bool> ProductExists(int id)
         {
-            return await _db.Products.Exists(id);
+            return await _products.Exists(id);
         }
     }
 }

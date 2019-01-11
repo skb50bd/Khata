@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
-using Khata.Domain;
 using Khata.DTOs;
+using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,20 +13,17 @@ namespace WebUI.Pages.Services
 {
     public class IndexModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
-        private readonly SieveService _sieveService;
-        public IndexModel(IUnitOfWork db,
-            IMapper mapper,
-            SieveService sieveService)
+        private readonly IServiceService _services;
+        private readonly PfService _pfService;
+        public IndexModel(PfService pfService, IServiceService services)
         {
-            _db = db;
-            _mapper = mapper;
-            _sieveService = sieveService;
-            Services = new List<ServiceDto>();
+            _pfService = pfService;
+            _services = services;
+            Services = new PagedList<ServiceDto>();
         }
 
-        public IList<ServiceDto> Services { get; set; }
+        public IPagedList<ServiceDto> Services { get; set; }
+        public PageFilter Pf { get; set; }
 
         #region TempData
         [TempData]
@@ -43,47 +33,15 @@ namespace WebUI.Pages.Services
         public string MessageType { get; set; }
         #endregion
 
-        public Sieve Sieve { get; set; }
-
-
         public async Task<IActionResult> OnGetAsync(
-            string searchString = null,
-            int pageSize = 40,
-            int pageIndex = 1)
+            string searchString = "",
+            int pageIndex = 1,
+            int pageSize = 0)
         {
-            var filter = string.IsNullOrEmpty(searchString)
-                ? (Expression<Func<Service, bool>>)(s => true)
-                : (s => s.Name.ToLower()
-                         .Contains(
-                              searchString.ToLower()));
-
-            var resultsCount =
-                (await _db.Services
-                          .Get(filter,
-                               s => s.Id,
-                               1,
-                               0))
-               .Count();
-
-            Sieve = _sieveService.CreateNewModel(
-                searchString,
-                nameof(Services),
-                resultsCount,
-                0,
-                pageIndex,
-                pageSize);
-
-            (await _db.Services.Get(
-                    filter,
-                    p => p.Id,
-                    Sieve.PageIndex,
-                    Sieve.PageSize))
-                .ForEach(s =>
-                    Services.Add(
-                        _mapper.Map<ServiceDto>(s)));
-
-            Sieve.SentCount = Services.Count();
+            Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
+            Services = await _services.Get(Pf);
             return Page();
         }
     }
 }
+
