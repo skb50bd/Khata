@@ -127,7 +127,11 @@ namespace Khata.Services.Mapper
             #region Expense
 
             CreateMap<ExpenseViewModel, Expense>();
-            CreateMap<Expense, ExpenseDto>();
+            CreateMap<Expense, ExpenseDto>()
+                .ForMember(
+                    dest => dest.MetadataModification,
+                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
+                    );
             CreateMap<ExpenseDto, ExpenseViewModel>();
 
             #endregion

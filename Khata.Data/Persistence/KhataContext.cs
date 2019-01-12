@@ -16,13 +16,6 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(p => p.Name)
-                    .IsRequired()
-                    .HasMaxLength(120);
-
-                entity.Property(p => p.Description)
-                    .HasMaxLength(500);
-
                 entity.OwnsOne(p => p.Metadata);
 
                 entity.OwnsOne(p => p.Price);
@@ -54,6 +47,37 @@ namespace Khata.Data.Persistence
             });
 
             modelBuilder.Entity<Expense>().OwnsOne(e => e.Metadata);
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+                entity.OwnsOne(s => s.Metadata);
+            });
+
+            modelBuilder.Entity<Purchase>(entity =>
+            {
+                entity.OwnsOne(s => s.Payment);
+                entity.OwnsOne(s => s.Metadata);
+            });
+
+            modelBuilder.Entity<SupplierPayment>(entity =>
+            {
+                entity.Property(sp => sp.SupplierId).IsRequired();
+                entity.OwnsOne(sp => sp.Metadata);
+            });
+
+            modelBuilder.Entity<Employee>().OwnsOne(e => e.Metadata);
+
+            modelBuilder.Entity<SalaryIssue>(entity =>
+            {
+                entity.Property(si => si.EmployeeId).IsRequired();
+                entity.OwnsOne(si => si.Metadata);
+            });
+
+            modelBuilder.Entity<SalaryPayment>(entity =>
+            {
+                entity.Property(sp => sp.EmployeeId).IsRequired();
+                entity.OwnsOne(sp => sp.Metadata);
+            });
 
             #region Reference Code
 
@@ -251,6 +275,12 @@ namespace Khata.Data.Persistence
         public virtual DbSet<DebtPayment> DebtPayments { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }
+        public virtual DbSet<Purchase> Purchases { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<SalaryIssue> SalaryIssues { get; set; }
+        public virtual DbSet<SalaryPayment> SalaryPayments { get; set; }
 
     }
 }
