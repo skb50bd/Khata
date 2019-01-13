@@ -7,5 +7,6 @@
         public decimal DebtBefore { get; set; }
         public decimal Amount { get; set; }
         public decimal DebtAfter => DebtBefore - Amount;
+        public string Description { get; set; }
     }
 }

@@ -10,6 +10,10 @@ namespace Khata.DTOs
 
         public int CustomerId { get; set; }
 
+
+        [Display(Name = "Customer Name", ShortName = "Payer")]
+        public string CustomerFullName { get; set; }
+
         [Display(Name = "Previous Due")]
         [DataType(DataType.Currency)]
         public decimal DebtBefore { get; set; }
@@ -21,6 +25,8 @@ namespace Khata.DTOs
         [Display(Name = "New Due")]
         [DataType(DataType.Currency)]
         public decimal DebtAfter { get; set; }
+
+        public string Description { get; set; }
 
         [Display(Name = "Modifier")]
         public string MetadataModifier { get; set; }

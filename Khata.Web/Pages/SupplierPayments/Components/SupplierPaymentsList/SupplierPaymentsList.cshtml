@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Khata.DTOs.SupplierPaymentDto>
+
+
+<table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.SupplierFullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var supplierPayment in Model)
+        {
+            <tr class="js-clickable-row"
+                data-href="@Url.Page("./Details", new { id = supplierPayment.Id })">
+                <td>@Html.DisplayFor(modelItem => supplierPayment.Id)</td>
+                <td>@Html.DisplayFor(modelItem => supplierPayment.SupplierFullName)</td>
+                <td>@Html.DisplayFor(modelItem => supplierPayment.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => supplierPayment.MetadataModifier)</td>
+                <td>@Html.DisplayFor(modelItem => supplierPayment.MetadataModificationTime)</td>
+            </tr>
+        }
+    </tbody>
+</table>

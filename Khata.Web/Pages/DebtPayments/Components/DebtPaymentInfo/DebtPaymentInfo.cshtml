@@ -1,0 +1,68 @@
+﻿@model Khata.DTOs.DebtPaymentDto
+
+<div class="card" style="width:40rem">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6">Debt Payment# @Model.Id</div>
+            <div class="col-6 text-right">
+                @if (Model.IsRemoved)
+                {
+                    <span class="badge badge-danger">Removed</span>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <h3 class="card-title">@Model.CustomerFullName</h3>
+        <hr />
+        <table class="table table-sm table-borderless table-hover">
+            <tr>
+                <td>Debt Before</td>
+                <td>@Model.DebtBefore</td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td>@Model.Amount</td>
+            </tr>
+            <tr>
+            <tr>
+                <td>Debt After</td>
+                <td>@Model.DebtAfter</td>
+            </tr>
+
+        </table>
+
+        <hr />
+        <div class="row">
+
+            <div class="col-md-6">
+                @if (!Model.IsRemoved)
+                {
+                    <a asp-page="./Edit"
+                       asp-route-id="@Model.Id"
+                       class="card-link btn btn-link btn-secondary">Edit</a>
+
+                    <a href="#"
+                       class="card-link text-danger btn btn-link btn-danger js-remove-item"
+                       data-href="@Url.Action("Remove", "DebtPayments", new {id = Model.Id})"
+                       data-returnUrl="@Url.Page("./Index")">
+                        Remove
+                    </a>
+                }
+            </div>
+            <div class="col-md-6 text-right">
+                <a asp-page="./Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <small class="text-muted">
+            Last updated at @Model.MetadataModificationTime.ToString("d") by @Model.MetadataModifier
+        </small>
+    </div>
+</div>

@@ -7,5 +7,6 @@
         public decimal PayableBefore { get; set; }
         public decimal Amount { get; set; }
         public decimal PayableAfter => PayableBefore - Amount;
+        public string Description { get; set; }
     }
 }

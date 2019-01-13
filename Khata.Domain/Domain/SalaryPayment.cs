@@ -7,5 +7,6 @@
         public decimal Amount { get; set; }
         public decimal BalanceBefore { get; set; }
         public decimal BalanceAfter => BalanceBefore - Amount;
+        public string Description { get; set; }
     }
 }

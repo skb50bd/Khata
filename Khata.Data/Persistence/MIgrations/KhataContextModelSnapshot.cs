@@ -60,6 +60,8 @@ namespace Khata.Data.Persistence.Migrations
 
                     b.Property<decimal>("DebtBefore");
 
+                    b.Property<string>("Description");
+
                     b.Property<bool>("IsRemoved");
 
                     b.HasKey("Id");
@@ -192,6 +194,8 @@ namespace Khata.Data.Persistence.Migrations
 
                     b.Property<decimal>("BalanceBefore");
 
+                    b.Property<string>("Description");
+
                     b.Property<int>("EmployeeId");
 
                     b.Property<bool>("IsRemoved");
@@ -212,6 +216,8 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<decimal>("Amount");
 
                     b.Property<decimal>("BalanceBefore");
+
+                    b.Property<string>("Description");
 
                     b.Property<int>("EmployeeId");
 
@@ -325,6 +331,8 @@ namespace Khata.Data.Persistence.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount");
+
+                    b.Property<string>("Description");
 
                     b.Property<bool>("IsRemoved");
 

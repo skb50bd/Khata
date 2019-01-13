@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -23,15 +24,6 @@ namespace WebUI.Controllers
             _customers = customers;
         }
 
-        //// GET: api/Customers
-        //[HttpGet]
-        //public async Task<IEnumerable<CustomerDto>> Get()
-        //{
-        //    return (await _db.Customers.GetAll()).Select(m =>
-        //        _mapper.Map<CustomerDto>(m));
-        //}
-
-        // GET: api/Customers
         [HttpGet]
         public async Task<IEnumerable<CustomerDto>> Get(
             string searchString = "",
@@ -52,6 +44,16 @@ namespace WebUI.Controllers
                 return NotFound();
 
             return Ok(await _customers.Get(id));
+        }
+
+        // GET: api/Customers/Ids
+        [HttpGet("Ids/")]
+        public async Task<IActionResult> GetIds([FromQuery]string term)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var customers = await Get(searchString: term);
+            return Ok(customers.Select(c => new { label = c.Id + " - " + c.FullName, id = c.Id }));
         }
 
         // POST: api/Customers

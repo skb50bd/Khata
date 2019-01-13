@@ -15,5 +15,8 @@ namespace Khata.ViewModels
         [Display(Name = "Previous Debt")]
         [DataType(DataType.Currency)]
         public decimal DebtBefore { get; set; }
+
+        [MaxLength(200)]
+        public string Description { get; set; }
     }
 }

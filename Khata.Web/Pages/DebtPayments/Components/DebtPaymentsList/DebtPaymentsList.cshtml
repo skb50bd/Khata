@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Khata.DTOs.DebtPaymentDto>
+
+
+<table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.CustomerFullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var debtPayment in Model)
+        {
+            <tr class="js-clickable-row"
+                data-href="@Url.Page("./Details", new { id = debtPayment.Id })">
+                <td>@Html.DisplayFor(modelItem => debtPayment.Id)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.CustomerFullName)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModifier)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModificationTime)</td>
+            </tr>
+        }
+    </tbody>
+</table>

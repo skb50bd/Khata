@@ -1,0 +1,14 @@
+﻿@page
+@using WebUI.Pages.Suppliers.Components.SupplierInfo
+@model WebUI.Pages.Suppliers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@await Component.InvokeAsync(
+    nameof(SupplierInfo),
+    new { supplier = Model.Supplier }
+    )

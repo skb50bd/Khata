@@ -25,7 +25,7 @@ namespace WebUI.Pages.Customers
                 return NotFound();
             }
 
-            var Customer = await _customers.Get((int)id);
+            Customer = await _customers.Get((int)id);
 
             if (Customer is null)
             {

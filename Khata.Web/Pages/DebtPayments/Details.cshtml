@@ -1,0 +1,14 @@
+﻿@page
+@using WebUI.Pages.DebtPayments.Components.DebtPaymentInfo
+@model WebUI.Pages.DebtPayments.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@await Component.InvokeAsync(
+    nameof(DebtPaymentInfo),
+    new { debtPayment = Model.DebtPayment }
+    )

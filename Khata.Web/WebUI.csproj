@@ -10,9 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <Compile Remove="Pages\Sales\Components\SaleInfo\**" />
+    <Content Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <Content Remove="Pages\Sales\Components\SaleInfo\**" />
+    <EmbeddedResource Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <EmbeddedResource Remove="Pages\Sales\Components\SaleInfo\**" />
+    <None Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <None Remove="Pages\Sales\Components\SaleInfo\**" />
   </ItemGroup>
 
@@ -22,6 +26,13 @@
 
   <ItemGroup>
     <Content Remove="Pages\Sales\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\DebtPayments\Components\DebtPaymentForm\DebtPaymentForm.cshtml" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\external\jquery\jquery.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.min.js" />
   </ItemGroup>
 
 

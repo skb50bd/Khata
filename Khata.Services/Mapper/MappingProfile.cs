@@ -86,37 +86,29 @@ namespace Khata.Services.Mapper
             CreateMap<ServiceDto, ServiceViewModel>();
             #endregion
 
+            #region Person Mapping
+
+            CreateMap<PersonViewModel, Person>();
+            CreateMap<Person, PersonDto>();
+            CreateMap<PersonDto, PersonViewModel>();
+
+            #endregion
+
             #region Customer Mapping
             CreateMap<CustomerViewModel, Customer>();
-            CreateMap<Customer, CustomerViewModel>();
-            CreateMap<Customer, CustomerDto>()
-               .ForMember(
-                    dest => dest.MetadataModifier,
-                    opt => opt.MapFrom(
-                        src => src.Metadata.Modifier))
-              .ForMember(
-                   dest => dest.MetadataModificationTime,
-                   opt => opt.MapFrom(
-                       src => src.Metadata.ModificationTime));
+            CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, CustomerViewModel>();
             #endregion
 
-            #region Debt Payment
+            #region Debt Payment Mapping
 
             CreateMap<DebtPaymentViewModel, DebtPayment>();
-            CreateMap<DebtPayment, DebtPaymentDto>()
-               .ForMember(
-                    dest => dest.MetadataModifier,
-                    opt => opt.MapFrom(src => src.Metadata.Modifier)
-                    )
-               .ForMember(dest => dest.MetadataModificationTime,
-                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
-                    );
+            CreateMap<DebtPayment, DebtPaymentDto>();
             CreateMap<DebtPaymentDto, DebtPaymentViewModel>();
 
             #endregion
 
-            #region Sale
+            #region Sale Mapping
 
             CreateMap<Sale, SaleDto>();
             CreateMap<SaleViewModel, Sale>();
@@ -124,7 +116,7 @@ namespace Khata.Services.Mapper
 
             #endregion
 
-            #region Expense
+            #region Expense Mapping
 
             CreateMap<ExpenseViewModel, Expense>();
             CreateMap<Expense, ExpenseDto>()
@@ -133,6 +125,22 @@ namespace Khata.Services.Mapper
                     opt => opt.MapFrom(src => src.Metadata.ModificationTime)
                     );
             CreateMap<ExpenseDto, ExpenseViewModel>();
+
+            #endregion
+
+            #region Supplier Mapping
+
+            CreateMap<SupplierViewModel, Supplier>();
+            CreateMap<Supplier, SupplierDto>();
+            CreateMap<SupplierDto, SupplierViewModel>();
+
+            #endregion
+
+            #region Supplier Payment Mapping
+
+            CreateMap<SupplierPaymentViewModel, SupplierPayment>();
+            CreateMap<SupplierPayment, SupplierPaymentDto>();
+            CreateMap<SupplierPaymentDto, SupplierPaymentViewModel>();
 
             #endregion
         }

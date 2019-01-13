@@ -13,6 +13,8 @@ namespace Khata.Services.CRUD
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IDebtPaymentService, DebtPaymentService>();
             services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<ISupplierPaymentService, SupplierPaymentService>();
             return services;
         }
     }

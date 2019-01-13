@@ -55,7 +55,10 @@ namespace Khata.Services.CRUD
         {
             var CustomerVm = _mapper.Map<CustomerViewModel>(
                 await _customers.Get(model.CustomerId));
+
+            model.DebtBefore = CustomerVm.Debt;
             CustomerVm.Debt -= model.Amount;
+
             await _customers.Update(CustomerVm);
 
             var dm = _mapper.Map<DebtPayment>(model);
