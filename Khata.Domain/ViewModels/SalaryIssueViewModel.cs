@@ -2,13 +2,12 @@
 
 namespace Khata.ViewModels
 {
-    public class DebtPaymentViewModel
+    public class SalaryIssueViewModel
     {
         public int Id { get; set; }
+        public int EmployeeId { get; set; }
 
-        public int CustomerId { get; set; }
-
-        [Display(Name = "Amount Paid", ShortName = "Amount")]
+        [Display(Name = "Amount Issued", ShortName = "Amount")]
         [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
 

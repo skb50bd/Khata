@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "Khata.Web\WebUI.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Khata.Services\Services.csproj", "{262F7466-F93D-4030-93C4-4F13FE660E8E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "..\StonedExtensions\StonedExtensions\SharedLibrary.csproj", "{306642D1-8395-4B42-A3E8-55A1571DBA3D}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2C21E70-EF7A-48BC-BED2-2269D4EDCEB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{306642D1-8395-4B42-A3E8-55A1571DBA3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{306642D1-8395-4B42-A3E8-55A1571DBA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{306642D1-8395-4B42-A3E8-55A1571DBA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU

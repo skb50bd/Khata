@@ -126,6 +126,18 @@ namespace Khata.Services.Mapper
             CreateMap<EmployeeDto, EmployeeViewModel>();
 
             #endregion
+
+            #region Salary Issue and Payment Mapping
+
+            CreateMap<SalaryIssueViewModel, SalaryIssue>();
+            CreateMap<SalaryIssue, SalaryIssueDto>();
+            CreateMap<SalaryIssueDto, SalaryIssueViewModel>();
+
+            CreateMap<SalaryPaymentViewModel, SalaryPayment>();
+            CreateMap<SalaryPayment, SalaryPaymentDto>();
+            CreateMap<SalaryPaymentDto, SalaryPaymentViewModel>();
+
+            #endregion
         }
     }
 }

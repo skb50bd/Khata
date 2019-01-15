@@ -16,6 +16,8 @@ namespace Khata.Services.CRUD
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<ISupplierPaymentService, SupplierPaymentService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<ISalaryIssueService, SalaryIssueService>();
+            services.AddScoped<ISalaryPaymentService, SalaryPaymentService>();
             return services;
         }
     }
