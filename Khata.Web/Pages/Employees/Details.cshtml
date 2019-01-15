@@ -1,0 +1,14 @@
+﻿@page
+@using WebUI.Pages.Employees.Components.EmployeeInfo
+@model WebUI.Pages.Employees.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@await Component.InvokeAsync(
+    nameof(EmployeeInfo),
+    new { employee = Model.Employee }
+    )

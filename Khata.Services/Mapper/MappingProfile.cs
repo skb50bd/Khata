@@ -37,16 +37,6 @@ namespace Khata.Services.Mapper
 
             CreateMap<Product, ProductDto>()
                 .ForMember(
-                    dest => dest.Modifier,
-                    opt => opt.MapFrom(
-                        src => src.Metadata.Modifier)
-                )
-                .ForMember(
-                    dest => dest.Modified,
-                    opt => opt.MapFrom(
-                        src => src.Metadata.ModificationTime)
-                )
-                .ForMember(
                     dest => dest.InventoryStock,
                     opt => opt.MapFrom(
                         src => src.Inventory.Stock)
@@ -70,19 +60,8 @@ namespace Khata.Services.Mapper
             #endregion
 
             #region Service Mapping
-            CreateMap<Service, ServiceViewModel>();
             CreateMap<ServiceViewModel, Service>();
-            CreateMap<Service, ServiceDto>()
-                .ForMember(
-                    dest => dest.Modifier,
-                    opt => opt.MapFrom(
-                        src => src.Metadata.Modifier)
-                )
-                .ForMember(
-                    dest => dest.ModificationTime,
-                    opt => opt.MapFrom(
-                        src => src.Metadata.ModificationTime)
-                );
+            CreateMap<Service, ServiceDto>();
             CreateMap<ServiceDto, ServiceViewModel>();
             #endregion
 
@@ -119,11 +98,7 @@ namespace Khata.Services.Mapper
             #region Expense Mapping
 
             CreateMap<ExpenseViewModel, Expense>();
-            CreateMap<Expense, ExpenseDto>()
-                .ForMember(
-                    dest => dest.MetadataModification,
-                    opt => opt.MapFrom(src => src.Metadata.ModificationTime)
-                    );
+            CreateMap<Expense, ExpenseDto>();
             CreateMap<ExpenseDto, ExpenseViewModel>();
 
             #endregion
@@ -141,6 +116,14 @@ namespace Khata.Services.Mapper
             CreateMap<SupplierPaymentViewModel, SupplierPayment>();
             CreateMap<SupplierPayment, SupplierPaymentDto>();
             CreateMap<SupplierPaymentDto, SupplierPaymentViewModel>();
+
+            #endregion
+
+            #region Employee Mapping
+
+            CreateMap<EmployeeViewModel, Employee>();
+            CreateMap<Employee, EmployeeDto>();
+            CreateMap<EmployeeDto, EmployeeViewModel>();
 
             #endregion
         }

@@ -45,9 +45,9 @@ namespace Khata.DTOs
         public decimal PricePurchase { get; set; }
 
         [Display(Name = "Last Modified By", ShortName = "Modifier")]
-        public string Modifier { get; set; }
+        public string MetadataModifier { get; set; }
 
         [Display(Name = "Last Modified At", ShortName = "Last Modified By")]
-        public DateTimeOffset Modified { get; set; }
+        public DateTimeOffset MetadataModificationTime { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿@model Khata.DTOs.ExpenseDto
+﻿@model Khata.DTOs.EmployeeDto
 
 <div class="card" style="width:40rem">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Expense# @Model.Id</div>
+            <div class="col-6">Employee# @Model.Id</div>
             <div class="col-6 text-right">
                 @if (Model.IsRemoved)
                 {
@@ -14,17 +14,38 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.Name</h3>
+        <h3 class="card-title">@Model.FullName</h3>
         <hr />
         <table class="table table-sm table-borderless table-hover">
             <tr>
-                <td>Amount</td>
-                <td>@Model.Amount</td>
+                <td>Designation</td>
+                <td>@Model.Designation</td>
             </tr>
             <tr>
-                <td>Description</td>
-                <td>@Model.Description</td>
+                <td>NID Number</td>
+                <td>@Model.NIdNumber</td>
             </tr>
+            <tr>
+                <td>Address</td>
+                <td>@Model.Address</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>@Model.Phone</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <td>Salary</td>
+                <td>@Model.Salary</td>
+            </tr>
+            <tr>
+                <td>Due</td>
+                <td>@Model.Balance</td>
+            </tr>
+
         </table>
 
         <hr />
@@ -39,7 +60,7 @@
 
                     <a href="#"
                        class="card-link text-white btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Expenses", new {id = Model.Id})"
+                       data-href="@Url.Action("Remove", "Employees", new {id = Model.Id})"
                        data-returnUrl="@Url.Page("./Index")">
                         Remove
                     </a>

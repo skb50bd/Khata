@@ -22,6 +22,6 @@ namespace Khata.DTOs
         public string MetadataModifier { get; set; }
 
         [Display(Name = "Modified at")]
-        public DateTimeOffset MetadataModification { get; set; }
+        public DateTimeOffset MetadataModificationTime { get; set; }
     }
 }

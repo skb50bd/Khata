@@ -15,9 +15,6 @@ namespace Khata.DTOs
 
         public string Address { get; set; }
 
-        [Display(Name = "Company")]
-        public string CompanyName { get; set; }
-
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 

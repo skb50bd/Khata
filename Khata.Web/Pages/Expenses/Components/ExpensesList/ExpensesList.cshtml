@@ -8,7 +8,7 @@
             <th>@Html.DisplayNameFor(model => model.Name)</th>
             <th>@Html.DisplayNameFor(model => model.Amount)</th>
             <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModification)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                 <td>@Html.DisplayFor(modelItem => expense.Name)</td>
                 <td>@Html.DisplayFor(modelItem => expense.Amount)</td>
                 <td>@Html.DisplayFor(modelItem => expense.MetadataModifier)</td>
-                <td>@Html.DisplayFor(modelItem => expense.MetadataModification)</td>
+                <td>@Html.DisplayFor(modelItem => expense.MetadataModificationTime)</td>
             </tr>
         }
     </tbody>

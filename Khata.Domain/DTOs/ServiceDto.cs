@@ -9,7 +9,7 @@ namespace Khata.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public DateTimeOffset ModificationTime { get; set; }
-        public string Modifier { get; set; }
+        public DateTimeOffset MetadataModificationTime { get; set; }
+        public string MetadataModifier { get; set; }
     }
 }

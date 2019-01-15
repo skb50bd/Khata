@@ -23,10 +23,6 @@ namespace Khata.ViewModels
         [MaxLength(200)]
         public string Address { get; set; }
 
-        [Display(Name = "Company Name")]
-        [MaxLength(200)]
-        public string CompanyName { get; set; }
-
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 
