@@ -56,13 +56,12 @@ namespace Khata.Services.CRUD
             var SupplierVm = _mapper.Map<SupplierViewModel>(
                 await _suppliers.Get(model.SupplierId));
 
-            model.PayableBefore = SupplierVm.Payable;
-            SupplierVm.Payable -= model.Amount;
-
-            await _suppliers.Update(SupplierVm);
-
             var dm = _mapper.Map<SupplierPayment>(model);
+            dm.PayableBefore = SupplierVm.Payable;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
+
+            SupplierVm.Payable -= model.Amount;
+            await _suppliers.Update(SupplierVm);
             _db.SupplierPayments.Add(dm);
             await _db.CompleteAsync();
 

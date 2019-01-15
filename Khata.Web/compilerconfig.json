@@ -1,0 +1,6 @@
+﻿[
+  {
+    "outputFile": "wwwroot/lib/bootstrap/dist/js/popper.min.es5.js",
+    "inputFile": "wwwroot/lib/bootstrap/dist/js/popper.min.js"
+  }
+]

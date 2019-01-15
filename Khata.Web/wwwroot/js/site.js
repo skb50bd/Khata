@@ -3,6 +3,9 @@
 
 
 $(document).ready(function () {
+    $('.datepicker').datepicker();
+    $('.datepicker').datepicker("option", "dateFormat", "dd/mm/yy");
+
     $(".js-clickable-row").click(function () {
         window.location = $(this).data("href");
     });
@@ -130,4 +133,15 @@ $(document).ready(function () {
 
     $(document).on("change, keyup", "#PayableBefore", updatePayable);
     $(document).on("change, keyup", "#Amount", updatePayable);
+
+
+    // Sidebar
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar, #content').toggleClass('active');
+        $('.collapse.in').toggleClass('in');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    });
+
+    // Sidebar end
 });

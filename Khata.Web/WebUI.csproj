@@ -25,14 +25,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
     <Content Remove="Pages\Sales\Details.cshtml" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.min.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="compilerconfig.json" />
     <None Include="Pages\DebtPayments\Components\DebtPaymentForm\DebtPaymentForm.cshtml" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.min.js" />
+    <None Include="wwwroot\lib\materialbootstrap\css\material.css.map" />
+    <None Include="wwwroot\lib\materialbootstrap\css\material.min.css.map" />
+    <None Include="wwwroot\lib\materialbootstrap\js\material.js" />
+    <None Include="wwwroot\lib\materialbootstrap\js\material.js.map" />
+    <None Include="wwwroot\lib\materialbootstrap\js\material.min.js" />
+    <None Include="wwwroot\lib\materialbootstrap\js\material.min.js.map" />
   </ItemGroup>
 
 

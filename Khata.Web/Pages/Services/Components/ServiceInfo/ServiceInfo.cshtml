@@ -22,10 +22,10 @@
                 @if (!Model.IsRemoved)
                 {<a asp-page="./Edit"
                     asp-route-id="@Model.Id"
-                    class="card-link btn btn-link btn-secondary">Edit</a>
+                    class="card-link text-white btn btn-link btn-secondary">Edit</a>
 
                     <a href="#"
-                       class="card-link text-danger btn btn-link btn-danger js-remove-item"
+                       class="card-link text-white btn btn-link btn-danger js-remove-item"
                        data-href="@Url.Action("Remove", "Services", new { id = Model.Id })"
                        data-returnUrl="@Url.Page("./Index")">
                         Remove

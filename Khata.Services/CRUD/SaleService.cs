@@ -65,8 +65,7 @@ namespace Khata.Services.CRUD
                     var dp = new DebtPaymentViewModel
                     {
                         CustomerId = cus.Id,
-                        Amount = -1 * model.Payment.Due,
-                        DebtBefore = cus.Debt
+                        Amount = -1 * model.Payment.Due
                     };
                     await _debtPayments.Add(dp);
                     model.Payment.Paid -= dp.Amount;

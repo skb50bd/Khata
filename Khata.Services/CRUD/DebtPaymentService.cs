@@ -56,13 +56,14 @@ namespace Khata.Services.CRUD
             var CustomerVm = _mapper.Map<CustomerViewModel>(
                 await _customers.Get(model.CustomerId));
 
-            model.DebtBefore = CustomerVm.Debt;
+            var dm = _mapper.Map<DebtPayment>(model);
+
+            dm.DebtBefore = CustomerVm.Debt;
+            dm.Metadata = Metadata.CreatedNew(CurrentUser);
+
             CustomerVm.Debt -= model.Amount;
 
             await _customers.Update(CustomerVm);
-
-            var dm = _mapper.Map<DebtPayment>(model);
-            dm.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.DebtPayments.Add(dm);
             await _db.CompleteAsync();
 
