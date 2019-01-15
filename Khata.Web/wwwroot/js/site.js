@@ -3,6 +3,16 @@
 
 
 $(document).ready(function () {
+    // Sidebar
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar, #content').toggleClass('active');
+        $('.collapse.in').toggleClass('in');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    });
+
+    // Sidebar end
+
     $('.datepicker').datepicker();
     $('.datepicker').datepicker("option", "dateFormat", "dd/mm/yy");
 
@@ -39,6 +49,8 @@ $(document).ready(function () {
                 }
             });
     });
+
+    // Debt Payment
 
     $("#CustomerSelector").autocomplete({
         source: function (request, response) {
@@ -87,6 +99,10 @@ $(document).ready(function () {
     $(document).on("change, keyup", "#DebtBefore", updateDebt);
     $(document).on("change, keyup", "#Amount", updateDebt);
 
+    // Debt Payment End
+
+    // Supplier Payment
+
     $("#SupplierSelector").autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -134,14 +150,60 @@ $(document).ready(function () {
     $(document).on("change, keyup", "#PayableBefore", updatePayable);
     $(document).on("change, keyup", "#Amount", updatePayable);
 
+    // Supplier Payment End
 
-    // Sidebar
 
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar, #content').toggleClass('active');
-        $('.collapse.in').toggleClass('in');
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    // Salary Payment 
+
+    $("#EmployeeSelector").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: $("#EmployeeSelector").attr("data-path"),
+                type: 'GET',
+                cache: true,
+                data: request,
+                dataType: 'json',
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.label,
+                            value: item.id
+                        };
+                    }));
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            $.ajax({
+                url: '/api/Employees/' + ui.item.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#BalanceBefore').val(data.Balance);
+                    updateBalance();
+                }
+            });
+
+            $('#EmployeeSelector').val(ui.item.label);
+            $('#EmployeeId').val(ui.item.value);
+
+            return false;
+        }
     });
 
-    // Sidebar end
+    function updateBalance() {
+        var bbVal = Number($('#BalanceBefore').val());
+        var aVal = Number($('#Amount').val());
+        if ($('#Amount').attr('data-type') === 'issue')
+            aVal = -1 * aVal;
+
+        var result = bbVal - aVal;
+        $('#BalanceAfter').val(result);
+    }
+
+    $(document).on("change, keyup", "#BalanceBefore", updateBalance);
+    $(document).on("change, keyup", "#Amount", updateBalance);
+
+    // Salary Payment End
 });

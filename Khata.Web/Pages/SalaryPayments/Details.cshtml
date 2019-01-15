@@ -1,0 +1,12 @@
+﻿@page
+@using WebUI.Pages.SalaryPayments.Components.SalaryPaymentInfo
+@model WebUI.Pages.SalaryPayments.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@await Component.InvokeAsync(
+    nameof(SalaryPaymentInfo),
+    new { salaryPayment = Model.SalaryPayment }
+    )

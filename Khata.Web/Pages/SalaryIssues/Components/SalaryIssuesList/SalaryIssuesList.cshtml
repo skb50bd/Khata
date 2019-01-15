@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Khata.DTOs.SalaryIssueDto>
+
+
+<table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.EmployeeFullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
+            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salaryIssue in Model)
+        {
+            <tr class="js-clickable-row"
+                data-href="@Url.Page("./Details", new { id = salaryIssue.Id })">
+                <td>@Html.DisplayFor(modelItem => salaryIssue.Id)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.EmployeeFullName)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.Amount)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.MetadataModifier)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.MetadataModificationTime)</td>
+            </tr>
+        }
+    </tbody>
+</table>
