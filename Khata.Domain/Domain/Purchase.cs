@@ -2,11 +2,16 @@
 
 namespace Khata.Domain
 {
-    public class Purchase : TrackedEntity
+    public class Purchase : TrackedEntity, IWithdrawal
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }
         public virtual ICollection<PurchaseLineItem> Cart { get; set; }
         public PaymentInfo Payment { get; set; }
+        public string Description { get; set; }
+
+        public decimal Amount => Payment.Paid;
+        public string TableName => nameof(Purchase);
+        public int RowId => Id;
     }
 }

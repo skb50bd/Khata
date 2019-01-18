@@ -20,17 +20,20 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
+        private readonly ICashRegisterService _cashRegister;
         private readonly ICustomerService _customers;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public DebtPaymentService(IUnitOfWork db,
             IMapper mapper,
+            ICashRegisterService cashRegister,
             ICustomerService customers,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
+            _cashRegister = cashRegister;
             _customers = customers;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -66,6 +69,8 @@ namespace Khata.Services.CRUD
             await _customers.Update(CustomerVm);
             _db.DebtPayments.Add(dm);
             await _db.CompleteAsync();
+
+            await _cashRegister.AddDeposit(dm);
 
             return _mapper.Map<DebtPaymentDto>(dm);
         }

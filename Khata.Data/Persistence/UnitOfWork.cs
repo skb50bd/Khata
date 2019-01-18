@@ -21,8 +21,14 @@ namespace Khata.Data.Persistence
         public ITrackingRepository<Employee> Employees { get; }
         public ITrackingRepository<SalaryIssue> SalaryIssues { get; }
         public ITrackingRepository<SalaryPayment> SalaryPayments { get; }
+        public ICashRegisterRepository CashRegister { get; }
+        public IRepository<Deposit> Deposits { get; }
+        public IRepository<Withdrawal> Withdrawals { get; }
 
         public UnitOfWork(KhataContext context,
+            ICashRegisterRepository cashRegister,
+            IRepository<Deposit> deposits,
+            IRepository<Withdrawal> withdrawals,
             ITrackingRepository<Product> products,
             ITrackingRepository<Service> services,
             ITrackingRepository<Customer> customers,
@@ -37,6 +43,9 @@ namespace Khata.Data.Persistence
             ITrackingRepository<SalaryPayment> salaryPayments)
         {
             Context = context;
+            CashRegister = cashRegister;
+            Deposits = deposits;
+            Withdrawals = withdrawals;
             Products = products;
             Services = services;
             Customers = customers;

@@ -16,5 +16,8 @@ namespace Khata.ViewModels
 
         [Display(Name = "Date")]
         public string SaleDate { get; set; }
+
+        public decimal Description { get; set; }
+
     }
 }

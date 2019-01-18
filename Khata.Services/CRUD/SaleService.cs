@@ -22,6 +22,7 @@ namespace Khata.Services.CRUD
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDebtPaymentService _debtPayments;
+        private readonly ICashRegisterService _cashRegister;
         private readonly IProductService _products;
         private readonly ICustomerService _customers;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
@@ -30,6 +31,7 @@ namespace Khata.Services.CRUD
             IUnitOfWork db,
             IProductService products,
             IDebtPaymentService debtPayments,
+            ICashRegisterService cashRegister,
             ICustomerService customers,
             IHttpContextAccessor httpContextAccessor)
         {
@@ -37,6 +39,7 @@ namespace Khata.Services.CRUD
             _db = db;
             _products = products;
             _debtPayments = debtPayments;
+            _cashRegister = cashRegister;
             _customers = customers;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -86,6 +89,8 @@ namespace Khata.Services.CRUD
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Sales.Add(dm);
             await _db.CompleteAsync();
+
+            await _cashRegister.AddDeposit(dm);
 
             return _mapper.Map<SaleDto>(dm);
         }

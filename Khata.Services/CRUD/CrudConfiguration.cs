@@ -7,6 +7,7 @@ namespace Khata.Services.CRUD
         public static IServiceCollection ConfigureCrudServices(
             this IServiceCollection services)
         {
+            services.AddScoped<ICashRegisterService, CashRegisterService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IServiceService, ServiceService>();

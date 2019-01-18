@@ -34,6 +34,9 @@ namespace Khata.Data.Persistence
             services.AddScoped<ITrackingRepository<Employee>, TrackingRepository<Employee>>();
             services.AddScoped<ITrackingRepository<SalaryIssue>, SalaryIssueRepository>();
             services.AddScoped<ITrackingRepository<SalaryPayment>, SalaryPaymentRepository>();
+            services.AddScoped<ICashRegisterRepository, CashRegisterRepository>();
+            services.AddScoped<IRepository<Withdrawal>, Repository<Withdrawal>>();
+            services.AddScoped<IRepository<Deposit>, Repository<Deposit>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

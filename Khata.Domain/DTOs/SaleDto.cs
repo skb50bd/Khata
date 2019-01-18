@@ -41,6 +41,8 @@ namespace Khata.DTOs
         [DataType(DataType.Currency)]
         public decimal PaymentDue { get; set; }
 
+        public decimal Description { get; set; }
+
         [Display(Name = "Modified by")]
         public string MetadataModifier { get; set; }
 

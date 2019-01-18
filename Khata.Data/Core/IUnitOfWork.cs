@@ -6,6 +6,9 @@ namespace Khata.Data.Core
 {
     public interface IUnitOfWork
     {
+        ICashRegisterRepository CashRegister { get; }
+        IRepository<Deposit> Deposits { get; }
+        IRepository<Withdrawal> Withdrawals { get; }
         ITrackingRepository<Product> Products { get; }
         ITrackingRepository<Service> Services { get; }
         ITrackingRepository<Customer> Customers { get; }
