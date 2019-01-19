@@ -8,6 +8,8 @@ using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 
+using SharedLibrary;
+
 namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
@@ -15,11 +17,18 @@ namespace WebUI.Controllers
     public class SalesController : ControllerBase
     {
         private readonly ISaleService _sales;
+        private readonly IProductService _products;
+        private readonly IServiceService _services;
         private readonly PfService _pfService;
 
-        public SalesController(ISaleService sales, PfService pfService)
+        public SalesController(ISaleService sales,
+            IProductService products,
+            IServiceService services,
+            PfService pfService)
         {
             _sales = sales;
+            _products = products;
+            _services = services;
             _pfService = pfService;
         }
 
@@ -45,6 +54,42 @@ namespace WebUI.Controllers
 
             return Ok(await _sales.Get(id));
         }
+
+        // GET: api/Sales/LineItems
+        [HttpGet("LineItems/")]
+        public async Task<IActionResult> GetLineItems([FromQuery]string term)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            IList<object> results = new List<object>();
+            var products = await _products.Get(_pfService.CreateNewPf(term, 1, 0));
+            var services = await _services.Get(_pfService.CreateNewPf(term, 1, 0));
+
+            products.ForEach(p => results.Add(new
+            {
+                Name = p.Name,
+                Available = p.InventoryTotalStock,
+                UnitPriceRetail = p.PriceRetail,
+                UnitPriceBulk = p.PriceBulk,
+                MinimumPrice = p.PriceMargin,
+                ItemId = p.Id,
+                Category = "Product"
+            }));
+            services.ForEach(s => results.Add(new
+            {
+                Name = s.Name,
+                Available = -1,
+                UnitPriceRetail = s.Price,
+                UnitPriceBulk = s.Price,
+                MinimumPrice = 0,
+                ItemId = s.Id,
+                Category = "Service"
+            }));
+
+            return Ok(results);
+        }
+
 
         // POST: api/Sales
         [HttpPost]

@@ -25,14 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
     <Content Remove="Pages\Sales\Details.cshtml" />
     <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.js" />
     <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.min.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="compilerconfig.json" />
     <None Include="Pages\DebtPayments\Components\DebtPaymentForm\DebtPaymentForm.cshtml" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />

@@ -25,7 +25,3 @@
     <textarea asp-for="Description" class="form-control"></textarea>
     <span asp-validation-for="Description" class="text-danger"></span>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

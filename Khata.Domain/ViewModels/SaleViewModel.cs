@@ -11,13 +11,30 @@ namespace Khata.ViewModels
         public SaleType Type { get; set; }
         public int CustomerId { get; set; }
 
-        public ICollection<SaleLineItem> Cart { get; set; }
-        public PaymentInfo Payment { get; set; }
+        [Display(Name = "Add New Customer")]
+        public bool RegisterNewCustomer { get; set; }
+
+        [Display(Name = "Buyer")]
+        public CustomerViewModel Customer { get; set; }
+
+        [Display(Name = "Cart")]
+        public List<SaleLineItemViewModel> Cart { get; set; }
+
+        public PaymentInfoViewModel Payment { get; set; } = new PaymentInfoViewModel();
 
         [Display(Name = "Date")]
         public string SaleDate { get; set; }
 
         public decimal Description { get; set; }
+    }
 
+    public class SaleLineItemViewModel
+    {
+        public decimal Quantity { get; set; }
+        public decimal NetPrice { get; set; }
+
+        public int ItemId { get; set; }
+
+        public LineItemType Type { get; set; }
     }
 }

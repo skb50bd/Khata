@@ -54,7 +54,9 @@ namespace WebUI
                 .AddJsonOptions(options =>
                      {
                          options.SerializerSettings.ContractResolver =
-                             new DefaultContractResolver();
+                            new CamelCasePropertyNamesContractResolver();
+                         options.SerializerSettings.DefaultValueHandling =
+                            DefaultValueHandling.Include;
                          options.SerializerSettings.ReferenceLoopHandling =
                              ReferenceLoopHandling.Serialize;
                          options.SerializerSettings.NullValueHandling =

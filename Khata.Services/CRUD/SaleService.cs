@@ -60,20 +60,22 @@ namespace Khata.Services.CRUD
 
         public async Task<SaleDto> Add(SaleViewModel model)
         {
-            if (model.Payment.Due < 0)
-            {
-                var cus = await _customers.Get(model.CustomerId);
-                if (cus != null)
-                {
-                    var dp = new DebtPaymentViewModel
-                    {
-                        CustomerId = cus.Id,
-                        Amount = -1 * model.Payment.Due
-                    };
-                    await _debtPayments.Add(dp);
-                    model.Payment.Paid -= dp.Amount;
-                }
-            }
+            // Todo - Correctly Implement the part
+
+            //if (model.Payment.Due < 0)
+            //{
+            //    var cus = await _customers.Get(model.CustomerId);
+            //    if (cus != null)
+            //    {
+            //        var dp = new DebtPaymentViewModel
+            //        {
+            //            CustomerId = cus.Id,
+            //            Amount = -1 * model.Payment.Due
+            //        };
+            //        await _debtPayments.Add(dp);
+            //        model.Payment.Paid -= dp.Amount;
+            //    }
+            //}
 
             foreach (var item in model.Cart)
             {

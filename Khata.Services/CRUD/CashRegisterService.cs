@@ -36,14 +36,14 @@ namespace Khata.Services.CRUD
         public async Task AddDeposit(IDeposit model)
         {
             var cr = await GetWithTransactions();
-            cr.Deposits.Add(new Deposit(model));
+            cr.AddTransaction(new Deposit(model));
             await _db.CompleteAsync();
         }
 
         public async Task AddWithdrawal(IWithdrawal model)
         {
             var cr = await GetWithTransactions();
-            cr.Withdrawals.Add(new Withdrawal(model));
+            cr.AddTransaction(new Withdrawal(model));
             await _db.CompleteAsync();
         }
     }
