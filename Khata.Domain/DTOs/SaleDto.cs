@@ -12,11 +12,19 @@ namespace Khata.DTOs
         public bool IsRemoved { get; set; }
 
         [Display(Name = "Type")]
-        public SaleType SaleType { get; set; }
+        public SaleType Type { get; set; }
 
+        [Display(Name = "Sale Date")]
+        [DataType(DataType.Date)]
+        public DateTimeOffset SaleDate { get; set; }
+
+        public int InvoiceId { get; set; }
+        public virtual Invoice Invoice { get; set; }
+
+        public int CustomerId { get; set; }
         public CustomerDto Customer { get; set; }
 
-        public ICollection<LineItemDto> Cart { get; set; }
+        public ICollection<SaleLineItem> Cart { get; set; }
 
         [Display(Name = "Subtotal")]
         [DataType(DataType.Currency)]
@@ -41,7 +49,11 @@ namespace Khata.DTOs
         [DataType(DataType.Currency)]
         public decimal PaymentDue { get; set; }
 
-        public decimal Description { get; set; }
+        [Display(Name = "Profit")]
+        [DataType(DataType.Currency)]
+        public decimal Profit { get; set; }
+
+        public string Description { get; set; }
 
         [Display(Name = "Modified by")]
         public string MetadataModifier { get; set; }

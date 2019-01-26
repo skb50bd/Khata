@@ -2,13 +2,13 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Pages.Customers.Components.CustomerInfo
+namespace WebUI.Pages.Sales.Components.SaleInfo
 {
-    public class CustomerInfo : ViewComponent
+    public class SaleInfo : ViewComponent
     {
-        public IViewComponentResult Invoke(CustomerDto customer)
+        public IViewComponentResult Invoke(SaleDto sale)
         {
-            return View(nameof(CustomerInfo), customer);
+            return View(nameof(SaleInfo), sale);
         }
 
     }

@@ -1,9 +1,9 @@
-﻿@model Khata.DTOs.CustomerDto
+﻿@model Khata.DTOs.SaleDto
 
 <div class="card" style="width:40rem">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Customer# @Model.Id</div>
+            <div class="col-6">Sale# @Model.Id</div>
             <div class="col-6 text-right">
                 @if (Model.IsRemoved)
                 {
@@ -14,30 +14,102 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.FullName</h3>
-        <hr />
+        <h3 class="card-title">@Model.Customer.FullName</h3>
         <table class="table table-sm table-borderless table-hover">
-            <tr>
-                <td>Company</td>
-                <td>@Model.CompanyName</td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td>@Model.Address</td>
-            </tr>
-            <tr>
-                <td>Phone</td>
-                <td>@Model.Phone</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>@Model.Email</td>
-            </tr>
-            <tr>
-                <td>Due</td>
-                <td>@Model.Debt</td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>Company</td>
+                    <td>@Model.Customer.CompanyName</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>@Model.Customer.Address</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>@Model.Customer.Phone</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@Model.Customer.Email</td>
+                </tr>
+            </tbody>
+        </table>
 
+        <hr />
+        <h4 class="card-title">Payment Information</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <tbody>
+                <tr>
+                    <td>Cart Total</td>
+                    <td class="text-right">@Model.PaymentSubTotal</td>
+                </tr>
+                <tr>
+                    <td>Discount</td>
+                    <td class="text-right">(@Model.PaymentDiscountPercentage%) @Model.PaymentDiscountCash</td>
+                </tr>
+                @{ var recordClass = ""; }
+                @if (Model.Customer.Debt > 0)
+                {
+                    recordClass = "warning";
+                }
+                <tr class="table-@recordClass">
+
+                    <td>Previous Due</td>
+                    <td class="text-right">@Model.Customer.Debt</td>
+                </tr>
+                <tr class="table-info">
+                    <td>Payable</td>
+                    <td class="text-right">@(Model.PaymentTotal + Model.Customer.Debt)</td>
+                </tr>
+
+                <tr>
+                    <td>Paid</td>
+                    <td class="text-right">@(Model.PaymentPaid)</td>
+                </tr>
+
+                <tr class="table-@( Model.PaymentDue + Model.Customer.Debt> 0
+                                        ? "danger"
+                                        : "")
+                    ">
+                    <td>Due</td>
+                    <td class="text-right">@(Model.PaymentDue + Model.Customer.Debt)</td>
+                </tr>
+
+                <tr class="table-@( Model.Profit < 0
+                        ? "danger"
+                        : Model.Profit > Model.PaymentDue
+                            ? "success"
+                            : "primary")
+                    ">
+                    <td>Profit</td>
+                    <td class="text-right">@(Model.Profit)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        <h4 class="card-title">Cart</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Net Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td class="text-right">@item.Quantity</td>
+                        <td class="text-right">@item.UnitPrice</td>
+                        <td class="text-right">@item.NetPrice</td>
+                    </tr>
+                }
+            </tbody>
         </table>
 
         <hr />
@@ -46,13 +118,18 @@
             <div class="col-md-6">
                 @if (!Model.IsRemoved)
                 {
-                    <a asp-page="./Edit"
-                       asp-route-id="@Model.Id"
-                       class="card-link btn btn-link btn-secondary">Edit</a>
+                    @*<a asp-page="./Edit"
+                        asp-route-id="@Model.Id"
+                        class="card-link btn btn-link btn-secondary text-white">Edit</a>*@
+
+                    <a asp-page="../Invoices/Details"
+                       asp-route-id="@Model.InvoiceId"
+                       target="_blank"
+                       class="card-link btn btn-outline-success">Invoice</a>
 
                     <a href="#"
-                       class="card-link text-danger btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Customers", new {id = Model.Id})"
+                       class="card-link btn btn-link btn-danger text-white js-remove-item"
+                       data-href="@Url.Action("Remove", "Sales", new {id = Model.Id})"
                        data-returnUrl="@Url.Page("./Index")">
                         Remove
                     </a>

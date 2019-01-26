@@ -5,11 +5,13 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.Customer.FullName)</th>
-            <th>@Html.DisplayNameFor(model => model.SaleType)</th>
+            <th>@Html.DisplayNameFor(model => model.Type)</th>
             <th>@Html.DisplayNameFor(model => model.PaymentTotal)</th>
             <th>@Html.DisplayNameFor(model => model.PaymentDue)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+            <th>@Html.DisplayNameFor(model => model.Profit)</th>
+            <th>@Html.DisplayNameFor(model => model.SaleDate)</th>
             <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,11 +20,17 @@
             <tr class="js-clickable-row" data-href="@Url.Page("./Details", new { id = item.Id })">
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.Customer.FullName)</td>
-                <td>@Html.DisplayFor(modelItem => item.SaleType)</td>
+                <td>@Html.DisplayFor(modelItem => item.Type)</td>
                 <td>@Html.DisplayFor(modelItem => item.PaymentTotal)</td>
                 <td>@Html.DisplayFor(modelItem => item.PaymentDue)</td>
-                <td>@Html.DisplayFor(modelItem => item.MetadataModificationTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.Profit)</td>
+                <td>@Html.DisplayFor(modelItem => item.SaleDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.MetadataModifier)</td>
+                <td>
+                    <a asp-page="../Invoices/Details"
+                       asp-route-id="@Html.ValueFor(modelItem => item.InvoiceId)"
+                       class="card-link btn btn-sm btn-inline btn-success blank-link">Invoice</a>
+                </td>
             </tr>
         }
     </tbody>

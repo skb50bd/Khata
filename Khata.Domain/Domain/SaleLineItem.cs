@@ -2,14 +2,14 @@
 {
     public class SaleLineItem : Entity
     {
-        public SaleLineItem(Product product, decimal quantity, decimal unitPrice)
+        public SaleLineItem(Product product, decimal quantity, decimal netPrice)
         {
             Type = LineItemType.Product;
             ItemId = product.Id;
             Name = product.Name;
             Quantity = quantity;
             UnitPurchasePrice = product.Price.Purchase;
-            UnitPrice = unitPrice;
+            UnitPrice = netPrice / quantity;
         }
 
         public SaleLineItem(Service service, decimal price)
@@ -31,6 +31,7 @@
         public decimal UnitPurchasePrice { get; set; }
         public decimal NetPrice => UnitPrice * Quantity;
         public decimal NetPurchasePrice => UnitPurchasePrice * Quantity;
+        public decimal Profit => NetPrice - NetPurchasePrice;
 
         public int ItemId { get; set; }
 

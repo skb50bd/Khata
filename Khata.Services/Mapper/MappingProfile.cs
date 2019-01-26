@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+
+using AutoMapper;
 
 using Khata.Domain;
 using Khata.DTOs;
@@ -89,10 +93,60 @@ namespace Khata.Services.Mapper
 
             #region Sale Mapping
 
-            CreateMap<Sale, SaleDto>();
-            CreateMap<SaleViewModel, Sale>();
-            CreateMap<SaleDto, SaleViewModel>();
+            CreateMap<SaleLineItemViewModel, SaleLineItem>();
+            CreateMap<SaleLineItem, SaleLineItemViewModel>();
+            CreateMap<PaymentInfoViewModel, PaymentInfo>();
 
+            CreateMap<Sale, SaleDto>();
+            CreateMap<SaleViewModel, Sale>()
+                .ForMember(
+                    dest => dest.SaleDate,
+                    opt => opt.MapFrom(
+                        src => DateTimeOffset.ParseExact(
+                            src.SaleDate,
+                            @"dd/MM/yyyy",
+                            CultureInfo.InvariantCulture.DateTimeFormat
+                        )
+                   )
+                );
+            CreateMap<SaleDto, SaleViewModel>().ForMember(
+                dest => dest.SaleDate,
+                opt => opt.MapFrom(src => src.SaleDate.ToString("dd/MM/yyyy"))
+            );
+
+            CreateMap<SaleLineItem, InvoiceLineItem>();
+
+            CreateMap<SaleViewModel, Invoice>()
+            .ForMember(
+                dest => dest.Cart,
+                opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.PreviousDue,
+                opt => opt.MapFrom(src => src.Customer.Debt)
+            )
+            .ForMember(
+                dest => dest.PaymentSubtotal,
+                opt => opt.MapFrom(src => src.Cart.Sum(li => li.NetPrice))
+            );
+
+            CreateMap<DebtPayment, Invoice>()
+            .ForMember(
+                dest => dest.PaymentPaid,
+                opt => opt.MapFrom(src => src.Amount)
+            )
+            .ForMember(
+                dest => dest.PaymentSubtotal,
+                opt => opt.MapFrom(src => 0)
+            )
+            .ForMember(
+                dest => dest.PaymentDiscountCash,
+                opt => opt.MapFrom(src => 0)
+            )
+            .ForMember(
+                dest => dest.Date,
+                opt => opt.MapFrom(src => DateTime.Now)
+            );
             #endregion
 
             #region Expense Mapping

@@ -156,5 +156,12 @@ $(document).ready(function () {
     $(document).on("change, keyup", "#BalanceBefore", updateBalance);
     $(document).on("change, keyup", "#Amount", updateBalance);
 
+    var buttons = document.getElementsByClassName('blank-link');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (event) {
+            e.preventDefault();
+        });
+    }
+
     // Salary Payment End
 });

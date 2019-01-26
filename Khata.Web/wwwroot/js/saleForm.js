@@ -2,6 +2,10 @@
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 
+function toFixedIfNecessary(value, dp) {
+    return +parseFloat(value).toFixed(dp);
+}
+
 function getDate() {
     var date = new Date(),
         year = date.getFullYear(),
@@ -57,31 +61,35 @@ function calculatePayment(event) {
     // Subtotal
     // Todo - Calculate Subtotal
     var subTotalValue = 0;
-    for (var i = 0; i < $('.ItemNetPrice').length; i++)
-        subTotal += Number(totals[i].val());
+    var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
+    for (var i = 0; i < currentCartItemsNetPrices.length; i++)
+        subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
-    subtotal.value = subTotalValue;
+    subtotal.value = toFixedIfNecessary(subTotalValue, 2);
 
     // Discount Cash
     if (isNaN(discountCash.valueAsNumber))
         discountCash.value = 0;
 
     // Discount Percentage
-    discountPercentage.value = (discountCash.valueAsNumber / subTotalValue * 100).toFixed(2);
+    discountPercentage.value =
+        subTotalValue !== 0
+            ? toFixedIfNecessary(discountCash.valueAsNumber / subTotalValue * 100, 2)
+            : 0;
 
     // Previous Due
     if (isNaN(debtBefore.valueAsNumber))
         debtBefore.valueAsNumber = 0;
 
     // Payable
-    payable.value = subtotal.valueAsNumber - discountCash.valueAsNumber + debtBefore.valueAsNumber;
+    payable.value = toFixedIfNecessary(subtotal.valueAsNumber - discountCash.valueAsNumber + debtBefore.valueAsNumber, 2);
 
     // Paid
     if (isNaN(paid.valueAsNumber))
         paid.value = 0;
 
     // Debt After
-    debtAfter.value = debtBefore.valueAsNumber - paid.valueAsNumber;
+    debtAfter.value = toFixedIfNecessary(payable.valueAsNumber - paid.valueAsNumber, 2);
 }
 
 function calculateItemPrice(event) {
@@ -157,15 +165,48 @@ function createCartItem(newItem) {
 
     row.innerHTML = `
         <td hidden>
-            <input type="number" name="Cart.Index" value="`+ itemsAdded + `" />
-            <input type="number" name="Cart[`+ itemsAdded + `].ItemId" value="` + newItem.itemId + `" />
+            <input type="number"
+                name="Cart.Index"
+                value="`+ itemsAdded + `" />
+            <input type="number"
+                name="Cart[`+ itemsAdded + `].ItemId" 
+                class="cart-item-itemid"
+                value="` + newItem.itemId + `" />
         </td>
-        <td hidden><input type="number" name="Cart[`+ itemsAdded + `].Type" value="` + newItem.type + `"/></td>
-        <td><input type="text" readonly value="` + newItem.name + `"/></td>
-        <td><input type="number" name="Cart[`+ itemsAdded + `].Quantity" readonly value="` + newItem.quantity + `"/></td>
-        <td><input type="number" readonly value="`+ newItem.unitPrice + `"/></td>
-        <td><input type="number" name="Cart[`+ itemsAdded + `].NetPrice" readonly class="cart-item-netprice" value="` + newItem.netPrice + `"/></td>
-        <td><button class="btn btn-sm btn-danger" id="remove-item-button`+ itemsAdded + `">Remove</button></td>
+        <td hidden>
+            <input type="number"
+                name="Cart[`+ itemsAdded + `].Type" 
+                    class="cart-item-type"
+                    value="` + newItem.type + `"/>
+        </td>
+        <td colspan="3">
+            <input type="text" readonly
+                    class="cart-item-name"
+                    value="` + newItem.name + `"/>
+        </td>
+        <td>
+            <input type="number"
+                name="Cart[`+ itemsAdded + `].Quantity" readonly 
+                class="cart-item-quantity"
+                value="` + newItem.quantity + `"/></td>
+        <td>
+            <input type="number" readonly
+                class="cart-item-unirprice"
+                value="`+ newItem.unitPrice + `"/>
+        </td>
+        <td>
+            <input type="number" readonly
+                name="Cart[`+ itemsAdded + `].NetPrice" 
+                class="cart-item-netprice"
+                value="` + newItem.netPrice + `"/>
+        </td>
+        <td>
+            <button class="btn btn-sm btn-danger"
+                id="remove-item-button`+ itemsAdded + `"
+                class="cart-item-removeitem">
+                Remove
+            </button>
+        </td>
     `;
 
     return row;
@@ -178,10 +219,39 @@ function addLineItem(event) {
     if (newItem === false)
         return;
 
+    //var idElements = document.getElementsByClassName('cart-item-itemid');
+
+    //var idElementsArray = Array.from(idElements);
+
+    //var duplicateIdElement =
+    //    idElementsArray
+    //        .find(function (idElem) {
+    //            if (idElem.valueAsNumber === newItem.itemId) {
+    //                var row = Array.from(idElem.parentElement.parentElement.children);
+    //                if (row.find(
+    //                    function (element) {
+    //                        return element.firstElementChild.className.includes('cart-item-type');
+    //                    }).value === newItem.type.toString()
+    //                )
+    //                    return true;
+    //                else return false;
+    //            }
+    //            else return false;
+    //        });
+
+    //if (duplicateIdElement !== null && duplicateIdElement !== undefined) {
+    //    if (typeof duplicateIdElement.onclick === "function") {
+    //        duplicateIdElement.onclick.apply(duplicateIdElement);
+    //    }
+    //}
+
     cart.appendChild(createCartItem(newItem));
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
+
     itemsAdded++;
+
     clearLineItem(event);
+    calculatePayment();
 }
 
 function removeCartItem(event) {
@@ -191,7 +261,8 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    saleDate.value = getDate();
+    if (saleDate.value === '')
+        saleDate.value = getDate();
 
     $('#customer-selector').autocomplete({
         source: function (request, response) {
@@ -220,6 +291,8 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     debtBefore.value = data.debt;
+                    customerFirstName.value = data.firstName;
+                    customerLastName.value = data.lastName;
                 }
             });
             customerSelector.value = ui.item.label;
@@ -310,7 +383,7 @@ $(document).ready(function () {
     discountPercentage.addEventListener('change', function () {
         if (isNaN(discountPercentage.valueAsNumber))
             discountPercentage.value = 0;
-        discountPercentage.value = discountPercentage.valueAsNumber.toFixed(2);
+        discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
         discountCash.value = subtotal.valueAsNumber / discountPercentage.valueAsNumber * 100;
     });
     debtBefore.addEventListener('change', calculatePayment);

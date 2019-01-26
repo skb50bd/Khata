@@ -15,29 +15,31 @@ namespace Khata.Data.Persistence
             string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlServer(cnnString));
+                options.UseSqlServer(cnnString)
+                .EnableSensitiveDataLogging());
             //options.UseInMemoryDatabase("Khata"));
 
             services.AddDefaultIdentity<ApplicationUser>()
             .AddDefaultUI(UIFramework.Bootstrap4)
             .AddEntityFrameworkStores<KhataContext>();
 
-            services.AddScoped<ITrackingRepository<Product>, TrackingRepository<Product>>();
-            services.AddScoped<ITrackingRepository<Service>, TrackingRepository<Service>>();
-            services.AddScoped<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
-            services.AddScoped<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
-            services.AddScoped<ITrackingRepository<Sale>, SaleRepository>();
-            services.AddScoped<ITrackingRepository<Expense>, TrackingRepository<Expense>>();
-            services.AddScoped<ITrackingRepository<Supplier>, TrackingRepository<Supplier>>();
-            services.AddScoped<ITrackingRepository<SupplierPayment>, SupplierPaymentRepository>();
-            services.AddScoped<ITrackingRepository<Purchase>, PurchaseRepository>();
-            services.AddScoped<ITrackingRepository<Employee>, TrackingRepository<Employee>>();
-            services.AddScoped<ITrackingRepository<SalaryIssue>, SalaryIssueRepository>();
-            services.AddScoped<ITrackingRepository<SalaryPayment>, SalaryPaymentRepository>();
-            services.AddScoped<ICashRegisterRepository, CashRegisterRepository>();
-            services.AddScoped<IRepository<Withdrawal>, Repository<Withdrawal>>();
-            services.AddScoped<IRepository<Deposit>, Repository<Deposit>>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ITrackingRepository<Product>, TrackingRepository<Product>>();
+            services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();
+            services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
+            services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
+            services.AddTransient<ITrackingRepository<Sale>, SaleRepository>();
+            services.AddTransient<ITrackingRepository<Invoice>, InvoiceRepository>();
+            services.AddTransient<ITrackingRepository<Expense>, TrackingRepository<Expense>>();
+            services.AddTransient<ITrackingRepository<Supplier>, TrackingRepository<Supplier>>();
+            services.AddTransient<ITrackingRepository<SupplierPayment>, SupplierPaymentRepository>();
+            services.AddTransient<ITrackingRepository<Purchase>, PurchaseRepository>();
+            services.AddTransient<ITrackingRepository<Employee>, TrackingRepository<Employee>>();
+            services.AddTransient<ITrackingRepository<SalaryIssue>, SalaryIssueRepository>();
+            services.AddTransient<ITrackingRepository<SalaryPayment>, SalaryPaymentRepository>();
+            services.AddTransient<ICashRegisterRepository, CashRegisterRepository>();
+            services.AddTransient<IRepository<Withdrawal>, Repository<Withdrawal>>();
+            services.AddTransient<IRepository<Deposit>, Repository<Deposit>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

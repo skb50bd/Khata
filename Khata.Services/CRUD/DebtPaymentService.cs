@@ -20,18 +20,21 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
+        private readonly IInvoiceService _invoices;
         private readonly ICashRegisterService _cashRegister;
         private readonly ICustomerService _customers;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public DebtPaymentService(IUnitOfWork db,
+            IInvoiceService invoices,
             IMapper mapper,
             ICashRegisterService cashRegister,
             ICustomerService customers,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _invoices = invoices;
             _mapper = mapper;
             _cashRegister = cashRegister;
             _customers = customers;
@@ -67,10 +70,20 @@ namespace Khata.Services.CRUD
             CustomerVm.Debt -= model.Amount;
 
             await _customers.Update(CustomerVm);
+
+            if (model.InvoiceId == 0)
+            {
+                var invoice = _mapper.Map<Invoice>(dm);
+                invoice.PreviousDue = CustomerVm.Debt;
+                invoice = await _invoices.Add(invoice);
+                dm.InvoiceId = invoice.Id;
+            }
+
             _db.DebtPayments.Add(dm);
             await _db.CompleteAsync();
 
             await _cashRegister.AddDeposit(dm);
+            await _invoices.SetDebtPayment(dm.InvoiceId, dm.Id);
 
             return _mapper.Map<DebtPaymentDto>(dm);
         }

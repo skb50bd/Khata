@@ -1,12 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
+using Khata.Domain;
+
 namespace Khata.DTOs
 {
     public class DebtPaymentDto
     {
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
+
+        public int InvoiceId { get; set; }
+        public virtual Invoice Invoice { get; set; }
 
         public int CustomerId { get; set; }
 

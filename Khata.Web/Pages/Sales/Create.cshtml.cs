@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Khata.Services.CRUD;
 using Khata.ViewModels;
@@ -36,6 +37,11 @@ namespace WebUI.Pages.Sales
         {
             if (!ModelState.IsValid)
             {
+                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    System.Console.WriteLine(e.ErrorMessage);
+                }
+
                 return Page();
             }
 

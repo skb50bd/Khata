@@ -7,7 +7,7 @@ namespace Khata.ViewModels
 {
     public class SaleViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public SaleType Type { get; set; }
         public int CustomerId { get; set; }
 
@@ -25,7 +25,7 @@ namespace Khata.ViewModels
         [Display(Name = "Date")]
         public string SaleDate { get; set; }
 
-        public decimal Description { get; set; }
+        public string Description { get; set; }
     }
 
     public class SaleLineItemViewModel

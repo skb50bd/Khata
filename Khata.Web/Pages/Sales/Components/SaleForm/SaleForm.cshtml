@@ -188,7 +188,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input id="subtotal" type="text" class="form-control" disabled />
+            <input id="subtotal" type="number" class="form-control" disabled />
         </div>
     </div>
 
@@ -198,7 +198,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input asp-for="Payment.DiscountCash" type="text" class="form-control" />
+            <input asp-for="Payment.DiscountCash" type="number" class="form-control" />
         </div>
         <span asp-validation-for="Payment.DiscountCash" class="text-danger"></span>
     </div>
@@ -224,7 +224,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input id="debt-before" type="text" class="form-control" disabled />
+            <input id="debt-before" type="number" class="form-control" disabled />
         </div>
     </div>
 
@@ -234,7 +234,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input id="payable" type="text" class="form-control" disabled />
+            <input id="payable" type="number" class="form-control" disabled />
         </div>
     </div>
 
@@ -244,7 +244,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input asp-for="Payment.Paid" type="text" class="form-control" />
+            <input asp-for="Payment.Paid" type="number" class="form-control" />
         </div>
         <span asp-validation-for="Payment.Paid" class="text-danger"></span>
     </div>
@@ -255,7 +255,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">@sym</span>
             </div>
-            <input id="debt-after" type="text" class="form-control" disabled />
+            <input id="debt-after" type="number" class="form-control" disabled />
         </div>
     </div>
 

@@ -9,6 +9,7 @@
             <th>@Html.DisplayNameFor(model => model.Amount)</th>
             <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
             <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,11 @@
                 <td>@Html.DisplayFor(modelItem => debtPayment.Amount)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModifier)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModificationTime)</td>
+                <td>
+                    <a asp-page="../Invoices/Details"
+                       asp-route-id="@Html.ValueFor(modelItem => debtPayment.InvoiceId)"
+                       class="card-link btn btn-sm btn-inline btn-success">Invoice</a>
+                </td>
             </tr>
         }
     </tbody>

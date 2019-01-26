@@ -8,7 +8,10 @@ namespace Khata.Data.Persistence
 {
     public class KhataContext : IdentityDbContext
     {
-        public KhataContext(DbContextOptions<KhataContext> options) : base(options) { }
+        public KhataContext(DbContextOptions<KhataContext> options) : base(options)
+        {
+            //IHostingEnvironment env
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +36,10 @@ namespace Khata.Data.Persistence
             {
                 entity.Property(d => d.CustomerId).IsRequired();
                 entity.OwnsOne(d => d.Metadata);
+                entity.HasOne(dp => dp.Invoice)
+                    .WithOne(i => i.DebtPayment)
+                    .HasForeignKey<Invoice>(i => i.DebtPaymentId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<SaleLineItem>(entity =>
@@ -44,6 +51,16 @@ namespace Khata.Data.Persistence
             {
                 entity.OwnsOne(s => s.Payment);
                 entity.OwnsOne(s => s.Metadata);
+                entity.HasOne(s => s.Invoice)
+                    .WithOne(i => i.Sale)
+                    .HasForeignKey<Invoice>(i => i.SaleId)
+                    .IsRequired(false);
+            });
+
+            modelBuilder.Entity<Invoice>(entity =>
+            {
+                entity.OwnsOne(s => s.Metadata);
+                entity.OwnsMany(s => s.Cart).HasKey(s => s.Id);
             });
 
             modelBuilder.Entity<Expense>().OwnsOne(e => e.Metadata);
@@ -91,6 +108,7 @@ namespace Khata.Data.Persistence
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<DebtPayment> DebtPayments { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }

@@ -1,5 +1,5 @@
 ﻿@page
-@model WebUI.Pages.Products.DetailsModel
+@model WebUI.Pages.Sales.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
@@ -7,6 +7,6 @@
 
 
 @await Component.InvokeAsync(
-    nameof(Components.ProductInfo.ProductInfo),
-        new { product = Model.Product }
+    nameof(Components.SaleInfo.SaleInfo),
+        new { sale = Model.Sale }
     )

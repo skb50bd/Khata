@@ -8,7 +8,7 @@ using Khata.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Pages.Products
+namespace WebUI.Pages.Sales
 {
     public class DetailsModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace WebUI.Pages.Products
             _mapper = mapper;
         }
 
-        public ProductDto Product { get; set; }
+        public SaleDto Sale { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,14 +29,14 @@ namespace WebUI.Pages.Products
                 return NotFound();
             }
 
-            var product = await _db.Products.GetById((int)id);
+            var sale = await _db.Sales.GetById((int)id);
 
-            if (product == null)
+            if (sale == null)
             {
                 return NotFound();
             }
 
-            Product = _mapper.Map<ProductDto>(product);
+            Sale = _mapper.Map<SaleDto>(sale);
             return Page();
         }
     }

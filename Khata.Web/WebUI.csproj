@@ -11,27 +11,19 @@
 
   <ItemGroup>
     <Compile Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
-    <Compile Remove="Pages\Sales\Components\SaleInfo\**" />
     <Content Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
-    <Content Remove="Pages\Sales\Components\SaleInfo\**" />
     <EmbeddedResource Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
-    <EmbeddedResource Remove="Pages\Sales\Components\SaleInfo\**" />
     <None Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
-    <None Remove="Pages\Sales\Components\SaleInfo\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Sales\Details.cshtml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Pages\Sales\Details.cshtml" />
     <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.js" />
     <Content Remove="wwwroot\lib\bootstrap\dist\js\popper.min.es5.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Pages\DebtPayments\Components\DebtPaymentForm\DebtPaymentForm.cshtml" />
+    <None Include="Pages\Sales\Components\SaleInfo\SaleInfo.cshtml" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />

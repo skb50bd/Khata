@@ -7,6 +7,7 @@ namespace Khata.ViewModels
         public int Id { get; set; }
 
         public int CustomerId { get; set; }
+        public int InvoiceId { get; set; }
 
         [Display(Name = "Amount Paid", ShortName = "Amount")]
         [DataType(DataType.Currency)]

@@ -7,18 +7,19 @@ namespace Khata.Services.CRUD
         public static IServiceCollection ConfigureCrudServices(
             this IServiceCollection services)
         {
-            services.AddScoped<ICashRegisterService, CashRegisterService>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IServiceService, ServiceService>();
-            services.AddScoped<ISaleService, SaleService>();
-            services.AddScoped<IDebtPaymentService, DebtPaymentService>();
-            services.AddScoped<IExpenseService, ExpenseService>();
-            services.AddScoped<ISupplierService, SupplierService>();
-            services.AddScoped<ISupplierPaymentService, SupplierPaymentService>();
-            services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddScoped<ISalaryIssueService, SalaryIssueService>();
-            services.AddScoped<ISalaryPaymentService, SalaryPaymentService>();
+            services.AddTransient<ICashRegisterService, CashRegisterService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IServiceService, ServiceService>();
+            services.AddTransient<ISaleService, SaleService>();
+            services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<IDebtPaymentService, DebtPaymentService>();
+            services.AddTransient<IExpenseService, ExpenseService>();
+            services.AddTransient<ISupplierService, SupplierService>();
+            services.AddTransient<ISupplierPaymentService, SupplierPaymentService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ISalaryIssueService, SalaryIssueService>();
+            services.AddTransient<ISalaryPaymentService, SalaryPaymentService>();
             return services;
         }
     }

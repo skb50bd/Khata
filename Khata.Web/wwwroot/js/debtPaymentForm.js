@@ -32,7 +32,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    $('#DebtBefore').val(data.Debt);
+                    $('#DebtBefore').val(data.debt);
                     updateDebt();
                 }
             });
