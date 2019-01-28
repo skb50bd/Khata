@@ -1,51 +1,48 @@
-﻿namespace Khata.Domain
+﻿namespace Khata.ViewModels
 {
-    public interface ITransaction
+    public interface ITransactionViewModel
     {
         decimal Amount { get; }
         string TableName { get; }
         int? RowId { get; }
         string Description { get; }
-        Metadata Metadata { get; }
     }
 
-    public interface IWithdrawal : ITransaction { }
+    public interface IWithdrawalViewModel : ITransactionViewModel { }
 
-    public interface IDeposit : ITransaction { }
+    public interface IDepositViewModel : ITransactionViewModel { }
 
-    public abstract class Transaction : Entity, ITransaction
+    public abstract class TransactionViewModel : ITransactionViewModel
     {
         public decimal Amount { get; set; }
         public string TableName { get; set; }
         public int? RowId { get; set; }
         public string Description { get; set; }
-        public Metadata Metadata { get; set; }
     }
 
-    public class Withdrawal : Transaction
+    public class WithdrawalViewModel : TransactionViewModel
     {
-        private Withdrawal() { }
-        public Withdrawal(IWithdrawal item)
+        public WithdrawalViewModel() { }
+
+        public WithdrawalViewModel(IWithdrawalViewModel item)
         {
             Amount = item.Amount;
             TableName = item.TableName;
             RowId = item.RowId;
             Description = item.Description;
-            Metadata = item.Metadata;
         }
     }
 
-    public class Deposit : Transaction
+    public class DepositViewModel : TransactionViewModel
     {
-        private Deposit() { }
+        public DepositViewModel() { }
 
-        public Deposit(IDeposit item)
+        public DepositViewModel(IDepositViewModel item)
         {
             Amount = item.Amount;
             TableName = item.TableName;
             RowId = item.RowId;
             Description = item.Description;
-            Metadata = item.Metadata;
         }
     }
 }

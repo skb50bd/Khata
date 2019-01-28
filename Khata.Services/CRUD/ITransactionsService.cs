@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Khata.Domain;
 using Khata.Services.PageFilterSort;
+using Khata.ViewModels;
 
 using SharedLibrary;
 
@@ -11,8 +12,8 @@ namespace Khata.Services.CRUD
 {
     public interface ITransactionsService
     {
-        Task<Deposit> Add(Deposit model);
-        Task<Withdrawal> Add(Withdrawal model);
+        Task<Deposit> Add(DepositViewModel model);
+        Task<Withdrawal> Add(WithdrawalViewModel model);
         Task<Deposit> DeleteDeposit(int id);
         Task<Withdrawal> DeleteWithdrawal(int id);
         Task<bool> DepositExists(int id);

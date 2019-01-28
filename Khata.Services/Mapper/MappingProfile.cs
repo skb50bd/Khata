@@ -91,6 +91,13 @@ namespace Khata.Services.Mapper
             CreateMap<CustomerDto, CustomerViewModel>();
             #endregion
 
+            #region Transactions Mapping
+
+            CreateMap<DepositViewModel, Deposit>();
+            CreateMap<WithdrawalViewModel, Withdrawal>();
+
+            #endregion
+
             #region Debt Payment Mapping
 
             CreateMap<DebtPaymentViewModel, DebtPayment>();

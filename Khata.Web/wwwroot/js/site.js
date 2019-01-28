@@ -22,6 +22,10 @@ $(document).ready(function () {
         window.location = $(this).data("href");
     });
 
+    $(".js-clickable-transaction").click(function () {
+        window.location = "/" + $(this).data("table") + "/Details?id=" + $(this).data("row");
+    });
+
     $(".js-remove-item").click(function (e) {
         swal({
             title: "Are you sure?",
@@ -79,7 +83,7 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    $('#PayableBefore').val(data.Payable);
+                    $('#PayableBefore').val(data.payable);
                     updatePayable();
                 }
             });
@@ -131,7 +135,7 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    $('#BalanceBefore').val(data.Balance);
+                    $('#BalanceBefore').val(data.balance);
                     updateBalance();
                 }
             });
@@ -164,4 +168,12 @@ $(document).ready(function () {
     }
 
     // Salary Payment End
+
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+
+    $('.popover-dismiss').popover({
+        trigger: 'hover'
+    });
 });

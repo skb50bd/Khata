@@ -8,6 +8,7 @@ using AutoMapper;
 using Khata.Data.Core;
 using Khata.Domain;
 using Khata.Services.PageFilterSort;
+using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Http;
 
@@ -77,20 +78,22 @@ namespace Khata.Services.CRUD
         public async Task<Withdrawal> GetWithdrawalById(int id)
             => await _db.Withdrawals.GetById(id);
 
-        public async Task<Deposit> Add(Deposit model)
+        public async Task<Deposit> Add(DepositViewModel model)
         {
-            model.Metadata = Metadata.CreatedNew(CurrentUser);
-            _db.Deposits.Add(model);
+            var dm = _mapper.Map<Deposit>(model);
+            dm.Metadata = Metadata.CreatedNew(CurrentUser);
+            _db.Deposits.Add(dm);
             await _db.CompleteAsync();
-            return model;
+            return dm;
         }
 
-        public async Task<Withdrawal> Add(Withdrawal model)
+        public async Task<Withdrawal> Add(WithdrawalViewModel model)
         {
-            model.Metadata = Metadata.CreatedNew(CurrentUser);
-            _db.Withdrawals.Add(model);
+            var dm = _mapper.Map<Withdrawal>(model);
+            dm.Metadata = Metadata.CreatedNew(CurrentUser);
+            _db.Withdrawals.Add(dm);
             await _db.CompleteAsync();
-            return model;
+            return dm;
         }
 
         public async Task<Deposit> DeleteDeposit(int id)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Khata.Domain;
 using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
+using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,7 +69,7 @@ namespace WebUI.Controllers
 
         // POST: api/Transactions/Deposits
         [HttpPost("Deposits")]
-        public async Task<IActionResult> Post([FromBody] Deposit model)
+        public async Task<IActionResult> Post([FromBody] DepositViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -85,7 +86,7 @@ namespace WebUI.Controllers
 
         // POST: api/Transactions/Withdrawals
         [HttpPost("Withdrawals")]
-        public async Task<IActionResult> Post([FromBody] Withdrawal model)
+        public async Task<IActionResult> Post([FromBody] WithdrawalViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

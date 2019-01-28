@@ -10,9 +10,22 @@ namespace Khata.Domain
         public string Modifier { get; private set; }
         public DateTimeOffset ModificationTime { get; private set; }
 
+        public string ModifiedAtLocalTime
+        {
+            get
+            {
+                if (ModificationTime.Date == DateTime.Today)
+                    return "Today at " + ModificationTime.ToString("HH:mm");
+                else if (ModificationTime.Date.AddDays(1) == DateTime.Today)
+                    return "Yesterday at " + ModificationTime.ToString("HH:mm");
+                else
+                    return ModificationTime.ToString("dd/MM/yyyy");
+            }
+        }
+
         public Metadata()
         {
-            
+
         }
 
         private Metadata(string username)
@@ -31,7 +44,7 @@ namespace Khata.Domain
         }
 
         public static Metadata CreatedNew(string username) => new Metadata(username);
-        
+
         public Metadata Modified(string username)
         {
             Modifier = username;
