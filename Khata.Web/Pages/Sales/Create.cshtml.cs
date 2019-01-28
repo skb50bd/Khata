@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
+using Khata.DTOs;
 using Khata.Services.CRUD;
 using Khata.ViewModels;
 
@@ -39,7 +41,23 @@ namespace WebUI.Pages.Sales
                 return Page();
             }
 
-            var sale = await _sales.Add(SaleVm);
+            SaleDto sale;
+            try
+            {
+                sale = await _sales.Add(SaleVm);
+
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Invalid Operation")
+                {
+                    MessageType = "danger";
+                    Message = "Nothing to Create";
+                    return Page();
+                }
+                else
+                    throw;
+            }
 
             MessageType = "success";
             if (sale.Id > 0)

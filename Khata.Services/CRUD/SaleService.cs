@@ -51,7 +51,7 @@ namespace Khata.Services.CRUD
 
         public async Task<SaleDto> Add(SaleViewModel model)
         {
-            if (model.Cart?.Count == 0 || model.Payment.Paid == 0)
+            if (model.Cart is null && model.Payment.Paid == 0)
             {
                 throw new Exception("Invalid Operation");
             }
@@ -119,6 +119,8 @@ namespace Khata.Services.CRUD
 
                 deposit.RowId = dm.RowId;
                 await _db.CompleteAsync();
+
+                invoice.SaleId = dm.Id;
             }
             else
             {
@@ -139,8 +141,9 @@ namespace Khata.Services.CRUD
 
                 deposit.RowId = dp.RowId;
                 invoice.DebtPaymentId = dp.Id;
-                await _db.CompleteAsync();
             }
+
+            await _db.CompleteAsync();
 
             return _mapper.Map<SaleDto>(dm);
         }

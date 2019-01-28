@@ -7,6 +7,14 @@
 
 <h1 class="display-4">Create a Sale</h1>
 <hr />
+
+@if (!(Model.Message is null))
+{
+    <div class="alert alert-@Model.MessageType" role="alert">
+        @Model.Message
+    </div>
+}
+
 <div class="row">
     <div class="col-md-8">
         <form method="post">

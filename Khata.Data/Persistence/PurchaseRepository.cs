@@ -37,7 +37,7 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Cart)
                 .Include(s => s.Supplier)
                 .Where(newPredicate)
-                .OrderBy(order)
+                .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)
                 .ToListAsync());

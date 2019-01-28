@@ -37,7 +37,7 @@ namespace Khata.Data.Persistence
             res.AddRange(await Context.Set<T>()
                                       .AsNoTracking()
                                       .Where(predicate)
-                                      .OrderBy(order)
+                                      .OrderByDescending(order)
                                       .Skip((pageIndex - 1) * pageSize)
                                       .Take(pageSize > 0 ? pageSize : int.MaxValue)
                                       .ToListAsync());

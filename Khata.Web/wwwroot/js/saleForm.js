@@ -3,7 +3,7 @@
 };
 
 function toFixedIfNecessary(value, dp) {
-    return +parseFloat(value).toFixed(dp);
+    return parseFloat(value).toFixed(dp);
 }
 
 function getDate() {
@@ -52,8 +52,15 @@ var itemsAdded = 0;
 
 function customerInputsReadonly(value) {
     var customerInputs = document.getElementsByClassName('customer-input');
-    for (var i = 0; i < customerInputs.length; i++) {
-        customerInputs[i].setAttribute('readonly', value);
+    if (value === true) {
+        for (var i = 0; i < customerInputs.length; i++) {
+            customerInputs[i].setAttribute('readonly');
+        }
+    }
+    else {
+        for (var j = 0; j < customerInputs.length; j++) {
+            customerInputs[j].removeAttribute('readonly');
+        }
     }
 }
 
@@ -184,18 +191,18 @@ function createCartItem(newItem) {
                     class="cart-item-name"
                     value="` + newItem.name + `"/>
         </td>
-        <td>
-            <input type="number"
-                name="Cart[`+ itemsAdded + `].Quantity" readonly 
+        <td class="text-right">
+            <input type="number" readonly class="text-right"
+                name="Cart[`+ itemsAdded + `].Quantity" 
                 class="cart-item-quantity"
                 value="` + newItem.quantity + `"/></td>
-        <td>
-            <input type="number" readonly
+        <td class="text-right">
+            <input type="number" readonly class="text-right"
                 class="cart-item-unirprice"
                 value="`+ newItem.unitPrice + `"/>
         </td>
-        <td>
-            <input type="number" readonly
+        <td class="text-right">
+            <input type="number" readonly class="text-right"
                 name="Cart[`+ itemsAdded + `].NetPrice" 
                 class="cart-item-netprice"
                 value="` + newItem.netPrice + `"/>
@@ -263,6 +270,8 @@ function removeCartItem(event) {
 $(document).ready(function () {
     if (saleDate.value === '')
         saleDate.value = getDate();
+
+    registerNewCustomer.removeAttribute('checked');
 
     $('#customer-selector').autocomplete({
         source: function (request, response) {
@@ -372,10 +381,10 @@ $(document).ready(function () {
         if (this.checked === true) {
             customerId.value = '';
             customerSelector.value = '';
-            customerInputsReadonly(true);
+            customerInputsReadonly(false);
         }
         else {
-            customerInputsReadonly(false);
+            customerInputsReadonly(true);
         }
     });
     subtotal.addEventListener('change', calculatePayment);
