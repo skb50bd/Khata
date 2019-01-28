@@ -58,10 +58,13 @@ namespace Khata.Services.CRUD
 
             dm.Invoice = _mapper.Map<Invoice>(dm);
             dm.Invoice.Metadata = Metadata.CreatedNew(CurrentUser);
+            dm.Invoice.DebtPayment = dm;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            var deposit = new Deposit(dm as IDeposit);
-            deposit.Metadata = Metadata.CreatedNew(CurrentUser);
+            var deposit = new Deposit(dm as IDeposit)
+            {
+                Metadata = Metadata.CreatedNew(CurrentUser)
+            };
             _db.DebtPayments.Add(dm);
             _db.Deposits.Add(deposit);
 

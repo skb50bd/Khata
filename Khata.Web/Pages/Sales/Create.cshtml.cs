@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Khata.Services.CRUD;
 using Khata.ViewModels;
@@ -37,20 +36,23 @@ namespace WebUI.Pages.Sales
         {
             if (!ModelState.IsValid)
             {
-                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    System.Console.WriteLine(e.ErrorMessage);
-                }
-
                 return Page();
             }
 
             var sale = await _sales.Add(SaleVm);
 
-            Message = $"Sale: {sale.Id} - {sale.Customer.FullName} created!";
             MessageType = "success";
+            if (sale.Id > 0)
+            {
+                Message = $"Sale: {sale.Id} - {sale.Customer.FullName} created!";
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                Message = $"Debt Payment received from {sale.Customer.FullName}!";
+                return RedirectToPage("../DebtPayments/Index");
+            }
 
-            return RedirectToPage("./Index");
         }
     }
 }

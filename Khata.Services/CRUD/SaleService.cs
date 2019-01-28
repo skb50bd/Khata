@@ -100,9 +100,9 @@ namespace Khata.Services.CRUD
                     Description = dm.Description,
                     Metadata = Metadata.CreatedNew(CurrentUser)
                 };
-                dm.Payment.Paid += -dm.Payment.Due;
+                dm.Payment.Paid -= dp.Amount;
+                dm.Customer.Debt -= dp.Amount;
             }
-            dm.Customer.Debt += dm.Payment.Due;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
             invoice = dm.Invoice;
@@ -114,6 +114,7 @@ namespace Khata.Services.CRUD
                 {
                     Metadata = Metadata.CreatedNew(CurrentUser)
                 };
+                _db.Deposits.Add(deposit);
                 await _db.CompleteAsync();
 
                 deposit.RowId = dm.RowId;
@@ -129,14 +130,15 @@ namespace Khata.Services.CRUD
             {
                 invoice.DebtPayment = dp;
                 _db.DebtPayments.Add(dp);
-                var deposit2 = new Deposit(dp as IDeposit)
+                var deposit = new Deposit(dp as IDeposit)
                 {
                     Metadata = Metadata.CreatedNew(CurrentUser)
                 };
-                _db.Deposits.Add(deposit2);
+                _db.Deposits.Add(deposit);
                 await _db.CompleteAsync();
 
-                deposit2.RowId = dp.RowId;
+                deposit.RowId = dp.RowId;
+                invoice.DebtPaymentId = dp.Id;
                 await _db.CompleteAsync();
             }
 
