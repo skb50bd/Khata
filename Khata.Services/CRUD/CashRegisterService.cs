@@ -22,8 +22,6 @@ namespace Khata.Services.CRUD
 
         public async Task<CashRegister> Get()
             => await _db.CashRegister.Get();
-        public async Task<CashRegister> GetWithTransactions()
-            => await _db.CashRegister.GetWithTransactions();
 
         public async Task<CashRegister> Update(CashRegister model)
         {
@@ -31,20 +29,6 @@ namespace Khata.Services.CRUD
             await _db.CompleteAsync();
 
             return model;
-        }
-
-        public async Task AddDeposit(IDeposit model)
-        {
-            var cr = await GetWithTransactions();
-            cr.AddTransaction(new Deposit(model));
-            await _db.CompleteAsync();
-        }
-
-        public async Task AddWithdrawal(IWithdrawal model)
-        {
-            var cr = await GetWithTransactions();
-            cr.AddTransaction(new Withdrawal(model));
-            await _db.CompleteAsync();
         }
     }
 }

@@ -20,24 +20,15 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-        private readonly IInvoiceService _invoices;
-        private readonly ICashRegisterService _cashRegister;
-        private readonly ICustomerService _customers;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public DebtPaymentService(IUnitOfWork db,
-            IInvoiceService invoices,
             IMapper mapper,
-            ICashRegisterService cashRegister,
-            ICustomerService customers,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
-            _invoices = invoices;
             _mapper = mapper;
-            _cashRegister = cashRegister;
-            _customers = customers;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -59,31 +50,25 @@ namespace Khata.Services.CRUD
 
         public async Task<DebtPaymentDto> Add(DebtPaymentViewModel model)
         {
-            var CustomerVm = _mapper.Map<CustomerViewModel>(
-                await _customers.Get(model.CustomerId));
-
             var dm = _mapper.Map<DebtPayment>(model);
 
-            dm.DebtBefore = CustomerVm.Debt;
+            dm.Customer = await _db.Customers.GetById(model.CustomerId);
+            dm.DebtBefore = dm.Customer.Debt;
+            dm.Customer.Debt -= dm.Amount;
+
+            dm.Invoice = _mapper.Map<Invoice>(dm);
+            dm.Invoice.Metadata = Metadata.CreatedNew(CurrentUser);
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            CustomerVm.Debt -= model.Amount;
-
-            await _customers.Update(CustomerVm);
-
-            if (model.InvoiceId == 0)
-            {
-                var invoice = _mapper.Map<Invoice>(dm);
-                invoice.PreviousDue = CustomerVm.Debt;
-                invoice = await _invoices.Add(invoice);
-                dm.InvoiceId = invoice.Id;
-            }
-
+            var deposit = new Deposit(dm as IDeposit);
+            deposit.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.DebtPayments.Add(dm);
+            _db.Deposits.Add(deposit);
+
             await _db.CompleteAsync();
 
-            await _cashRegister.AddDeposit(dm);
-            await _invoices.SetDebtPayment(dm.InvoiceId, dm.Id);
+            deposit.RowId = dm.RowId;
+            await _db.CompleteAsync();
 
             return _mapper.Map<DebtPaymentDto>(dm);
         }

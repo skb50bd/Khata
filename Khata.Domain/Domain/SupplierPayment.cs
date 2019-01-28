@@ -10,6 +10,6 @@
         public string Description { get; set; }
 
         public string TableName => nameof(SupplierPayment);
-        public int RowId => Id;
+        public int? RowId => Id;
     }
 }

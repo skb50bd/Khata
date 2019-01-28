@@ -372,10 +372,10 @@ $(document).ready(function () {
         if (this.checked === true) {
             customerId.value = '';
             customerSelector.value = '';
-            customerInputsReadonly(false);
+            customerInputsReadonly(true);
         }
         else {
-            customerInputsReadonly(true);
+            customerInputsReadonly(false);
         }
     });
     subtotal.addEventListener('change', calculatePayment);

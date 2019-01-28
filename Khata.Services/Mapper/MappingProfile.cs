@@ -14,6 +14,14 @@ namespace Khata.Services.Mapper
     {
         public MappingProfile()
         {
+            #region Cash Register Mapping
+
+            CreateMap<CashRegisterViewModel, CashRegister>();
+            CreateMap<CashRegister, CashRegisterDto>();
+            CreateMap<CashRegisterDto, CashRegisterViewModel>();
+
+            #endregion
+
             #region Product Mapping
             CreateMap<Product, ProductViewModel>();
             CreateMap<ProductViewModel, Product>()
@@ -118,6 +126,10 @@ namespace Khata.Services.Mapper
 
             CreateMap<SaleViewModel, Invoice>()
             .ForMember(
+                dest => dest.Id,
+                opt => opt.Ignore()
+            )
+            .ForMember(
                 dest => dest.Cart,
                 opt => opt.Ignore()
             )
@@ -130,7 +142,29 @@ namespace Khata.Services.Mapper
                 opt => opt.MapFrom(src => src.Cart.Sum(li => li.NetPrice))
             );
 
+            CreateMap<Sale, Invoice>()
+            .ForMember(
+                dest => dest.Id,
+                opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.PreviousDue,
+                opt => opt.MapFrom(src => src.Customer.Debt)
+            )
+            .ForMember(
+                dest => dest.Sale,
+                opt => opt.MapFrom(src => src)
+            );
+
             CreateMap<DebtPayment, Invoice>()
+            .ForMember(
+                dest => dest.Id,
+                opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.PreviousDue,
+                opt => opt.MapFrom(src => src.DebtBefore)
+            )
             .ForMember(
                 dest => dest.PaymentPaid,
                 opt => opt.MapFrom(src => src.Amount)
@@ -146,6 +180,10 @@ namespace Khata.Services.Mapper
             .ForMember(
                 dest => dest.Date,
                 opt => opt.MapFrom(src => DateTime.Now)
+            )
+            .ForMember(
+                dest => dest.DebtPayment,
+                opt => opt.MapFrom(src => src)
             );
             #endregion
 

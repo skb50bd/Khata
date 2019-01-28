@@ -12,6 +12,6 @@ namespace Khata.Domain
 
         public decimal Amount => Payment.Paid;
         public string TableName => nameof(Purchase);
-        public int RowId => Id;
+        public int? RowId => Id;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Khata.Domain
+﻿namespace Khata.DTOs
 {
     public class CashRegisterDto
     {

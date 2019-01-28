@@ -10,6 +10,8 @@
     <Compile Remove="Persistence\MIgrations\20190111060502_RenameColumn.cs" />
     <Compile Remove="Persistence\MIgrations\20190125154646_AddedInvoice.cs" />
     <Compile Remove="Persistence\MIgrations\20190125154646_AddedInvoice.Designer.cs" />
+    <Compile Remove="Persistence\MIgrations\20190127162556_AddedForeignKeyToTransaction.cs" />
+    <Compile Remove="Persistence\MIgrations\20190127162556_AddedForeignKeyToTransaction.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />

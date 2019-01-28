@@ -20,21 +20,15 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-        private readonly ICashRegisterService _cashRegister;
-        private readonly IEmployeeService _employees;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public SalaryPaymentService(IUnitOfWork db,
             IMapper mapper,
-            ICashRegisterService cashRegister,
-            IEmployeeService employees,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
-            _cashRegister = cashRegister;
-            _employees = employees;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -56,21 +50,22 @@ namespace Khata.Services.CRUD
 
         public async Task<SalaryPaymentDto> Add(SalaryPaymentViewModel model)
         {
-            var EmployeeVm = _mapper.Map<EmployeeViewModel>(
-                await _employees.Get(model.EmployeeId));
-
+            var emp = await _db.Employees.GetById(model.EmployeeId);
             var dm = _mapper.Map<SalaryPayment>(model);
 
-            dm.BalanceBefore = EmployeeVm.Balance;
+            dm.BalanceBefore = emp.Balance;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            EmployeeVm.Balance -= model.Amount;
-
-            await _employees.Update(EmployeeVm);
+            emp.Balance -= model.Amount;
             _db.SalaryPayments.Add(dm);
+
+            var withdrawal = new Withdrawal(dm as IWithdrawal);
+            withdrawal.Metadata = Metadata.CreatedNew(CurrentUser);
+            _db.Withdrawals.Add(withdrawal);
             await _db.CompleteAsync();
 
-            await _cashRegister.AddWithdrawal(dm);
+            withdrawal.RowId = dm.RowId;
+            await _db.CompleteAsync();
 
             return _mapper.Map<SalaryPaymentDto>(dm);
         }

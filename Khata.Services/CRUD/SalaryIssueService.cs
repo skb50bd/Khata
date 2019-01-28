@@ -20,18 +20,15 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-        private readonly IEmployeeService _employees;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public SalaryIssueService(IUnitOfWork db,
             IMapper mapper,
-            IEmployeeService employees,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
-            _employees = employees;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -53,17 +50,14 @@ namespace Khata.Services.CRUD
 
         public async Task<SalaryIssueDto> Add(SalaryIssueViewModel model)
         {
-            var EmployeeVm = _mapper.Map<EmployeeViewModel>(
-                await _employees.Get(model.EmployeeId));
-
+            var emp = await _db.Employees.GetById(model.EmployeeId);
             var dm = _mapper.Map<SalaryIssue>(model);
 
-            dm.BalanceBefore = EmployeeVm.Balance;
+            dm.BalanceBefore = emp.Balance;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            EmployeeVm.Balance += model.Amount;
+            emp.Balance += model.Amount;
 
-            await _employees.Update(EmployeeVm);
             _db.SalaryIssues.Add(dm);
             await _db.CompleteAsync();
 

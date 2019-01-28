@@ -4,14 +4,16 @@ using Khata.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20190126155853_AddedMetadataToTransactions")]
+    partial class AddedMetadataToTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,6 +96,8 @@ namespace Khata.Data.Persistence.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<int?>("CashRegisterId");
+
                     b.Property<string>("Description");
 
                     b.Property<int?>("RowId");
@@ -101,6 +105,8 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<string>("TableName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CashRegisterId");
 
                     b.ToTable("Deposits");
                 });
@@ -440,6 +446,8 @@ namespace Khata.Data.Persistence.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<int?>("CashRegisterId");
+
                     b.Property<string>("Description");
 
                     b.Property<int?>("RowId");
@@ -447,6 +455,8 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<string>("TableName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CashRegisterId");
 
                     b.ToTable("Withdrawals");
                 });
@@ -724,6 +734,10 @@ namespace Khata.Data.Persistence.Migrations
 
             modelBuilder.Entity("Khata.Domain.Deposit", b =>
                 {
+                    b.HasOne("Khata.Domain.CashRegister")
+                        .WithMany("Deposits")
+                        .HasForeignKey("CashRegisterId");
+
                     b.OwnsOne("Khata.Domain.Metadata", "Metadata", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -1223,6 +1237,10 @@ namespace Khata.Data.Persistence.Migrations
 
             modelBuilder.Entity("Khata.Domain.Withdrawal", b =>
                 {
+                    b.HasOne("Khata.Domain.CashRegister")
+                        .WithMany("Withdrawals")
+                        .HasForeignKey("CashRegisterId");
+
                     b.OwnsOne("Khata.Domain.Metadata", "Metadata", b1 =>
                         {
                             b1.Property<int>("Id")

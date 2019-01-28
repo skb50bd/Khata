@@ -59,6 +59,8 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Invoice>(entity =>
             {
+                entity.HasOne(i => i.Sale).WithOne(s => s.Invoice).HasForeignKey<Sale>(s => s.InvoiceId);
+                entity.HasOne(i => i.DebtPayment).WithOne(s => s.Invoice).HasForeignKey<DebtPayment>(s => s.InvoiceId);
                 entity.OwnsOne(s => s.Metadata);
                 entity.OwnsMany(s => s.Cart).HasKey(s => s.Id);
             });
@@ -97,6 +99,15 @@ namespace Khata.Data.Persistence
             });
 
             modelBuilder.Entity<CashRegister>().OwnsOne(cr => cr.Metadata);
+
+            modelBuilder.Entity<Deposit>(entity =>
+            {
+                entity.OwnsOne(d => d.Metadata);
+            });
+            modelBuilder.Entity<Withdrawal>(entity =>
+            {
+                entity.OwnsOne(d => d.Metadata);
+            });
         }
 
         public virtual DbSet<CashRegister> CashRegister { get; set; }

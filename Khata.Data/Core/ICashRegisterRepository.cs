@@ -7,6 +7,5 @@ namespace Khata.Data.Core
     public interface ICashRegisterRepository
     {
         Task<CashRegister> Get();
-        Task<CashRegister> GetWithTransactions();
     }
 }

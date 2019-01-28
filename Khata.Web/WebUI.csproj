@@ -41,12 +41,6 @@
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.min.js" />
-    <None Include="wwwroot\lib\materialbootstrap\css\material.css.map" />
-    <None Include="wwwroot\lib\materialbootstrap\css\material.min.css.map" />
-    <None Include="wwwroot\lib\materialbootstrap\js\material.js" />
-    <None Include="wwwroot\lib\materialbootstrap\js\material.js.map" />
-    <None Include="wwwroot\lib\materialbootstrap\js\material.min.js" />
-    <None Include="wwwroot\lib\materialbootstrap\js\material.min.js.map" />
   </ItemGroup>
 
 

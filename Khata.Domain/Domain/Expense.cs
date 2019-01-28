@@ -7,6 +7,6 @@
         public string Description { get; set; }
 
         public string TableName => nameof(Expense);
-        public int RowId => Id;
+        public int? RowId => Id;
     }
 }

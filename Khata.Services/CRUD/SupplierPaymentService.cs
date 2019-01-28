@@ -20,21 +20,15 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-        private readonly ISupplierService _suppliers;
-        private readonly ICashRegisterService _cashRegister;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public SupplierPaymentService(IUnitOfWork db,
             IMapper mapper,
-            ISupplierService suppliers,
-            ICashRegisterService cashRegister,
             IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
-            _suppliers = suppliers;
-            _cashRegister = cashRegister;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -56,19 +50,24 @@ namespace Khata.Services.CRUD
 
         public async Task<SupplierPaymentDto> Add(SupplierPaymentViewModel model)
         {
-            var SupplierVm = _mapper.Map<SupplierViewModel>(
-                await _suppliers.Get(model.SupplierId));
-
             var dm = _mapper.Map<SupplierPayment>(model);
-            dm.PayableBefore = SupplierVm.Payable;
+            dm.Supplier = await _db.Suppliers.GetById(model.SupplierId);
+            dm.PayableBefore = dm.Supplier.Payable;
+            dm.Supplier.Payable -= model.Amount;
+
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            SupplierVm.Payable -= model.Amount;
-            await _suppliers.Update(SupplierVm);
+            var withdrawal = new Withdrawal(dm as IWithdrawal)
+            {
+                Metadata = Metadata.CreatedNew(CurrentUser)
+            };
+
             _db.SupplierPayments.Add(dm);
+            _db.Withdrawals.Add(withdrawal);
             await _db.CompleteAsync();
 
-            await _cashRegister.AddWithdrawal(dm);
+            withdrawal.RowId = dm.RowId;
+            await _db.CompleteAsync();
 
             return _mapper.Map<SupplierPaymentDto>(dm);
         }

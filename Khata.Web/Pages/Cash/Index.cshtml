@@ -1,0 +1,125 @@
+﻿@page
+@model WebUI.Pages.Cash.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+
+<div class="row">
+    <div class=" col-lg-5  mr-3 card">
+        <div class="card-body">
+            <div class="row text-right">
+                <div class="col">
+                    <h6 class="display-4">Balance</h6>
+                    <h1 class="display-2">
+                        <sup><small>@sym</small></sup>
+                        @Model.Cash.Balance
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <form method="post"
+                      asp-action="Deposit"
+                      asp-controller="Transaction"
+                      class="col-md-6">
+                    <div class="form-group" hidden>
+                        <input name="TableName" id="TableName" value="Deposit" class="form-control" />
+                        <span validation-for="TableName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Amount" class="control-label">Deposit Amount</label>
+                        <input name="Amount" id="Deposit_Amount" value="0" class="form-control" />
+                        <span validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="control-label">Description</label>
+                        <textarea name="Description" id="Deposit_Description" value="0" class="form-control"></textarea>
+                        <span validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="reset" class="btn btn-secondary" value="Reset" />
+                        <input type="submit" class="btn btn-primary" value="Add Deposit" />
+                    </div>
+                </form>
+
+                <form method="post"
+                      asp-action="Withdrawal"
+                      asp-controller="Transaction"
+                      class="col-md-6">
+                    <div class="form-group" hidden>
+                        <input name="TableName" id="TableName" value="Deposit" class="form-control" />
+                        <span validation-for="TableName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Amount" class="control-label">Withdrawal Amount</label>
+                        <input name="Amount" id="Withdrawal_Amount" value="0" class="form-control" />
+                        <span validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="control-label">Description</label>
+                        <textarea name="Description" id="Withdrawal_Description" value="0" class="form-control"></textarea>
+                        <span validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="reset" class="btn btn-secondary" value="Reset" />
+                        <input type="submit" class="btn btn-primary" value="Add Withdrawal" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 card ml-3">
+        <div class="row">
+            <div class="col-md-6">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">DEPOSITS</th>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Despsits)
+                        {
+                            <tr>
+                                <td>@d.TableName</td>
+                                <td>@d.Amount</td>
+                                <td>@d.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">WITHDRAWALS</th>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Withdrawals)
+                        {
+                            <tr>
+                                <td>@d.TableName</td>
+                                <td>@d.Amount</td>
+                                <td>@d.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

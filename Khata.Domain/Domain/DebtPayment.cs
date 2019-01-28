@@ -13,6 +13,6 @@
         public string Description { get; set; }
 
         public string TableName => nameof(DebtPayment);
-        public int RowId => Id;
+        public int? RowId => Id;
     }
 }

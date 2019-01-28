@@ -20,18 +20,15 @@ namespace Khata.Services.CRUD
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-        private readonly ICashRegisterService _cashRegister;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public ExpenseService(IMapper mapper,
             IUnitOfWork db,
-            ICashRegisterService cashRegister,
             IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _db = db;
-            _cashRegister = cashRegister;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -54,9 +51,14 @@ namespace Khata.Services.CRUD
             var dm = _mapper.Map<Expense>(model);
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Expenses.Add(dm);
+            var withdrawal = new Withdrawal(dm as IWithdrawal);
+            withdrawal.Metadata = Metadata.CreatedNew(CurrentUser);
+            _db.Withdrawals.Add(withdrawal);
+
             await _db.CompleteAsync();
 
-            await _cashRegister.AddWithdrawal(dm);
+            withdrawal.RowId = dm.RowId;
+            await _db.CompleteAsync();
 
             return _mapper.Map<ExpenseDto>(dm);
         }

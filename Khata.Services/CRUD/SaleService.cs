@@ -23,32 +23,14 @@ namespace Khata.Services.CRUD
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IDebtPaymentService _debtPayments;
-        private readonly ICashRegisterService _cashRegister;
-        private readonly IProductService _products;
-        private readonly IServiceService _services;
-        private readonly IInvoiceService _invoices;
-        private readonly ICustomerService _customers;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public SaleService(IMapper mapper,
             IUnitOfWork db,
-            IProductService products,
-            IServiceService services,
-            IDebtPaymentService debtPayments,
-            IInvoiceService invoices,
-            ICashRegisterService cashRegister,
-            ICustomerService customers,
             IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _db = db;
-            _products = products;
-            _services = services;
-            _debtPayments = debtPayments;
-            _invoices = invoices;
-            _cashRegister = cashRegister;
-            _customers = customers;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -69,71 +51,96 @@ namespace Khata.Services.CRUD
 
         public async Task<SaleDto> Add(SaleViewModel model)
         {
-            CustomerDto customerDto;
-            if (model.RegisterNewCustomer)
+            if (model.Cart?.Count == 0 || model.Payment.Paid == 0)
             {
-                customerDto = await _customers.Add(model.Customer);
-                model.CustomerId = customerDto.Id;
+                throw new Exception("Invalid Operation");
             }
-            else
-            {
-                customerDto = await _customers.Get(model.CustomerId);
-            }
-            model.Customer = _mapper.Map<CustomerViewModel>(customerDto);
 
-            ICollection<SaleLineItem> cart = new List<SaleLineItem>();
+            var dm = _mapper.Map<Sale>(model);
+            DebtPayment dp = null;
+            Invoice invoice = null;
+
+            dm.Customer =
+                model.RegisterNewCustomer
+                    ? _mapper.Map<Customer>(model.Customer)
+                    : await _db.Customers.GetById(model.CustomerId);
+
+            dm.Cart = new List<SaleLineItem>();
             if (model.Cart?.Count > 0)
             {
-                cart = await Task.WhenAll(
-                model.Cart
-                    .Select(async (li) =>
-                        li.Type == LineItemType.Product
-                            ? await Sold(li.ItemId, li.Quantity, li.NetPrice)
-                            : await Sold(li.ItemId, li.NetPrice)));
+                dm.Cart = await Task.WhenAll(
+                    model.Cart
+                        .Select(async (li) =>
+                            li.Type == LineItemType.Product
+                                ? await Sold(li.ItemId, li.Quantity, li.NetPrice)
+                                : await Sold(li.ItemId, li.NetPrice)));
             }
 
-            var saleDm = _mapper.Map<Sale>(model);
-            saleDm.SaleDate =
+            dm.SaleDate =
                 DateTimeOffset.ParseExact(
                     model.SaleDate,
                     @"dd/MM/yyyy",
                     System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat
                 );
-            saleDm.Cart = cart;
-            saleDm.Payment.SubTotal = saleDm.Cart.Sum(li => li.NetPrice);
 
-            var invoice = _mapper.Map<Invoice>(model);
-            saleDm.Cart
-                .ForEach(
-                    li => invoice.Cart
-                            .Add(_mapper.Map<InvoiceLineItem>(li)));
+            dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
 
-            invoice = await _invoices.Add(invoice);
+            dm.Invoice = _mapper.Map<Invoice>(dm);
+            dm.Invoice.PreviousDue = dm.Customer.Debt;
+            dm.Invoice.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            if (saleDm.Payment.Due < 0)
+            if (dm.Payment.Due < 0)
             {
-                if (customerDto != null)
+                dp = new DebtPayment
                 {
-                    var dp = new DebtPaymentViewModel
-                    {
-                        CustomerId = customerDto.Id,
-                        InvoiceId = invoice.Id,
-                        Amount = -saleDm.Payment.Due
-                    };
-                    await _debtPayments.Add(dp);
-                    saleDm.Payment.Paid -= dp.Amount;
-                }
+                    Customer = dm.Customer,
+                    Invoice = dm.Invoice,
+                    DebtBefore = dm.Customer.Debt,
+                    Amount = -dm.Payment.Due,
+                    Description = dm.Description,
+                    Metadata = Metadata.CreatedNew(CurrentUser)
+                };
+                dm.Payment.Paid += -dm.Payment.Due;
+            }
+            dm.Customer.Debt += dm.Payment.Due;
+            dm.Metadata = Metadata.CreatedNew(CurrentUser);
+
+            invoice = dm.Invoice;
+            if (dm.Cart.Count > 0)
+            {
+                invoice.Sale = dm;
+                _db.Sales.Add(dm);
+                var deposit = new Deposit(dm as IDeposit)
+                {
+                    Metadata = Metadata.CreatedNew(CurrentUser)
+                };
+                await _db.CompleteAsync();
+
+                deposit.RowId = dm.RowId;
+                await _db.CompleteAsync();
+            }
+            else
+            {
+                dm.Invoice.Sale = null;
+                dm.Invoice = null;
             }
 
-            saleDm.Metadata = Metadata.CreatedNew(CurrentUser);
-            saleDm.InvoiceId = invoice.Id;
-            _db.Sales.Add(saleDm);
-            await _db.CompleteAsync();
+            if (dp != null)
+            {
+                invoice.DebtPayment = dp;
+                _db.DebtPayments.Add(dp);
+                var deposit2 = new Deposit(dp as IDeposit)
+                {
+                    Metadata = Metadata.CreatedNew(CurrentUser)
+                };
+                _db.Deposits.Add(deposit2);
+                await _db.CompleteAsync();
 
-            await _cashRegister.AddDeposit(saleDm);
-            await _invoices.SetSale(invoice.Id, saleDm.Id);
+                deposit2.RowId = dp.RowId;
+                await _db.CompleteAsync();
+            }
 
-            return _mapper.Map<SaleDto>(saleDm);
+            return _mapper.Map<SaleDto>(dm);
         }
 
         public async Task<SaleDto> Update(SaleViewModel vm)

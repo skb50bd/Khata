@@ -27,11 +27,5 @@ namespace Khata.Data.Persistence
 
         public virtual async Task<CashRegister> Get()
             => await Context.CashRegister.FirstAsync();
-
-        public virtual async Task<CashRegister> GetWithTransactions()
-            => await Context.CashRegister
-                        .Include(cr => cr.Withdrawals)
-                        .Include(cr => cr.Deposits)
-                        .FirstAsync();
     }
 }
