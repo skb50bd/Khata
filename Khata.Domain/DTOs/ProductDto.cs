@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Khata.Domain;
 
@@ -44,10 +43,6 @@ namespace Khata.DTOs
         [DataType(DataType.Currency)]
         public decimal PricePurchase { get; set; }
 
-        [Display(Name = "Last Modified By", ShortName = "Modifier")]
-        public string MetadataModifier { get; set; }
-
-        [Display(Name = "Last Modified At", ShortName = "Last Modified By")]
-        public DateTimeOffset MetadataModificationTime { get; set; }
+        public Metadata Metadata { get; set; }
     }
 }

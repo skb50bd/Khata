@@ -1,0 +1,20 @@
+﻿@model Khata.Domain.Metadata
+@{
+}
+
+<small class="text-muted">
+    @if (Model.CreatedAt == Model.ModifiedAt)
+    {
+        <span>Created</span>
+    }
+    else
+    {
+        <span>Updated</span>
+    }
+
+    <span data-toggle="tooltip"
+          data-placement="top"
+          title="@Model.ModifiedAt">
+        @Model.UpdatedAgo
+    </span> ago by @Model.Modifier.
+</small>

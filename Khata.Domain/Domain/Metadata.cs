@@ -1,5 +1,6 @@
 ﻿using System;
 
+using DateTimeExtensions;
 namespace Khata.Domain
 {
     public class Metadata : Entity
@@ -10,18 +11,14 @@ namespace Khata.Domain
         public string Modifier { get; private set; }
         public DateTimeOffset ModificationTime { get; private set; }
 
-        public string ModifiedAtLocalTime
-        {
-            get
-            {
-                if (ModificationTime.Date == DateTime.Today)
-                    return "Today at " + ModificationTime.ToString("HH:mm");
-                else if (ModificationTime.Date.AddDays(1) == DateTime.Today)
-                    return "Yesterday at " + ModificationTime.ToString("HH:mm");
-                else
-                    return ModificationTime.ToString("dd/MM/yyyy");
-            }
-        }
+
+        public string Summary => "Updated " + ModificationTime.DateTime.ToNaturalText(DateTime.Now)
+                                    + " ago by " + Modifier;
+        public string ModifiedAt => ModificationTime.ToString("dd/MM/yyyy HH:mm");
+        public string CreatedAt => CreationTime.ToString("dd/MM/yyyy HH:mm");
+
+        public string CreatedAgo => CreationTime.DateTime.ToNaturalText(DateTime.Now);
+        public string UpdatedAgo => ModificationTime.DateTime.ToNaturalText(DateTime.Now);
 
         public Metadata()
         {

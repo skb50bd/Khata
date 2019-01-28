@@ -7,8 +7,8 @@
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.CustomerFullName)</th>
             <th>@Html.DisplayNameFor(model => model.Amount)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.ModifiedAt)</th>
             <th></th>
         </tr>
     </thead>
@@ -20,8 +20,8 @@
                 <td>@Html.DisplayFor(modelItem => debtPayment.Id)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.CustomerFullName)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.Amount)</td>
-                <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModifier)</td>
-                <td>@Html.DisplayFor(modelItem => debtPayment.MetadataModificationTime)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.Metadata.Modifier)</td>
+                <td>@Html.DisplayFor(modelItem => debtPayment.Metadata.ModifiedAt)</td>
                 <td>
                     <a asp-page="../Invoices/Details"
                        asp-route-id="@Html.ValueFor(modelItem => debtPayment.InvoiceId)"

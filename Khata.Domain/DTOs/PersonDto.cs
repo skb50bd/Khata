@@ -1,5 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Khata.Domain;
 
 namespace Khata.DTOs
 {
@@ -23,7 +24,6 @@ namespace Khata.DTOs
 
         public string Note { get; set; }
 
-        public string MetadataModifier { get; set; }
-        public DateTimeOffset MetadataModificationTime { get; set; }
+        public Metadata Metadata { get; set; }
     }
 }

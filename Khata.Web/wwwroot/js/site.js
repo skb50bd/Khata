@@ -176,4 +176,8 @@ $(document).ready(function () {
     $('.popover-dismiss').popover({
         trigger: 'hover'
     });
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 });

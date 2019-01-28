@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Khata.Domain;
 
 namespace Khata.DTOs
 {
@@ -8,8 +10,10 @@ namespace Khata.DTOs
         public bool IsRemoved { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-        public DateTimeOffset MetadataModificationTime { get; set; }
-        public string MetadataModifier { get; set; }
+
+        public Metadata Metadata { get; set; }
     }
 }

@@ -42,8 +42,6 @@
     </div>
 
     <div class="card-footer">
-        <small class="text-muted">
-            Last updated at @Model.MetadataModificationTime.ToString("") by @Model.MetadataModifier
-        </small>
+        <partial name="_UpdateSummary" for="Metadata" />
     </div>
 </div>

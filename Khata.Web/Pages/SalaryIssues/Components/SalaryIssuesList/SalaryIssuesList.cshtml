@@ -7,8 +7,8 @@
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.EmployeeFullName)</th>
             <th>@Html.DisplayNameFor(model => model.Amount)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModificationTime)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.ModifiedAt)</th>
         </tr>
     </thead>
     <tbody>
@@ -19,8 +19,8 @@
                 <td>@Html.DisplayFor(modelItem => salaryIssue.Id)</td>
                 <td>@Html.DisplayFor(modelItem => salaryIssue.EmployeeFullName)</td>
                 <td>@Html.DisplayFor(modelItem => salaryIssue.Amount)</td>
-                <td>@Html.DisplayFor(modelItem => salaryIssue.MetadataModifier)</td>
-                <td>@Html.DisplayFor(modelItem => salaryIssue.MetadataModificationTime)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.Metadata.Modifier)</td>
+                <td>@Html.DisplayFor(modelItem => salaryIssue.Metadata.ModifiedAt)</td>
             </tr>
         }
     </tbody>

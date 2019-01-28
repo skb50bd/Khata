@@ -10,7 +10,7 @@
             <th>@Html.DisplayNameFor(model => model.PaymentDue)</th>
             <th>@Html.DisplayNameFor(model => model.Profit)</th>
             <th>@Html.DisplayNameFor(model => model.SaleDate)</th>
-            <th>@Html.DisplayNameFor(model => model.MetadataModifier)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
             <th></th>
         </tr>
     </thead>
@@ -25,7 +25,7 @@
                 <td>@Html.DisplayFor(modelItem => item.PaymentDue)</td>
                 <td>@Html.DisplayFor(modelItem => item.Profit)</td>
                 <td>@Html.DisplayFor(modelItem => item.SaleDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.MetadataModifier)</td>
+                <td>@Html.DisplayFor(modelItem => item.Metadata.Modifier)</td>
                 <td>
                     <a asp-page="../Invoices/Details"
                        asp-route-id="@Html.ValueFor(modelItem => item.InvoiceId)"

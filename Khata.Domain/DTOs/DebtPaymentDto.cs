@@ -33,10 +33,6 @@ namespace Khata.DTOs
 
         public string Description { get; set; }
 
-        [Display(Name = "Modifier")]
-        public string MetadataModifier { get; set; }
-
-        [Display(Name = "Last Modified")]
-        public DateTimeOffset MetadataModificationTime { get; set; }
+        public Metadata Metadata { get; set; }
     }
 }
