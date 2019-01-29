@@ -1,23 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+
 using Khata.Domain;
 using Khata.Services.CRUD;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 
 namespace WebUI.Pages.Vouchars
 {
     public class DetailsModel : PageModel
     {
         private readonly IVoucharService _vouchars;
-        public DetailsModel(IVoucharService vouchars)
+        public DetailsModel(IVoucharService vouchars, IOptionsMonitor<OutletOptions> options)
         {
             _vouchars = vouchars;
+            Options = options.CurrentValue;
         }
 
         public Vouchar Vouchar;
+        public OutletOptions Options;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {

@@ -1,6 +1,7 @@
 using System.Globalization;
 
 using Khata.Data.Persistence;
+using Khata.Domain;
 using Khata.Services.CRUD;
 using Khata.Services.Mapper;
 using Khata.Services.PageFilterSort;
@@ -85,6 +86,8 @@ namespace WebUI
             //        WasmMediaTypeNames.Application.Wasm,
             //    });
             //});
+
+            services.Configure<OutletOptions>(Configuration.GetSection("OutletOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

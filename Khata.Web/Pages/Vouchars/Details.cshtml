@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Vouchar #@Model.Vouchar.Id</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/css/Vouchar.css" rel="stylesheet" />
+    <link href="~/css/invoice.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -20,22 +20,22 @@
         <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
             <div class="col-md-8">
                 <div id="brand">
-                    <h1 class="display-4">Brotal Incorporated</h1>
+                    <h1 class="display-4">@Model.Options.Title</h1>
                     <p class="lead">
-                        A place for product, a place for quality.
+                        @Model.Options.Slogan
                     </p>
                     <table class="table-hover">
                         <tr>
-                            <td>Address &nbsp; &nbsp;</td>
-                            <td>: Somewhere with a very long name.</td>
+                            <td>Address</td>
+                            <td>: @Model.Options.Address</td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td>: <a href="mailto:info@brotal.net">info@brotal.net</a></td>
+                            <td>: <a href="mailto:@Model.Options.Email">@Model.Options.Email</a></td>
                         </tr>
                         <tr>
                             <td>Phone</td>
-                            <td>: +88001676203752</td>
+                            <td>: @Model.Options.Phone</td>
                         </tr>
                     </table>
                 </div>
