@@ -17,9 +17,6 @@ function getDate() {
 }
 
 const purchaseDate = document.getElementById('PurchaseDate');
-const purchaseType = document.getElementById('Type');
-const retail = document.getElementById('retail');
-const bulk = document.getElementById('bulk');
 const supplierId = document.getElementById('SupplierId');
 const supplierSelector = document.getElementById('supplier-selector');
 const registerNewSupplier = document.getElementById('RegisterNewSupplier');
@@ -66,7 +63,6 @@ function supplierInputsReadonly(value) {
 
 function calculatePayment(event) {
     // Subtotal
-    // Todo - Calculate Subtotal
     var subTotalValue = 0;
     var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
     for (var i = 0; i < currentCartItemsNetPrices.length; i++)

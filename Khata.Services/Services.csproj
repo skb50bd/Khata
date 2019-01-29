@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\StonedExtensions\StonedExtensions\SharedLibrary.csproj" />
     <ProjectReference Include="..\Khata.Data\Data.csproj" />
     <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
+    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -66,7 +66,6 @@ function customerInputsReadonly(value) {
 
 function calculatePayment(event) {
     // Subtotal
-    // Todo - Calculate Subtotal
     var subTotalValue = 0;
     var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
     for (var i = 0; i < currentCartItemsNetPrices.length; i++)

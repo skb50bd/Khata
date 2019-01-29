@@ -57,10 +57,10 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\StonedExtensions\StonedExtensions\SharedLibrary.csproj" />
     <ProjectReference Include="..\Khata.Data\Data.csproj" />
     <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
     <ProjectReference Include="..\Khata.Services\Services.csproj" />
+    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
 </Project>
