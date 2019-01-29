@@ -7,7 +7,7 @@ namespace Khata.Domain
     public class Sale : TrackedEntity, IDeposit
     {
         public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public virtual CustomerInvoice Invoice { get; set; }
 
         public DateTimeOffset SaleDate { get; set; }
         public SaleType Type { get; set; }

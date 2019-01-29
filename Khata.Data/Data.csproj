@@ -5,22 +5,14 @@
     <RootNamespace>Khata.Data</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="Persistence\MIgrations\20190111060502_RenameColumn.cs" />
-    <Compile Remove="Persistence\MIgrations\20190125154646_AddedInvoice.cs" />
-    <Compile Remove="Persistence\MIgrations\20190125154646_AddedInvoice.Designer.cs" />
-    <Compile Remove="Persistence\MIgrations\20190127162556_AddedForeignKeyToTransaction.cs" />
-    <Compile Remove="Persistence\MIgrations\20190127162556_AddedForeignKeyToTransaction.Designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -48,17 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\MIgrations\" />
     <Folder Include="Persistence\SeedScripts\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Persistence\MIgrations\20181227194716_InitialCreate.Designer.cs">
-      <DependentUpon>20181227194716_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Persistence\MIgrations\20181227204358_AddedForeignKeyToDebtPayment.Designer.cs">
-      <DependentUpon>20181227204358_AddedForeignKeyToDebtPayment.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>

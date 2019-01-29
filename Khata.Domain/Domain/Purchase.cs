@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Khata.Domain
 {
@@ -6,6 +7,11 @@ namespace Khata.Domain
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }
+
+        public int VoucharId { get; set; }
+        public virtual Vouchar Vouchar { get; set; }
+
+        public DateTimeOffset PurchaseDate { get; set; }
         public virtual ICollection<PurchaseLineItem> Cart { get; set; }
         public PaymentInfo Payment { get; set; }
         public string Description { get; set; }

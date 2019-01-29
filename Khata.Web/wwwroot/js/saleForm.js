@@ -192,25 +192,25 @@ function createCartItem(newItem) {
                     value="` + newItem.name + `"/>
         </td>
         <td class="text-right">
-            <input type="number" readonly class="text-right"
+            <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].Quantity" 
-                class="cart-item-quantity"
+                class="text-right cart-item-quantity"
                 value="` + newItem.quantity + `"/></td>
         <td class="text-right">
-            <input type="number" readonly class="text-right"
-                class="cart-item-unirprice"
+            <input type="number" readonly 
+                class="text-right cart-item-unirprice"
                 value="`+ newItem.unitPrice + `"/>
         </td>
         <td class="text-right">
-            <input type="number" readonly class="text-right"
+            <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].NetPrice" 
-                class="cart-item-netprice"
+                class="text-right cart-item-netprice"
                 value="` + newItem.netPrice + `"/>
         </td>
         <td>
             <button class="btn btn-sm btn-danger"
                 id="remove-item-button`+ itemsAdded + `"
-                class="cart-item-removeitem">
+                class="text-right cart-item-removeitem">
                 Remove
             </button>
         </td>

@@ -17,7 +17,7 @@ namespace WebUI.Pages.Invoices
             _invoices = invoices;
         }
 
-        public Invoice Invoice;
+        public CustomerInvoice Invoice;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {

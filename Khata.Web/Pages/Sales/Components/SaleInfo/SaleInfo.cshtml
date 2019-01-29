@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>Discount</td>
-                    <td class="text-right">(@Model.PaymentDiscountPercentage%) @Model.PaymentDiscountCash</td>
+                    <td class="text-right">(@Model.PaymentDiscountPercentage.ToString("0.##")%) @Model.PaymentDiscountCash</td>
                 </tr>
                 @{ var recordClass = ""; }
                 @if (Model.Customer.Debt > 0)

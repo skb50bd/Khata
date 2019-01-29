@@ -1,0 +1,224 @@
+﻿@page
+@model WebUI.Pages.Vouchars.DetailsModel
+@{
+    Layout = null;
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Vouchar #@Model.Vouchar.Id</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/Vouchar.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="page" class="container">
+        <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
+            <div class="col-md-8">
+                <div id="brand">
+                    <h1 class="display-4">Brotal Incorporated</h1>
+                    <p class="lead">
+                        A place for product, a place for quality.
+                    </p>
+                    <table class="table-hover">
+                        <tr>
+                            <td>Address &nbsp; &nbsp;</td>
+                            <td>: Somewhere with a very long name.</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>: <a href="mailto:info@brotal.net">info@brotal.net</a></td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>: +88001676203752</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 text-right">
+                <p class="lead">
+                    <em>Vouchar #<strong>@Model.Vouchar.Id</strong></em>
+                    <br />
+                    <small>@Model.Vouchar.DateLocalDate</small>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="payment-information list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-sm-4">Seller</div>
+                            <div class="col-sm-8 text-right">
+                                <strong>
+                                    @Model.Vouchar.Supplier.FullName
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-sm-4">Company</div>
+                            <div class="col-sm-8 text-right">
+                                @Model.Vouchar.Supplier.CompanyName
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-sm-4">Phone</div>
+                            <div class="col-sm-8 text-right">
+                                @Model.Vouchar.Supplier.Phone
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-sm-4">Email</div>
+                            <div class="col-sm-8 text-right">
+                                @Model.Vouchar.Supplier.Email
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item list-group-item-action list-group-item-light">
+                        <div class="row">
+                            <div class="col-sm-4">Address</div>
+                            <div class="col-sm-8 text-right">
+                                @Model.Vouchar.Supplier.Address
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="payment-information list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-sm-6">Cart Item Total</div>
+                            <div class="col-sm-6 text-right">
+                                @sym @Model.Vouchar.PaymentSubtotal
+                            </div>
+                        </div>
+                    </li>
+                    @{
+                        var previousDueClass =
+                            Model.Vouchar.PreviousDue > 0
+                            ? "list-group-item-warning"
+                            : "";
+                    }
+                    <li class="list-group-item list-group-item-action @previousDueClass">
+                        <div class="row">
+                            <div class="col-sm-6">Previous Due</div>
+                            <div class="col-sm-6 text-right">
+                                + @sym @Model.Vouchar.PreviousDue
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item list-group-item-action list-group-item-info">
+                        <div class="row">
+                            <div class="col-sm-6">Payable</div>
+                            <div class="col-sm-6 text-right">
+                                <strong>
+                                    = @sym @Model.Vouchar.PaymentPayable
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item list-group-item-action list-group-item-light">
+                        <div class="row">
+                            <div class="col-sm-6">Paid</div>
+                            <div class="col-sm-6 text-right">
+                                <strong>
+                                    @sym @Model.Vouchar.PaymentPaid
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+
+                    @{
+                        var dueClass = Model.Vouchar.DueAfter > 0
+                            ? "list-group-item-danger"
+                            : "list-group-item-success";
+                    }
+
+                    <li class="list-group-item list-group-item-action @dueClass">
+                        <div class="row">
+                            <div class="col-sm-6">Due</div>
+                            <div class="col-sm-6 text-right">
+                                <strong>
+                                    @sym @Model.Vouchar.DueAfter
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-12">
+                @{
+                    if (Model.Vouchar.Cart?.Count > 0)
+                    {
+                        <table class="table table-sm table-hover table-striped">
+                            <thead>
+                                <tr class="table-light">
+                                    <th class="h4" colspan="4">
+                                        Cart Items
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Item
+                                    </th>
+                                    <th class="text-right">
+                                        Quantity
+                                    </th>
+                                    <th class="text-right">
+                                        Unit Price
+                                    </th>
+                                    <th class="text-right">
+                                        Net Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Vouchar.Cart)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td class="text-right">@item.Quantity</td>
+                                        <td class="text-right">@sym @item.UnitPrice</td>
+                                        <td class="text-right"
+                                            style="font-weight: 700;">
+                                            @sym @item.NetPrice
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h5 class="display-4">Empty Cart</h5>
+                        <p class="card-text">There is no item in the cart.</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

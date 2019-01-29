@@ -58,7 +58,7 @@ namespace Khata.Services.CRUD
 
             var dm = _mapper.Map<Sale>(model);
             DebtPayment dp = null;
-            Invoice invoice = null;
+            CustomerInvoice invoice = null;
 
             dm.Customer =
                 model.RegisterNewCustomer
@@ -85,7 +85,7 @@ namespace Khata.Services.CRUD
 
             dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
 
-            dm.Invoice = _mapper.Map<Invoice>(dm);
+            dm.Invoice = _mapper.Map<CustomerInvoice>(dm);
             dm.Invoice.PreviousDue = dm.Customer.Debt;
             dm.Invoice.Metadata = Metadata.CreatedNew(CurrentUser);
 

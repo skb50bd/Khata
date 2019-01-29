@@ -11,7 +11,7 @@ namespace Khata.DTOs
         public bool IsRemoved { get; set; }
 
         public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public virtual CustomerInvoice Invoice { get; set; }
 
         public int CustomerId { get; set; }
 

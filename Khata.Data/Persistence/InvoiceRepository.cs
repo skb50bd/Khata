@@ -12,20 +12,20 @@ using SharedLibrary;
 
 namespace Khata.Data.Persistence
 {
-    public class InvoiceRepository : TrackingRepository<Invoice>, ITrackingRepository<Invoice>
+    public class InvoiceRepository : TrackingRepository<CustomerInvoice>, ITrackingRepository<CustomerInvoice>
     {
         public InvoiceRepository(KhataContext context) : base(context) { }
 
-        public override async Task<IPagedList<Invoice>> Get<T>(
-            Expression<Func<Invoice, bool>> predicate,
-            Expression<Func<Invoice, T>> order,
+        public override async Task<IPagedList<CustomerInvoice>> Get<T>(
+            Expression<Func<CustomerInvoice, bool>> predicate,
+            Expression<Func<CustomerInvoice, T>> order,
             int pageIndex,
             int pageSize)
         {
-            Expression<Func<Invoice, bool>> newPredicate =
+            Expression<Func<CustomerInvoice, bool>> newPredicate =
                 i => !i.IsRemoved && predicate.Compile().Invoke(i);
 
-            var res = new PagedList<Invoice>()
+            var res = new PagedList<CustomerInvoice>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
@@ -44,7 +44,7 @@ namespace Khata.Data.Persistence
             return res;
         }
 
-        public override async Task<Invoice> GetById(int id)
+        public override async Task<CustomerInvoice> GetById(int id)
             => await Context.Invoices
             .Include(s => s.Customer)
             .FirstOrDefaultAsync(s => s.Id == id);

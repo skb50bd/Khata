@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Khata.DTOs.PurchaseDto>
+
+<table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Supplier.FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.PaymentSubTotal)</th>
+            <th>@Html.DisplayNameFor(model => model.PaymentDue)</th>
+            <th>@Html.DisplayNameFor(model => model.PurchaseDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="js-clickable-row" data-href="@Url.Page("./Details", new { id = item.Id })">
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Supplier.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentSubTotal)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentDue)</td>
+                <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Metadata.Modifier)</td>
+                <td>
+                    <a asp-page="../Vouchars/Details"
+                       asp-route-id="@Html.ValueFor(modelItem => item.VoucharId)"
+                       class="card-link btn btn-sm btn-inline btn-success blank-link">Vouchar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

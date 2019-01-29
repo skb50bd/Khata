@@ -19,7 +19,7 @@ namespace Khata.DTOs
         public DateTimeOffset SaleDate { get; set; }
 
         public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public virtual CustomerInvoice Invoice { get; set; }
 
         public int CustomerId { get; set; }
         public CustomerDto Customer { get; set; }

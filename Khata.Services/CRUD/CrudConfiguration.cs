@@ -13,7 +13,9 @@ namespace Khata.Services.CRUD
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IServiceService, ServiceService>();
             services.AddTransient<ISaleService, SaleService>();
+            services.AddTransient<IPurchaseService, PurchaseService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<IVoucharService, VoucharService>();
             services.AddTransient<IDebtPaymentService, DebtPaymentService>();
             services.AddTransient<IExpenseService, ExpenseService>();
             services.AddTransient<ISupplierService, SupplierService>();

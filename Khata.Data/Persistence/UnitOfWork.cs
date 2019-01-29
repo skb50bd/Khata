@@ -14,7 +14,8 @@ namespace Khata.Data.Persistence
         public ITrackingRepository<Customer> Customers { get; }
         public ITrackingRepository<DebtPayment> DebtPayments { get; }
         public ITrackingRepository<Sale> Sales { get; }
-        public ITrackingRepository<Invoice> Invoices { get; }
+        public ITrackingRepository<CustomerInvoice> Invoices { get; }
+        public ITrackingRepository<Vouchar> Vouchars { get; }
         public ITrackingRepository<Expense> Expenses { get; }
         public ITrackingRepository<Supplier> Suppliers { get; }
         public ITrackingRepository<SupplierPayment> SupplierPayments { get; }
@@ -35,7 +36,8 @@ namespace Khata.Data.Persistence
             ITrackingRepository<Customer> customers,
             ITrackingRepository<DebtPayment> debtPayments,
             ITrackingRepository<Sale> sales,
-            ITrackingRepository<Invoice> invoices,
+            ITrackingRepository<CustomerInvoice> invoices,
+            ITrackingRepository<Vouchar> vouchars,
             ITrackingRepository<Expense> expenses,
             ITrackingRepository<Supplier> suppliers,
             ITrackingRepository<SupplierPayment> supplierPayments,
@@ -54,6 +56,7 @@ namespace Khata.Data.Persistence
             DebtPayments = debtPayments;
             Sales = sales;
             Invoices = invoices;
+            Vouchars = vouchars;
             Expenses = expenses;
             Suppliers = suppliers;
             SupplierPayments = supplierPayments;

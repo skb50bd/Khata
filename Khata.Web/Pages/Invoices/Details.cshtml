@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="col-sm-6">Discount</div>
                             <div class="col-sm-6 text-right">
-                                - @Model.Invoice.PaymentDiscountPercentage% / @sym @Model.Invoice.PaymentDiscountCash
+                                - @Model.Invoice.PaymentDiscountPercentage.ToString("0.##")% / @sym @Model.Invoice.PaymentDiscountCash
                             </div>
                         </div>
                     </li>

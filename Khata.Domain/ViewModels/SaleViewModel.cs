@@ -18,7 +18,7 @@ namespace Khata.ViewModels
         public CustomerViewModel Customer { get; set; }
 
         [Display(Name = "Cart")]
-        public List<SaleLineItemViewModel> Cart { get; set; }
+        public List<LineItemViewModel> Cart { get; set; }
 
         public PaymentInfoViewModel Payment { get; set; } = new PaymentInfoViewModel();
 
@@ -26,15 +26,5 @@ namespace Khata.ViewModels
         public string SaleDate { get; set; }
 
         public string Description { get; set; }
-    }
-
-    public class SaleLineItemViewModel
-    {
-        public decimal Quantity { get; set; }
-        public decimal NetPrice { get; set; }
-
-        public int ItemId { get; set; }
-
-        public LineItemType Type { get; set; }
     }
 }

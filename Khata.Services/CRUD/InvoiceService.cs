@@ -24,10 +24,10 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<Invoice>> Get(PageFilter pf)
+        public async Task<IPagedList<CustomerInvoice>> Get(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Invoice, bool>>)(p => true)
+                ? (Expression<Func<CustomerInvoice, bool>>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
                     || p.Customer.FullName.ToLowerInvariant().Contains(pf.Filter)
                     || p.Customer.CompanyName.ToLowerInvariant().Contains(pf.Filter)
@@ -37,12 +37,12 @@ namespace Khata.Services.CRUD
             return await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
         }
 
-        public async Task<Invoice> Get(int id)
+        public async Task<CustomerInvoice> Get(int id)
         {
             return await _db.Invoices.GetById(id);
         }
 
-        public async Task<Invoice> Add(Invoice model)
+        public async Task<CustomerInvoice> Add(CustomerInvoice model)
         {
             model.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Invoices.Add(model);
@@ -51,7 +51,7 @@ namespace Khata.Services.CRUD
             return model;
         }
 
-        public async Task<Invoice> SetSale(int invoiceId, int saleId)
+        public async Task<CustomerInvoice> SetSale(int invoiceId, int saleId)
         {
             var invoice = await Get(invoiceId);
             invoice.SaleId = saleId;
@@ -60,7 +60,7 @@ namespace Khata.Services.CRUD
             return invoice;
         }
 
-        public async Task<Invoice> SetDebtPayment(int invoiceId, int debtPaymentId)
+        public async Task<CustomerInvoice> SetDebtPayment(int invoiceId, int debtPaymentId)
         {
             var invoice = await Get(invoiceId);
             invoice.DebtPaymentId = debtPaymentId;
@@ -69,7 +69,7 @@ namespace Khata.Services.CRUD
             return invoice;
         }
 
-        public async Task<Invoice> Remove(int id)
+        public async Task<CustomerInvoice> Remove(int id)
         {
             if (!(await Exists(id))
              || await _db.Invoices.IsRemoved(id))
@@ -81,7 +81,7 @@ namespace Khata.Services.CRUD
 
         public async Task<bool> Exists(int id) => await _db.Invoices.Exists(id);
 
-        public async Task<Invoice> Delete(int id)
+        public async Task<CustomerInvoice> Delete(int id)
         {
             if (!(await Exists(id)))
                 return null;

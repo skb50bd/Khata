@@ -9,13 +9,13 @@ namespace Khata.Services.CRUD
 {
     public interface IInvoiceService
     {
-        Task<Invoice> Add(Invoice model);
-        Task<Invoice> SetSale(int invoiceId, int saleId);
-        Task<Invoice> SetDebtPayment(int invoiceId, int debtPaymentId);
-        Task<Invoice> Delete(int id);
+        Task<CustomerInvoice> Add(CustomerInvoice model);
+        Task<CustomerInvoice> SetSale(int invoiceId, int saleId);
+        Task<CustomerInvoice> SetDebtPayment(int invoiceId, int debtPaymentId);
+        Task<CustomerInvoice> Delete(int id);
         Task<bool> Exists(int id);
-        Task<Invoice> Get(int id);
-        Task<IPagedList<Invoice>> Get(PageFilter pf);
-        Task<Invoice> Remove(int id);
+        Task<CustomerInvoice> Get(int id);
+        Task<IPagedList<CustomerInvoice>> Get(PageFilter pf);
+        Task<CustomerInvoice> Remove(int id);
     }
 }

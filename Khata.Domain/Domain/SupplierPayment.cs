@@ -4,6 +4,8 @@
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }
+        public int VoucharId { get; set; }
+        public virtual Vouchar Vouchar { get; set; }
         public decimal PayableBefore { get; set; }
         public decimal Amount { get; set; }
         public decimal PayableAfter => PayableBefore - Amount;

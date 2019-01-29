@@ -108,8 +108,8 @@ namespace Khata.Services.Mapper
 
             #region Sale Mapping
 
-            CreateMap<SaleLineItemViewModel, SaleLineItem>();
-            CreateMap<SaleLineItem, SaleLineItemViewModel>();
+            CreateMap<LineItemViewModel, SaleLineItem>();
+            CreateMap<SaleLineItem, LineItemViewModel>();
             CreateMap<PaymentInfoViewModel, PaymentInfo>();
 
             CreateMap<Sale, SaleDto>();
@@ -131,7 +131,7 @@ namespace Khata.Services.Mapper
 
             CreateMap<SaleLineItem, InvoiceLineItem>();
 
-            CreateMap<SaleViewModel, Invoice>()
+            CreateMap<SaleViewModel, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -149,10 +149,14 @@ namespace Khata.Services.Mapper
                 opt => opt.MapFrom(src => src.Cart.Sum(li => li.NetPrice))
             );
 
-            CreateMap<Sale, Invoice>()
+            CreateMap<Sale, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.Date,
+                opt => opt.MapFrom(src => src.SaleDate)
             )
             .ForMember(
                 dest => dest.PreviousDue,
@@ -163,7 +167,7 @@ namespace Khata.Services.Mapper
                 opt => opt.MapFrom(src => src)
             );
 
-            CreateMap<DebtPayment, Invoice>()
+            CreateMap<DebtPayment, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -190,6 +194,95 @@ namespace Khata.Services.Mapper
             )
             .ForMember(
                 dest => dest.DebtPayment,
+                opt => opt.MapFrom(src => src)
+            );
+            #endregion
+
+            #region Purchase 
+            CreateMap<LineItemViewModel, PurchaseLineItem>()
+                .ForMember(
+                    dest => dest.UnitPurchasePrice,
+                    opt => opt.MapFrom(src => src.NetPrice / src.Quantity)
+                )
+                .ForMember(
+                    dest => dest.ProductId,
+                    opt => opt.MapFrom(src => src.ItemId)
+                );
+            CreateMap<PurchaseLineItem, LineItemViewModel>()
+            .ForMember(
+                    dest => dest.NetPrice,
+                    opt => opt.MapFrom(src => src.NetPurchasePrice)
+            )
+            .ForMember(
+                dest => dest.ItemId,
+                opt => opt.MapFrom(src => src.ProductId)
+            )
+            .ForMember(
+                dest => dest.Type,
+                opt => opt.MapFrom(src => LineItemType.Product)
+            );
+
+            CreateMap<PurchaseLineItem, InvoiceLineItem>()
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPurchasePrice))
+                .ForMember(dest => dest.NetPrice, opt => opt.MapFrom(src => src.NetPurchasePrice));
+
+            CreateMap<Purchase, PurchaseDto>();
+            CreateMap<PurchaseViewModel, Purchase>()
+                .ForMember(
+                    dest => dest.PurchaseDate,
+                    opt => opt.MapFrom(
+                        src => DateTimeOffset.ParseExact(
+                            src.PurchaseDate,
+                            @"dd/MM/yyyy",
+                            CultureInfo.InvariantCulture.DateTimeFormat
+                        )
+                   )
+                );
+
+            CreateMap<PurchaseDto, PurchaseViewModel>().ForMember(
+                dest => dest.PurchaseDate,
+                opt => opt.MapFrom(src => src.PurchaseDate.ToString("dd/MM/yyyy"))
+            );
+
+            CreateMap<PurchaseLineItem, InvoiceLineItem>();
+
+            CreateMap<Purchase, Vouchar>()
+            .ForMember(
+                dest => dest.Id,
+                opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.Date,
+                opt => opt.MapFrom(src => src.PurchaseDate)
+            )
+            .ForMember(
+                dest => dest.PreviousDue,
+                opt => opt.MapFrom(src => src.Supplier.Payable)
+            )
+            .ForMember(
+                dest => dest.Purchase,
+                opt => opt.MapFrom(src => src)
+            );
+
+            CreateMap<SupplierPayment, Vouchar>()
+            .ForMember(
+                dest => dest.Id,
+                opt => opt.Ignore()
+            )
+            .ForMember(
+                dest => dest.PreviousDue,
+                opt => opt.MapFrom(src => src.PayableBefore)
+            )
+            .ForMember(
+                dest => dest.PaymentPaid,
+                opt => opt.MapFrom(src => src.Amount)
+            )
+            .ForMember(
+                dest => dest.PaymentSubtotal,
+                opt => opt.MapFrom(src => 0)
+            )
+            .ForMember(
+                dest => dest.SupplierPayment,
                 opt => opt.MapFrom(src => src)
             );
             #endregion

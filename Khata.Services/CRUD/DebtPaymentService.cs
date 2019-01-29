@@ -56,7 +56,7 @@ namespace Khata.Services.CRUD
             dm.DebtBefore = dm.Customer.Debt;
             dm.Customer.Debt -= dm.Amount;
 
-            dm.Invoice = _mapper.Map<Invoice>(dm);
+            dm.Invoice = _mapper.Map<CustomerInvoice>(dm);
             dm.Invoice.Metadata = Metadata.CreatedNew(CurrentUser);
             dm.Invoice.DebtPayment = dm;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);

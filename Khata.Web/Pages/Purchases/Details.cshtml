@@ -1,0 +1,12 @@
+﻿@page
+@model WebUI.Pages.Purchases.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@await Component.InvokeAsync(
+    nameof(Components.PurchaseInfo.PurchaseInfo),
+        new { purchase = Model.Purchase }
+    )

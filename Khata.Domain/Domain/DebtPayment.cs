@@ -3,7 +3,7 @@
     public class DebtPayment : TrackedEntity, IDeposit
     {
         public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public virtual CustomerInvoice Invoice { get; set; }
 
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }

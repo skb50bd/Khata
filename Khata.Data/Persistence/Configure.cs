@@ -15,7 +15,8 @@ namespace Khata.Data.Persistence
             string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlServer(cnnString)
+                options.UseSqlite(cnnString)
+                //options.UseSqlServer(cnnString)
                 .EnableSensitiveDataLogging());
             //options.UseInMemoryDatabase("Khata"));
 
@@ -28,7 +29,8 @@ namespace Khata.Data.Persistence
             services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
             services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
             services.AddTransient<ITrackingRepository<Sale>, SaleRepository>();
-            services.AddTransient<ITrackingRepository<Invoice>, InvoiceRepository>();
+            services.AddTransient<ITrackingRepository<CustomerInvoice>, InvoiceRepository>();
+            services.AddTransient<ITrackingRepository<Vouchar>, VoucharRepository>();
             services.AddTransient<ITrackingRepository<Expense>, TrackingRepository<Expense>>();
             services.AddTransient<ITrackingRepository<Supplier>, TrackingRepository<Supplier>>();
             services.AddTransient<ITrackingRepository<SupplierPayment>, SupplierPaymentRepository>();

@@ -38,7 +38,8 @@ namespace Khata.Data.Persistence
                 entity.OwnsOne(d => d.Metadata);
                 entity.HasOne(dp => dp.Invoice)
                     .WithOne(i => i.DebtPayment)
-                    .HasForeignKey<Invoice>(i => i.DebtPaymentId)
+                    .HasForeignKey<CustomerInvoice>(i => i.DebtPaymentId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired(false);
             });
 
@@ -52,17 +53,24 @@ namespace Khata.Data.Persistence
                 entity.OwnsOne(s => s.Payment);
                 entity.OwnsOne(s => s.Metadata);
                 entity.HasOne(s => s.Invoice)
-                    .WithOne(i => i.Sale)
-                    .HasForeignKey<Invoice>(i => i.SaleId)
-                    .IsRequired(false);
+                        .WithOne(i => i.Sale)
+                        .HasForeignKey<CustomerInvoice>(i => i.SaleId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired(false);
             });
 
-            modelBuilder.Entity<Invoice>(entity =>
+            modelBuilder.Entity<CustomerInvoice>(entity =>
             {
-                entity.HasOne(i => i.Sale).WithOne(s => s.Invoice).HasForeignKey<Sale>(s => s.InvoiceId);
-                entity.HasOne(i => i.DebtPayment).WithOne(s => s.Invoice).HasForeignKey<DebtPayment>(s => s.InvoiceId);
+                entity.HasBaseType<Invoice>();
+                entity.HasOne(i => i.Sale)
+                        .WithOne(s => s.Invoice)
+                        .HasForeignKey<Sale>(s => s.InvoiceId);
+                entity.HasOne(i => i.DebtPayment)
+                        .WithOne(s => s.Invoice)
+                        .HasForeignKey<DebtPayment>(s => s.InvoiceId);
                 entity.OwnsOne(s => s.Metadata);
-                entity.OwnsMany(s => s.Cart).HasKey(s => s.Id);
+                entity.OwnsMany(s => s.Cart)
+                        .HasKey(s => s.Id);
             });
 
             modelBuilder.Entity<Expense>().OwnsOne(e => e.Metadata);
@@ -76,13 +84,38 @@ namespace Khata.Data.Persistence
             {
                 entity.OwnsOne(s => s.Payment);
                 entity.OwnsOne(s => s.Metadata);
+                entity.HasOne(p => p.Vouchar)
+                        .WithOne(v => v.Purchase)
+                        .HasForeignKey<Vouchar>(v => v.PurchaseId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired(false);
             });
 
             modelBuilder.Entity<SupplierPayment>(entity =>
             {
                 entity.Property(sp => sp.SupplierId).IsRequired();
                 entity.OwnsOne(sp => sp.Metadata);
+                entity.HasOne(sp => sp.Vouchar)
+                        .WithOne(v => v.SupplierPayment)
+                        .HasForeignKey<Vouchar>(v => v.SupplierPaymentId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired(false);
             });
+
+            modelBuilder.Entity<Vouchar>(entity =>
+            {
+                entity.HasBaseType<Invoice>();
+                entity.HasOne(v => v.Purchase)
+                        .WithOne(p => p.Vouchar)
+                        .HasForeignKey<Purchase>(p => p.VoucharId);
+                entity.HasOne(v => v.SupplierPayment)
+                        .WithOne(s => s.Vouchar)
+                        .HasForeignKey<SupplierPayment>(sp => sp.VoucharId);
+                entity.OwnsOne(s => s.Metadata);
+                entity.OwnsMany(s => s.Cart)
+                        .HasKey(s => s.Id);
+            });
+
 
             modelBuilder.Entity<Employee>().OwnsOne(e => e.Metadata);
 
@@ -119,7 +152,8 @@ namespace Khata.Data.Persistence
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<DebtPayment> DebtPayments { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
-        public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<CustomerInvoice> Invoices { get; set; }
+        public virtual DbSet<Vouchar> Vouchars { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }

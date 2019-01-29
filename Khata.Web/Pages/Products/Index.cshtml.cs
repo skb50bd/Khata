@@ -36,8 +36,9 @@ namespace WebUI.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(
             string searchString = "",
-            int pageSize = 0,
-            int pageIndex = 1)
+                int pageIndex = 1,
+                int pageSize = 0
+            )
         {
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
             Products = await _products.Get(Pf);
