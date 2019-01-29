@@ -13,13 +13,12 @@
 
     public interface IDeposit : ITransaction { }
 
-    public abstract class Transaction : Entity, ITransaction
+    public abstract class Transaction : Document, ITransaction
     {
         public decimal Amount { get; set; }
         public string TableName { get; set; }
         public int? RowId { get; set; }
         public string Description { get; set; }
-        public Metadata Metadata { get; set; }
     }
 
     public class Withdrawal : Transaction

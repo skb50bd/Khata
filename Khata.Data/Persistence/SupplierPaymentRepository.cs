@@ -35,6 +35,7 @@ namespace Khata.Data.Persistence
             res.AddRange(await Context.SupplierPayments
                 .AsNoTracking()
                 .Include(s => s.Supplier)
+                .Include(s => s.Metadata)
                 .Where(newPredicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -47,6 +48,7 @@ namespace Khata.Data.Persistence
         public override async Task<SupplierPayment> GetById(int id)
             => await Context.SupplierPayments
             .Include(s => s.Supplier)
+            .Include(d => d.Metadata)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 }

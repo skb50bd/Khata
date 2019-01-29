@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Khata.Domain
 {
-    public class Purchase : TrackedEntity, IWithdrawal
+    public class Purchase : TrackedDocument, IWithdrawal
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }

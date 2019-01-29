@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public class Product : TrackedEntity
+    public class Product : TrackedDocument
     {
         public string Name { get; set; }
 

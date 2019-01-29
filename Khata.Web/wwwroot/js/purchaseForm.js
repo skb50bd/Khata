@@ -324,12 +324,8 @@ $(document).ready(function () {
 
             lineItemId.value = lineitem.itemId;
 
-            if (retail.checked) {
-                lineItemUnitPrice.value = lineitem.unitPriceRetail;
-            }
-            else {
-                lineItemUnitPrice.value = lineitem.unitPriceBulk;
-            }
+
+            lineItemUnitPrice.value = lineitem.unitPurchasePrice;
 
             if (lineitem.category === 'Service') {
                 lineItemQuantity.value = 1;

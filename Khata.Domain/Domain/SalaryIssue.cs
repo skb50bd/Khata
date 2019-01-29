@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public class SalaryIssue : TrackedEntity
+    public class SalaryIssue : TrackedDocument
     {
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }

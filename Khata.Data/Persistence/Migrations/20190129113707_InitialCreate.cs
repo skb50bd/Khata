@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Khata.Data.Persistence.Migrations
@@ -52,204 +53,19 @@ namespace Khata.Data.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CashRegister",
+                name: "Metadata",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Balance = table.Column<decimal>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Creator = table.Column<string>(nullable: true, defaultValue: "admin"),
+                    CreationTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "GETDATE()"),
+                    Modifier = table.Column<string>(nullable: true, defaultValue: "admin"),
+                    ModificationTime = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CashRegister", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Note = table.Column<string>(nullable: true),
-                    CompanyName = table.Column<string>(nullable: true),
-                    Debt = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Deposits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Amount = table.Column<decimal>(nullable: false),
-                    TableName = table.Column<string>(nullable: true),
-                    RowId = table.Column<int>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Deposits", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Note = table.Column<string>(nullable: true),
-                    Balance = table.Column<decimal>(nullable: false),
-                    Designation = table.Column<string>(nullable: true),
-                    Salary = table.Column<decimal>(nullable: false),
-                    NIdNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Expenses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Amount = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Expenses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Inventory_Stock = table.Column<decimal>(nullable: false),
-                    Inventory_Warehouse = table.Column<decimal>(nullable: false),
-                    Inventory_AlertAt = table.Column<decimal>(nullable: false),
-                    Unit = table.Column<string>(nullable: true),
-                    Price_Purchase = table.Column<decimal>(nullable: false),
-                    Price_Retail = table.Column<decimal>(nullable: false),
-                    Price_Bulk = table.Column<decimal>(nullable: false),
-                    Price_Margin = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Services",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Services", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suppliers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Note = table.Column<string>(nullable: true),
-                    CompanyName = table.Column<string>(nullable: true),
-                    Payable = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Withdrawals",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Amount = table.Column<decimal>(nullable: false),
-                    TableName = table.Column<string>(nullable: true),
-                    RowId = table.Column<int>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Withdrawals", x => x.Id);
+                    table.PrimaryKey("PK_Metadata", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,7 +73,7 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -278,7 +94,7 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -359,16 +175,241 @@ namespace Khata.Data.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CashRegister",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    Balance = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CashRegister", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CashRegister_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
+                    Debt = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deposits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false),
+                    TableName = table.Column<string>(nullable: true),
+                    RowId = table.Column<int>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deposits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deposits_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    Balance = table.Column<decimal>(nullable: false),
+                    Designation = table.Column<string>(nullable: true),
+                    Salary = table.Column<decimal>(nullable: false),
+                    NIdNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Expenses_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Inventory_Stock = table.Column<decimal>(nullable: false),
+                    Inventory_Warehouse = table.Column<decimal>(nullable: false),
+                    Inventory_AlertAt = table.Column<decimal>(nullable: false),
+                    Unit = table.Column<string>(nullable: true),
+                    Price_Purchase = table.Column<decimal>(nullable: false),
+                    Price_Retail = table.Column<decimal>(nullable: false),
+                    Price_Bulk = table.Column<decimal>(nullable: false),
+                    Price_Margin = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
+                    Payable = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Withdrawals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false),
+                    TableName = table.Column<string>(nullable: true),
+                    RowId = table.Column<int>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Withdrawals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Withdrawals_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SalaryIssues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     BalanceBefore = table.Column<decimal>(nullable: false),
@@ -383,6 +424,12 @@ namespace Khata.Data.Persistence.Migrations
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalaryIssues_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -390,12 +437,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     BalanceBefore = table.Column<decimal>(nullable: false),
@@ -410,6 +454,12 @@ namespace Khata.Data.Persistence.Migrations
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalaryPayments_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -417,12 +467,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     Date = table.Column<DateTimeOffset>(nullable: false),
                     PreviousDue = table.Column<decimal>(nullable: false),
                     PaymentSubtotal = table.Column<decimal>(nullable: false),
@@ -447,6 +494,12 @@ namespace Khata.Data.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Invoice_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Invoice_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
@@ -459,12 +512,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     InvoiceId = table.Column<int>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     DebtBefore = table.Column<decimal>(nullable: false),
@@ -486,6 +536,12 @@ namespace Khata.Data.Persistence.Migrations
                         principalTable: "Invoice",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DebtPayments_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -493,7 +549,7 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
@@ -516,12 +572,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     SupplierId = table.Column<int>(nullable: false),
                     VoucharId = table.Column<int>(nullable: false),
                     PurchaseDate = table.Column<DateTimeOffset>(nullable: false),
@@ -533,6 +586,12 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Purchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Purchases_Suppliers_SupplierId",
                         column: x => x.SupplierId,
@@ -552,12 +611,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     InvoiceId = table.Column<int>(nullable: false),
                     SaleDate = table.Column<DateTimeOffset>(nullable: false),
                     Type = table.Column<int>(nullable: false),
@@ -582,6 +638,12 @@ namespace Khata.Data.Persistence.Migrations
                         principalTable: "Invoice",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sales_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -589,12 +651,9 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
-                    Metadata_Creator = table.Column<string>(nullable: true),
-                    Metadata_CreationTime = table.Column<DateTimeOffset>(nullable: false),
-                    Metadata_Modifier = table.Column<string>(nullable: true),
-                    Metadata_ModificationTime = table.Column<DateTimeOffset>(nullable: false),
                     SupplierId = table.Column<int>(nullable: false),
                     VoucharId = table.Column<int>(nullable: false),
                     PayableBefore = table.Column<decimal>(nullable: false),
@@ -604,6 +663,12 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SupplierPayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SupplierPayments_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SupplierPayments_Suppliers_SupplierId",
                         column: x => x.SupplierId,
@@ -623,7 +688,8 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(nullable: false),
                     UnitPurchasePrice = table.Column<decimal>(nullable: false),
@@ -633,6 +699,12 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseLineItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseLineItem_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PurchaseLineItem_Products_ProductId",
                         column: x => x.ProductId,
@@ -652,7 +724,8 @@ namespace Khata.Data.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
@@ -664,6 +737,12 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SaleLineItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SaleLineItem_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SaleLineItem_Sales_SaleId",
                         column: x => x.SaleId,
@@ -681,7 +760,8 @@ namespace Khata.Data.Persistence.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -707,7 +787,18 @@ namespace Khata.Data.Persistence.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CashRegister_MetadataId",
+                table: "CashRegister",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_MetadataId",
+                table: "Customers",
+                column: "MetadataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DebtPayments_CustomerId",
@@ -721,9 +812,34 @@ namespace Khata.Data.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DebtPayments_MetadataId",
+                table: "DebtPayments",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deposits_MetadataId",
+                table: "Deposits",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_MetadataId",
+                table: "Employees",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_MetadataId",
+                table: "Expenses",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoice_CustomerId",
                 table: "Invoice",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_MetadataId",
+                table: "Invoice",
+                column: "MetadataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoice_SupplierId",
@@ -736,6 +852,16 @@ namespace Khata.Data.Persistence.Migrations
                 column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_MetadataId",
+                table: "Products",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseLineItem_MetadataId",
+                table: "PurchaseLineItem",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseLineItem_ProductId",
                 table: "PurchaseLineItem",
                 column: "ProductId");
@@ -744,6 +870,11 @@ namespace Khata.Data.Persistence.Migrations
                 name: "IX_PurchaseLineItem_PurchaseId",
                 table: "PurchaseLineItem",
                 column: "PurchaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_MetadataId",
+                table: "Purchases",
+                column: "MetadataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchases_SupplierId",
@@ -762,9 +893,24 @@ namespace Khata.Data.Persistence.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SalaryIssues_MetadataId",
+                table: "SalaryIssues",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SalaryPayments_EmployeeId",
                 table: "SalaryPayments",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SalaryPayments_MetadataId",
+                table: "SalaryPayments",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleLineItem_MetadataId",
+                table: "SaleLineItem",
+                column: "MetadataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleLineItem_SaleId",
@@ -783,6 +929,21 @@ namespace Khata.Data.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sales_MetadataId",
+                table: "Sales",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_MetadataId",
+                table: "Services",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierPayments_MetadataId",
+                table: "SupplierPayments",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SupplierPayments_SupplierId",
                 table: "SupplierPayments",
                 column: "SupplierId");
@@ -792,6 +953,16 @@ namespace Khata.Data.Persistence.Migrations
                 table: "SupplierPayments",
                 column: "VoucharId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Suppliers_MetadataId",
+                table: "Suppliers",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Withdrawals_MetadataId",
+                table: "Withdrawals",
+                column: "MetadataId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -873,6 +1044,9 @@ namespace Khata.Data.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "Metadata");
         }
     }
 }

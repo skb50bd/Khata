@@ -21,7 +21,7 @@ namespace Khata.Data.Persistence
     /// like last updated time and user on a lot of different entities.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TrackingRepository<T> : Repository<T>, ITrackingRepository<T> where T : TrackedEntity
+    public class TrackingRepository<T> : Repository<T>, ITrackingRepository<T> where T : TrackedDocument
     {
         public TrackingRepository(KhataContext context) : base(context) { }
 
@@ -40,11 +40,13 @@ namespace Khata.Data.Persistence
             => await Context.Set<T>()
                         .AsNoTracking()
                         .Where(e => !e.IsRemoved)
+                        .Include(e => e.Metadata)
                         .ToListAsync();
 
         public virtual async Task<IList<T>> GetRemovedItems()
             => await Context.Set<T>()
                         .AsNoTracking()
+                        .Include(e => e.Metadata)
                         .Where(e => e.IsRemoved)
                         .ToListAsync();
 

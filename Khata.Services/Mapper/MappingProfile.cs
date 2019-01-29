@@ -244,8 +244,6 @@ namespace Khata.Services.Mapper
                 opt => opt.MapFrom(src => src.PurchaseDate.ToString("dd/MM/yyyy"))
             );
 
-            CreateMap<PurchaseLineItem, InvoiceLineItem>();
-
             CreateMap<Purchase, Vouchar>()
             .ForMember(
                 dest => dest.Id,

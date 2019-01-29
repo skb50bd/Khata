@@ -12,7 +12,7 @@ namespace Khata.Data.Persistence
     /// this allows the business layer to ignore the 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AtomicRepository<T> : Repository<T>, IRepository<T> where T : Entity
+    public class AtomicRepository<T> : Repository<T>, IRepository<T> where T : Document
     {
         public AtomicRepository(KhataContext context) : base(context) { }
 

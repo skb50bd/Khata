@@ -5,7 +5,7 @@ using Khata.Domain;
 
 namespace Khata.Data.Core
 {
-    public interface ITrackingRepository<T> : IRepository<T> where T : TrackedEntity
+    public interface ITrackingRepository<T> : IRepository<T> where T : TrackedDocument
     {
         Task Remove(int id);
         Task<IList<T>> GetRemovedItems();

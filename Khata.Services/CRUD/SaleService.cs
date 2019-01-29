@@ -105,6 +105,12 @@ namespace Khata.Services.CRUD
             }
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
+
+            if (dm.Payment.Due > 0)
+            {
+                dm.Customer.Debt += dm.Payment.Due;
+            }
+
             invoice = dm.Invoice;
             if (dm.Cart.Count > 0)
             {

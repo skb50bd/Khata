@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public abstract class Person : TrackedEntity
+    public abstract class Person : TrackedDocument
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

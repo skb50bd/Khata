@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public class SupplierPayment : TrackedEntity, IWithdrawal
+    public class SupplierPayment : TrackedDocument, IWithdrawal
     {
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public class Expense : TrackedEntity, IWithdrawal
+    public class Expense : TrackedDocument, IWithdrawal
     {
         public string Name { get; set; }
         public decimal Amount { get; set; }

@@ -9,7 +9,7 @@ using SharedLibrary;
 
 namespace Khata.Data.Core
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : Document
     {
         Task<IList<T>> GetAll();
         Task<T> GetById(int id);

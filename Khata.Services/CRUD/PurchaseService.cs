@@ -58,7 +58,6 @@ namespace Khata.Services.CRUD
 
             var dm = _mapper.Map<Purchase>(model);
             SupplierPayment sp = null;
-            Vouchar vouchar = null;
 
             dm.Supplier =
                 model.RegisterNewSupplier
@@ -102,7 +101,11 @@ namespace Khata.Services.CRUD
             }
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            vouchar = dm.Vouchar;
+            if (dm.Payment.Due > 0)
+            {
+                dm.Supplier.Payable += dm.Payment.Due;
+            }
+            Vouchar vouchar = dm.Vouchar;
             if (dm.Cart.Count > 0)
             {
                 vouchar.Purchase = dm;

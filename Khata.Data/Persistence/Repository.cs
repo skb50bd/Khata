@@ -13,7 +13,7 @@ using SharedLibrary;
 
 namespace Khata.Data.Persistence
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : Document
     {
         protected readonly KhataContext Context;
         public Repository(KhataContext context)
@@ -34,24 +34,28 @@ namespace Khata.Data.Persistence
                 ResultCount = await Context.Set<T>().AsNoTracking().Where(predicate).CountAsync()
             };
 
+
             res.AddRange(await Context.Set<T>()
-                                      .AsNoTracking()
-                                      .Where(predicate)
-                                      .OrderByDescending(order)
-                                      .Skip((pageIndex - 1) * pageSize)
-                                      .Take(pageSize > 0 ? pageSize : int.MaxValue)
-                                      .ToListAsync());
+                                .AsNoTracking()
+                                .Where(predicate)
+                                .Include(d => d.Metadata)
+                                .OrderByDescending(order)
+                                .Skip((pageIndex - 1) * pageSize)
+                                .Take(pageSize > 0 ? pageSize : int.MaxValue)
+                                .ToListAsync());
             return res;
         }
 
         public virtual async Task<IList<T>> GetAll()
             => await Context.Set<T>()
                         .AsNoTracking()
+                        .Include(t => t.Metadata)
                         .ToListAsync();
 
         public virtual async Task<T> GetById(int id)
             => await Context.Set<T>()
-                        .FindAsync(id);
+                        .Include(t => t.Metadata)
+                        .FirstOrDefaultAsync(t => t.Id == id);
 
         public virtual void Add(T item)
             => Context.Add(item);

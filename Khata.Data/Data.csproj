@@ -5,6 +5,11 @@
     <RootNamespace>Khata.Data</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Persistence\Migrations\20190129113125_InitialCreate.cs" />
+    <Compile Remove="Persistence\Migrations\20190129113125_InitialCreate.Designer.cs" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.1" />
@@ -40,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
     <Folder Include="Persistence\SeedScripts\" />
   </ItemGroup>
 

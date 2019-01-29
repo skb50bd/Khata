@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Khata.Domain
 {
-    public abstract class Invoice : TrackedEntity
+    public abstract class Invoice : TrackedDocument
     {
         public DateTimeOffset Date { get; set; }
         public virtual ICollection<InvoiceLineItem> Cart { get; set; } = new List<InvoiceLineItem>();

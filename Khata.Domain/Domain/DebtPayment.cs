@@ -1,6 +1,6 @@
 ﻿namespace Khata.Domain
 {
-    public class DebtPayment : TrackedEntity, IDeposit
+    public class DebtPayment : TrackedDocument, IDeposit
     {
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }

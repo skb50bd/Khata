@@ -36,6 +36,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Cart)
                 .Include(s => s.Customer)
+                .Include(s => s.Metadata)
                 .Where(newPredicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -49,6 +50,7 @@ namespace Khata.Data.Persistence
             => await Context.Sales
             .Include(s => s.Customer)
             .Include(s => s.Cart)
+            .Include(d => d.Metadata)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 }

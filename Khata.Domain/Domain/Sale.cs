@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Khata.Domain
 {
-    public class Sale : TrackedEntity, IDeposit
+    public class Sale : TrackedDocument, IDeposit
     {
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }

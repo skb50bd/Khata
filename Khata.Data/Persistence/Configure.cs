@@ -15,8 +15,8 @@ namespace Khata.Data.Persistence
             string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlite(cnnString)
-                //options.UseSqlServer(cnnString)
+                //options.UseSqlite(cnnString)
+                options.UseSqlServer(cnnString)
                 .EnableSensitiveDataLogging());
             //options.UseInMemoryDatabase("Khata"));
 
