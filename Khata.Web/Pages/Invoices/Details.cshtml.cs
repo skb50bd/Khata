@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Khata.Domain;
+﻿using System.Threading.Tasks;
+
+using Khata.DTOs;
 using Khata.Services.CRUD;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,13 +10,13 @@ namespace WebUI.Pages.Invoices
 {
     public class DetailsModel : PageModel
     {
-        private readonly IInvoiceService _invoices;
-        public DetailsModel(IInvoiceService invoices)
+        private readonly ICustomerInvoiceService _invoices;
+        public DetailsModel(ICustomerInvoiceService invoices)
         {
             _invoices = invoices;
         }
 
-        public CustomerInvoice Invoice;
+        public CustomerInvoiceDto Invoice;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {

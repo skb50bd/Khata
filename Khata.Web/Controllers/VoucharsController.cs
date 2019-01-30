@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
 
@@ -25,7 +25,7 @@ namespace WebUI.Controllers
 
         // GET: api/Vouchars
         [HttpGet]
-        public async Task<IEnumerable<Vouchar>> Get(string searchString = "",
+        public async Task<IEnumerable<VoucharDto>> Get(string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
             => await _vouchars.Get(

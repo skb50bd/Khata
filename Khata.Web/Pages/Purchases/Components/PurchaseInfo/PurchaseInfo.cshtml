@@ -102,12 +102,15 @@
         </table>
 
         <hr />
-        <table class="table table-sm table-borderless table-hover">
-            <tr>
-                <th>Description</th>
-                <td>@Model.Description</td>
-            </tr>
-        </table>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <table class="table table-sm table-borderless table-hover">
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </table>
+        }
         <div class="row">
 
             <div class="col-md-6">

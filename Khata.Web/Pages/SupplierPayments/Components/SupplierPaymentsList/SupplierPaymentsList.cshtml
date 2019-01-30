@@ -6,9 +6,10 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.SupplierFullName)</th>
-            <th>@Html.DisplayNameFor(model => model.Amount)</th>
-            <th>@Html.DisplayNameFor(model => model.Metadata.ModifiedAt)</th>
-            <th>@Html.DisplayNameFor(model => model.Metadata.ModifiedAt)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Amount)</th>
+            <th class="text-right">Created at</th>
+            <th class="text-right">Created by</th>
+            <th class="text-right"></th>
         </tr>
     </thead>
     <tbody>
@@ -18,9 +19,16 @@
                 data-href="@Url.Page("./Details", new { id = supplierPayment.Id })">
                 <td>@Html.DisplayFor(modelItem => supplierPayment.Id)</td>
                 <td>@Html.DisplayFor(modelItem => supplierPayment.SupplierFullName)</td>
-                <td>@Html.DisplayFor(modelItem => supplierPayment.Amount)</td>
-                <td>@Html.DisplayFor(modelItem => supplierPayment.Metadata.Modifier)</td>
-                <td>@Html.DisplayFor(modelItem => supplierPayment.Metadata.ModifiedAt)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Amount)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Metadata.CreatedAt)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Metadata.Creator)</td>
+                <td class="text-right">
+                    <a class="btn btn-success btn-sm"
+                       asp-page="/Vouchars/Details"
+                       asp-route-id="@Html.ValueFor(modelItem => supplierPayment.VoucharId)">
+                        Vouchar
+                    </a>
+                </td>
             </tr>
         }
     </tbody>

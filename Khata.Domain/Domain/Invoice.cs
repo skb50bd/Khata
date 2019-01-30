@@ -7,6 +7,7 @@ namespace Khata.Domain
     {
         public DateTimeOffset Date { get; set; }
         public virtual ICollection<InvoiceLineItem> Cart { get; set; } = new List<InvoiceLineItem>();
+
         public decimal PreviousDue { get; set; }
         public decimal PaymentSubtotal { get; set; }
         public decimal PaymentTotal => PreviousDue + PaymentSubtotal;

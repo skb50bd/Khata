@@ -6,11 +6,11 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.InventoryTotalStock)</th>
-            <th>@Html.DisplayNameFor(model => model.Unit)</th>
-            <th>@Html.DisplayNameFor(model => model.PriceRetail)</th>
-            <th>@Html.DisplayNameFor(model => model.PriceBulk)</th>
-            <th>@Html.DisplayNameFor(model => model.PriceMargin)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.InventoryTotalStock)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Unit)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PriceRetail)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PriceBulk)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PriceMargin)</th>
         </tr>
     </thead>
     <tbody>
@@ -24,11 +24,11 @@
             <tr class="table-@status js-clickable-row" data-href="@Url.Page("./Details", new { id = item.Id })">
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.InventoryTotalStock)</td>
-                <td>@Html.DisplayFor(modelItem => item.Unit)</td>
-                <td>@Html.DisplayFor(modelItem => item.PriceRetail)</td>
-                <td>@Html.DisplayFor(modelItem => item.PriceBulk)</td>
-                <td>@Html.DisplayFor(modelItem => item.PriceMargin)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.InventoryTotalStock)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.Unit)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.PriceRetail)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.PriceBulk)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.PriceMargin)</td>
             </tr>
         }
     </tbody>

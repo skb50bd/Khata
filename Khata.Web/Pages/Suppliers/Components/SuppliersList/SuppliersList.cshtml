@@ -7,9 +7,9 @@
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.FullName)</th>
             <th>@Html.DisplayNameFor(model => model.CompanyName)</th>
-            <th>@Html.DisplayNameFor(model => model.Payable)</th>
-            <th>@Html.DisplayNameFor(model => model.Phone)</th>
-            <th>@Html.DisplayNameFor(model => model.Address)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Payable)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Phone)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Address)</th>
         </tr>
     </thead>
     <tbody>
@@ -25,9 +25,9 @@
                 <td>@Html.DisplayFor(modelItem => supplier.Id)</td>
                 <td>@Html.DisplayFor(modelItem => supplier.FullName)</td>
                 <td>@Html.DisplayFor(modelItem => supplier.CompanyName)</td>
-                <td>@Html.DisplayFor(modelItem => supplier.Payable)</td>
-                <td>@Html.DisplayFor(modelItem => supplier.Phone)</td>
-                <td>@Html.DisplayFor(modelItem => supplier.Address)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplier.Payable)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplier.Phone)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => supplier.Address)</td>
             </tr>
         }
     </tbody>

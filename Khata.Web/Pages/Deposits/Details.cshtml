@@ -1,0 +1,35 @@
+﻿@page
+@model WebUI.Pages.Deposits.DetailsModel
+@{
+    ViewData["Title"] = "Deposit";
+}
+
+<h1>Deposit</h1>
+
+<div class="card" style="width:40rem">
+    <div class="card-header">
+        <div class="col-6">Deposit# @Model.Deposit.Id</div>
+    </div>
+    <div class="card-body">
+        <h3 class="card-title">@Model.Deposit.TableName</h3>
+        <table class="table table-sm table-hover mt-5">
+            <tbody>
+                <tr>
+                    <th>Amount</th>
+                    <td>@Html.DisplayFor(model => model.Deposit.Amount)</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@Html.DisplayFor(model => model.Deposit.Description)</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+
+    </div>
+
+    <div class="card-footer">
+        <partial name="_UpdateSummary" for="Deposit.Metadata" />
+    </div>
+</div>
+

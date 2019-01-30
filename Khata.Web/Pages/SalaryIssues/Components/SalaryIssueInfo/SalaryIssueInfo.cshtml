@@ -3,7 +3,7 @@
 <div class="card" style="width:40rem">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Debt Issue# @Model.Id</div>
+            <div class="col-6">Salary Issue# @Model.Id</div>
             <div class="col-6 text-right">
                 @if (Model.IsRemoved)
                 {
@@ -15,26 +15,30 @@
     </div>
     <div class="card-body">
         <a class="h3 card-title"
-           asp-page="/Suppliers/Details"
+           asp-page="/Employees/Details"
            asp-route-id="@Model.EmployeeId">
             @Model.EmployeeFullName
         </a>
-        <hr />
-        <table class="table table-sm table-borderless table-hover">
+        <table class="table table-sm table-hover mt-4">
             <tr>
-                <td>Balance Before</td>
-                <td>@Model.BalanceBefore</td>
+                <th>Balance Before</th>
+                <td>@Html.DisplayFor(model => model.BalanceBefore)</td>
             </tr>
             <tr>
-                <td>Amount</td>
-                <td>@Model.Amount</td>
+                <th>Amount</th>
+                <td>
+                    @Html.DisplayFor(model => model.Amount)
+                </td>
             </tr>
             <tr>
             <tr>
-                <td>Balance After</td>
-                <td>@Model.BalanceAfter</td>
+                <th>Balance After</th>
+                <td>@Html.DisplayFor(model => model.BalanceAfter)</td>
             </tr>
-
+            <tr>
+                <th>Description</th>
+                <td>@Html.DisplayFor(model => model.Description)</td>
+            </tr>
         </table>
 
         <hr />
@@ -65,6 +69,6 @@
     </div>
 
     <div class="card-footer">
-        <partial name="_UpdateSammary" for="Metadata" />
+        <partial name="_UpdateSummary" for="Metadata" />
     </div>
 </div>

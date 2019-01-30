@@ -199,6 +199,7 @@ namespace Khata.Services.Mapper
             #endregion
 
             #region Purchase 
+
             CreateMap<LineItemViewModel, PurchaseLineItem>()
                 .ForMember(
                     dest => dest.UnitPurchasePrice,
@@ -326,6 +327,15 @@ namespace Khata.Services.Mapper
             CreateMap<SalaryPaymentViewModel, SalaryPayment>();
             CreateMap<SalaryPayment, SalaryPaymentDto>();
             CreateMap<SalaryPaymentDto, SalaryPaymentViewModel>();
+
+            #endregion
+
+            #region Invoice / Vouchar Mapping
+
+            CreateMap<InvoiceLineItem, InvoiceLineItemDto>();
+            CreateMap<Invoice, InvoiceDto>();
+            CreateMap<CustomerInvoice, CustomerInvoiceDto>();
+            CreateMap<Vouchar, VoucharDto>();
 
             #endregion
         }

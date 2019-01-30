@@ -6,7 +6,10 @@ namespace Khata.DTOs
     {
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
+
         public string Designation { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 
         [Display(Name = "NID Number")]

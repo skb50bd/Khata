@@ -1,21 +1,22 @@
 ﻿using System.Threading.Tasks;
 
 using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.PageFilterSort;
 
 using SharedLibrary;
 
 namespace Khata.Services.CRUD
 {
-    public interface IInvoiceService
+    public interface ICustomerInvoiceService
     {
-        Task<CustomerInvoice> Add(CustomerInvoice model);
-        Task<CustomerInvoice> SetSale(int invoiceId, int saleId);
-        Task<CustomerInvoice> SetDebtPayment(int invoiceId, int debtPaymentId);
-        Task<CustomerInvoice> Delete(int id);
+        Task<CustomerInvoiceDto> Add(CustomerInvoice model);
+        Task<CustomerInvoiceDto> SetSale(int invoiceId, int saleId);
+        Task<CustomerInvoiceDto> SetDebtPayment(int invoiceId, int debtPaymentId);
+        Task<CustomerInvoiceDto> Delete(int id);
         Task<bool> Exists(int id);
-        Task<CustomerInvoice> Get(int id);
-        Task<IPagedList<CustomerInvoice>> Get(PageFilter pf);
-        Task<CustomerInvoice> Remove(int id);
+        Task<CustomerInvoiceDto> Get(int id);
+        Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf);
+        Task<CustomerInvoiceDto> Remove(int id);
     }
 }

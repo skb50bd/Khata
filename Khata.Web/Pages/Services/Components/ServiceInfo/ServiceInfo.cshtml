@@ -14,8 +14,18 @@
     </div>
     <div class="card-body">
         <h3 class="card-title">@Model.Name</h3>
-        <p class="card-subtitle"><u>Price</u>: <strong>@Model.Price</strong></p>
-        <p class="card-text"><u>Description</u>: @Model.Description</p>
+        <table class="table table-sm table-hover mt-5">
+            <tbody>
+                <tr>
+                    <th>Price</th>
+                    <td>@Html.DisplayFor(model => model.Price)</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
+                </tr>
+            </tbody>
+        </table>
         <hr />
         <div class="row">
             <div class="col-md-6">

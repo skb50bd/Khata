@@ -14,27 +14,36 @@
     </div>
     <div class="card-body">
         <h3 class="card-title">@Model.Name</h3>
-        <p class="card-subtitle"><u>Unit</u>: <strong>@Model.Unit</strong></p>
-        <p class="card-text"><u>Description</u>: @Model.Description</p>
+        <table class="table table-sm table-hover mt-5">
+            <tbody>
+                <tr>
+                    <th>Unit</th>
+                    <td>@Model.Unit</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </tbody>
+        </table>
         <hr />
         <div class="row">
             <div class="col-md-6">
                 <h5 class="card-subtitle">
                     Inventory
                 </h5>
-                <hr />
-                <table class="table table-sm table-borderless table-hover">
+                <table class="table table-sm table-hover mt-2">
                     <tr>
-                        <td>Stock</td>
-                        <td>@Model.InventoryStock</td>
+                        <th>Stock</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.InventoryStock)</td>
                     </tr>
                     <tr>
-                        <td>Warehouse</td>
-                        <td>@Model.InventoryWarehouse</td>
+                        <th>Warehouse</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.InventoryWarehouse)</td>
                     </tr>
                     <tr>
-                        <td>Low Stock At</td>
-                        <td>@Model.InventoryAlertAt</td>
+                        <th>Low Stock At</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.InventoryAlertAt)</td>
                     </tr>
                 </table>
             </div>
@@ -42,24 +51,23 @@
                 <h5 class="card-subtitle">
                     Pricing
                 </h5>
-                <hr />
 
-                <table class="table table-sm table-borderless table-hover">
+                <table class="table table-sm table-hover mt-2">
                     <tr>
-                        <td>Retail Price</td>
-                        <td>@Model.PriceRetail</td>
+                        <th>Retail Price</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.PriceRetail)</td>
                     </tr>
                     <tr>
-                        <td>Whole Sale Price</td>
-                        <td>@Model.PriceBulk</td>
+                        <th>Whole Sale Price</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.PriceBulk)</td>
                     </tr>
                     <tr>
-                        <td>Marginal Price</td>
-                        <td>@Model.PriceMargin</td>
+                        <th>Marginal Price</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.PriceMargin)</td>
                     </tr>
                     <tr>
-                        <td>Purchase Price</td>
-                        <td>@Model.PricePurchase</td>
+                        <th>Purchase Price</th>
+                        <td class="text-right">@Html.DisplayFor(model => model.PricePurchase)</td>
                     </tr>
                 </table>
             </div>

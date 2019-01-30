@@ -6,9 +6,9 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.EmployeeFullName)</th>
-            <th>@Html.DisplayNameFor(model => model.Amount)</th>
-            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
-            <th>@Html.DisplayNameFor(model => model.Metadata.ModifiedAt)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Amount)</th>
+            <th class="text-right">Created at</th>
+            <th class="text-right">Created by</th>
         </tr>
     </thead>
     <tbody>
@@ -18,9 +18,9 @@
                 data-href="@Url.Page("./Details", new { id = salaryIssue.Id })">
                 <td>@Html.DisplayFor(modelItem => salaryIssue.Id)</td>
                 <td>@Html.DisplayFor(modelItem => salaryIssue.EmployeeFullName)</td>
-                <td>@Html.DisplayFor(modelItem => salaryIssue.Amount)</td>
-                <td>@Html.DisplayFor(modelItem => salaryIssue.Metadata.Modifier)</td>
-                <td>@Html.DisplayFor(modelItem => salaryIssue.Metadata.ModifiedAt)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => salaryIssue.Amount)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => salaryIssue.Metadata.CreatedAt)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => salaryIssue.Metadata.Creator)</td>
             </tr>
         }
     </tbody>

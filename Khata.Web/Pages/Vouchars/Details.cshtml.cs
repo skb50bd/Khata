@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.CRUD;
 
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace WebUI.Pages.Vouchars
             Options = options.CurrentValue;
         }
 
-        public Vouchar Vouchar;
+        public VoucharDto Vouchar;
         public OutletOptions Options;
 
         public async Task<IActionResult> OnGetAsync(int id)

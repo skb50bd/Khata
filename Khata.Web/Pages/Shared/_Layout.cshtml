@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper">
@@ -21,7 +19,9 @@
         <nav id="sidebar">
             <div class="text-left">
                 <button type="button" id="sidebarCollapse" class="btn btn-lg btn-link" style="color:white">
-                    <i class="fas fa-bars"></i>
+                    <i class="material-icons">
+                        menu
+                    </i>
                 </button>
             </div>
             @*<div class="sidebar-header">
@@ -33,7 +33,7 @@
                 <li>
                     <a asp-area=""
                        asp-page="/Index">
-                        <i class="fas fa-home"></i>
+                        <i class="material-icons">home</i>
                         Home
                     </a>
                 </li>
@@ -41,14 +41,16 @@
                 <li>
                     <a asp-area=""
                        asp-page="/Cash/Index">
-                        <i class="fas fa-cash"></i>
+                        <i class="material-icons">monetization_on</i>
                         Cash
                     </a>
                 </li>
 
                 <li>
                     <a href="#incomingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-piggy-bank"></i>
+                        <i class="material-icons">
+                            arrow_forward
+                        </i>
                         Incoming
                     </a>
                     <ul class="collapse list-unstyled" id="incomingSubmenu">
@@ -69,7 +71,9 @@
 
                 <li>
                     <a href="#outgoingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-money-bill-alt"></i>
+                        <i class="material-icons">
+                            arrow_back
+                        </i>
                         Outgoing
                     </a>
                     <ul class="collapse list-unstyled" id="outgoingSubmenu">
@@ -106,7 +110,9 @@
 
                 <li>
                     <a href="#inventorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-warehouse"></i>
+                        <i class="material-icons">
+                            domain
+                        </i>
                         Inventory
                     </a>
                     <ul class="collapse list-unstyled" id="inventorySubmenu">

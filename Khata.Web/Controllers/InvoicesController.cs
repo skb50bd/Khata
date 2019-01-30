@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
 
@@ -13,10 +13,10 @@ namespace WebUI.Controllers
     [ApiController]
     public class InvoicesController : ControllerBase
     {
-        private readonly IInvoiceService _invoices;
+        private readonly ICustomerInvoiceService _invoices;
         private readonly PfService _pfService;
 
-        public InvoicesController(IInvoiceService invoices,
+        public InvoicesController(ICustomerInvoiceService invoices,
             PfService pfService)
         {
             _invoices = invoices;
@@ -25,7 +25,7 @@ namespace WebUI.Controllers
 
         // GET: api/Invoices
         [HttpGet]
-        public async Task<IEnumerable<CustomerInvoice>> Get(string searchString = "",
+        public async Task<IEnumerable<CustomerInvoiceDto>> Get(string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
             => await _invoices.Get(

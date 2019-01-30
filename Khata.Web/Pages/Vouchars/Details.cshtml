@@ -57,7 +57,7 @@
                             <div class="col-sm-4">Seller</div>
                             <div class="col-sm-8 text-right">
                                 <strong>
-                                    @Model.Vouchar.Supplier.FullName
+                                    @Html.DisplayFor(model => model.Vouchar.Supplier.FullName)
                                 </strong>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                         <div class="row">
                             <div class="col-sm-4">Company</div>
                             <div class="col-sm-8 text-right">
-                                @Model.Vouchar.Supplier.CompanyName
+                                @Html.DisplayFor(model => model.Vouchar.Supplier.CompanyName)
                             </div>
                         </div>
                     </li>
@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-sm-4">Phone</div>
                             <div class="col-sm-8 text-right">
-                                @Model.Vouchar.Supplier.Phone
+                                @Html.DisplayFor(model => model.Vouchar.Supplier.Phone)
                             </div>
                         </div>
                     </li>
@@ -84,7 +84,7 @@
                         <div class="row">
                             <div class="col-sm-4">Email</div>
                             <div class="col-sm-8 text-right">
-                                @Model.Vouchar.Supplier.Email
+                                @Html.DisplayFor(model => model.Vouchar.Supplier.Email)
                             </div>
                         </div>
                     </li>
@@ -93,7 +93,7 @@
                         <div class="row">
                             <div class="col-sm-4">Address</div>
                             <div class="col-sm-8 text-right">
-                                @Model.Vouchar.Supplier.Address
+                                @Html.DisplayFor(model => model.Vouchar.Supplier.Address)
                             </div>
                         </div>
                     </li>
@@ -105,7 +105,7 @@
                         <div class="row">
                             <div class="col-sm-6">Cart Item Total</div>
                             <div class="col-sm-6 text-right">
-                                @sym @Model.Vouchar.PaymentSubtotal
+                                @Html.DisplayFor(model => model.Vouchar.PaymentSubtotal)
                             </div>
                         </div>
                     </li>
@@ -119,7 +119,7 @@
                         <div class="row">
                             <div class="col-sm-6">Previous Due</div>
                             <div class="col-sm-6 text-right">
-                                + @sym @Model.Vouchar.PreviousDue
+                                + @Html.DisplayFor(model => model.Vouchar.PreviousDue)
                             </div>
                         </div>
                     </li>
@@ -129,7 +129,7 @@
                             <div class="col-sm-6">Payable</div>
                             <div class="col-sm-6 text-right">
                                 <strong>
-                                    = @sym @Model.Vouchar.PaymentPayable
+                                    = @Html.DisplayFor(model => model.Vouchar.PaymentPayable)
                                 </strong>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                             <div class="col-sm-6">Paid</div>
                             <div class="col-sm-6 text-right">
                                 <strong>
-                                    @sym @Model.Vouchar.PaymentPaid
+                                    - @Html.DisplayFor(model => model.Vouchar.PaymentPaid)
                                 </strong>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             <div class="col-sm-6">Due</div>
                             <div class="col-sm-6 text-right">
                                 <strong>
-                                    @sym @Model.Vouchar.DueAfter
+                                    = @Html.DisplayFor(model => model.Vouchar.DueAfter)
                                 </strong>
                             </div>
                         </div>
@@ -199,12 +199,14 @@
                                 @foreach (var item in Model.Vouchar.Cart)
                                 {
                                     <tr>
-                                        <td>@item.Name</td>
-                                        <td class="text-right">@item.Quantity</td>
-                                        <td class="text-right">@sym @item.UnitPrice</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td class="text-right">@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                        <td class="text-right">
+                                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                                        </td>
                                         <td class="text-right"
                                             style="font-weight: 700;">
-                                            @sym @item.NetPrice
+                                            @Html.DisplayFor(modelItem => item.NetPrice)
                                         </td>
                                     </tr>
                                 }

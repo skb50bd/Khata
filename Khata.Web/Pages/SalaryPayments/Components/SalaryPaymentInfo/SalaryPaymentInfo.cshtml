@@ -19,20 +19,24 @@
            asp-route-id="@Model.EmployeeId">
             @Model.EmployeeFullName
         </a>
-        <hr />
-        <table class="table table-sm table-borderless table-hover">
+        <table class="table table-sm table-hover mt-4">
             <tr>
-                <td>Balance Before</td>
-                <td>@Model.BalanceBefore</td>
+                <th>Balance Before</th>
+                <td>@Html.DisplayFor(model => model.BalanceBefore)</td>
             </tr>
             <tr>
-                <td>Amount</td>
-                <td>@Model.Amount</td>
+                <th>Amount</th>
+                <td>@Html.DisplayFor(model => model.Amount)</td>
             </tr>
             <tr>
             <tr>
-                <td>Balance After</td>
-                <td>@Model.BalanceAfter</td>
+                <th>Balance After</th>
+                <td>@Html.DisplayFor(model => model.BalanceAfter)</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>@Model.Description</td>
             </tr>
 
         </table>

@@ -2,8 +2,11 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using Khata.Data.Core;
 using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.PageFilterSort;
 
 using Microsoft.AspNetCore.Http;
@@ -12,19 +15,24 @@ using SharedLibrary;
 
 namespace Khata.Services.CRUD
 {
-    public class InvoiceService : IInvoiceService
+    public class InvoiceService : ICustomerInvoiceService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
-        public InvoiceService(IUnitOfWork db, IHttpContextAccessor httpContextAccessor)
+        public InvoiceService(
+            IUnitOfWork db,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<CustomerInvoice>> Get(PageFilter pf)
+        public async Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
                 ? (Expression<Func<CustomerInvoice, bool>>)(p => true)
@@ -33,55 +41,59 @@ namespace Khata.Services.CRUD
                     || p.Customer.CompanyName.ToLowerInvariant().Contains(pf.Filter)
                     || p.Customer.Phone.Contains(pf.Filter)
                     || p.Customer.Email.Contains(pf.Filter);
-
-            return await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            return res.CastList(c => _mapper.Map<CustomerInvoiceDto>(c));
         }
 
-        public async Task<CustomerInvoice> Get(int id)
+        public async Task<CustomerInvoiceDto> Get(int id)
         {
-            return await _db.Invoices.GetById(id);
+            return _mapper.Map<CustomerInvoiceDto>(await _db.Invoices.GetById(id));
         }
 
-        public async Task<CustomerInvoice> Add(CustomerInvoice model)
+        public async Task<CustomerInvoiceDto> Add(CustomerInvoice model)
         {
             model.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Invoices.Add(model);
             await _db.CompleteAsync();
 
-            return model;
+            return _mapper.Map<CustomerInvoiceDto>(model);
         }
 
-        public async Task<CustomerInvoice> SetSale(int invoiceId, int saleId)
+        public async Task<CustomerInvoiceDto> SetSale(
+            int invoiceId,
+            int saleId)
         {
-            var invoice = await Get(invoiceId);
+            var invoice = await _db.Invoices.GetById(invoiceId);
             invoice.SaleId = saleId;
             await _db.CompleteAsync();
 
-            return invoice;
+            return _mapper.Map<CustomerInvoiceDto>(invoice);
         }
 
-        public async Task<CustomerInvoice> SetDebtPayment(int invoiceId, int debtPaymentId)
+        public async Task<CustomerInvoiceDto> SetDebtPayment(
+            int invoiceId,
+            int debtPaymentId)
         {
-            var invoice = await Get(invoiceId);
+            var invoice = await _db.Invoices.GetById(invoiceId);
             invoice.DebtPaymentId = debtPaymentId;
             await _db.CompleteAsync();
 
-            return invoice;
+            return _mapper.Map<CustomerInvoiceDto>(invoice);
         }
 
-        public async Task<CustomerInvoice> Remove(int id)
+        public async Task<CustomerInvoiceDto> Remove(int id)
         {
             if (!(await Exists(id))
              || await _db.Invoices.IsRemoved(id))
                 return null;
             await _db.Invoices.Remove(id);
             await _db.CompleteAsync();
-            return await _db.Invoices.GetById(id);
+            return _mapper.Map<CustomerInvoiceDto>(await _db.Invoices.GetById(id));
         }
 
         public async Task<bool> Exists(int id) => await _db.Invoices.Exists(id);
 
-        public async Task<CustomerInvoice> Delete(int id)
+        public async Task<CustomerInvoiceDto> Delete(int id)
         {
             if (!(await Exists(id)))
                 return null;
@@ -89,7 +101,7 @@ namespace Khata.Services.CRUD
             var model = await _db.Invoices.GetById(id);
             await _db.Invoices.Delete(id);
             await _db.CompleteAsync();
-            return model;
+            return _mapper.Map<CustomerInvoiceDto>(model);
         }
     }
 }

@@ -2,8 +2,11 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using Khata.Data.Core;
 using Khata.Domain;
+using Khata.DTOs;
 using Khata.Services.PageFilterSort;
 
 using Microsoft.AspNetCore.Http;
@@ -15,16 +18,21 @@ namespace Khata.Services.CRUD
     public class VoucharService : IVoucharService
     {
         private readonly IUnitOfWork _db;
+        private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
-        public VoucharService(IUnitOfWork db, IHttpContextAccessor httpContextAccessor)
+        public VoucharService(
+            IUnitOfWork db,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<Vouchar>> Get(PageFilter pf)
+        public async Task<IPagedList<VoucharDto>> Get(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
                 ? (Expression<Func<Vouchar, bool>>)(p => true)
@@ -34,54 +42,55 @@ namespace Khata.Services.CRUD
                     || p.Supplier.Phone.Contains(pf.Filter)
                     || p.Supplier.Email.Contains(pf.Filter);
 
-            return await _db.Vouchars.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Vouchars.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            return res.CastList(c => _mapper.Map<VoucharDto>(c));
         }
 
-        public async Task<Vouchar> Get(int id)
+        public async Task<VoucharDto> Get(int id)
         {
-            return await _db.Vouchars.GetById(id);
+            return _mapper.Map<VoucharDto>(await _db.Vouchars.GetById(id));
         }
 
-        public async Task<Vouchar> Add(Vouchar model)
+        public async Task<VoucharDto> Add(Vouchar model)
         {
             model.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Vouchars.Add(model);
             await _db.CompleteAsync();
 
-            return model;
+            return _mapper.Map<VoucharDto>(model);
         }
 
-        public async Task<Vouchar> SetPurchase(int invoiceId, int saleId)
+        public async Task<VoucharDto> SetPurchase(int voucharId, int saleId)
         {
-            var invoice = await Get(invoiceId);
-            invoice.PurchaseId = saleId;
+            var vouchar = await _db.Vouchars.GetById(voucharId);
+            vouchar.PurchaseId = saleId;
             await _db.CompleteAsync();
 
-            return invoice;
+            return _mapper.Map<VoucharDto>(vouchar);
         }
 
-        public async Task<Vouchar> SetSupplierPayment(int invoiceId, int debtPaymentId)
+        public async Task<VoucharDto> SetSupplierPayment(int voucharId, int debtPaymentId)
         {
-            var invoice = await Get(invoiceId);
-            invoice.SupplierPaymentId = debtPaymentId;
+            var vouchar = await _db.Vouchars.GetById(voucharId);
+            vouchar.SupplierPaymentId = debtPaymentId;
             await _db.CompleteAsync();
 
-            return invoice;
+            return _mapper.Map<VoucharDto>(vouchar);
         }
 
-        public async Task<Vouchar> Remove(int id)
+        public async Task<VoucharDto> Remove(int id)
         {
             if (!(await Exists(id))
              || await _db.Vouchars.IsRemoved(id))
                 return null;
             await _db.Vouchars.Remove(id);
             await _db.CompleteAsync();
-            return await _db.Vouchars.GetById(id);
+            return _mapper.Map<VoucharDto>(await _db.Vouchars.GetById(id));
         }
 
         public async Task<bool> Exists(int id) => await _db.Vouchars.Exists(id);
 
-        public async Task<Vouchar> Delete(int id)
+        public async Task<VoucharDto> Delete(int id)
         {
             if (!(await Exists(id)))
                 return null;
@@ -89,7 +98,7 @@ namespace Khata.Services.CRUD
             var model = await _db.Vouchars.GetById(id);
             await _db.Vouchars.Delete(id);
             await _db.CompleteAsync();
-            return model;
+            return _mapper.Map<VoucharDto>(model);
         }
     }
 }
