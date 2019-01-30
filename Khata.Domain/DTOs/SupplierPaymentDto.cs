@@ -14,6 +14,8 @@ namespace Khata.DTOs
         [Display(Name = "Supplier Name", ShortName = "Payee")]
         public string SupplierFullName { get; set; }
 
+        public int VoucharId { get; set; }
+
         [Display(Name = "Previous Payable")]
         [DataType(DataType.Currency)]
         public decimal PayableBefore { get; set; }

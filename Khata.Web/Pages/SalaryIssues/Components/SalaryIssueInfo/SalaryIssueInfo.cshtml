@@ -14,7 +14,11 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.EmployeeFullName</h3>
+        <a class="h3 card-title"
+           asp-page="/Suppliers/Details"
+           asp-route-id="@Model.EmployeeId">
+            @Model.EmployeeFullName
+        </a>
         <hr />
         <table class="table table-sm table-borderless table-hover">
             <tr>

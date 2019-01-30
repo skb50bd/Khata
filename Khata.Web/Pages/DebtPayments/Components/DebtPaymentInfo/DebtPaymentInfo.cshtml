@@ -14,24 +14,25 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.CustomerFullName</h3>
-        <hr />
-        <table class="table table-sm table-borderless table-hover">
+        <a class="h3 card-title"
+           asp-page="/Customers/Details"
+           asp-route-id="@Model.CustomerId">@Model.CustomerFullName</a>
+        <table class="table table-sm table-hover mt-4">
             <tr>
-                <td>Debt Before</td>
+                <th>Debt Before</th>
                 <td>@Model.DebtBefore</td>
             </tr>
             <tr>
-                <td>Amount</td>
+                <th>Amount</th>
                 <td>@Model.Amount</td>
             </tr>
             <tr>
             <tr>
-                <td>Debt After</td>
+                <th>Debt After</th>
                 <td>@Model.DebtAfter</td>
             </tr>
             <tr>
-                <td>Description</td>
+                <th>Description</th>
                 <td>@Model.Description</td>
             </tr>
 

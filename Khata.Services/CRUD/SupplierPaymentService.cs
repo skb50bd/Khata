@@ -55,6 +55,10 @@ namespace Khata.Services.CRUD
             dm.PayableBefore = dm.Supplier.Payable;
             dm.Supplier.Payable -= model.Amount;
 
+            dm.Vouchar = _mapper.Map<Vouchar>(dm);
+            dm.Vouchar.Metadata = Metadata.CreatedNew(CurrentUser);
+            dm.Vouchar.SupplierPayment = dm;
+
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
             var withdrawal = new Withdrawal(dm as IWithdrawal)

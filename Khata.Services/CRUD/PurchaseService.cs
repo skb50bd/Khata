@@ -63,6 +63,8 @@ namespace Khata.Services.CRUD
                 model.RegisterNewSupplier
                     ? _mapper.Map<Supplier>(model.Supplier)
                     : await _db.Suppliers.GetById(model.SupplierId);
+            if (model.RegisterNewSupplier)
+                dm.Supplier.Metadata = Metadata.CreatedNew(CurrentUser);
 
             dm.Cart = new List<PurchaseLineItem>();
             if (model.Cart?.Count > 0)

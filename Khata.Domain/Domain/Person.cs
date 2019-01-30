@@ -1,4 +1,5 @@
-﻿namespace Khata.Domain
+﻿
+namespace Khata.Domain
 {
     public abstract class Person : TrackedDocument
     {

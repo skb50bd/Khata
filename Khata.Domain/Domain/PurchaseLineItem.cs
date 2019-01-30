@@ -2,11 +2,11 @@
 {
     public class PurchaseLineItem : Entity
     {
-        public PurchaseLineItem(Product product, decimal quantity, decimal unitPrice)
+        public PurchaseLineItem(Product product, decimal quantity, decimal netPrice)
         {
             Name = product.Name;
             Quantity = quantity;
-            UnitPurchasePrice = unitPrice;
+            UnitPurchasePrice = netPrice / Quantity;
             ProductId = product.Id;
         }
         private PurchaseLineItem()

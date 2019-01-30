@@ -37,6 +37,7 @@ const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
 const lineItemNetPrice = document.getElementById('lineitem-netprice');
 const lineItemAdd = document.getElementById('lineitem-add-button');
 const lineItemClear = document.getElementById('lineitem-clear-button');
+const lineItemAvailable = document.getElementById('lineitem-available');
 const cart = document.getElementById('cart');
 const subtotal = document.getElementById('subtotal');
 const discountCash = document.getElementById('Payment_DiscountCash');
@@ -352,11 +353,15 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
-            if (lineitem.category === 'Product')
+            if (lineitem.category === 'Product') {
                 lineItemType.value = 1;
-            else
+                lineItemAvailable.innerHTML = lineitem.available;
+                lineItemAvailable.parentElement.removeAttribute('hidden');
+            }
+            else {
                 lineItemType.value = 2;
-
+                lineItemAvailable.parentElement.setAttribute('hidden');
+            }
             lineItemId.value = lineitem.itemId;
 
             if (retail.checked) {
@@ -378,7 +383,7 @@ $(document).ready(function () {
 
     registerNewCustomer.addEventListener('change', function () {
         if (this.checked === true) {
-            customerId.value = '';
+            customerId.value = '0';
             customerSelector.value = '';
             customerInputsReadonly(false);
         }
@@ -392,7 +397,7 @@ $(document).ready(function () {
         if (isNaN(discountPercentage.valueAsNumber))
             discountPercentage.value = 0;
         discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
-        discountCash.value = subtotal.valueAsNumber / discountPercentage.valueAsNumber * 100;
+        discountCash.value = subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber;
     });
     debtBefore.addEventListener('change', calculatePayment);
     paid.addEventListener('change', calculatePayment);

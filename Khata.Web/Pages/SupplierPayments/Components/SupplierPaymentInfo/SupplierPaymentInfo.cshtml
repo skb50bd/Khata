@@ -14,21 +14,28 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.SupplierFullName</h3>
-        <hr />
-        <table class="table table-sm table-borderless table-hover">
+        <a class="h3 card-title" asp-page="/Suppliers/Details" asp-route-id="@Model.SupplierId">@Model.SupplierFullName</a>
+        <table class="table table-sm table-hover mt-4">
             <tr>
-                <td>Payable Before</td>
+                <th>Payable Before</th>
                 <td>@Model.PayableBefore</td>
             </tr>
             <tr>
-                <td>Amount</td>
+                <th>Amount</th>
                 <td>@Model.Amount</td>
             </tr>
             <tr>
             <tr>
-                <td>Payable After</td>
+                <th>Payable After</th>
                 <td>@Model.PayableAfter</td>
+            </tr>
+            <tr>
+                <th>
+                    Description
+                </th>
+                <td>
+                    @Model.Description
+                </td>
             </tr>
 
         </table>
@@ -42,6 +49,11 @@
                     @*<a asp-page="./Edit"
                         asp-route-id="@Model.Id"
                         class="card-link btn btn-link btn-secondary">Edit</a>*@
+                    <a asp-page="/Vouchars/Details"
+                       asp-route-id="@Model.VoucharId"
+                       class="card-link btn btn-outline-success">
+                        Vouchar
+                    </a>
 
                     <a href="#"
                        class="card-link text-white btn btn-link btn-danger js-remove-item"

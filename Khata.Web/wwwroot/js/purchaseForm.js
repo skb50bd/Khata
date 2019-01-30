@@ -335,7 +335,7 @@ $(document).ready(function () {
 
     registerNewSupplier.addEventListener('change', function () {
         if (this.checked === true) {
-            supplierId.value = '';
+            supplierId.value = '0';
             supplierSelector.value = '';
             supplierInputsReadonly(false);
         }

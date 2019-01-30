@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -38,6 +40,8 @@ namespace WebUI.Pages.Sales
         {
             if (!ModelState.IsValid)
             {
+                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
+                    Debug.WriteLine(e.ErrorMessage);
                 return Page();
             }
 
@@ -60,7 +64,7 @@ namespace WebUI.Pages.Sales
             }
 
             MessageType = "success";
-            if (sale.Id > 0)
+            if (sale?.Id > 0)
             {
                 Message = $"Sale: {sale.Id} - {sale.Customer.FullName} created!";
                 return RedirectToPage("./Index");

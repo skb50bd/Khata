@@ -14,23 +14,25 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.Supplier.FullName</h3>
-        <table class="table table-sm table-borderless table-hover">
+        <a class="h3 card-title"
+           asp-page="/Suppliers/Details"
+           asp-route-id="@Model.SupplierId">@Model.Supplier.FullName</a>
+        <table class="table table-sm table-hover mt-4">
             <tbody>
                 <tr>
-                    <td>Company</td>
+                    <th>Company</th>
                     <td>@Model.Supplier.CompanyName</td>
                 </tr>
                 <tr>
-                    <td>Address</td>
+                    <th>Address</th>
                     <td>@Model.Supplier.Address</td>
                 </tr>
                 <tr>
-                    <td>Phone</td>
+                    <th>Phone</th>
                     <td>@Model.Supplier.Phone</td>
                 </tr>
                 <tr>
-                    <td>Email</td>
+                    <th>Email</th>
                     <td>@Model.Supplier.Email</td>
                 </tr>
             </tbody>
@@ -56,12 +58,12 @@
                     <td class="text-right">@Model.Supplier.Payable</td>
                 </tr>
                 <tr class="table-info">
-                    <td>Payable</td>
+                    <th>Payable</th>
                     <td class="text-right">@(Model.PaymentSubTotal + Model.Supplier.Payable)</td>
                 </tr>
 
                 <tr>
-                    <td>Paid</td>
+                    <th>Paid</th>
                     <td class="text-right">@(Model.PaymentPaid)</td>
                 </tr>
 
@@ -102,7 +104,7 @@
         <hr />
         <table class="table table-sm table-borderless table-hover">
             <tr>
-                <td>Description</td>
+                <th>Description</th>
                 <td>@Model.Description</td>
             </tr>
         </table>

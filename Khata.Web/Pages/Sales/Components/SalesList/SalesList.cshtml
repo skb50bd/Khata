@@ -6,12 +6,13 @@
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.Customer.FullName)</th>
             <th>@Html.DisplayNameFor(model => model.Type)</th>
-            <th>@Html.DisplayNameFor(model => model.PaymentTotal)</th>
-            <th>@Html.DisplayNameFor(model => model.PaymentDue)</th>
-            <th>@Html.DisplayNameFor(model => model.Profit)</th>
-            <th>@Html.DisplayNameFor(model => model.SaleDate)</th>
-            <th>@Html.DisplayNameFor(model => model.Metadata.Modifier)</th>
-            <th></th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PaymentTotal)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PaymentDue)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.Profit)</th>
+            <th class="text-right">Items</th>
+            <th class="text-right">Created At</th>
+            <th class="text-right">Created by</th>
+            <th class="text-right"></th>
         </tr>
     </thead>
     <tbody>
@@ -21,12 +22,13 @@
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.Customer.FullName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Type)</td>
-                <td>@Html.DisplayFor(modelItem => item.PaymentTotal)</td>
-                <td>@Html.DisplayFor(modelItem => item.PaymentDue)</td>
-                <td>@Html.DisplayFor(modelItem => item.Profit)</td>
-                <td>@Html.DisplayFor(modelItem => item.SaleDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Metadata.Modifier)</td>
-                <td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentTotal)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentDue)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.Profit)</td>
+                <td class="text-right">@Html.ValueFor(modelItem => item.Cart.Count)</td>
+                <td class="text-right">@Html.ValueFor(modelItem => item.Metadata.CreatedAt)</td>
+                <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.Creator)</td>
+                <td class="text-right">
                     <a asp-page="../Invoices/Details"
                        asp-route-id="@Html.ValueFor(modelItem => item.InvoiceId)"
                        class="card-link btn btn-sm btn-inline btn-success blank-link">Invoice</a>

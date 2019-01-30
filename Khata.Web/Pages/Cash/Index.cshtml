@@ -51,7 +51,7 @@
                         <tbody>
                             @foreach (var d in Model.Despsits)
                             {
-                                var content = @"<table>"
+                                var content = "<table class=\"table table-sm\">"
                                 + "<tbody>" + (d.RowId is null ? "" : ("<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
                                 + "<tr><td><strong>Amount</strong></td><td> " + d.Amount + "</td></tr>"
                                 + "<tr><td><strong>Description</strong></td><td> " + d.Description + "</td></tr>"
@@ -91,7 +91,7 @@
                         <tbody>
                             @foreach (var d in Model.Withdrawals)
                             {
-                                var content = @"<table>"
+                                var content = "<table class=\"table table-sm\">"
                                 + "<tbody>" + (d.RowId is null ? "" : ("<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
                                 + "<tr><td><strong>Amount</strong></td><td> " + d.Amount + "</td></tr>"
                                 + "<tr><td><strong>Description</strong></td><td> " + d.Description + "</td></tr>"

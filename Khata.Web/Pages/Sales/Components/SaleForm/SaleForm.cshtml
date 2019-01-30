@@ -8,271 +8,328 @@
 }
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col">
         <div class="row">
-            <div class="col-12"></div>
+            <!--SALE DATA-->
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="SaleDate" class="control-label"></label>
+                                    <input asp-for="SaleDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
+                                    <span asp-validation-for="SaleDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="Type" class="control-label"></label>
+                                    <br />
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Type" class="form-check-input" type="radio" id="retail" value="1" checked>
+                                        <label class="form-check-label" for="retail">
+                                            Retail
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Type" class="form-check-input" type="radio" id="bulk" value="2">
+                                        <label class="form-check-label" for="bulk">
+                                            Whole Sale
+                                        </label>
+                                    </div>
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--CUSTOMER-->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        @*Customer*@
+                        <div class="form-group" hidden>
+                            <label asp-for="CustomerId" class="control-label"></label>
+                            <input asp-for="CustomerId" type="number" value="0" class="form-control" />
+                            <span asp-validation-for="CustomerId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label h5 card-title" asp-for="Customer"></label>
+                            <input id="customer-selector"
+                                   class="form-control form-control-sm"
+                                   type="text"
+                                   data-path="@Url.Action("GetIds", "Customers")" />
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input asp-for="RegisterNewCustomer"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       data-toggle="collapse"
+                                       href="#customerInputCollapse">
+                                <label asp-for="RegisterNewCustomer" class="form-check-label"></label>
+                            </div>
+                        </div>
+
+                        <div class="collapse" id="customerInputCollapse">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.FirstName" class="control-label"></label>
+                                        <input asp-for="Customer.FirstName" type="text" class="form-control form-control-sm customer-input" />
+                                        <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.LastName" class="control-label"></label>
+                                        <input asp-for="Customer.LastName" type="text" class="form-control form-control-sm customer-input" />
+                                        <span asp-validation-for="Customer.LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.CompanyName" class="control-label"></label>
+                                        <input asp-for="Customer.CompanyName" type="text" class="form-control form-control-sm customer-input" />
+                                        <span asp-validation-for="Customer.CompanyName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.Phone" class="control-label"></label>
+                                        <input asp-for="Customer.Phone" type="text" class="form-control form-control-sm customer-input" />
+                                        <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.Email" class="control-label"></label>
+                                        <input asp-for="Customer.Email" type="text" class="form-control form-control-sm customer-input" />
+                                        <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Customer.Address" class="control-label"></label>
+                                        <textarea asp-for="Customer.Address" class="form-control form-control-sm customer-input"></textarea>
+                                        <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--LINE ITEM SELECT-->
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        @*Cart*@
+                        <label class="h5 card-title">Choose Items</label>
+
+                        <div class="form-group" hidden>
+                            <label class="control-label"></label>
+                            <input class="form-control form-control-sm" id="lineitem-id" type="number" />
+                        </div>
+
+                        <div class="form-group" hidden>
+                            <label class="control-label"></label>
+                            <input class="form-control form-control-sm" type="number" id="lineitem-type" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label" for="lineitem-selector">Item</label>
+                                    <input id="lineitem-selector"
+                                           class="form-control form-control-sm"
+                                           type="text"
+                                           data-path="@Url.Action("GetLineItems", "Sales")" />
+                                    <small class="text-muted">Available: <span id="lineitem-available" class="text-info"></span></small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="lineitem-quantity">Qty.</label>
+                                    <input id="lineitem-quantity"
+                                           class="form-control form-control-sm"
+                                           type="number" min="0" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="lineitem-unitprice">Unit Price</label>
+                                    <div class="input-group  input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@sym</span>
+                                        </div>
+                                        <input id="lineitem-unitprice"
+                                               class="form-control form-control-sm"
+                                               type="number" min="0" />
+                                    </div>
+                                    <span validation-for="lineitem-unitprice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="lineitem-netprice">Net Price</label>
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@sym</span>
+                                        </div>
+                                        <input id="lineitem-netprice"
+                                               class="form-control form-control-sm"
+                                               type="number" min="0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-sm btn-outline-primary card-link" id="lineitem-add-button">Add Item</button>
+                            <button class="btn btn-sm btn-outline-secondary card-link" id="lineitem-clear-button">Clear Item</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-lg-6"></div>
+    <div class="col">
+        <!--PAYMENT INFORMATION-->
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="h5 card-title">Payment Information</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="subtotal" class="control-label">Subtotal</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input id="subtotal" type="number" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="debt-before" class="control-label">Previous Due</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input id="debt-before" type="number" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Payment.DiscountCash" class="control-label"></label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input asp-for="Payment.DiscountCash" type="number" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Payment.DiscountCash" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Payment.DiscountPercentage" class="control-label"></label>
+                                <div class="input-group input-group-sm">
+                                    <input asp-for="Payment.DiscountPercentage"
+                                           type="number"
+                                           class="form-control"
+                                           min="0"
+                                           max="80" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="Payment.DiscountPercentage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payable" class="control-label">Payable</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input id="payable" type="number" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Payment.Paid" class="control-label"></label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input asp-for="Payment.Paid" type="number" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Payment.Paid" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="debt-after" class="control-label">New Due</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@sym</span>
+                                    </div>
+                                    <input id="debt-after" type="number" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" type="text" class="form-control form-control-sm"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--CART-->
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <table class="table table-sm table-hover table-responsive w-100">
+                    <thead>
+                        <tr>
+                            <th hidden>Id</th>
+                            <th hidden>Type</th>
+                            <th>Name</th>
+                            <th colspan="3" class="text-right">Qty.</th>
+                            <th class="text-right">Unit Price</th>
+                            <th class="text-right">Net Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    @*Sale Info*@
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="SaleDate" class="control-label"></label>
-        <input asp-for="SaleDate" type="text" class="form-control datepicker" autocomplete="off" />
-        <span asp-validation-for="SaleDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Type" class="control-label"></label>
-        <br />
-        <div class="form-check form-check-inline">
-            <input asp-for="Type" class="form-check-input" type="radio" id="retail" value="1" checked>
-            <label class="form-check-label" for="retail">
-                Retail
-            </label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input asp-for="Type" class="form-check-input" type="radio" id="bulk" value="2">
-            <label class="form-check-label" for="bulk">
-                Whole Sale
-            </label>
-        </div>
-        <span asp-validation-for="Type" class="text-danger"></span>
-    </div>
-
-    <hr />
-
-    @*Customer*@
-    <div class="form-group" hidden>
-        <label asp-for="CustomerId" class="control-label"></label>
-        <input asp-for="CustomerId" class="form-control" />
-        <span asp-validation-for="CustomerId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label h5" asp-for="Customer"></label>
-        <input id="customer-selector"
-               class="form-control"
-               type="text"
-               data-path="@Url.Action("GetIds", "Customers")" />
-    </div>
-
-    <div class="form-group">
-        <div class="form-check">
-            <input asp-for="RegisterNewCustomer"
-                   class="form-check-input"
-                   type="checkbox"
-                   data-toggle="collapse"
-                   href="#customerInputCollapse">
-            <label asp-for="RegisterNewCustomer" class="form-check-label"></label>
-        </div>
-    </div>
-
-    <div class="collapse" id="customerInputCollapse">
-        <div class="form-group">
-            <label asp-for="Customer.FirstName" class="control-label"></label>
-            <input asp-for="Customer.FirstName" type="text" class="form-control customer-input" />
-            <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Customer.LastName" class="control-label"></label>
-            <input asp-for="Customer.LastName" type="text" class="form-control customer-input" />
-            <span asp-validation-for="Customer.LastName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Customer.CompanyName" class="control-label"></label>
-            <input asp-for="Customer.CompanyName" type="text" class="form-control customer-input" />
-            <span asp-validation-for="Customer.CompanyName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Customer.Address" class="control-label"></label>
-            <textarea asp-for="Customer.Address" class="form-control customer-input"></textarea>
-            <span asp-validation-for="Customer.Address" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Customer.Phone" class="control-label"></label>
-            <input asp-for="Customer.Phone" type="text" class="form-control customer-input" />
-            <span asp-validation-for="Customer.Phone" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Customer.Email" class="control-label"></label>
-            <input asp-for="Customer.Email" type="text" class="form-control customer-input" />
-            <span asp-validation-for="Customer.Email" class="text-danger"></span>
-        </div>
-    </div>
-
-    <hr />
-
-    @*Cart*@
-    <label class="h5">Cart</label>
-
-    <div class="form-group" hidden>
-        <label class="control-label"></label>
-        <input class="form-control" id="lineitem-id" type="number" />
-    </div>
-
-    <div class="form-group" hidden>
-        <label class="control-label"></label>
-        <input class="form-control" type="number" id="lineitem-type" />
-    </div>
-
-    <div class="form-group">
-        <label class="control-label" for="lineitem-selector">Item</label>
-        <input id="lineitem-selector"
-               class="form-control"
-               type="text"
-               data-path="@Url.Action("GetLineItems", "Sales")" />
-    </div>
-
-    <div class="form-group">
-        <label class="control-label" for="lineitem-quantity">Qty.</label>
-        <input id="lineitem-quantity"
-               class="form-control"
-               type="number" min="0" />
-    </div>
-
-    <div class="form-group">
-        <label class="control-label" for="lineitem-unitprice">Unit Price</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="lineitem-unitprice"
-                   class="form-control"
-                   type="number" min="0" />
-        </div>
-        <span validation-for="lineitem-unitprice" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label" for="lineitem-netprice">Net Price</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="lineitem-netprice"
-                   class="form-control"
-                   type="number" min="0" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <button class="btn btn-outline-primary" id="lineitem-add-button">Add Item</button>
-        <button class="btn btn-outline-secondary" id="lineitem-clear-button">Clear Item</button>
-    </div>
-
-    <table class="table table-sm table-hover">
-        <thead>
-            <tr>
-                <th hidden>Id</th>
-                <th hidden>Type</th>
-                <th>Name</th>
-                <th colspan="3" class="text-right">Qty.</th>
-                <th class="text-right">Unit Price</th>
-                <th class="text-right">Net Price</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="cart"></tbody>
-    </table>
-
-    <hr />
-
-    @*Payment*@
-
-    <label class="h5">Payment Information</label>
-
-    <div class="form-group">
-        <label for="subtotal" class="control-label">Subtotal</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="subtotal" type="number" class="form-control" disabled />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Payment.DiscountCash" class="control-label"></label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input asp-for="Payment.DiscountCash" type="number" class="form-control" />
-        </div>
-        <span asp-validation-for="Payment.DiscountCash" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Payment.DiscountPercentage" class="control-label"></label>
-        <div class="input-group">
-            <input asp-for="Payment.DiscountPercentage"
-                   type="number"
-                   class="form-control"
-                   min="0"
-                   max="80" />
-            <div class="input-group-append">
-                <span class="input-group-text">%</span>
-            </div>
-        </div>
-        <span asp-validation-for="Payment.DiscountPercentage" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="debt-before" class="control-label">Previous Due</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="debt-before" type="number" class="form-control" disabled />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="payable" class="control-label">Payable</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="payable" type="number" class="form-control" disabled />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Payment.Paid" class="control-label"></label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input asp-for="Payment.Paid" type="number" class="form-control" />
-        </div>
-        <span asp-validation-for="Payment.Paid" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="debt-after" class="control-label">New Due</label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@sym</span>
-            </div>
-            <input id="debt-after" type="number" class="form-control" disabled />
-        </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" type="text" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-</div>

@@ -14,23 +14,23 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.Customer.FullName</h3>
-        <table class="table table-sm table-borderless table-hover">
+        <a class="card-title h3" asp-page="/Customers/Details" asp-route-id="@Model.CustomerId">@Model.Customer.FullName</a>
+        <table class="table table-sm table-hover mt-4">
             <tbody>
                 <tr>
-                    <td>Company</td>
+                    <th>Company</th>
                     <td>@Model.Customer.CompanyName</td>
                 </tr>
                 <tr>
-                    <td>Address</td>
+                    <th>Address</th>
                     <td>@Model.Customer.Address</td>
                 </tr>
                 <tr>
-                    <td>Phone</td>
+                    <th>Phone</th>
                     <td>@Model.Customer.Phone</td>
                 </tr>
                 <tr>
-                    <td>Email</td>
+                    <th>Email</th>
                     <td>@Model.Customer.Email</td>
                 </tr>
             </tbody>
@@ -42,11 +42,14 @@
             <tbody>
                 <tr>
                     <td>Cart Total</td>
-                    <td class="text-right">@Model.PaymentSubTotal</td>
+                    <td class="text-right">@Model.PaymentSubTotal.ToString("c2")</td>
                 </tr>
                 <tr>
                     <td>Discount</td>
-                    <td class="text-right">(@Model.PaymentDiscountPercentage.ToString("0.##")%) @Model.PaymentDiscountCash</td>
+                    <td class="text-right">
+                        (@Model.PaymentDiscountPercentage.ToString("0.##")%)
+                        @Model.PaymentDiscountCash.ToString("c2")
+                    </td>
                 </tr>
                 @{ var recordClass = ""; }
                 @if (Model.Customer.Debt > 0)
@@ -56,16 +59,18 @@
                 <tr class="table-@recordClass">
 
                     <td>Previous Due</td>
-                    <td class="text-right">@Model.Customer.Debt</td>
+                    <td class="text-right">@Model.Customer.Debt.ToString("c2")</td>
                 </tr>
                 <tr class="table-info">
-                    <td>Payable</td>
-                    <td class="text-right">@(Model.PaymentTotal + Model.Customer.Debt)</td>
+                    <th>Payable</th>
+                    <td class="text-right">
+                        @((Model.PaymentTotal + Model.Customer.Debt).ToString("c2"))
+                    </td>
                 </tr>
 
                 <tr>
-                    <td>Paid</td>
-                    <td class="text-right">@(Model.PaymentPaid)</td>
+                    <th>Paid</th>
+                    <td class="text-right">@(Model.PaymentPaid.ToString("c2"))</td>
                 </tr>
 
                 <tr class="table-@( Model.PaymentDue + Model.Customer.Debt> 0
@@ -73,7 +78,7 @@
                                         : "")
                     ">
                     <td>Due</td>
-                    <td class="text-right">@(Model.PaymentDue + Model.Customer.Debt)</td>
+                    <td class="text-right">@((Model.PaymentDue + Model.Customer.Debt).ToString("c2"))</td>
                 </tr>
 
                 <tr class="table-@( Model.Profit < 0
@@ -83,7 +88,7 @@
                             : "primary")
                     ">
                     <td>Profit</td>
-                    <td class="text-right">@(Model.Profit)</td>
+                    <td class="text-right">@(Model.Profit.ToString("c2"))</td>
                 </tr>
             </tbody>
         </table>
@@ -113,12 +118,15 @@
         </table>
 
         <hr />
-        <table class="table table-sm table-borderless table-hover">
-            <tr>
-                <td>Description</td>
-                <td>@Model.Description</td>
-            </tr>
-        </table>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <table class="table table-sm table-borderless table-hover">
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </table>
+        }
         <div class="row">
 
             <div class="col-md-6">

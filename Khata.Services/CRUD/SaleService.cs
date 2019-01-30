@@ -65,6 +65,9 @@ namespace Khata.Services.CRUD
                     ? _mapper.Map<Customer>(model.Customer)
                     : await _db.Customers.GetById(model.CustomerId);
 
+            if (model.RegisterNewCustomer)
+                dm.Customer.Metadata = Metadata.CreatedNew(CurrentUser);
+
             dm.Cart = new List<SaleLineItem>();
             if (model.Cart?.Count > 0)
             {

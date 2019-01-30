@@ -15,27 +15,31 @@
     </div>
     <div class="card-body">
         <h3 class="card-title">@Model.FullName</h3>
-        <hr />
-        <table class="table table-sm table-borderless table-hover">
+        <table class="table table-sm table-hover mt-4">
             <tr>
-                <td>Company</td>
+                <th>Company</th>
                 <td>@Model.CompanyName</td>
             </tr>
             <tr>
-                <td>Address</td>
+                <th>Address</th>
                 <td>@Model.Address</td>
             </tr>
             <tr>
-                <td>Phone</td>
+                <th>Phone</th>
                 <td>@Model.Phone</td>
             </tr>
             <tr>
-                <td>Email</td>
+                <th>Email</th>
                 <td>@Model.Email</td>
             </tr>
             <tr>
-                <td>Due</td>
-                <td>@Model.Debt</td>
+                <th>Due</th>
+                <td>@Html.DisplayFor(model => model.Debt)</td>
+            </tr>
+
+            <tr>
+                <th>Note</th>
+                <td>@Model.Note</td>
             </tr>
 
         </table>
