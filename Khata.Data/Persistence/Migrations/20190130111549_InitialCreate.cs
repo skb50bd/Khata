@@ -689,7 +689,6 @@ namespace Khata.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MetadataId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(nullable: false),
                     UnitPurchasePrice = table.Column<decimal>(nullable: false),
@@ -699,12 +698,6 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseLineItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseLineItem_Metadata_MetadataId",
-                        column: x => x.MetadataId,
-                        principalTable: "Metadata",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PurchaseLineItem_Products_ProductId",
                         column: x => x.ProductId,
@@ -725,7 +718,6 @@ namespace Khata.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MetadataId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
@@ -737,12 +729,6 @@ namespace Khata.Data.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SaleLineItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SaleLineItem_Metadata_MetadataId",
-                        column: x => x.MetadataId,
-                        principalTable: "Metadata",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SaleLineItem_Sales_SaleId",
                         column: x => x.SaleId,
@@ -857,11 +843,6 @@ namespace Khata.Data.Persistence.Migrations
                 column: "MetadataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseLineItem_MetadataId",
-                table: "PurchaseLineItem",
-                column: "MetadataId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseLineItem_ProductId",
                 table: "PurchaseLineItem",
                 column: "ProductId");
@@ -905,11 +886,6 @@ namespace Khata.Data.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SalaryPayments_MetadataId",
                 table: "SalaryPayments",
-                column: "MetadataId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SaleLineItem_MetadataId",
-                table: "SaleLineItem",
                 column: "MetadataId");
 
             migrationBuilder.CreateIndex(

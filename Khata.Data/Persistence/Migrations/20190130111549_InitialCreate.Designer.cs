@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190129113707_InitialCreate")]
+    [Migration("20190130111549_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,8 +302,6 @@ namespace Khata.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MetadataId");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("ProductId");
@@ -315,8 +313,6 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<decimal>("UnitPurchasePrice");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MetadataId");
 
                     b.HasIndex("ProductId");
 
@@ -419,8 +415,6 @@ namespace Khata.Data.Persistence.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int?>("MetadataId");
-
                     b.Property<string>("Name");
 
                     b.Property<decimal>("Quantity");
@@ -434,8 +428,6 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<decimal>("UnitPurchasePrice");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MetadataId");
 
                     b.HasIndex("SaleId");
 
@@ -953,10 +945,6 @@ namespace Khata.Data.Persistence.Migrations
 
             modelBuilder.Entity("Khata.Domain.PurchaseLineItem", b =>
                 {
-                    b.HasOne("Khata.Domain.Metadata", "Metadata")
-                        .WithMany()
-                        .HasForeignKey("MetadataId");
-
                     b.HasOne("Khata.Domain.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -1032,10 +1020,6 @@ namespace Khata.Data.Persistence.Migrations
 
             modelBuilder.Entity("Khata.Domain.SaleLineItem", b =>
                 {
-                    b.HasOne("Khata.Domain.Metadata", "Metadata")
-                        .WithMany()
-                        .HasForeignKey("MetadataId");
-
                     b.HasOne("Khata.Domain.Sale")
                         .WithMany("Cart")
                         .HasForeignKey("SaleId");
