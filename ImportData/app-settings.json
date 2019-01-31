@@ -1,0 +1,7 @@
+{
+  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=Khata;Trusted_Connection=True;MultipleActiveResultSets=true",
+  "Configuration":
+  {
+    "ConsoleTitle": "Pioneer Console Boilerplate"
+  }
+}

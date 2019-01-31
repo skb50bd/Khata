@@ -113,6 +113,14 @@ namespace Khata.Data.Persistence
             {
                 entity.Property(sp => sp.EmployeeId).IsRequired();
             });
+
+            modelBuilder.Entity<Refund>(entity =>
+            {
+                entity.HasOne(r => r.Sale)
+                        .WithOne()
+                        .HasForeignKey<Refund>(r => r.SaleId)
+                        .OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         public virtual DbSet<CashRegister> CashRegister { get; set; }
@@ -133,6 +141,7 @@ namespace Khata.Data.Persistence
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<SalaryIssue> SalaryIssues { get; set; }
         public virtual DbSet<SalaryPayment> SalaryPayments { get; set; }
+        public virtual DbSet<Refund> Refunds { get; set; }
 
     }
 }

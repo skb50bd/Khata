@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Khata.Services\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{D966956C-F32D-4CB6-9CD4-99BFB21659C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportData", "ImportData\ImportData.csproj", "{FE756418-988D-4514-895F-08CC5A9762CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE756418-988D-4514-895F-08CC5A9762CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE756418-988D-4514-895F-08CC5A9762CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE756418-988D-4514-895F-08CC5A9762CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE756418-988D-4514-895F-08CC5A9762CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

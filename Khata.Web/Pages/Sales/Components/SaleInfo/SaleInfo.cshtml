@@ -108,10 +108,10 @@
                 @foreach (var item in Model.Cart)
                 {
                     <tr>
-                        <td>@item.Name</td>
-                        <td class="text-right">@item.Quantity</td>
-                        <td class="text-right">@item.UnitPrice</td>
-                        <td class="text-right">@item.NetPrice</td>
+                        <td>@Html.DisplayFor(model => item.Name)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.Quantity)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.UnitPrice)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.NetPrice)</td>
                     </tr>
                 }
             </tbody>
