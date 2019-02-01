@@ -393,11 +393,12 @@ $(document).ready(function () {
     });
     subtotal.addEventListener('change', calculatePayment);
     discountCash.addEventListener('change', calculatePayment);
-    discountPercentage.addEventListener('change', function () {
+    discountPercentage.addEventListener('focusout', function () {
         if (isNaN(discountPercentage.valueAsNumber))
             discountPercentage.value = 0;
         discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
-        discountCash.value = subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber;
+        discountCash.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber, 2);
+        calculatePayment();
     });
     debtBefore.addEventListener('change', calculatePayment);
     paid.addEventListener('change', calculatePayment);

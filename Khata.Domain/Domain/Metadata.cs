@@ -5,11 +5,11 @@ namespace Khata.Domain
 {
     public class Metadata : Entity
     {
-        public string Creator { get; private set; }
-        public DateTimeOffset CreationTime { get; private set; }
+        public string Creator { get; set; }
+        public DateTimeOffset CreationTime { get; set; }
 
-        public string Modifier { get; private set; }
-        public DateTimeOffset ModificationTime { get; private set; }
+        public string Modifier { get; set; }
+        public DateTimeOffset ModificationTime { get; set; }
 
 
         public string Summary => "Updated " + ModificationTime.DateTime.ToNaturalText(DateTime.Now)

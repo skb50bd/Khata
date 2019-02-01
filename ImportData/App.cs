@@ -1,6 +1,8 @@
 using ImportData.Models;
 using ImportData.Services;
 
+using Khata.Data.Core;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -8,15 +10,16 @@ namespace ImportData
 {
     public class App
     {
-        private readonly IImportService _importService;
         private readonly ILogger<App> _logger;
+        private readonly IUnitOfWork _db;
         private readonly AppSettings _config;
 
-        public App(IImportService testService,
+        public App(
             IOptions<AppSettings> config,
+            IUnitOfWork db,
             ILogger<App> logger)
         {
-            _importService = testService;
+            _db = db;
             _logger = logger;
             _config = config.Value;
         }
@@ -24,7 +27,9 @@ namespace ImportData
         public void Run()
         {
             _logger.LogInformation($"App Running");
-            _importService.Run().Wait();
+            Dump.CreateDump();
+            Dump.InsertAll(_db);
+
             System.Console.ReadKey();
         }
     }

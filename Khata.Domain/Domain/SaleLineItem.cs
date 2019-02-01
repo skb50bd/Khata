@@ -12,6 +12,16 @@
             UnitPrice = netPrice / quantity;
         }
 
+        public SaleLineItem(Product product, decimal quantity, decimal netPrice, decimal netPurchasePrice)
+        {
+            Type = LineItemType.Product;
+            ItemId = product.Id;
+            Name = product.Name;
+            Quantity = quantity;
+            UnitPurchasePrice = netPurchasePrice / quantity;
+            UnitPrice = netPrice / quantity;
+        }
+
         public SaleLineItem(Service service, decimal price)
         {
             Type = LineItemType.Service;

@@ -1,21 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Khata.Domain;
+
+using Microsoft.Extensions.Options;
 
 namespace Khata.Services.PageFilterSort
 {
     public class PfService
     {
-        private readonly IConfiguration _configuration;
+        public OutletOptions Options { get; set; }
 
-        public PfService(IConfiguration configuration)
+        public PfService(IOptionsMonitor<OutletOptions> monitor)
         {
-            _configuration = configuration;
+            Options = monitor.CurrentValue;
         }
 
         public PageFilter CreateNewPf(string filter, int index = 1, int size = 0)
         {
             if (size == 0)
             {
-                size = int.MaxValue;
+                size = Options.DefaultPageSize;
             }
             return new PageFilter(filter, index, size);
         }

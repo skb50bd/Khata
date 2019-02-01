@@ -12,7 +12,9 @@
         public virtual Customer Customer { get; set; }
 
         public decimal PaymentDiscountCash { get; set; }
-        public decimal PaymentDiscountPercentage => PaymentDiscountCash / PaymentSubtotal * 100;
+        public decimal PaymentDiscountPercentage => PaymentSubtotal > 0
+            ? PaymentDiscountCash / PaymentSubtotal * 100
+            : 0M;
         public override decimal PaymentPayable => PaymentTotal - PaymentDiscountCash;
     }
 }

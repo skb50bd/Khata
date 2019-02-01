@@ -8,7 +8,7 @@ namespace Khata.ViewModels
 
         [Required]
         [Display(Name = "First Name")]
-        [MinLength(5,
+        [MinLength(1,
             ErrorMessage = "First Name must have at least 5 characters.")]
         [MaxLength(35)]
         public string FirstName { get; set; }
