@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -23,6 +22,7 @@ namespace Khata.Services.CRUD
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
         public SaleService(IMapper mapper,
@@ -34,20 +34,42 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<SaleDto>> Get(PageFilter pf)
+        public async Task<IPagedList<SaleDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf?.Filter)
-                ? (Expression<Func<Sale, bool>>)(s => !s.IsRemoved)
+                ? (Predicate<Sale>)(s => !s.IsRemoved)
                 : s => s.Id.ToString() == pf.Filter
                     || s.InvoiceId.ToString() == pf.Filter
-                    || s.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || (s.Customer.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Sales.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Sales.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from,
+                to);
             return res.CastList(c => _mapper.Map<SaleDto>(c));
         }
 
         public async Task<SaleDto> Get(int id) =>
             _mapper.Map<SaleDto>(await _db.Sales.GetById(id));
+
+        public async Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId)
+        {
+            var res = await _db.Sales.Get(
+                s => s.CustomerId == customerId,
+                p => p.Id,
+                1,
+                int.MaxValue,
+                DateTime.Today.AddYears(-1),
+                DateTime.Now)
+            ;
+            return res.CastList(c => _mapper.Map<SaleDto>(c));
+        }
 
         public async Task<SaleDto> Add(SaleViewModel model)
         {
@@ -206,5 +228,10 @@ namespace Khata.Services.CRUD
         private async Task<SaleLineItem> Sold(int serviceId,
             decimal price)
             => new SaleLineItem(await _db.Services.GetById(serviceId), price);
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Sales.Count(from, to);
+        }
     }
 }

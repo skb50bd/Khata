@@ -26,21 +26,26 @@ namespace Khata.Data.Persistence
         public TrackingRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<T>> Get<T2>(
-            Expression<Func<T, bool>> predicate,
+            Predicate<T> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
-            int pageSize)
-        {
-            Expression<Func<T, bool>> newPredicate =
-                i => !i.IsRemoved && predicate.Compile().Invoke(i);
-            return await base.Get(newPredicate, order, pageIndex, pageSize);
-        }
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null)
+            => await base.Get(
+                i => !i.IsRemoved && predicate(i),
+                order,
+                pageIndex,
+                pageSize,
+                from,
+                to
+            );
 
         public override async Task<IList<T>> GetAll()
             => await Context.Set<T>()
                         .AsNoTracking()
-                        .Where(e => !e.IsRemoved)
                         .Include(e => e.Metadata)
+                        .Where(e => !e.IsRemoved)
                         .ToListAsync();
 
         public virtual async Task<IList<T>> GetRemovedItems()

@@ -19,7 +19,10 @@ namespace Khata.DTOs
         [DataType(DataType.Currency)]
         public decimal PaymentDiscountCash { get; set; }
 
-        public decimal PaymentDiscountPercentage => PaymentDiscountCash / PaymentSubtotal * 100;
+        public decimal PaymentDiscountPercentage =>
+            PaymentSubtotal != 0
+            ? PaymentDiscountCash / PaymentSubtotal * 100
+            : 0;
 
         [DataType(DataType.Currency)]
         public override decimal PaymentPayable => PaymentTotal - PaymentDiscountCash;

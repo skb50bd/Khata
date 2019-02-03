@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
 using Khata.DTOs;
+using Khata.Services.CRUD;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,12 +10,10 @@ namespace WebUI.Pages.Sales
 {
     public class DetailsModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
-        public DetailsModel(IUnitOfWork db, IMapper mapper)
+        private readonly ISaleService _sales;
+        public DetailsModel(ISaleService sales)
         {
-            _db = db;
-            _mapper = mapper;
+            _sales = sales;
         }
 
         public SaleDto Sale { get; set; }
@@ -29,14 +25,12 @@ namespace WebUI.Pages.Sales
                 return NotFound();
             }
 
-            var sale = await _db.Sales.GetById((int)id);
+            Sale = await _sales.Get((int)id);
 
-            if (sale == null)
+            if (Sale == null)
             {
                 return NotFound();
             }
-
-            Sale = _mapper.Map<SaleDto>(sale);
             return Page();
         }
     }

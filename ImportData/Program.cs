@@ -1,7 +1,6 @@
 using System.IO;
 
 using ImportData.Models;
-using ImportData.Services;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,11 +54,6 @@ namespace ImportData
             serviceCollection.AddOptions();
             serviceCollection.Configure<AppSettings>(configuration.GetSection("Configuration"));
             ConfigureConsole(configuration);
-
-            // add services
-            serviceCollection.AddTransient<IImportService, ImportService>();
-            serviceCollection.AddTransient<Import>();
-
             // add app
             serviceCollection.AddTransient<App>();
 

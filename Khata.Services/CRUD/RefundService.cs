@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -18,7 +17,7 @@ using SharedLibrary;
 
 namespace Khata.Services.CRUD
 {
-    public class RefundService
+    public class RefundService : IRefundService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
@@ -34,15 +33,24 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<RefundDto>> Get(PageFilter pf)
+        public async Task<IPagedList<RefundDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf?.Filter)
-                ? (Expression<Func<Refund, bool>>)(s => !s.IsRemoved)
+                ? (Predicate<Refund>)(s => !s.IsRemoved)
                 : s => s.Id.ToString() == pf.Filter
                     || s.SaleId.ToString() == pf.Filter
-                    || s.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || (s.Customer.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Refunds.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Refunds.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<RefundDto>(c));
         }
 
@@ -51,9 +59,7 @@ namespace Khata.Services.CRUD
 
         public async Task<RefundDto> Add(RefundViewModel model)
         {
-            if (model.Cart is null
-                || (model.CashBack == 0
-                && model.DebtRollback == 0))
+            if (model.Cart is null)
             {
                 throw new Exception("Invalid Operation");
             }
@@ -82,19 +88,17 @@ namespace Khata.Services.CRUD
                 _db.Refunds.Add(dm);
                 if (dm.CashBack > 0)
                 {
-                    var deposit = new Deposit(dm as IDeposit)
+                    var withdrawal = new Withdrawal(dm as IWithdrawal)
                     {
                         Metadata = Metadata.CreatedNew(CurrentUser)
                     };
-                    _db.Deposits.Add(deposit);
+                    _db.Withdrawals.Add(withdrawal);
                     await _db.CompleteAsync();
 
-                    deposit.RowId = dm.RowId;
+                    withdrawal.RowId = dm.RowId;
                 }
                 await _db.CompleteAsync();
             }
-
-            await _db.CompleteAsync();
 
             return _mapper.Map<RefundDto>(dm);
         }
@@ -143,6 +147,11 @@ namespace Khata.Services.CRUD
             product.Inventory.Stock += quantity;
 
             return new SaleLineItem(product, quantity, netPrice);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Refunds.Count(from, to);
         }
     }
 }

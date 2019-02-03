@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -34,15 +33,24 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<PurchaseDto>> Get(PageFilter pf)
+        public async Task<IPagedList<PurchaseDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf?.Filter)
-                ? (Expression<Func<Purchase, bool>>)(s => !s.IsRemoved)
+                ? (Predicate<Purchase>)(s => !s.IsRemoved)
                 : s => s.Id.ToString() == pf.Filter
                     || s.VoucharId.ToString() == pf.Filter
-                    || s.Supplier.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || (s.Supplier?.FullName.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Purchases.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Purchases.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<PurchaseDto>(c));
         }
 
@@ -198,6 +206,11 @@ namespace Khata.Services.CRUD
             product.Price.Purchase = newPurchasePrice;
 
             return new PurchaseLineItem(product, quantity, netPrice);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Purchases.Count(from, to);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -30,14 +29,23 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<ProductDto>> Get(PageFilter pf)
+        public async Task<IPagedList<ProductDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Product, bool>>)(p => true)
+                ? (Predicate<Product>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Name.ToLowerInvariant().Contains(pf.Filter);
+                    || (p.Name?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Products.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Products.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<ProductDto>(c));
         }
 
@@ -88,6 +96,11 @@ namespace Khata.Services.CRUD
             await _db.Products.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<ProductDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Products.Count(from, to);
         }
     }
 }

@@ -11,6 +11,8 @@
     <Compile Remove="Persistence\Migrations\20190130111318_InitialCreate.Designer.cs" />
     <Compile Remove="Persistence\Migrations\20190131004157_Added-Refund.cs" />
     <Compile Remove="Persistence\Migrations\20190131004157_Added-Refund.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20190202090259_MadeMetadataOwned.cs" />
+    <Compile Remove="Persistence\Migrations\20190202090259_MadeMetadataOwned.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />

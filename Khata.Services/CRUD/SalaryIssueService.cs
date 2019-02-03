@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -32,14 +31,23 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<SalaryIssueDto>> Get(PageFilter pf)
+        public async Task<IPagedList<SalaryIssueDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<SalaryIssue, bool>>)(p => true)
+                ? (Predicate<SalaryIssue>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Employee.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || (p.Employee.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.SalaryIssues.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.SalaryIssues.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<SalaryIssueDto>(c));
         }
 
@@ -98,6 +106,11 @@ namespace Khata.Services.CRUD
             await _db.SalaryIssues.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<SalaryIssueDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.SalaryIssues.Count(from, to);
         }
     }
 }

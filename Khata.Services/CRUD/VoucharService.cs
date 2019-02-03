@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -32,17 +31,25 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<VoucharDto>> Get(PageFilter pf)
+        public async Task<IPagedList<VoucharDto>> Get(PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Vouchar, bool>>)(p => true)
+                ? (Predicate<Vouchar>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Supplier.FullName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Supplier.CompanyName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Supplier.Phone.Contains(pf.Filter)
-                    || p.Supplier.Email.Contains(pf.Filter);
+                    || (p.Supplier.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Supplier.CompanyName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Supplier.Phone?.Contains(pf.Filter) ?? false)
+                    || (p.Supplier.Email?.Contains(pf.Filter) ?? false);
 
-            var res = await _db.Vouchars.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Vouchars.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<VoucharDto>(c));
         }
 
@@ -99,6 +106,11 @@ namespace Khata.Services.CRUD
             await _db.Vouchars.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<VoucharDto>(model);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Vouchars.Count(from, to);
         }
     }
 }

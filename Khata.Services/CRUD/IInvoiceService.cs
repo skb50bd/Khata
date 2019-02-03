@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Khata.Domain;
 using Khata.DTOs;
@@ -16,7 +17,8 @@ namespace Khata.Services.CRUD
         Task<CustomerInvoiceDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<CustomerInvoiceDto> Get(int id);
-        Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf);
+        Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<CustomerInvoiceDto> Remove(int id);
+        Task<int> Count(DateTime? from, DateTime? to);
     }
 }

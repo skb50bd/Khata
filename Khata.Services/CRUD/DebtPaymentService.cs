@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -32,14 +31,28 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<DebtPaymentDto>> Get(PageFilter pf)
+        public async Task<IPagedList<DebtPaymentDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<DebtPayment, bool>>)(p => true)
+                ? (Predicate<DebtPayment>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || p.Customer.FullName
+                            .ToLowerInvariant()
+                            .Contains(pf.Filter);
 
-            var res = await _db.DebtPayments.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res =
+                await _db.DebtPayments.Get(
+                    predicate,
+                    p => p.Id,
+                    pf.PageIndex,
+                    pf.PageSize,
+                    from,
+                    to
+                );
+
             return res.CastList(c => _mapper.Map<DebtPaymentDto>(c));
         }
 
@@ -51,7 +64,6 @@ namespace Khata.Services.CRUD
         public async Task<DebtPaymentDto> Add(DebtPaymentViewModel model)
         {
             var dm = _mapper.Map<DebtPayment>(model);
-
             dm.Customer = await _db.Customers.GetById(model.CustomerId);
             dm.DebtBefore = dm.Customer.Debt;
             dm.Customer.Debt -= dm.Amount;
@@ -110,6 +122,11 @@ namespace Khata.Services.CRUD
             await _db.DebtPayments.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<DebtPaymentDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.DebtPayments.Count(from, to);
         }
     }
 }

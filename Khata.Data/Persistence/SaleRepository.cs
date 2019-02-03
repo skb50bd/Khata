@@ -17,19 +17,32 @@ namespace Khata.Data.Persistence
         public SaleRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<Sale>> Get<T>(
-            Expression<Func<Sale, bool>> predicate,
+            Predicate<Sale> predicate,
             Expression<Func<Sale, T>> order,
             int pageIndex,
-            int pageSize)
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null)
         {
-            Expression<Func<Sale, bool>> newPredicate =
-                i => !i.IsRemoved && predicate.Compile().Invoke(i);
+            Predicate<Sale> newPredicate =
+                i => !i.IsRemoved
+                    && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                    && predicate(i);
 
             var res = new PagedList<Sale>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                ResultCount = await Context.Sales.AsNoTracking().Where(predicate).CountAsync()
+                ResultCount =
+                    await Context.Sales
+                        .AsNoTracking()
+                        .Include(d => d.Metadata)
+                        .Where(i => !i.IsRemoved
+                                && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                                && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                                && predicate(i))
+                        .CountAsync()
             };
 
             res.AddRange(await Context.Sales
@@ -37,7 +50,10 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Cart)
                 .Include(s => s.Customer)
                 .Include(s => s.Metadata)
-                .Where(newPredicate)
+                .Where(i => !i.IsRemoved
+                            && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                            && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                            && predicate(i))
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -30,18 +29,27 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<EmployeeDto>> Get(PageFilter pf)
+        public async Task<IPagedList<EmployeeDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Employee, bool>>)(p => true)
+                ? (Predicate<Employee>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.FullName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Designation.ToLowerInvariant().Contains(pf.Filter)
-                    || p.NIdNumber.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Phone.Contains(pf.Filter)
-                    || p.Email.Contains(pf.Filter);
+                    || (p.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Designation?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.NIdNumber?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Phone?.Contains(pf.Filter) ?? false)
+                    || (p.Email?.Contains(pf.Filter) ?? false);
 
-            var res = await _db.Employees.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Employees.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<EmployeeDto>(c));
         }
 
@@ -94,6 +102,11 @@ namespace Khata.Services.CRUD
             await _db.Employees.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<EmployeeDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Employees.Count(from, to);
         }
     }
 }

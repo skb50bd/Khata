@@ -7,7 +7,10 @@ namespace WebUI.Pages.Components.Search
 {
     public class Search : ViewComponent
     {
-        public IViewComponentResult Invoke(PageFilter model) => 
-            View(nameof(Search), model);
+        public IViewComponentResult Invoke(PageFilter model)
+        {
+            model.Filter = model.Filter ?? "";
+            return View(nameof(Search), model);
+        }
     }
 }

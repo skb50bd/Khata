@@ -23,6 +23,7 @@ namespace Khata.Services.CRUD
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<ISalaryIssueService, SalaryIssueService>();
             services.AddTransient<ISalaryPaymentService, SalaryPaymentService>();
+            services.AddTransient<IRefundService, RefundService>();
             return services;
         }
     }

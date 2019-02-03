@@ -35,7 +35,7 @@ namespace Khata.Services.CRUD
         public async Task<IPagedList<Deposit>> GetDeposits(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Deposit, bool>>)(d => true)
+                ? (Predicate<Deposit>)(d => true)
                 : d => d.Id.ToString() == pf.Filter
                     || d.Description == pf.Filter;
 
@@ -46,7 +46,7 @@ namespace Khata.Services.CRUD
         public async Task<IPagedList<Withdrawal>> GetWithdrawals(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Withdrawal, bool>>)(d => true)
+                ? (Predicate<Withdrawal>)(d => true)
                 : d => d.Id.ToString() == pf.Filter
                     || d.Description == pf.Filter;
 
@@ -56,7 +56,7 @@ namespace Khata.Services.CRUD
 
         public async Task<IEnumerable<Deposit>> GetDeposits(DateTimeOffset from, DateTimeOffset to)
         {
-            Expression<Func<Deposit, bool>> predicate
+            Predicate<Deposit> predicate
                 = d
                     => d.Metadata.ModificationTime >= from
                         && d.Metadata.ModificationTime <= to;
@@ -65,7 +65,7 @@ namespace Khata.Services.CRUD
 
         public async Task<IEnumerable<Withdrawal>> GetWithdrawals(DateTimeOffset from, DateTimeOffset to)
         {
-            Expression<Func<Withdrawal, bool>> predicate
+            Predicate<Withdrawal> predicate
                 = d
                     => d.Metadata.ModificationTime >= from
                         && d.Metadata.ModificationTime <= to;

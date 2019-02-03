@@ -17,6 +17,8 @@ namespace Khata.Data.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Owned<Metadata>();
+
             modelBuilder.Entity<Metadata>(entity =>
             {
                 entity.HasKey(m => m.Id);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -32,14 +31,23 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<ExpenseDto>> Get(PageFilter pf)
+        public async Task<IPagedList<ExpenseDto>> Get(PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Expense, bool>>)(p => true)
+                ? (Predicate<Expense>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Name.ToLowerInvariant().Contains(pf.Filter);
+                    || (p.Name?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Expenses.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Expenses.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from,
+                to
+            );
             return res.CastList(c => _mapper.Map<ExpenseDto>(c));
         }
 
@@ -97,6 +105,11 @@ namespace Khata.Services.CRUD
             await _db.Expenses.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<ExpenseDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Expenses.Count(from, to);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -23,7 +22,8 @@ namespace Khata.Services.CRUD
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
-        public SalaryPaymentService(IUnitOfWork db,
+        public SalaryPaymentService(
+            IUnitOfWork db,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor)
         {
@@ -32,14 +32,23 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<SalaryPaymentDto>> Get(PageFilter pf)
+        public async Task<IPagedList<SalaryPaymentDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<SalaryPayment, bool>>)(p => true)
+                ? (Predicate<SalaryPayment>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Employee.FullName.ToLowerInvariant().Contains(pf.Filter);
+                    || (p.Employee.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.SalaryPayments.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.SalaryPayments.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize,
+                from, to
+            );
             return res.CastList(c => _mapper.Map<SalaryPaymentDto>(c));
         }
 
@@ -104,6 +113,11 @@ namespace Khata.Services.CRUD
             await _db.SalaryPayments.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<SalaryPaymentDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.SalaryPayments.Count(from, to);
         }
     }
 }

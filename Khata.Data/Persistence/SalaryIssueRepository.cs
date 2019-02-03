@@ -17,26 +17,36 @@ namespace Khata.Data.Persistence
         public SalaryIssueRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<SalaryIssue>> Get<T>(
-            Expression<Func<SalaryIssue, bool>> predicate,
+            Predicate<SalaryIssue> predicate,
             Expression<Func<SalaryIssue, T>> order,
             int pageIndex,
-            int pageSize)
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null)
         {
-            Expression<Func<SalaryIssue, bool>> newPredicate =
-                i => !i.IsRemoved && predicate.Compile().Invoke(i);
+            Predicate<SalaryIssue> newPredicate =
+                i => !i.IsRemoved
+                    && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                    && predicate(i);
 
             var res = new PagedList<SalaryIssue>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                ResultCount = await Context.SalaryIssues.AsNoTracking().Where(predicate).CountAsync()
+                ResultCount =
+                    await Context.SalaryIssues
+                        .AsNoTracking()
+                        .Include(d => d.Metadata)
+                        .Where(s => newPredicate(s))
+                        .CountAsync()
             };
 
             res.AddRange(await Context.SalaryIssues
                 .AsNoTracking()
                 .Include(s => s.Employee)
                 .Include(s => s.Metadata)
-                .Where(newPredicate)
+                .Where(s => newPredicate(s))
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

@@ -22,27 +22,43 @@ namespace Khata.Data.Persistence
         }
 
         public virtual async Task<IPagedList<T>> Get<T2>(
-            Expression<Func<T, bool>> predicate,
+            Predicate<T> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
-            int pageSize)
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null)
         {
+
             var res = new PagedList<T>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                ResultCount = await Context.Set<T>().AsNoTracking().Where(predicate).CountAsync()
+                ResultCount = await Context.Set<T>()
+                    .Include(e => e.Metadata)
+                    .Where(e => e.Metadata.CreationTime >=
+                       (from ?? DateTime.MinValue)
+                    && e.Metadata.CreationTime <=
+                        (to ?? DateTime.MaxValue)
+                        && predicate(e))
+                    .AsNoTracking()
+                    .CountAsync()
             };
 
 
-            res.AddRange(await Context.Set<T>()
-                                .AsNoTracking()
-                                .Where(predicate)
-                                .Include(d => d.Metadata)
-                                .OrderByDescending(order)
-                                .Skip((pageIndex - 1) * pageSize)
-                                .Take(pageSize > 0 ? pageSize : int.MaxValue)
-                                .ToListAsync());
+            res.AddRange(
+                await Context.Set<T>()
+                        .Include(d => d.Metadata)
+                        .Where(e => e.Metadata.CreationTime >=
+                       (from ?? DateTime.MinValue)
+                    && e.Metadata.CreationTime <=
+                        (to ?? DateTime.MaxValue)
+                        && predicate(e))
+                        .OrderByDescending(order)
+                        .Skip((pageIndex - 1) * pageSize)
+                        .Take(pageSize > 0 ? pageSize : int.MaxValue)
+                        .AsNoTracking()
+                        .ToListAsync());
             return res;
         }
 
@@ -70,7 +86,12 @@ namespace Khata.Data.Persistence
         public virtual async Task Delete(int id)
             => Context.Remove(await GetById(id));
 
-        public async Task<int> Count()
-            => await Context.Set<T>().CountAsync();
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+            => await Context.Set<T>()
+                .AsNoTracking()
+                .Where(e =>
+                    e.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                    && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                ).CountAsync();
     }
 }

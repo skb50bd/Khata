@@ -97,6 +97,10 @@ function calculatePayment(event) {
 
     // Debt After
     debtAfter.value = toFixedIfNecessary(payable.valueAsNumber - paid.valueAsNumber, 2);
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 }
 
 function calculateItemPrice(event) {
@@ -168,10 +172,11 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement('tr');
-
+    var row = document.createElement('div');
+    row.className = "row";
     row.innerHTML = `
-        <td hidden>
+        <div class="col-12">
+        <div class="col" hidden>
             <input type="number"
                 name="Cart.Index"
                 value="`+ itemsAdded + `" />
@@ -179,41 +184,59 @@ function createCartItem(newItem) {
                 name="Cart[`+ itemsAdded + `].ItemId" 
                 class="cart-item-itemid"
                 value="` + newItem.itemId + `" />
-        </td>
-        <td hidden>
             <input type="number"
                 name="Cart[`+ itemsAdded + `].Type" 
                     class="cart-item-type"
                     value="` + newItem.type + `"/>
-        </td>
-        <td colspan="3">
-            <input type="text" readonly
-                    class="cart-item-name"
-                    value="` + newItem.name + `"/>
-        </td>
-        <td class="text-right">
+        </div>        
+
+        <div class="input-group input-group-sm mb-0">
+            <input type="text"
+                class="form-control cart-item-name cart-item"
+                data-toggle="tooltip" title="Name"
+                value="` + newItem.name + `" 
+                aria-label="Name" readonly/>
+
+            <div class="input-group-append">
+                <button class="btn btn-outline-danger cart-item-removeitem"
+                    id="remove-item-button`+ itemsAdded + `"
+                    type="button">
+                    Remove
+                </button>
+           </div>
+        </div>
+        <div class="input-group input-group-sm mt-0 mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Net Price :</span>
+            </div>   
+
+            <input type="number" readonly
+                class="text-right cart-item-unirprice cart-item form-control"
+                data-toggle="tooltip" title="Unit Price"
+                value="`+ newItem.unitPrice + `"/>
+
+            <div class="input-group-prepend">
+                <span class="input-group-text">X</span>
+            </div>
+
             <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].Quantity" 
-                class="text-right cart-item-quantity"
-                value="` + newItem.quantity + `"/></td>
-        <td class="text-right">
-            <input type="number" readonly 
-                class="text-right cart-item-unirprice"
-                value="`+ newItem.unitPrice + `"/>
-        </td>
-        <td class="text-right">
+                class="text-right cart-item-quantity cart-item form-control"
+                data-toggle="tooltip" title="Quantity"
+                value="` + newItem.quantity + `"/>            
+
+            <div class="input-group-prepend">
+                <span class="input-group-text">=</span>
+            </div>
+
             <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].NetPrice" 
-                class="text-right cart-item-netprice"
+                class="text-right cart-item-netprice cart-item form-control"
+                data-toggle="tooltip" title="Net Price"
                 value="` + newItem.netPrice + `"/>
-        </td>
-        <td>
-            <button class="btn btn-sm btn-danger"
-                id="remove-item-button`+ itemsAdded + `"
-                class="text-right cart-item-removeitem">
-                Remove
-            </button>
-        </td>
+
+        </div>
+     </div>
     `;
 
     return row;
@@ -225,34 +248,10 @@ function addLineItem(event) {
     var newItem = getLineItem();
     if (newItem === false)
         return;
-
-    //var idElements = document.getElementsByClassName('cart-item-itemid');
-
-    //var idElementsArray = Array.from(idElements);
-
-    //var duplicateIdElement =
-    //    idElementsArray
-    //        .find(function (idElem) {
-    //            if (idElem.valueAsNumber === newItem.itemId) {
-    //                var row = Array.from(idElem.parentElement.parentElement.children);
-    //                if (row.find(
-    //                    function (element) {
-    //                        return element.firstElementChild.className.includes('cart-item-type');
-    //                    }).value === newItem.type.toString()
-    //                )
-    //                    return true;
-    //                else return false;
-    //            }
-    //            else return false;
-    //        });
-
-    //if (duplicateIdElement !== null && duplicateIdElement !== undefined) {
-    //    if (typeof duplicateIdElement.onclick === "function") {
-    //        duplicateIdElement.onclick.apply(duplicateIdElement);
-    //    }
-    //}
-
-    cart.appendChild(createCartItem(newItem));
+    var it = createCartItem(newItem);
+    //it.parentElement = cart;
+    //it.fadein();
+    cart.appendChild(it);
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
 
     itemsAdded++;
@@ -263,8 +262,11 @@ function addLineItem(event) {
 
 function removeCartItem(event) {
     event.preventDefault();
-    var row = this.parentElement.parentElement;
-    row.parentElement.removeChild(row);
+    var row = this.parentElement.parentElement.parentElement.parentElement;
+    $(row).fadeOut();
+    sleep(500).then(function () {
+        row.parentElement.removeChild(row);
+    });
 }
 
 $(document).ready(function () {

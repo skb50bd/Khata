@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Khata.DTOs;
 using Khata.Services.PageFilterSort;
@@ -14,8 +16,10 @@ namespace Khata.Services.CRUD
         Task<SaleDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<SaleDto> Get(int id);
-        Task<IPagedList<SaleDto>> Get(PageFilter pf);
+        Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId);
+        Task<IPagedList<SaleDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<SaleDto> Remove(int id);
         Task<SaleDto> Update(SaleViewModel vm);
+        Task<int> Count(DateTime? from, DateTime? to);
     }
 }

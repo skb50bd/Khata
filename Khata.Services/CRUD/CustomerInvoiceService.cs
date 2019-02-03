@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -32,16 +31,18 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf)
+        public async Task<IPagedList<CustomerInvoiceDto>> Get(PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<CustomerInvoice, bool>>)(p => true)
+                ? (Predicate<CustomerInvoice>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Customer.FullName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Customer.CompanyName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Customer.Phone.Contains(pf.Filter)
-                    || p.Customer.Email.Contains(pf.Filter);
-            var res = await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+                    || (p.Customer.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Customer.CompanyName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
+                    || (p.Customer.Phone?.Contains(pf.Filter) ?? false)
+                    || (p.Customer.Email?.Contains(pf.Filter) ?? false);
+            var res = await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize, from, to);
             return res.CastList(c => _mapper.Map<CustomerInvoiceDto>(c));
         }
 
@@ -102,6 +103,11 @@ namespace Khata.Services.CRUD
             await _db.Invoices.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<CustomerInvoiceDto>(model);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Invoices.Count(from, to);
         }
     }
 }

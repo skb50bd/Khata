@@ -1,0 +1,12 @@
+﻿@page
+@model WebUI.Pages.Refunds.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@await Component.InvokeAsync(
+    nameof(Components.RefundInfo.RefundInfo),
+        new { refund = Model.Refund }
+    )

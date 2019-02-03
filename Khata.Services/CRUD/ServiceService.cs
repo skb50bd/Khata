@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -30,14 +29,22 @@ namespace Khata.Services.CRUD
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IPagedList<ServiceDto>> Get(PageFilter pf)
+        public async Task<IPagedList<ServiceDto>> Get(
+            PageFilter pf,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Service, bool>>)(p => true)
+                ? (Predicate<Service>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || p.Name.ToLowerInvariant().Contains(pf.Filter);
+                    || (p.Name?.ToLowerInvariant().Contains(pf.Filter) ?? false);
 
-            var res = await _db.Services.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize);
+            var res = await _db.Services.Get(
+                predicate,
+                p => p.Id,
+                pf.PageIndex,
+                pf.PageSize
+            );
             return res.CastList(c => _mapper.Map<ServiceDto>(c));
         }
 
@@ -90,6 +97,11 @@ namespace Khata.Services.CRUD
             await _db.Services.Delete(id);
             await _db.CompleteAsync();
             return _mapper.Map<ServiceDto>(dto);
+        }
+
+        public async Task<int> Count(DateTime? from = null, DateTime? to = null)
+        {
+            return await _db.Services.Count(from, to);
         }
     }
 }

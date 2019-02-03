@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Khata.DTOs;
 using Khata.Services.PageFilterSort;
@@ -10,12 +11,13 @@ namespace Khata.Services.CRUD
 {
     public interface IServiceService
     {
-        Task<IPagedList<ServiceDto>> Get(PageFilter pf);
+        Task<IPagedList<ServiceDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<ServiceDto> Get(int id);
         Task<ServiceDto> Add(ServiceViewModel model);
         Task<ServiceDto> Update(ServiceViewModel vm);
         Task<ServiceDto> Remove(int id);
         Task<bool> Exists(int id);
         Task<ServiceDto> Delete(int id);
+        Task<int> Count(DateTime? from, DateTime? to);
     }
 }

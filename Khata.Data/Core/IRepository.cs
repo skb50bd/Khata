@@ -13,11 +13,17 @@ namespace Khata.Data.Core
     {
         Task<IList<T>> GetAll();
         Task<T> GetById(int id);
-        Task<IPagedList<T>> Get<T2>(Expression<Func<T, bool>> predicate, Expression<Func<T, T2>> order, int pageIndex, int pageSize);
+        Task<IPagedList<T>> Get<T2>(
+            Predicate<T> predicate,
+            Expression<Func<T, T2>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null);
         void Add(T item);
         void AddAll(IEnumerable<T> items);
         Task Delete(int id);
         Task<bool> Exists(int id);
-        Task<int> Count();
+        Task<int> Count(DateTime? from = null, DateTime? to = null);
     }
 }
