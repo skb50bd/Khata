@@ -55,7 +55,7 @@ function customerInputsReadonly(value) {
     var customerInputs = document.getElementsByClassName('customer-input');
     if (value === true) {
         for (var i = 0; i < customerInputs.length; i++) {
-            customerInputs[i].setAttribute('readonly');
+            customerInputs[i].setAttribute('readonly', true);
         }
     }
     else {

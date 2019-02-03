@@ -2,7 +2,6 @@
 @using static Khata.Domain.SaleType
 @model SaleViewModel
 
-
 @{
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 }
@@ -18,16 +17,11 @@
     }
 
     .cart {
-        /*outline: none;
-        border: 0;*/
         background-color: inherit;
-        /*max-width: 2rem;*/
-        /*display: inline;*/
     }
 
     .cart-item-name {
         min-width: 10rem;
-        font-weight: bold;
     }
 
     .cart-item {
@@ -38,18 +32,18 @@
 <div class="row">
     <!--SALE DATA-->
     <!--CUSTOMER-->
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12 col-lg-6">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label asp-for="SaleDate" class="control-label"></label>
                             <input asp-for="SaleDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
                             <span asp-validation-for="SaleDate" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-6">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label asp-for="Type" class="control-label"></label>
                             <br />
@@ -68,72 +62,73 @@
                             <span asp-validation-for="Type" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
+                    <div class="col-lg-6">
+                        <div class="form-group" hidden>
+                            <label asp-for="CustomerId" class="control-label"></label>
+                            <input asp-for="CustomerId" type="number" value="0" class="form-control" />
+                            <span asp-validation-for="CustomerId" class="text-danger"></span>
+                        </div>
 
-                @*Customer*@
-                <div class="form-group" hidden>
-                    <label asp-for="CustomerId" class="control-label"></label>
-                    <input asp-for="CustomerId" type="number" value="0" class="form-control" />
-                    <span asp-validation-for="CustomerId" class="text-danger"></span>
-                </div>
+                        <div class="form-group">
+                            <label class="control-label h5 card-title" asp-for="Customer"></label>
+                            <input id="customer-selector"
+                                   class="form-control form-control-sm"
+                                   type="text"
+                                   data-path="@Url.Action("GetIds", "Customers")" />
+                        </div>
 
-                <div class="form-group">
-                    <label class="control-label h5 card-title" asp-for="Customer"></label>
-                    <input id="customer-selector"
-                           class="form-control form-control-sm"
-                           type="text"
-                           data-path="@Url.Action("GetIds", "Customers")" />
-                </div>
-
-                <div class="form-group">
-                    <div class="form-check">
-                        <input asp-for="RegisterNewCustomer"
-                               class="form-check-input"
-                               type="checkbox"
-                               data-toggle="collapse"
-                               href="#customerInputCollapse">
-                        <label asp-for="RegisterNewCustomer" class="form-check-label"></label>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input asp-for="RegisterNewCustomer"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       data-toggle="collapse"
+                                       href="#customerInputCollapse">
+                                <label asp-for="RegisterNewCustomer" class="form-check-label"></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                @*Customer*@
                 <div class="collapse" id="customerInputCollapse">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.FirstName" class="control-label"></label>
                                 <input asp-for="Customer.FirstName" type="text" class="form-control form-control-sm customer-input" />
                                 <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.LastName" class="control-label"></label>
                                 <input asp-for="Customer.LastName" type="text" class="form-control form-control-sm customer-input" />
                                 <span asp-validation-for="Customer.LastName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.CompanyName" class="control-label"></label>
                                 <input asp-for="Customer.CompanyName" type="text" class="form-control form-control-sm customer-input" />
                                 <span asp-validation-for="Customer.CompanyName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.Phone" class="control-label"></label>
                                 <input asp-for="Customer.Phone" type="text" class="form-control form-control-sm customer-input" />
                                 <span asp-validation-for="Customer.Phone" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.Email" class="control-label"></label>
                                 <input asp-for="Customer.Email" type="text" class="form-control form-control-sm customer-input" />
                                 <span asp-validation-for="Customer.Email" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Customer.Address" class="control-label"></label>
                                 <textarea asp-for="Customer.Address" class="form-control form-control-sm customer-input"></textarea>
@@ -147,7 +142,7 @@
     </div>
 
     <!--LINE ITEM SELECT-->
-    <div class="col-lg-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
                 @*Cart*@
@@ -163,7 +158,7 @@
                     <input class="form-control form-control-sm" type="number" id="lineitem-type" />
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-sm-8">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-selector">Item</label>
                             <input id="lineitem-selector"
@@ -173,7 +168,7 @@
                             <small class="text-muted">Available: <span id="lineitem-available" class="text-info"></span></small>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-quantity">Qty.</label>
                             <input id="lineitem-quantity"
@@ -184,7 +179,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-unitprice">Unit Price</label>
                             <div class="input-group  input-group-sm">
@@ -198,7 +193,7 @@
                             <span validation-for="lineitem-unitprice" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-netprice">Net Price</label>
                             <div class="input-group input-group-sm">
@@ -227,7 +222,7 @@
 
 
     <!--PAYMENT INFORMATION-->
-    <div class="col-lg-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
                 <div class="row">

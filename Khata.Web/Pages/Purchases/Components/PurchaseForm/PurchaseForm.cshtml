@@ -1,91 +1,114 @@
 ﻿@using Khata.ViewModels
 @model PurchaseViewModel
 
-
 @{
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 }
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
 
 <style>
     .card {
-        min-width: 500px;
-        max-width: 700px;
-        margin-bottom: 20px;
-        margin-right: 20px;
+        width: 100%;
+        margin-bottom: 2rem;
+        margin-right: 2rem;
+    }
+
+    .cart {
+        background-color: inherit;
+    }
+
+    .cart-item-name {
+        min-width: 10rem;
+    }
+
+    .cart-item {
+        font-weight: bold;
     }
 </style>
 
 <div class="row">
-    <!--SUPPLIER-->
-    <div class="col-lg-6">
+    <!--SALE DATA-->
+    <!--CUSTOMER-->
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                @*Supplier*@
-                <div class="form-group" hidden>
-                    <label asp-for="SupplierId" class="control-label"></label>
-                    <input asp-for="SupplierId" type="number" value="0" class="form-control" />
-                    <span asp-validation-for="SupplierId" class="text-danger"></span>
-                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="PurchaseDate" class="control-label"></label>
+                            <input asp-for="PurchaseDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
+                            <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group" hidden>
+                            <label asp-for="SupplierId" class="control-label"></label>
+                            <input asp-for="SupplierId" type="number" value="0" class="form-control" />
+                            <span asp-validation-for="SupplierId" class="text-danger"></span>
+                        </div>
 
-                <div class="form-group">
-                    <label class="control-label h5 card-title" asp-for="Supplier"></label>
-                    <input id="supplier-selector"
-                           class="form-control form-control-sm"
-                           type="text"
-                           data-path="@Url.Action("GetIds", "Suppliers")" />
-                </div>
+                        <div class="form-group">
+                            <label class="control-label h5 card-title" asp-for="Supplier"></label>
+                            <input id="supplier-selector"
+                                   class="form-control form-control-sm"
+                                   type="text"
+                                   data-path="@Url.Action("GetIds", "Suppliers")" />
+                        </div>
 
-                <div class="form-group">
-                    <div class="form-check">
-                        <input asp-for="RegisterNewSupplier"
-                               class="form-check-input"
-                               type="checkbox"
-                               data-toggle="collapse"
-                               href="#supplierInputCollapse">
-                        <label asp-for="RegisterNewSupplier" class="form-check-label"></label>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input asp-for="RegisterNewSupplier"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       data-toggle="collapse"
+                                       href="#supplierInputCollapse">
+                                <label asp-for="RegisterNewSupplier" class="form-check-label"></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                @*Supplier*@
                 <div class="collapse" id="supplierInputCollapse">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.FirstName" class="control-label"></label>
                                 <input asp-for="Supplier.FirstName" type="text" class="form-control form-control-sm supplier-input" />
                                 <span asp-validation-for="Supplier.FirstName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.LastName" class="control-label"></label>
                                 <input asp-for="Supplier.LastName" type="text" class="form-control form-control-sm supplier-input" />
                                 <span asp-validation-for="Supplier.LastName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.CompanyName" class="control-label"></label>
                                 <input asp-for="Supplier.CompanyName" type="text" class="form-control form-control-sm supplier-input" />
                                 <span asp-validation-for="Supplier.CompanyName" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.Phone" class="control-label"></label>
                                 <input asp-for="Supplier.Phone" type="text" class="form-control form-control-sm supplier-input" />
                                 <span asp-validation-for="Supplier.Phone" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.Email" class="control-label"></label>
                                 <input asp-for="Supplier.Email" type="text" class="form-control form-control-sm supplier-input" />
                                 <span asp-validation-for="Supplier.Email" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-4 col-md-6">
                             <div class="form-group">
                                 <label asp-for="Supplier.Address" class="control-label"></label>
                                 <textarea asp-for="Supplier.Address" class="form-control form-control-sm supplier-input"></textarea>
@@ -97,25 +120,25 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
     <!--LINE ITEM SELECT-->
-    <div class="col-lg-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
                 @*Cart*@
                 <label class="h5 card-title">Choose Items</label>
 
                 <div class="form-group" hidden>
+                    <label class="control-label"></label>
                     <input class="form-control form-control-sm" id="lineitem-id" type="number" />
                 </div>
 
                 <div class="form-group" hidden>
-                    <input class="form-control form-control-sm" id="lineitem-type" type="number" value="1" />
+                    <label class="control-label"></label>
+                    <input class="form-control form-control-sm" type="number" id="lineitem-type" />
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-sm-8">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-selector">Item</label>
                             <input id="lineitem-selector"
@@ -125,7 +148,7 @@
                             <small class="text-muted">Available: <span id="lineitem-available" class="text-info"></span></small>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-quantity">Qty.</label>
                             <input id="lineitem-quantity"
@@ -136,7 +159,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-unitprice">Unit Price</label>
                             <div class="input-group  input-group-sm">
@@ -150,7 +173,7 @@
                             <span validation-for="lineitem-unitprice" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label" for="lineitem-netprice">Net Price</label>
                             <div class="input-group input-group-sm">
@@ -170,38 +193,22 @@
                     <button class="btn btn-sm btn-outline-secondary card-link" id="lineitem-clear-button">Clear Item</button>
                 </div>
 
-                <div id="cart">
-                    <div class="row">
-                        <div class="col" hidden>Id</div>
-                        <div class="col" hidden>Type</div>
-                        <div class="col"><strong>Name</strong></div>
-                        <div class="col"><strong>Qty.</strong></div>
-                        <div class="col text-right"><strong>Unit Price</strong></div>
-                        <div class="col text-right"><strong>Net Price</strong></div>
-                    </div>
-                </div>
+                <div id="cart" class="pt-3">
 
+                </div>
             </div>
         </div>
     </div>
 
+
     <!--PAYMENT INFORMATION-->
-    <div class="col-lg-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
                         <label class="h5 card-title">Payment Information</label>
                     </div>
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="PurchaseDate" class="control-label"></label>
-                            <input asp-for="PurchaseDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
-                            <span asp-validation-for="PurchaseDate" class="text-danger"></span>
-                        </div>
-                    </div>
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="subtotal" class="control-label">Subtotal</label>
@@ -215,13 +222,41 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="debt-before" class="control-label">Previous Due</label>
+                            <label for="payable-before" class="control-label">Previous Due</label>
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">@sym</span>
                                 </div>
-                                <input id="debt-before" type="number" class="form-control" disabled />
+                                <input id="payable-before" type="number" class="form-control" disabled />
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Payment.DiscountCash" class="control-label"></label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@sym</span>
+                                </div>
+                                <input asp-for="Payment.DiscountCash" type="number" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Payment.DiscountCash" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Payment.DiscountPercentage" class="control-label"></label>
+                            <div class="input-group input-group-sm">
+                                <input asp-for="Payment.DiscountPercentage"
+                                       type="number"
+                                       class="form-control"
+                                       min="0"
+                                       max="80" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Payment.DiscountPercentage" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -249,12 +284,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="debt-after" class="control-label">New Due</label>
+                            <label for="payable-after" class="control-label">New Due</label>
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">@sym</span>
                                 </div>
-                                <input id="debt-after" type="number" class="form-control" disabled />
+                                <input id="payable-after" type="number" class="form-control" disabled />
                             </div>
                         </div>
                     </div>
@@ -270,6 +305,3 @@
         </div>
     </div>
 </div>
-
-
-

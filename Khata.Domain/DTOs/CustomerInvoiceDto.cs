@@ -1,6 +1,4 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
-
 using Khata.Domain;
 
 namespace Khata.DTOs
@@ -15,16 +13,5 @@ namespace Khata.DTOs
         public SaleType? Type { get; set; }
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
-
-        [DataType(DataType.Currency)]
-        public decimal PaymentDiscountCash { get; set; }
-
-        public decimal PaymentDiscountPercentage =>
-            PaymentSubtotal != 0
-            ? PaymentDiscountCash / PaymentSubtotal * 100
-            : 0;
-
-        [DataType(DataType.Currency)]
-        public override decimal PaymentPayable => PaymentTotal - PaymentDiscountCash;
     }
 }

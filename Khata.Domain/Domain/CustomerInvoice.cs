@@ -10,11 +10,5 @@
         public SaleType? Type { get; set; }
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-
-        public decimal PaymentDiscountCash { get; set; }
-        public decimal PaymentDiscountPercentage => PaymentSubtotal > 0
-            ? PaymentDiscountCash / PaymentSubtotal * 100
-            : 0M;
-        public override decimal PaymentPayable => PaymentTotal - PaymentDiscountCash;
     }
 }

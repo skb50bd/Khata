@@ -17,6 +17,8 @@ function getDate() {
 }
 
 const purchaseDate = document.getElementById('PurchaseDate');
+const retail = document.getElementById('retail');
+const bulk = document.getElementById('bulk');
 const supplierId = document.getElementById('SupplierId');
 const supplierSelector = document.getElementById('supplier-selector');
 const registerNewSupplier = document.getElementById('RegisterNewSupplier');
@@ -34,14 +36,15 @@ const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
 const lineItemNetPrice = document.getElementById('lineitem-netprice');
 const lineItemAdd = document.getElementById('lineitem-add-button');
 const lineItemClear = document.getElementById('lineitem-clear-button');
+const lineItemAvailable = document.getElementById('lineitem-available');
 const cart = document.getElementById('cart');
 const subtotal = document.getElementById('subtotal');
 const discountCash = document.getElementById('Payment_DiscountCash');
 const discountPercentage = document.getElementById('Payment_DiscountPercentage');
-const debtBefore = document.getElementById('debt-before');
+const payableBefore = document.getElementById('payable-before');
 const payable = document.getElementById('payable');
 const paid = document.getElementById('Payment_Paid');
-const debtAfter = document.getElementById('debt-after');
+const payableAfter = document.getElementById('payable-after');
 const description = document.getElementById('Description');
 
 
@@ -51,7 +54,7 @@ function supplierInputsReadonly(value) {
     var supplierInputs = document.getElementsByClassName('supplier-input');
     if (value === true) {
         for (var i = 0; i < supplierInputs.length; i++) {
-            supplierInputs[i].setAttribute('readonly');
+            supplierInputs[i].setAttribute('readonly', true);
         }
     }
     else {
@@ -69,20 +72,34 @@ function calculatePayment(event) {
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
     subtotal.value = toFixedIfNecessary(subTotalValue, 2);
-    
+
+    // Discount Cash
+    if (isNaN(discountCash.valueAsNumber))
+        discountCash.value = 0;
+
+    // Discount Percentage
+    discountPercentage.value =
+        subTotalValue !== 0
+            ? toFixedIfNecessary(discountCash.valueAsNumber / subTotalValue * 100, 2)
+            : 0;
+
     // Previous Due
-    if (isNaN(debtBefore.valueAsNumber))
-        debtBefore.valueAsNumber = 0;
+    if (isNaN(payableBefore.valueAsNumber))
+        payableBefore.valueAsNumber = 0;
 
     // Payable
-    payable.value = toFixedIfNecessary(subtotal.valueAsNumber + debtBefore.valueAsNumber, 2);
+    payable.value = toFixedIfNecessary(subtotal.valueAsNumber - discountCash.valueAsNumber + payableBefore.valueAsNumber, 2);
 
     // Paid
     if (isNaN(paid.valueAsNumber))
         paid.value = 0;
 
-    // Debt After
-    debtAfter.value = toFixedIfNecessary(payable.valueAsNumber - paid.valueAsNumber, 2);
+    // Payable After
+    payableAfter.value = toFixedIfNecessary(payable.valueAsNumber - paid.valueAsNumber, 2);
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 }
 
 function calculateItemPrice(event) {
@@ -154,10 +171,11 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement('tr');
-
+    var row = document.createElement('div');
+    row.className = "row";
     row.innerHTML = `
-        <td hidden>
+        <div class="col-12">
+        <div class="col" hidden>
             <input type="number"
                 name="Cart.Index"
                 value="`+ itemsAdded + `" />
@@ -165,41 +183,59 @@ function createCartItem(newItem) {
                 name="Cart[`+ itemsAdded + `].ItemId" 
                 class="cart-item-itemid"
                 value="` + newItem.itemId + `" />
-        </td>
-        <td hidden>
             <input type="number"
                 name="Cart[`+ itemsAdded + `].Type" 
                     class="cart-item-type"
                     value="` + newItem.type + `"/>
-        </td>
-        <td colspan="3">
-            <input type="text" readonly
-                    class="cart-item-name"
-                    value="` + newItem.name + `"/>
-        </td>
-        <td class="text-right">
+        </div>        
+
+        <div class="input-group input-group-sm mb-0">
+            <input type="text"
+                class="form-control cart-item-name cart-item"
+                data-toggle="tooltip" title="Name"
+                value="` + newItem.name + `" 
+                aria-label="Name" readonly/>
+
+            <div class="input-group-append">
+                <button class="btn btn-outline-danger cart-item-removeitem"
+                    id="remove-item-button`+ itemsAdded + `"
+                    type="button">
+                    Remove
+                </button>
+           </div>
+        </div>
+        <div class="input-group input-group-sm mt-0 mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Net Price :</span>
+            </div>   
+
+            <input type="number" readonly
+                class="text-right cart-item-unirprice cart-item form-control"
+                data-toggle="tooltip" title="Unit Price"
+                value="`+ newItem.unitPrice + `"/>
+
+            <div class="input-group-prepend">
+                <span class="input-group-text">X</span>
+            </div>
+
             <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].Quantity" 
-                class="text-right cart-item-quantity"
-                value="` + newItem.quantity + `"/></td>
-        <td class="text-right">
-            <input type="number" readonly class="text-right"
-                class="cart-item-unirprice"
-                value="`+ newItem.unitPrice + `"/>
-        </td>
-        <td class="text-right">
+                class="text-right cart-item-quantity cart-item form-control"
+                data-toggle="tooltip" title="Quantity"m
+                value="` + newItem.quantity + `"/>            
+
+            <div class="input-group-prepend">
+                <span class="input-group-text">=</span>
+            </div>
+
             <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].NetPrice" 
-                class="text-right cart-item-netprice"
+                class="text-right cart-item-netprice cart-item form-control"
+                data-toggle="tooltip" title="Net Price"
                 value="` + newItem.netPrice + `"/>
-        </td>
-        <td>
-            <button class="btn btn-sm btn-danger"
-                id="remove-item-button`+ itemsAdded + `"
-                class="text-right cart-item-removeitem">
-                Remove
-            </button>
-        </td>
+
+        </div>
+     </div>
     `;
 
     return row;
@@ -211,8 +247,10 @@ function addLineItem(event) {
     var newItem = getLineItem();
     if (newItem === false)
         return;
-
-    cart.appendChild(createCartItem(newItem));
+    var it = createCartItem(newItem);
+    //it.parentElement = cart;
+    //it.fadein();
+    cart.appendChild(it);
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
 
     itemsAdded++;
@@ -223,8 +261,11 @@ function addLineItem(event) {
 
 function removeCartItem(event) {
     event.preventDefault();
-    var row = this.parentElement.parentElement;
-    row.parentElement.removeChild(row);
+    var row = this.parentElement.parentElement.parentElement.parentElement;
+    $(row).fadeOut();
+    sleep(500).then(function () {
+        row.parentElement.removeChild(row);
+    });
 }
 
 $(document).ready(function () {
@@ -259,7 +300,7 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    debtBefore.value = data.payable;
+                    payableBefore.value = data.payable;
                     supplierFirstName.value = data.firstName;
                     supplierLastName.value = data.lastName;
                 }
@@ -313,13 +354,16 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
-            if (lineitem.category === 'Product')
+            if (lineitem.category === 'Product') {
                 lineItemType.value = 1;
-            else
+                lineItemAvailable.innerHTML = lineitem.available;
+                lineItemAvailable.parentElement.removeAttribute('hidden');
+            }
+            else {
                 lineItemType.value = 2;
-
+                lineItemAvailable.parentElement.setAttribute('hidden');
+            }
             lineItemId.value = lineitem.itemId;
-
 
             lineItemUnitPrice.value = lineitem.unitPurchasePrice;
 
@@ -344,7 +388,15 @@ $(document).ready(function () {
         }
     });
     subtotal.addEventListener('change', calculatePayment);
-    debtBefore.addEventListener('change', calculatePayment);
+    discountCash.addEventListener('change', calculatePayment);
+    discountPercentage.addEventListener('focusout', function () {
+        if (isNaN(discountPercentage.valueAsNumber))
+            discountPercentage.value = 0;
+        discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
+        discountCash.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber, 2);
+        calculatePayment();
+    });
+    payableBefore.addEventListener('change', calculatePayment);
     paid.addEventListener('change', calculatePayment);
     lineItemQuantity.addEventListener('change', calculateItemPrice);
     lineItemQuantity.addEventListener('focusout', calculateItemPrice);

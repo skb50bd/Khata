@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -54,6 +55,23 @@ namespace WebUI.Controllers
 
             return Ok(await _sales.Get(id));
         }
+
+
+        // GET: api/Sales/Ids
+        [HttpGet("Ids/")]
+        public async Task<IActionResult> GetIds([FromQuery]string term)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var customers = await Get(searchString: term);
+            return Ok(customers.Select(s =>
+                new
+                {
+                    label = $"{s.Id}({s.InvoiceId}) - {s.Customer.FullName}",
+                    id = s.Id
+                }));
+        }
+
 
         // GET: api/Sales/LineItems
         [HttpGet("LineItems/")]
