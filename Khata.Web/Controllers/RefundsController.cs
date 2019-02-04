@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,31 +57,43 @@ namespace WebUI.Controllers
 
         // GET: api/Refunds/Sales
         [HttpGet("Sales/")]
-        public async Task<IActionResult> GetCustomerSales([FromQuery]int customerId)
+        public async Task<IActionResult> GetCustomerSales([FromQuery]string term)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            IEnumerable<SaleDto> sales;
             IList<object> results = new List<object>();
-            (await _sales.GetCustomerSales(customerId))
-                .ForEach(
-                    s => results.Add(
-                        new
-                        {
-                            s.Id,
-                            Date = s.SaleDate,
-                            Paid = s.PaymentPaid,
-                            ItemsCount = s.Cart.Count
-                        }
-                ));
 
+            if (int.TryParse(term, out int customerId))
+            {
+                sales = await _sales.GetCustomerSales(customerId);
+            }
+            else
+                sales = await _sales.Get(
+                    _pfService.CreateNewPf(term, 1, int.MaxValue),
+                    DateTime.Today.AddYears(-1),
+                    DateTime.Now);
+
+
+            sales.ForEach(
+                        s => results.Add(
+                            new
+                            {
+                                s.Id,
+                                s.CustomerId,
+                                Date = s.SaleDate,
+                                Paid = s.PaymentPaid,
+                                ItemsCount = s.Cart.Count
+                            }
+                    ));
             return Ok(results);
         }
 
 
-        // GET: api/Refunds/LineItems
-        [HttpGet("LineItems/")]
-        public async Task<IActionResult> GetLineItems([FromQuery]int saleId)
+        // GET: api/Refunds/LineItems/5
+        [HttpGet("LineItems/{saleId:int}")]
+        public async Task<IActionResult> GetLineItems([FromRoute]int saleId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

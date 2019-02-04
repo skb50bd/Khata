@@ -266,6 +266,7 @@ function removeCartItem(event) {
     $(row).fadeOut();
     sleep(500).then(function () {
         row.parentElement.removeChild(row);
+        calculatePayment(event);
     });
 }
 

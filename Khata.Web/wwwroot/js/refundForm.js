@@ -6,28 +6,10 @@ function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
 
-function getDate() {
-    var date = new Date(),
-        year = date.getFullYear(),
-        month = (date.getMonth() + 1).toString(),
-        formatedMonth = month.length === 1 ? "0" + month : month,
-        day = date.getDate().toString(),
-        formatedDay = day.length === 1 ? "0" + day : day;
-    return formatedDay + "/" + formatedMonth + "/" + year;
-}
-
-const purchaseDate = document.getElementById('PurchaseDate');
-const retail = document.getElementById('retail');
-const bulk = document.getElementById('bulk');
-const supplierId = document.getElementById('SupplierId');
-const supplierSelector = document.getElementById('supplier-selector');
-const registerNewSupplier = document.getElementById('RegisterNewSupplier');
-const supplierFirstName = document.getElementById('Supplier_FirstName');
-const supplierLastName = document.getElementById('Supplier_LastName');
-const supplierCompanyName = document.getElementById('Supplier_CompanyName');
-const supplierAddress = document.getElementById('Supplier_Address');
-const supplierPhone = document.getElementById('Supplier_Phone');
-const supplierEmail = document.getElementById('Supplier_Email');
+const customerId = document.getElementById('CustomerId');
+const customerSelector = document.getElementById('customer-selector');
+const saleId = document.getElementById('SaleId');
+const saleSelector = document.getElementById('sale-selector');
 const lineItemId = document.getElementById('lineitem-id');
 const lineItemType = document.getElementById('lineitem-type');
 const lineItemSelector = document.getElementById('lineitem-selector');
@@ -39,30 +21,13 @@ const lineItemClear = document.getElementById('lineitem-clear-button');
 const lineItemAvailable = document.getElementById('lineitem-available');
 const cart = document.getElementById('cart');
 const subtotal = document.getElementById('subtotal');
-const discountCash = document.getElementById('Payment_DiscountCash');
-const discountPercentage = document.getElementById('Payment_DiscountPercentage');
-const payableBefore = document.getElementById('payable-before');
-const payable = document.getElementById('payable');
-const paid = document.getElementById('Payment_Paid');
-const payableAfter = document.getElementById('payable-after');
+const cashBack = document.getElementById('CashBack');
+const debtRollback = document.getElementById('DebtRollback');
+const debtBefore = document.getElementById('debt-before');
+const debtAfter = document.getElementById('debt-after');
 const description = document.getElementById('Description');
 
-
 var itemsAdded = 0;
-
-function supplierInputsReadonly(value) {
-    var supplierInputs = document.getElementsByClassName('supplier-input');
-    if (value === true) {
-        for (var i = 0; i < supplierInputs.length; i++) {
-            supplierInputs[i].setAttribute('readonly', true);
-        }
-    }
-    else {
-        for (var j = 0; j < supplierInputs.length; j++) {
-            supplierInputs[j].removeAttribute('readonly');
-        }
-    }
-}
 
 function calculatePayment(event) {
     // Subtotal
@@ -73,29 +38,22 @@ function calculatePayment(event) {
 
     subtotal.value = toFixedIfNecessary(subTotalValue, 2);
 
-    // Discount Cash
-    if (isNaN(discountCash.valueAsNumber))
-        discountCash.value = 0;
+    // Cash Back
+    if (isNaN(cashBack.valueAsNumber))
+        cashBack.value = 0;
 
-    // Discount Percentage
-    discountPercentage.value =
+    // Debt Rollback   
+    debtRollback.value =
         subTotalValue !== 0
-            ? toFixedIfNecessary(discountCash.valueAsNumber / subTotalValue * 100, 2)
+        ? toFixedIfNecessary(subTotalValue - cashBack.valueAsNumber, 2)
             : 0;
 
     // Previous Due
-    if (isNaN(payableBefore.valueAsNumber))
-        payableBefore.valueAsNumber = 0;
-
-    // Payable
-    payable.value = toFixedIfNecessary(subtotal.valueAsNumber - discountCash.valueAsNumber + payableBefore.valueAsNumber, 2);
-
-    // Paid
-    if (isNaN(paid.valueAsNumber))
-        paid.value = 0;
-
-    // Payable After
-    payableAfter.value = toFixedIfNecessary(payable.valueAsNumber - paid.valueAsNumber, 2);
+    if (isNaN(debtBefore.valueAsNumber))
+        debtBefore.valueAsNumber = 0;
+    
+    // Debt After
+    debtAfter.value = toFixedIfNecessary(debtBefore - debtRollback.valueAsNumber, 2);
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -110,30 +68,11 @@ function calculateItemPrice(event) {
 
     if (isNaN(lineItemQuantity.valueAsNumber))
         lineItemQuantity.value = 1;
-
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
-    if (isNaN(lineItemUnitPrice.valueAsNumber) || lineItemUnitPrice.valueAsNumber < minimumPrice)
+    
+    if (isNaN(lineItemUnitPrice.valueAsNumber))
         lineItemUnitPrice.value = minimumPrice;
 
     lineItemNetPrice.value = lineItemQuantity.valueAsNumber * lineItemUnitPrice.valueAsNumber;
-}
-
-function setUnitPriceFromNetPrice(event) {
-    if (isNaN(lineItemId.value) || lineItemId.valueAsNumber === 0) {
-        clearLineItem(event);
-        return;
-    }
-
-    if (isNaN(lineItemQuantity.valueAsNumber))
-        lineItemQuantity.value = 1;
-
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
-    var minimumNetPrice = minimumPrice * lineItemQuantity.valueAsNumber;
-
-    if (isNaN(lineItemNetPrice.valueAsNumber) || lineItemNetPrice.valueAsNumber < minimumNetPrice)
-        lineItemNetPrice.value = minimumNetPrice;
-
-    lineItemUnitPrice.value = lineItemNetPrice.valueAsNumber / lineItemQuantity.valueAsNumber;
 }
 
 function clearLineItem(event) {
@@ -221,7 +160,7 @@ function createCartItem(newItem) {
             <input type="number" readonly
                 name="Cart[`+ itemsAdded + `].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
-                data-toggle="tooltip" title="Quantity"m
+                data-toggle="tooltip" title="Quantity"
                 value="` + newItem.quantity + `"/>            
 
             <div class="input-group-prepend">
@@ -248,8 +187,6 @@ function addLineItem(event) {
     if (newItem === false)
         return;
     var it = createCartItem(newItem);
-    //it.parentElement = cart;
-    //it.fadein();
     cart.appendChild(it);
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
 
@@ -267,19 +204,13 @@ function removeCartItem(event) {
         row.parentElement.removeChild(row);
         calculatePayment();
     });
-
 }
 
 $(document).ready(function () {
-    if (purchaseDate.value === '')
-        purchaseDate.value = getDate();
-
-    registerNewSupplier.removeAttribute('checked');
-
-    $('#supplier-selector').autocomplete({
+    $('#customer-selector').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: supplierSelector.getAttribute("data-path"),
+                url: customerSelector.getAttribute("data-path"),
                 type: 'GET',
                 cache: true,
                 data: request,
@@ -298,17 +229,51 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: '/api/Suppliers/' + ui.item.value,
+                url: '/api/Customers/' + ui.item.value,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    payableBefore.value = data.payable;
-                    supplierFirstName.value = data.firstName;
-                    supplierLastName.value = data.lastName;
+                    debtBefore.value = data.debt;
+                    customerFirstName.value = data.firstName;
+                    customerLastName.value = data.lastName;
                 }
             });
-            supplierSelector.value = ui.item.label;
-            supplierId.value = ui.item.value;
+            customerSelector.value = ui.item.label;
+            customerId.value = ui.item.value;
+        }
+    });
+
+    $('#sale-selector').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: saleSelector.getAttribute("data-path"),
+                type: 'GET',
+                cache: true,
+                data: request,
+                dataType: 'json',
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.label,
+                            value: item.id
+                        };
+                    }));
+                }
+            });
+        },
+        minLength: 0,
+        select: function (event, ui) {
+            event.preventDefault();
+            $.ajax({
+                url: '/api/Sales/' + ui.item.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // View Sale Info
+                }
+            });
+            saleSelector.value = ui.item.label;
+            saleId.value = ui.item.value;
         }
     });
 
@@ -356,54 +321,29 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
-            if (lineitem.category === 'Product') {
-                lineItemType.value = 1;
-                lineItemAvailable.innerHTML = lineitem.available;
-                lineItemAvailable.parentElement.removeAttribute('hidden');
-            }
-            else {
-                lineItemType.value = 2;
-                lineItemAvailable.parentElement.setAttribute('hidden');
-            }
+
+            lineItemType.value = 1;
             lineItemId.value = lineitem.itemId;
-
-            lineItemUnitPrice.value = lineitem.unitPurchasePrice;
-
-            if (lineitem.category === 'Service') {
-                lineItemQuantity.value = 1;
-                //calculateItemPrice(event);
-            }
-            lineItemUnitPrice.setAttribute('min', lineitem.minimumPrice);
-
+            lineItemUnitPrice.value = lineitem.unitPrice;
+            lineItemNetPrice.value = lineitem.netPrice;
+            
             lineItemSelector.value = lineitem.name;
         }
     });
-
-    registerNewSupplier.addEventListener('change', function () {
-        if (this.checked === true) {
-            supplierId.value = '0';
-            supplierSelector.value = '';
-            supplierInputsReadonly(false);
-        }
-        else {
-            supplierInputsReadonly(true);
-        }
-    });
+    
     subtotal.addEventListener('change', calculatePayment);
-    discountCash.addEventListener('change', calculatePayment);
-    discountPercentage.addEventListener('focusout', function () {
-        if (isNaN(discountPercentage.valueAsNumber))
-            discountPercentage.value = 0;
-        discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
-        discountCash.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber, 2);
+    cashBack.addEventListener('change', calculatePayment);
+    debtRollback.addEventListener('focusout', function () {
+        if (isNaN(debtRollback.valueAsNumber))
+            debtRollback.value = 0;
+        debtRollback.value = toFixedIfNecessary(debtRollback.valueAsNumber, 2);
+        cashBack.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * debtRollback.valueAsNumber, 2);
         calculatePayment();
     });
-    payableBefore.addEventListener('change', calculatePayment);
+    debtBefore.addEventListener('change', calculatePayment);
     paid.addEventListener('change', calculatePayment);
     lineItemQuantity.addEventListener('change', calculateItemPrice);
     lineItemQuantity.addEventListener('focusout', calculateItemPrice);
-    lineItemUnitPrice.addEventListener('focusout', calculateItemPrice);
-    lineItemNetPrice.addEventListener('focusout', setUnitPriceFromNetPrice);
     lineItemAdd.addEventListener('click', addLineItem);
     lineItemClear.addEventListener('click', clearLineItem);
 });

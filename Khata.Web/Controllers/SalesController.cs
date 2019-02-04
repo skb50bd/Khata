@@ -108,7 +108,6 @@ namespace WebUI.Controllers
             return Ok(results);
         }
 
-
         // POST: api/Sales
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] SaleViewModel model)
