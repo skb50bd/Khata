@@ -208,19 +208,87 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group pb-3">
                     <button class="btn btn-sm btn-outline-primary card-link" id="lineitem-add-button">Add Item</button>
                     <button class="btn btn-sm btn-outline-secondary card-link" id="lineitem-clear-button">Clear Item</button>
                 </div>
 
-                <div id="cart" class="pt-3">
+                <input type="number" value="@Html.ValueFor(model => model.Cart.Count)" id="items-added" name="items-added" disabled hidden />
+                <div id="cart" class="">
+                    @for (int i = 0; i < Model?.Cart?.Count; i++)
+                    {
+                        var cartItem = Model.Cart[i];
 
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="col" hidden>
+                                    <input type="number"
+                                           name="Cart.Index"
+                                           value="@i" />
+                                    <input type="number"
+                                           name="Cart[@i].ItemId"
+                                           class="cart-item-itemid"
+                                           value="@cartItem.ItemId" />
+                                    <input type="number"
+                                           name="Cart[@i].Type"
+                                           class="cart-item-type"
+                                           value="@cartItem.Type" />
+                                </div>
+
+                                <div class="input-group input-group-sm mb-0">
+                                    <input type="text"
+                                           name="Cart[@i].Name"
+                                           class="form-control cart-item-name cart-item"
+                                           data-toggle="tooltip" title="Name"
+                                           value="@cartItem.Name"
+                                           aria-label="Name" readonly />
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-danger cart-item-removeitem"
+                                                id="remove-item-button-@i"
+                                                type="button">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm mt-0 mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Net Price :</span>
+                                    </div>
+
+                                    <input type="number" readonly
+                                           class="text-right cart-item-unirprice cart-item form-control"
+                                           data-toggle="tooltip" title="Unit Price"
+                                           value="@(cartItem.NetPrice / cartItem.Quantity)" />
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">X</span>
+                                    </div>
+
+                                    <input type="number" readonly
+                                           name="Cart[@i].Quantity"
+                                           class="text-right cart-item-quantity cart-item form-control"
+                                           data-toggle="tooltip" title="Quantity"
+                                           value="@cartItem.Quantity" />
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">=</span>
+                                    </div>
+
+                                    <input type="number" readonly
+                                           name="Cart[@i].NetPrice"
+                                           class="text-right cart-item-netprice cart-item form-control"
+                                           data-toggle="tooltip" title="Net Price"
+                                           value="@cartItem.NetPrice" />
+                                </div>
+
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
-
-
     <!--PAYMENT INFORMATION-->
     <div class="col-xl-6">
         <div class="card">

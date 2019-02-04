@@ -5,6 +5,7 @@ namespace Khata.ViewModels
 {
     public class LineItemViewModel
     {
+        public string Name { get; set; }
         public decimal Quantity { get; set; }
         public decimal NetPrice { get; set; }
 

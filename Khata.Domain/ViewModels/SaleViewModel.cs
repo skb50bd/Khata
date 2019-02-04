@@ -18,7 +18,7 @@ namespace Khata.ViewModels
         public CustomerViewModel Customer { get; set; }
 
         [Display(Name = "Cart")]
-        public List<LineItemViewModel> Cart { get; set; }
+        public List<LineItemViewModel> Cart { get; set; } = new List<LineItemViewModel>();
 
         public PaymentInfoViewModel Payment { get; set; } = new PaymentInfoViewModel();
 

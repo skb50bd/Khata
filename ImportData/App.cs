@@ -24,11 +24,11 @@ namespace ImportData
             _config = config.Value;
         }
 
-        public void Run()
+        public async System.Threading.Tasks.Task RunAsync()
         {
             _logger.LogInformation($"App Running");
             Dump.CreateDump();
-            Dump.InsertAll(_db);
+            await Dump.InsertAllAsync(_db);
 
             System.Console.ReadKey();
         }

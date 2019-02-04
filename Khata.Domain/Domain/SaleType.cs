@@ -2,7 +2,7 @@
 {
     public enum SaleType
     {
-        Retail = 1,
-        Bulk   = 2
+        Bulk = 1,
+        Retail = 2
     }
 }

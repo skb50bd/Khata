@@ -18,6 +18,9 @@ namespace Khata.Data.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Owned<Metadata>();
+            modelBuilder.Owned<Pricing>();
+            modelBuilder.Owned<Inventory>();
+            modelBuilder.Owned<PaymentInfo>();
 
             modelBuilder.Entity<Metadata>(entity =>
             {
@@ -26,13 +29,6 @@ namespace Khata.Data.Persistence
                 entity.Property(m => m.Modifier).HasDefaultValue("admin");
                 entity.Property(m => m.CreationTime).HasDefaultValueSql("GETDATE()");
                 entity.Property(m => m.ModificationTime).HasDefaultValueSql("GETDATE()");
-            });
-
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.OwnsOne(p => p.Price);
-
-                entity.OwnsOne(p => p.Inventory);
             });
 
             modelBuilder.Entity<DebtPayment>(entity =>
@@ -52,7 +48,6 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Sale>(entity =>
             {
-                entity.OwnsOne(s => s.Payment);
                 entity.HasOne(s => s.Invoice)
                         .WithOne(i => i.Sale)
                         .HasForeignKey<CustomerInvoice>(i => i.SaleId)
@@ -75,7 +70,6 @@ namespace Khata.Data.Persistence
 
             modelBuilder.Entity<Purchase>(entity =>
             {
-                entity.OwnsOne(s => s.Payment);
                 entity.HasOne(p => p.Vouchar)
                         .WithOne(v => v.Purchase)
                         .HasForeignKey<Vouchar>(v => v.PurchaseId)

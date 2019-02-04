@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Khata.Data.Core;
 using Khata.Domain;
@@ -46,16 +47,7 @@ namespace ImportData.Services
 
         public static void CreateDump()
         {
-            DiscoverShops();
-            DumpCustomers();
-            DumpSuppliers();
-            DumpEmployees();
-            DumpExpenses();
-            DumpDebtPayments();
-            DumpSupplierPayments();
-            DumpProducts();
-            DumpPurchases();
-            DumpSales();
+
         }
 
 
@@ -69,7 +61,7 @@ namespace ImportData.Services
                 add(items[i]);
                 try
                 {
-                    db.Complete();
+                    //db.Complete();
                 }
                 catch (Exception e)
                 {
@@ -85,13 +77,16 @@ namespace ImportData.Services
             Console.ReadLine();
         }
 
-        public static void InsertAll(IUnitOfWork db)
+        public static async Task InsertAllAsync(IUnitOfWork db)
         {
+            DiscoverShops();
             Console.Write($"{Shops.Count()} Shops found.\nWhich one to load? (0 - {Shops.Count() - 1})");
             var shop = Console.ReadLine();
             if (int.TryParse(shop, out int index) && index < Shops.Count())
             {
                 var ans = "";
+
+                DumpCustomers();
                 Console.Write("Customers? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -99,6 +94,7 @@ namespace ImportData.Services
                     AddItems(Customers.Values.ToList(), db.Customers.Add, db);
                 }
 
+                DumpSuppliers();
                 Console.Write("Suppliers? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -106,6 +102,7 @@ namespace ImportData.Services
                     AddItems(Suppliers.Values.ToList(), db.Suppliers.Add, db);
                 }
 
+                DumpEmployees();
                 Console.Write("Employees? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -113,6 +110,7 @@ namespace ImportData.Services
                     AddItems(Employees.Values.ToList(), db.Employees.Add, db);
                 }
 
+                DumpExpenses();
                 Console.Write("Expenses? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -120,6 +118,7 @@ namespace ImportData.Services
                     AddItems(Expenses.Values.ToList(), db.Expenses.Add, db);
                 }
 
+                db.Complete();
                 var customer = new Customer
                 {
                     FirstName = "Cash",
@@ -134,6 +133,7 @@ namespace ImportData.Services
                     Metadata = Metadata.CreatedNew("auto")
                 };
 
+                DumpDebtPayments();
                 Console.Write("Debt Payments? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -148,6 +148,7 @@ namespace ImportData.Services
                     AddItems(DebtPayments.Values.ToList(), db.DebtPayments.Add, db);
                 }
 
+                DumpSupplierPayments();
                 Console.Write("Supplier Payments? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
@@ -162,44 +163,61 @@ namespace ImportData.Services
                     AddItems(SupplierPayments.Values.ToList(), db.SupplierPayments.Add, db);
                 }
 
+                DumpProducts();
                 var shopId = Shops[index];
                 Console.Write("Products? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(Products[shopId].Values.ToList(), db.Products.Add, db);
+                    AddItems(AllProducts.Values.ToList(), db.Products.Add, db);
                 }
-
                 db.Complete();
 
+                DumpPurchases();
                 Console.Write("Purchase? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    foreach (var sp in Purchases.Values)
+                    foreach (var purchase in Purchases.Values)
                     {
-                        if (sp.SupplierId == 0)
-                            sp.Supplier = supplier;
-                        if (sp.Vouchar.SupplierId == 0)
-                            sp.Vouchar.Supplier = supplier;
+                        Console.WriteLine($"SupplierId: {purchase.SupplierId}");
+                        var supplierExists = await db.Suppliers.Exists(purchase.SupplierId);
+                        Console.WriteLine($"Supplier Exists: {supplierExists}");
+                        if (!supplierExists)
+                        {
+                            purchase.Supplier = supplier;
+                            purchase.Vouchar.Supplier = supplier;
+                        }
+                        db.Purchases.Add(purchase);
                     }
-                    AddItems(Purchases.Values.ToList(), db.Purchases.Add, db);
                 }
                 db.Complete();
 
+                DumpSales();
                 Console.Write("Sales? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    foreach (var dp in Sales[shopId].Values)
+                    var added = 0;
+                    //AddItems(Sales[shopId].Values.ToList(), db.Sales.Add, db);
+                    foreach (var sale in Sales[shopId].Values)
                     {
-                        if (dp.CustomerId == 0)
-                            dp.Customer = customer;
-                        if (dp.Invoice.CustomerId == 0)
-                            dp.Invoice.Customer = customer;
+                        Console.WriteLine($"CustomerId: {sale.CustomerId}");
+                        var customerExists = await db.Customers.Exists(sale.CustomerId);
+                        Console.WriteLine($"Customer Exists: {customerExists}");
+                        if (!customerExists)
+                        {
+                            sale.CustomerId = (await db.Customers.Get(
+                                c => c.FullName.ToLowerInvariant().Contains("cash"),
+                                c => c.Id, 1, 0)).First().Id;
+                            sale.Invoice.CustomerId = sale.CustomerId;
+                        }
+
+                        db.Sales.Add(sale);
+                        Console.WriteLine($"{added} customers added");
                     }
-                    AddItems(Sales[shopId].Values.ToList(), db.Sales.Add, db);
                 }
+                db.Complete();
 
                 Console.WriteLine("Everything Added...");
             }
@@ -319,6 +337,11 @@ namespace ImportData.Services
             {
                 var note = e["note"].ToString();
                 var amount = e["totalAmount"].ToDecimal();
+                foreach (var cartItem in e["cart"].AsBsonArray)
+                {
+                    note += $". { cartItem["productName"].ToString()}- " +
+                        $"{ cartItem["unitPurchasePrice"].ToDecimal() * cartItem["quantity"].ToDecimal()}";
+                }
                 Expenses[e["_id"].ToString()] = new Expense
                 {
                     Name = "Expense",
@@ -470,9 +493,14 @@ namespace ImportData.Services
             foreach (var p in purchasesCollection)
             {
                 var supplierId = p["supplierId"].ToString();
-                Supplier supplier = Customers.Keys.Contains(supplierId)
+                Supplier supplier = Suppliers.Keys.Contains(supplierId)
                     ? Suppliers[supplierId]
                     : null;
+                if (supplier is null)
+                {
+                    Console.WriteLine("WARNING- SUPPLIER NOT FOUND");
+                    Console.ReadKey();
+                }
                 var amount = p["totalAmount"].ToDecimal();
                 var less = p["less"].ToDecimal();
                 var paid = p["paid"].ToDecimal();
@@ -487,9 +515,17 @@ namespace ImportData.Services
                     if (AllProducts.Keys.Contains(productId))
                     {
                         var prod = AllProducts[productId];
-                        var q = li["quantity"].ToDecimal();
-                        var upp = li["unitPurchasePrice"].ToDecimal();
-                        cart.Add(new PurchaseLineItem(prod, q, q * upp));
+                        if (prod.Id > 0)
+                        {
+                            var q = li["quantity"].ToDecimal();
+                            var upp = li["unitPurchasePrice"].ToDecimal();
+                            cart.Add(new PurchaseLineItem(prod, q, q * upp));
+                        }
+                        else
+                        {
+                            Console.WriteLine("WARNING- PRODUCT NOT FOUND");
+                            Console.ReadKey();
+                        }
                     }
                 }
 
@@ -557,6 +593,7 @@ namespace ImportData.Services
                 var paid = s["paid"].ToDecimal();
                 var note = RemoveBsonNull(s["notes"].ToString());
                 var dealtime = DateTime.SpecifyKind(s["dealTime"].ToUniversalTime(), DateTimeKind.Utc);
+                var saleType = (SaleType)s["saleType"].ToInt32();
 
                 var cart = new List<SaleLineItem>();
                 foreach (BsonDocument li in s["cart"].AsBsonArray)
@@ -575,6 +612,7 @@ namespace ImportData.Services
                 {
                     CustomerId = customer?.Id ?? 0,
                     SaleDate = dealtime,
+                    Type = saleType,
                     Payment = new PaymentInfo
                     {
                         SubTotal = amount,

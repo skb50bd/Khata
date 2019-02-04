@@ -48,8 +48,8 @@ const paid = document.getElementById('Payment_Paid');
 const debtAfter = document.getElementById('debt-after');
 const description = document.getElementById('Description');
 
+const itemsAdded = document.getElementById("items-added");
 
-var itemsAdded = 0;
 
 function customerInputsReadonly(value) {
     var customerInputs = document.getElementsByClassName('customer-input');
@@ -179,13 +179,13 @@ function createCartItem(newItem) {
         <div class="col" hidden>
             <input type="number"
                 name="Cart.Index"
-                value="`+ itemsAdded + `" />
+                value="`+ itemsAdded.valueAsNumber + `" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].ItemId" 
+                name="Cart[`+ itemsAdded.valueAsNumber + `].ItemId" 
                 class="cart-item-itemid"
                 value="` + newItem.itemId + `" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].Type" 
+                name="Cart[`+ itemsAdded.valueAsNumber + `].Type" 
                     class="cart-item-type"
                     value="` + newItem.type + `"/>
         </div>        
@@ -193,13 +193,14 @@ function createCartItem(newItem) {
         <div class="input-group input-group-sm mb-0">
             <input type="text"
                 class="form-control cart-item-name cart-item"
+                name="Cart[`+ itemsAdded.valueAsNumber + `].Name" 
                 data-toggle="tooltip" title="Name"
                 value="` + newItem.name + `" 
                 aria-label="Name" readonly/>
 
             <div class="input-group-append">
                 <button class="btn btn-outline-danger cart-item-removeitem"
-                    id="remove-item-button`+ itemsAdded + `"
+                    id="remove-item-button-`+ itemsAdded.valueAsNumber + `"
                     type="button">
                     Remove
                 </button>
@@ -220,7 +221,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].Quantity" 
+                name="Cart[`+ itemsAdded.valueAsNumber + `].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
                 data-toggle="tooltip" title="Quantity"
                 value="` + newItem.quantity + `"/>            
@@ -230,7 +231,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].NetPrice" 
+                name="Cart[`+ itemsAdded.valueAsNumber + `].NetPrice" 
                 class="text-right cart-item-netprice cart-item form-control"
                 data-toggle="tooltip" title="Net Price"
                 value="` + newItem.netPrice + `"/>
@@ -252,9 +253,9 @@ function addLineItem(event) {
     //it.parentElement = cart;
     //it.fadein();
     cart.appendChild(it);
-    document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
+    document.getElementById('remove-item-button-' + itemsAdded.valueAsNumber).addEventListener('click', removeCartItem);
 
-    itemsAdded++;
+    itemsAdded.value = itemsAdded.valueAsNumber + 1;
 
     clearLineItem(event);
     calculatePayment();
@@ -274,7 +275,8 @@ $(document).ready(function () {
     if (saleDate.value === '')
         saleDate.value = getDate();
 
-    registerNewCustomer.removeAttribute('checked');
+    if (isNaN(itemsAdded.valueAsNumber))
+        itemsAdded.value = 0;
 
     $('#customer-selector').autocomplete({
         source: function (request, response) {

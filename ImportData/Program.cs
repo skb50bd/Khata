@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ImportData
 {
+    using System.Threading.Tasks;
+
     using Khata.Data.Core;
     using Khata.Data.Persistence;
     using Khata.Domain;
@@ -18,7 +20,7 @@ namespace ImportData
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Warning()
@@ -34,7 +36,7 @@ namespace ImportData
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             // run app
-            serviceProvider.GetService<App>().Run();
+            await serviceProvider.GetService<App>().RunAsync();
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)

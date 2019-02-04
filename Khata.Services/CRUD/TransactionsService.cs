@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -54,22 +53,14 @@ namespace Khata.Services.CRUD
             return res;
         }
 
-        public async Task<IEnumerable<Deposit>> GetDeposits(DateTimeOffset from, DateTimeOffset to)
+        public async Task<IEnumerable<Deposit>> GetDeposits(DateTime from, DateTime to)
         {
-            Predicate<Deposit> predicate
-                = d
-                    => d.Metadata.ModificationTime >= from
-                        && d.Metadata.ModificationTime <= to;
-            return await _db.Deposits.Get(predicate, d => d.Id, 1, int.MaxValue);
+            return await _db.Deposits.Get(d => true, d => d.Id, 1, int.MaxValue, from, to);
         }
 
-        public async Task<IEnumerable<Withdrawal>> GetWithdrawals(DateTimeOffset from, DateTimeOffset to)
+        public async Task<IEnumerable<Withdrawal>> GetWithdrawals(DateTime from, DateTime to)
         {
-            Predicate<Withdrawal> predicate
-                = d
-                    => d.Metadata.ModificationTime >= from
-                        && d.Metadata.ModificationTime <= to;
-            return await _db.Withdrawals.Get(predicate, d => d.Id, 1, int.MaxValue);
+            return await _db.Withdrawals.Get(d => true, d => d.Id, 1, int.MaxValue, from, to);
         }
 
         public async Task<Deposit> GetDepositById(int id)

@@ -24,12 +24,6 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
         {
-            Predicate<SupplierPayment> newPredicate =
-                i => !i.IsRemoved
-                    && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate(i);
-
             var res = new PagedList<SupplierPayment>()
             {
                 PageIndex = pageIndex,
@@ -38,7 +32,10 @@ namespace Khata.Data.Persistence
                     await Context.SupplierPayments
                         .AsNoTracking()
                         .Include(d => d.Metadata)
-                        .Where(s => newPredicate(s))
+                        .Where(i => !i.IsRemoved
+                            && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                            && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                            && predicate(i))
                         .CountAsync()
             };
 
@@ -46,7 +43,10 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Supplier)
                 .Include(s => s.Metadata)
-                .Where(s => newPredicate(s))
+                .Where(i => !i.IsRemoved
+                       && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                       && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                       && predicate(i))
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)
