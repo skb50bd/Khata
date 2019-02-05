@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -37,7 +38,7 @@ namespace Khata.Services.CRUD
             DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Predicate<DebtPayment>)(p => true)
+                ? (Expression<Func<DebtPayment, bool>>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
                     || p.Customer.FullName
                             .ToLowerInvariant()

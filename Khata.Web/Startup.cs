@@ -9,6 +9,7 @@ using Khata.Services.PageFilterSort;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,13 @@ namespace WebUI
 
             services.ConfigureCrudServices();
 
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("AdminRights", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("UserRights", policy => policy.RequireRole("User"));
+            });
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                      {
@@ -63,7 +71,32 @@ namespace WebUI
                          options.SerializerSettings.NullValueHandling =
                              NullValueHandling.Ignore;
                      })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddRazorPagesOptions(
+                    options =>
+                    {
+                        options.Conventions.AuthorizeFolder("/Customers", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/DebtPayments", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Deposits", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Employees", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Cash", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Expenses", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Invoices", "UserRights");
+                        options.Conventions.AuthorizeFolder("/Products", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Purchases", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Refunds", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/SalaryIssues", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/SalaryPayments", "AdminRights");
+                        options.Conventions.AuthorizePage("/Sales/Create", "UserRights");
+                        options.Conventions.AuthorizePage("/Sales/Index", "UserRights");
+                        options.Conventions.AuthorizePage("/Sales/Details", "UserRights");
+                        options.Conventions.AuthorizeFolder("/Services", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/SupplierPayments", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Suppliers", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Vouchars", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Withdrawals", "AdminRights");
+                    }
+                ); ;
 
             services.AddHttpContextAccessor();
 
@@ -78,20 +111,12 @@ namespace WebUI
             }
             );
 
-            //services.AddResponseCompression(options =>
-            //{
-            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-            //    {
-            //        MediaTypeNames.Application.Octet,
-            //        WasmMediaTypeNames.Application.Wasm,
-            //    });
-            //});
 
             services.Configure<OutletOptions>(Configuration.GetSection("OutletOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             //app.UseResponseCompression();
             if (env.IsDevelopment())
@@ -119,7 +144,8 @@ namespace WebUI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json",
                     "Khata_API");
             });
-            //app.UseBlazor<Khata.Client.Startup>();
+
+            SeedUsers.Seed(roleManager, userManager).Wait();
         }
     }
 }

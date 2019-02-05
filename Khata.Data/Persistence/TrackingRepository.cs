@@ -26,14 +26,14 @@ namespace Khata.Data.Persistence
         public TrackingRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<T>> Get<T2>(
-            Predicate<T> predicate,
+            Expression<Func<T, bool>> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
             int pageSize,
             DateTime? from = null,
             DateTime? to = null)
             => await base.Get(
-                i => !i.IsRemoved && predicate(i),
+                i => !i.IsRemoved && predicate.Compile().Invoke(i),
                 order,
                 pageIndex,
                 pageSize,

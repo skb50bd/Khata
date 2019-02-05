@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190131005214_Added-Refund")]
-    partial class AddedRefund
+    [Migration("20190205130526_V0_1")]
+    partial class V0_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,6 +200,8 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<bool>("IsRemoved");
 
                     b.Property<int?>("MetadataId");
+
+                    b.Property<decimal>("PaymentDiscountCash");
 
                     b.Property<decimal>("PaymentPaid");
 
@@ -758,8 +760,6 @@ namespace Khata.Data.Persistence.Migrations
                     b.Property<int>("CustomerId");
 
                     b.Property<int?>("DebtPaymentId");
-
-                    b.Property<decimal>("PaymentDiscountCash");
 
                     b.Property<int?>("SaleId");
 

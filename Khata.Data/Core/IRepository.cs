@@ -14,7 +14,7 @@ namespace Khata.Data.Core
         Task<IList<T>> GetAll();
         Task<T> GetById(int id);
         Task<IPagedList<T>> Get<T2>(
-            Predicate<T> predicate,
+            Expression<Func<T, bool>> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
             int pageSize,

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebUI.Pages.Sales
 {
-    [Authorize]
+    [Authorize(Policy = "UserRights")]
     public class CreateModel : PageModel
     {
         private readonly ISaleService _sales;

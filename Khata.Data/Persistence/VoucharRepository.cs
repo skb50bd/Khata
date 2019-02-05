@@ -17,18 +17,18 @@ namespace Khata.Data.Persistence
         public VoucharRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<Vouchar>> Get<T>(
-            Predicate<Vouchar> predicate,
+            Expression<Func<Vouchar, bool>> predicate,
             Expression<Func<Vouchar, T>> order,
             int pageIndex,
             int pageSize,
             DateTime? from = null,
             DateTime? to = null)
         {
-            Predicate<Vouchar> newPredicate =
+            Expression<Func<Vouchar, bool>> newPredicate =
                 i => !i.IsRemoved
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                     && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate(i);
+                    && predicate.Compile().Invoke(i);
 
             var res = new PagedList<Vouchar>()
             {
@@ -38,7 +38,7 @@ namespace Khata.Data.Persistence
                     await Context.Vouchars
                         .AsNoTracking()
                         .Include(e => e.Metadata)
-                        .Where(s => newPredicate(s))
+                        .Where(newPredicate)
                         .CountAsync()
             };
 
@@ -46,7 +46,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Supplier)
                 .Include(s => s.Metadata)
-                .Where(s => newPredicate(s))
+                .Where(newPredicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Khata.Data.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class V0_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -474,12 +474,12 @@ namespace Khata.Data.Persistence.Migrations
                     PreviousDue = table.Column<decimal>(nullable: false),
                     PaymentSubtotal = table.Column<decimal>(nullable: false),
                     PaymentPaid = table.Column<decimal>(nullable: false),
+                    PaymentDiscountCash = table.Column<decimal>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     SaleId = table.Column<int>(nullable: true),
                     DebtPaymentId = table.Column<int>(nullable: true),
                     Type = table.Column<int>(nullable: true),
                     CustomerId = table.Column<int>(nullable: true),
-                    PaymentDiscountCash = table.Column<decimal>(nullable: true),
                     PurchaseId = table.Column<int>(nullable: true),
                     SupplierPaymentId = table.Column<int>(nullable: true),
                     SupplierId = table.Column<int>(nullable: true)
@@ -713,6 +713,43 @@ namespace Khata.Data.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Refunds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    CustomerId = table.Column<int>(nullable: false),
+                    SaleId = table.Column<int>(nullable: false),
+                    CashBack = table.Column<decimal>(nullable: false),
+                    DebtRollback = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refunds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refunds_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Refunds_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Refunds_Sales_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SaleLineItem",
                 columns: table => new
                 {
@@ -724,11 +761,18 @@ namespace Khata.Data.Persistence.Migrations
                     UnitPurchasePrice = table.Column<decimal>(nullable: false),
                     ItemId = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false),
+                    RefundId = table.Column<int>(nullable: true),
                     SaleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SaleLineItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SaleLineItem_Refunds_RefundId",
+                        column: x => x.RefundId,
+                        principalTable: "Refunds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SaleLineItem_Sales_SaleId",
                         column: x => x.SaleId,
@@ -869,6 +913,22 @@ namespace Khata.Data.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Refunds_CustomerId",
+                table: "Refunds",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Refunds_MetadataId",
+                table: "Refunds",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Refunds_SaleId",
+                table: "Refunds",
+                column: "SaleId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SalaryIssues_EmployeeId",
                 table: "SalaryIssues",
                 column: "EmployeeId");
@@ -887,6 +947,11 @@ namespace Khata.Data.Persistence.Migrations
                 name: "IX_SalaryPayments_MetadataId",
                 table: "SalaryPayments",
                 column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleLineItem_RefundId",
+                table: "SaleLineItem",
+                column: "RefundId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleLineItem_SaleId",
@@ -1008,6 +1073,9 @@ namespace Khata.Data.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Refunds");
 
             migrationBuilder.DropTable(
                 name: "Sales");

@@ -22,7 +22,7 @@ namespace Khata.Data.Persistence
         }
 
         public virtual async Task<IPagedList<T>> Get<T2>(
-            Predicate<T> predicate,
+            Expression<Func<T, bool>> predicate,
             Expression<Func<T, T2>> order,
             int pageIndex,
             int pageSize,
@@ -40,7 +40,7 @@ namespace Khata.Data.Persistence
                        (from ?? DateTime.MinValue)
                     && e.Metadata.CreationTime <=
                         (to ?? DateTime.MaxValue)
-                        && predicate(e))
+                        && predicate.Compile().Invoke(e))
                     .AsNoTracking()
                     .CountAsync()
             };
@@ -53,7 +53,7 @@ namespace Khata.Data.Persistence
                        (from ?? DateTime.MinValue)
                     && e.Metadata.CreationTime <=
                         (to ?? DateTime.MaxValue)
-                        && predicate(e))
+                        && predicate.Compile().Invoke(e))
                         .OrderByDescending(order)
                         .Skip((pageIndex - 1) * pageSize)
                         .Take(pageSize > 0 ? pageSize : int.MaxValue)

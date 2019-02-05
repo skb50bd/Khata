@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -37,9 +38,9 @@ namespace Khata.Services.CRUD
             DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Predicate<SupplierPayment>)(p => true)
+                ? (Expression<Func<SupplierPayment, bool>>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                    || (p.Supplier.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
+                    || p.Supplier.FullName.ToLowerInvariant().Contains(pf.Filter);
 
             var res = await _db.SupplierPayments.Get(
                 predicate,

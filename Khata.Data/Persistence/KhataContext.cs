@@ -11,6 +11,7 @@ namespace Khata.Data.Persistence
         public KhataContext(DbContextOptions<KhataContext> options) : base(options)
         {
             //IHostingEnvironment env
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

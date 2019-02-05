@@ -13,24 +13,25 @@ using Microsoft.Extensions.Logging;
 
 namespace WebUI.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
-    public partial class RegisterModel : PageModel
+    [Authorize(Policy = "AdminRights")]
+    public partial class CreateNewUserModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<CreateNewUserModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
+        public CreateNewUserModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<CreateNewUserModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+
         }
 
         [BindProperty]
@@ -54,7 +55,8 @@ namespace WebUI.Areas.Identity.Pages.Account
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     UserName = Input.Username,
-                    Email = Input.Email
+                    Email = Input.Email,
+                    Role = Input.Role
                 };
 
                 if (Input.Avatar?.Length > 0)
@@ -70,6 +72,11 @@ namespace WebUI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var roleRes = await _userManager.AddToRoleAsync(user, Input.Role.ToString());
+                    if (Input.Role == Role.Admin)
+                    {
+                        roleRes = await _userManager.AddToRoleAsync(user, Role.User.ToString());
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
@@ -78,7 +85,6 @@ namespace WebUI.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code },
                         protocol: Request.Scheme);
 
-                    await _userManager.AddToRoleAsync(user, user.Role.ToString());
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

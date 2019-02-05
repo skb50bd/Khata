@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -35,12 +36,12 @@ namespace Khata.Services.CRUD
             DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Predicate<Customer>)(p => true)
+                ? (Expression<Func<Customer, bool>>)(p => true)
                 : p => p.Id.ToString() == pf.Filter
-                        || (p.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
-                        || (p.CompanyName?.ToLowerInvariant().Contains(pf.Filter) ?? false)
-                        || (p.Phone?.Contains(pf.Filter) ?? false)
-                        || (p.Email?.Contains(pf.Filter) ?? false);
+                    || p.FullName.ToLowerInvariant().Contains(pf.Filter)
+                    || p.CompanyName.ToLowerInvariant().Contains(pf.Filter)
+                    || p.Phone.Contains(pf.Filter)
+                    || p.Email.Contains(pf.Filter);
 
             var res = await _db.Customers.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize, from, to);
             return res.CastList(c => _mapper.Map<CustomerDto>(c));

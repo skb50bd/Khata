@@ -1,4 +1,5 @@
 ﻿@model Khata.DTOs.SaleDto
+@inject Microsoft.AspNetCore.Identity.UserManager<Khata.Domain.ApplicationUser> userManager
 
 <div class="card" style="width:40rem">
     <div class="card-header">
@@ -80,16 +81,18 @@
                     <td>Due</td>
                     <td class="text-right">@((Model.PaymentDue + Model.Customer.Debt).ToString("c2"))</td>
                 </tr>
-
-                <tr class="table-@( Model.Profit < 0
-                        ? "danger"
-                        : Model.Profit > Model.PaymentDue
-                            ? "success"
-                            : "primary")
-                    ">
-                    <td>Profit</td>
-                    <td class="text-right">@(Model.Profit.ToString("c2"))</td>
-                </tr>
+                @if (Context.User.IsInRole("Admin"))
+                {
+                    <tr class="table-@( Model.Profit < 0
+                                           ? "danger"
+                                           : Model.Profit > Model.PaymentDue
+                                               ? "success"
+                                               : "primary")
+                                                ">
+                        <td>Profit</td>
+                        <td class="text-right">@(Model.Profit.ToString("c2"))</td>
+                    </tr>
+                }
             </tbody>
         </table>
 

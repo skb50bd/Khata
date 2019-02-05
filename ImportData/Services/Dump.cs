@@ -214,7 +214,7 @@ namespace ImportData.Services
                         }
 
                         db.Sales.Add(sale);
-                        Console.WriteLine($"{added} customers added");
+                        Console.WriteLine($"{added++} customers added");
                     }
                 }
                 db.Complete();

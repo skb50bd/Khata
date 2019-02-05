@@ -19,10 +19,10 @@ namespace Khata.Data.Persistence
             options.UseSqlServer(cnnString));
             //.EnableSensitiveDataLogging());
             //options.UseInMemoryDatabase("Khata"));
-
             services.AddDefaultIdentity<ApplicationUser>()
-            .AddDefaultUI(UIFramework.Bootstrap4)
-            .AddEntityFrameworkStores<KhataContext>();
+                .AddRoles<IdentityRole>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<KhataContext>();
 
             services.AddTransient<ITrackingRepository<Product>, TrackingRepository<Product>>();
             services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();

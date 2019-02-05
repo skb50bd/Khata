@@ -17,18 +17,18 @@ namespace Khata.Data.Persistence
         public SalaryPaymentRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<SalaryPayment>> Get<T>(
-            Predicate<SalaryPayment> predicate,
+            Expression<Func<SalaryPayment, bool>> predicate,
             Expression<Func<SalaryPayment, T>> order,
             int pageIndex,
             int pageSize,
             DateTime? from = null,
             DateTime? to = null)
         {
-            Predicate<SalaryPayment> newPredicate =
+            Expression<Func<SalaryPayment, bool>> newPredicate =
                 i => !i.IsRemoved
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                     && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate(i);
+                    && predicate.Compile().Invoke(i);
 
             var res = new PagedList<SalaryPayment>()
             {
@@ -38,7 +38,7 @@ namespace Khata.Data.Persistence
                 await Context.SalaryPayments
                     .AsNoTracking()
                     .Include(d => d.Metadata)
-                    .Where(s => newPredicate(s))
+                    .Where(newPredicate)
                     .CountAsync()
             };
 
@@ -46,7 +46,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Employee)
                 .Include(s => s.Metadata)
-                .Where(s => newPredicate(s))
+                .Where(newPredicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

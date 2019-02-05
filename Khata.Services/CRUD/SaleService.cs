@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -40,14 +41,14 @@ namespace Khata.Services.CRUD
             DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf?.Filter)
-                ? (Predicate<Sale>)(s => !s.IsRemoved)
+                ? (Expression<Func<Sale, bool>>)(s => !s.IsRemoved)
                 : s => s.Id.ToString() == pf.Filter
                     || s.InvoiceId.ToString() == pf.Filter
-                    || (s.Customer.FullName?.ToLowerInvariant().Contains(pf.Filter) ?? false);
+                    || s.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
 
             var res = await _db.Sales.Get(
                 predicate,
-                p => p.Id,
+                p => p.Metadata.CreationTime,
                 pf.PageIndex,
                 pf.PageSize,
                 from,

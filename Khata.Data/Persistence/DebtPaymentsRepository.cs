@@ -17,7 +17,7 @@ namespace Khata.Data.Persistence
         public DebtPaymentRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<DebtPayment>> Get<T>(
-            Predicate<DebtPayment> predicate,
+            Expression<Func<DebtPayment, bool>> predicate,
             Expression<Func<DebtPayment, T>> order,
             int pageIndex,
             int pageSize,
@@ -31,10 +31,11 @@ namespace Khata.Data.Persistence
                 ResultCount = await Context.DebtPayments
                     .AsNoTracking()
                     .Include(d => d.Metadata)
+                    .Include(d => d.Customer)
                     .Where(i => !i.IsRemoved
                             && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                             && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                            && predicate(i))
+                            && predicate.Compile().Invoke(i))
                     .CountAsync()
             };
 
@@ -45,7 +46,7 @@ namespace Khata.Data.Persistence
                 .Where(i => !i.IsRemoved
                         && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                         && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                        && predicate(i))
+                        && predicate.Compile().Invoke(i))
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -34,7 +35,7 @@ namespace Khata.Services.CRUD
         public async Task<IPagedList<Deposit>> GetDeposits(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Predicate<Deposit>)(d => true)
+                ? (Expression<Func<Deposit, bool>>)(d => true)
                 : d => d.Id.ToString() == pf.Filter
                     || d.Description == pf.Filter;
 
@@ -45,7 +46,7 @@ namespace Khata.Services.CRUD
         public async Task<IPagedList<Withdrawal>> GetWithdrawals(PageFilter pf)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Predicate<Withdrawal>)(d => true)
+                ? (Expression<Func<Withdrawal, bool>>)(d => true)
                 : d => d.Id.ToString() == pf.Filter
                     || d.Description == pf.Filter;
 

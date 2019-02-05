@@ -17,7 +17,7 @@ namespace Khata.Data.Persistence
         public PurchaseRepository(KhataContext context) : base(context) { }
 
         public override async Task<IPagedList<Purchase>> Get<T>(
-            Predicate<Purchase> predicate,
+            Expression<Func<Purchase, bool>> predicate,
             Expression<Func<Purchase, T>> order,
             int pageIndex,
             int pageSize,
@@ -35,7 +35,7 @@ namespace Khata.Data.Persistence
                         .Where(i => !i.IsRemoved
                                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                                     && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                                    && predicate(i))
+                                    && predicate.Compile().Invoke(i))
                         .CountAsync()
             };
 
@@ -47,7 +47,7 @@ namespace Khata.Data.Persistence
                 .Where(i => !i.IsRemoved
                             && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                             && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                            && predicate(i))
+                            && predicate.Compile().Invoke(i))
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)
