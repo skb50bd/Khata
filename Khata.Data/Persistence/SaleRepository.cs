@@ -24,11 +24,10 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
         {
-            Expression<Func<Sale, bool>> newPredicate =
+            predicate = predicate.And(
                 i => !i.IsRemoved
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate.Compile().Invoke(i);
+                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
             var res = new PagedList<Sale>()
             {
@@ -37,11 +36,7 @@ namespace Khata.Data.Persistence
                 ResultCount =
                     await Context.Sales
                         .AsNoTracking()
-                        .Include(d => d.Metadata)
-                        .Where(i => !i.IsRemoved
-                                && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                                && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                                && predicate.Compile().Invoke(i))
+                        .Where(predicate)
                         .CountAsync()
             };
 
@@ -50,10 +45,7 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Cart)
                 .Include(s => s.Customer)
                 .Include(s => s.Metadata)
-                .Where(i => !i.IsRemoved
-                            && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                            && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                            && predicate.Compile().Invoke(i))
+                .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

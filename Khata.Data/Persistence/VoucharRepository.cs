@@ -24,11 +24,10 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
         {
-            Expression<Func<Vouchar, bool>> newPredicate =
+            predicate = predicate.And(
                 i => !i.IsRemoved
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate.Compile().Invoke(i);
+                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
             var res = new PagedList<Vouchar>()
             {
@@ -37,8 +36,7 @@ namespace Khata.Data.Persistence
                 ResultCount =
                     await Context.Vouchars
                         .AsNoTracking()
-                        .Include(e => e.Metadata)
-                        .Where(newPredicate)
+                        .Where(predicate)
                         .CountAsync()
             };
 
@@ -46,7 +44,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Supplier)
                 .Include(s => s.Metadata)
-                .Where(newPredicate)
+                .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

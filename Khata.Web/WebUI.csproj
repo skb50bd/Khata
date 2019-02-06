@@ -5,7 +5,7 @@
     <UserSecretsId>aspnet-WebUI-DF575269-9032-4970-8BC0-9ED19B4E0B6F</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>WebUI</RootNamespace>
-    <AssemblyName>WebUI</AssemblyName>
+    <AssemblyName>Khata</AssemblyName>
     <LangVersion>latest</LangVersion>
 	<RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>

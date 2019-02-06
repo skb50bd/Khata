@@ -33,7 +33,7 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
             => await base.Get(
-                i => !i.IsRemoved && predicate.Compile().Invoke(i),
+                predicate.And(i => !i.IsRemoved),
                 order,
                 pageIndex,
                 pageSize,

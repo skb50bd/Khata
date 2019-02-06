@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190205130526_V0_1")]
+    [Migration("20190206082533_V0_1")]
     partial class V0_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

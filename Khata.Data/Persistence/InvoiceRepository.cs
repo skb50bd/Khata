@@ -24,11 +24,10 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
         {
-            Expression<Func<CustomerInvoice, bool>> newPredicate =
+            predicate = predicate.And(
                 i => !i.IsRemoved
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
-                    && predicate.Compile().Invoke(i);
+                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
             var res = new PagedList<CustomerInvoice>()
             {
@@ -39,7 +38,7 @@ namespace Khata.Data.Persistence
                         .AsNoTracking()
                         .Include(d => d.Customer)
                         .Include(d => d.Metadata)
-                        .Where(newPredicate)
+                        .Where(predicate)
                         .CountAsync()
             };
 
@@ -47,7 +46,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Customer)
                 .Include(s => s.Metadata)
-                .Where(newPredicate)
+                .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize > 0 ? pageSize : int.MaxValue)

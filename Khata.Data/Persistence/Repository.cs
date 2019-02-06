@@ -29,18 +29,16 @@ namespace Khata.Data.Persistence
             DateTime? from = null,
             DateTime? to = null)
         {
+            predicate = predicate.And(
+                e => e.Metadata.CreationTime >= (from ?? DateTime.MinValue)
+                && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
             var res = new PagedList<T>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 ResultCount = await Context.Set<T>()
-                    .Include(e => e.Metadata)
-                    .Where(e => e.Metadata.CreationTime >=
-                       (from ?? DateTime.MinValue)
-                    && e.Metadata.CreationTime <=
-                        (to ?? DateTime.MaxValue)
-                        && predicate.Compile().Invoke(e))
+                    .Where(predicate)
                     .AsNoTracking()
                     .CountAsync()
             };
@@ -49,11 +47,7 @@ namespace Khata.Data.Persistence
             res.AddRange(
                 await Context.Set<T>()
                         .Include(d => d.Metadata)
-                        .Where(e => e.Metadata.CreationTime >=
-                       (from ?? DateTime.MinValue)
-                    && e.Metadata.CreationTime <=
-                        (to ?? DateTime.MaxValue)
-                        && predicate.Compile().Invoke(e))
+                        .Where(predicate)
                         .OrderByDescending(order)
                         .Skip((pageIndex - 1) * pageSize)
                         .Take(pageSize > 0 ? pageSize : int.MaxValue)
