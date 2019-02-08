@@ -1,10 +1,44 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
+const swalDelete = Swal.mixin({
+    confirmButtonClass: 'btn btn-danger',
+    cancelButtonClass: 'btn btn-secondary mr-4',
+    buttonsStyling: false
+});
+
+const swalSave = Swal.mixin({
+    confirmButtonClass: 'btn btn-success',
+    cancelButtonClass: 'btn btn-danger mr-4',
+    buttonsStyling: false
+});
 
 $(document).ready(function () {
     //$('.collapse').collapse();
-
+    $(".immutable-submit").submit(function (event) {
+        event.preventDefault();
+        swalSave.fire({
+            title: 'Are you sure?',
+            text: "Are you sure want to save thre record?",
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                this.submit(true);
+            }
+            else {
+                swalSave.fire(
+                    'Cacelled',
+                    'Item not saved!',
+                    'info'
+                );
+            }
+        });
+    });
+       
     $('.datepicker').datepicker();
     $('.datepicker').datepicker("option", "dateFormat", "dd/mm/yy");
 
@@ -17,147 +51,47 @@ $(document).ready(function () {
     });
 
     $(".js-remove-item").click(function (e) {
-        swal({
-            title: "Are you sure?",
+        swalDelete.fire({
+            title: 'Are you sure?',
             text: "The item will be removed from records!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
-                        .done(function () {
-                            swal("Poof! The item is removed!", {
-                                icon: "success"
-                            })
-                                .then((value) => {
-                                    if (value)
-                                        window.location = $(e.target).attr("data-returnUrl");
-                                });
-                        })
-                        .fail(function () {
-                            swal("Fail", "Could not delete the item.", "error");
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
+                    .done(function () {
+                        swalDelete.fire(
+                            'Removed!',
+                            'Your file has been removed.',
+                            'success'
+                        ).then((value) => {
+                            if (value)
+                                window.location = $(e.target).attr("data-returnUrl");
                         });
-
-                } else {
-                    swal("The item is safe!");
-                }
-            });
-    });
-
-    // Supplier Payment
-
-    $("#SupplierSelector").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: $("#SupplierSelector").attr("data-path"),
-                type: 'GET',
-                cache: true,
-                data: request,
-                dataType: 'json',
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return {
-                            label: item.label,
-                            value: item.id
-                        };
-                    }));
-                }
-            });
-        },
-        minLength: 1,
-        select: function (event, ui) {
-            $.ajax({
-                url: '/api/Suppliers/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $('#PayableBefore').val(data.payable);
-                    updatePayable();
-                }
-            });
-
-            $('#SupplierSelector').val(ui.item.label);
-            $('#SupplierId').val(ui.item.value);
-
-            return false;
-        }
-    });
-
-    function updatePayable() {
-        var dbVal = Number($('#PayableBefore').val());
-        var aVal = Number($('#Amount').val());
-        var result = dbVal - aVal;
-        $('#PayableAfter').val(result);
-    }
-
-    $(document).on("change, keyup", "#PayableBefore", updatePayable);
-    $(document).on("change, keyup", "#Amount", updatePayable);
-
-    // Supplier Payment End
-
-
-    // Salary Payment 
-
-    $("#EmployeeSelector").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: $("#EmployeeSelector").attr("data-path"),
-                type: 'GET',
-                cache: true,
-                data: request,
-                dataType: 'json',
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return {
-                            label: item.label,
-                            value: item.id
-                        };
-                    }));
-                }
-            });
-        },
-        minLength: 1,
-        select: function (event, ui) {
-            $.ajax({
-                url: '/api/Employees/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $('#BalanceBefore').val(data.balance);
-                    updateBalance();
-                }
-            });
-
-            $('#EmployeeSelector').val(ui.item.label);
-            $('#EmployeeId').val(ui.item.value);
-
-            return false;
-        }
-    });
-
-    function updateBalance() {
-        var bbVal = Number($('#BalanceBefore').val());
-        var aVal = Number($('#Amount').val());
-        if ($('#Amount').attr('data-type') === 'issue')
-            aVal = -1 * aVal;
-
-        var result = bbVal - aVal;
-        $('#BalanceAfter').val(result);
-    }
-
-    $(document).on("change, keyup", "#BalanceBefore", updateBalance);
-    $(document).on("change, keyup", "#Amount", updateBalance);
-
-    var buttons = document.getElementsByClassName('blank-link');
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', function (event) {
-            e.preventDefault();
+                    })
+                    .fail(function () {
+                        swalDelete.fire(
+                            'Failed',
+                            'Could not remove the item :(',
+                            'warning'
+                        );
+                    });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalDelete.fire(
+                    'Cancelled',
+                    'Your file is safe :)',
+                    'error'
+                );
+            }
         });
-    }
+    });
 
-    // Salary Payment End
 
     $(function () {
         $('[data-toggle="popover"]').popover();
@@ -170,19 +104,5 @@ $(document).ready(function () {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
-
-
-    var fixHeight = function () {
-        $(".navbar-nav").css("max-height", document.documentElement.clientHeight - 150);
-    };
-    fixHeight();
-    $(window).resize(function () {
-        fixHeight();
-    });
-    $(".navbar .navbar-toggler").on("click", function () {
-        fixHeight();
-    });
-    $(".navbar-toggler, .overlay").on("click", function () {
-        $(".mobileMenu, .overlay").toggleClass("open");
-    });
 });
+

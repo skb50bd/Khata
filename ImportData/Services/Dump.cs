@@ -161,6 +161,10 @@ namespace ImportData.Services
                 {
                     FirstName = "Cash",
                     LastName = "Customer",
+                    Address = "",
+                    Phone = "00000000000",
+                    Email = "someone@example.com",
+                    CompanyName = "N/A",
                     Metadata = Metadata.CreatedNew("auto")
                 };
 
@@ -168,6 +172,10 @@ namespace ImportData.Services
                 {
                     FirstName = "Cash",
                     LastName = "Supplier",
+                    Address = "",
+                    Phone = "00000000000",
+                    Email = "someone@example.com",
+                    CompanyName = "N/A",
                     Metadata = Metadata.CreatedNew("auto")
                 };
                 #endregion

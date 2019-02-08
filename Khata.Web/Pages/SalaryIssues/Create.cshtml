@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" class="immutable-submit">
             @await Component.InvokeAsync(
                 nameof(SalaryIssueForm),
                 new { salaryIssue = Model.SalaryIssueVm })
@@ -28,5 +28,6 @@
 
 
 @section Scripts {
+    <script src="~/js/salary.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

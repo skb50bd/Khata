@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ using SharedLibrary;
 
 namespace Khata.Data.Persistence
 {
-    public class SaleRepository : TrackingRepository<Sale>, ITrackingRepository<Sale>
+    public class SaleRepository : TrackingRepository<Sale>, ISaleRepository
     {
         public SaleRepository(KhataContext context) : base(context) { }
 
@@ -56,9 +57,42 @@ namespace Khata.Data.Persistence
 
         public override async Task<Sale> GetById(int id)
             => await Context.Sales
-            .Include(s => s.Customer)
-            .Include(s => s.Cart)
-            .Include(d => d.Metadata)
-            .FirstOrDefaultAsync(s => s.Id == id);
+                        .Include(s => s.Customer)
+                        .Include(s => s.Cart)
+                        .Include(d => d.Metadata)
+                        .FirstOrDefaultAsync(s => s.Id == id);
+
+        public async Task<IEnumerable<Sale>> GetSavedSales()
+            => await Context.SavedSales
+                        .AsNoTracking()
+                        .Include(s => s.Customer)
+                        .Include(s => s.Cart)
+                        .Include(d => d.Metadata)
+                        .ToListAsync();
+
+        public async Task<Sale> GetSavedSale(int id)
+            => await Context.SavedSales
+                        .AsNoTracking()
+                        .Include(s => s.Customer)
+                        .Include(s => s.Cart)
+                        .Include(d => d.Metadata)
+                        .FirstOrDefaultAsync(ss => ss.Id == id);
+
+        public async Task DeleteSavedSale(int id)
+        {
+            var item = await GetSavedSale(id);
+            Context.Entry(item).State = EntityState.Deleted;
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAllSavedSales()
+        {
+            foreach (var item in await GetSavedSales())
+            {
+                Context.Entry(item).State = EntityState.Deleted;
+            }
+            await Context.SaveChangesAsync();
+
+        }
     }
 }

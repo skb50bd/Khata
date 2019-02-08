@@ -31,7 +31,7 @@ namespace Khata.Data.Persistence
         {
             predicate = predicate.And(
                 e => e.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
+                    && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
             var res = new PagedList<T>()
             {
