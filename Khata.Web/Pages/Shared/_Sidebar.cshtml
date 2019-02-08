@@ -1,0 +1,111 @@
+﻿<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li @*class="sidebar-brand"*@>
+            <h2><a asp-page="/Index" class="nav-link">KHATA</a></h2>
+        </li>
+
+        <partial name="_SignInPartial" />
+
+        <li>
+            <a asp-area=""
+               asp-page="/Cash/Index">
+                <i class="material-icons">monetization_on</i>
+                Cash
+            </a>
+        </li>
+
+        <li>
+            <a href="#incomingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="material-icons">
+                    arrow_forward
+                </i>
+                Incoming
+            </a>
+            <ul class="collapse list-unstyled" id="incomingSubmenu">
+                <li>
+                    <a asp-area=""
+                       asp-page="/Sales/Index">Sales</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/DebtPayments/Index">Debt Payments</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Customers/Index">Customers</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/PurchaseReturns/Index">Purchase Returns</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#outgoingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="material-icons">
+                    arrow_back
+                </i>
+                Outgoing
+            </a>
+            <ul class="collapse list-unstyled" id="outgoingSubmenu">
+
+                <li>
+                    <a asp-area=""
+                       asp-page="/Expenses/Index">Expenses</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Refunds/Index">Refunds</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Purchases/Index">Purchases</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/SupplierPayments/Index">Supplier Payments</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Suppliers/Index">Suppliers</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/SalaryIssues/Index">Salary Issues</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/SalaryPayments/Index">Salary Payments</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Employees/Index">Employees</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#inventorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="material-icons">
+                    domain
+                </i>
+                Inventory
+            </a>
+            <ul class="collapse list-unstyled" id="inventorySubmenu">
+                <li>
+                    <a asp-area=""
+                       asp-page="/Products/Index">Products</a>
+                </li>
+                <li>
+                    <a asp-area=""
+                       asp-page="/Services/Index">Services</a>
+                </li>
+            </ul>
+        </li>
+
+        @*<li>
+                <a href="" class="nav-section">Collections <button class="btn btn-link pull-right"><i class="glyphicon glyphicon-plus"> </i></button></a>
+            </li>*@
+    </ul>
+</div>

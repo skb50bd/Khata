@@ -11,21 +11,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Pages.Refunds
+namespace WebUI.Pages.PurchaseReturns
 {
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly IRefundService _refunds;
-        private readonly ISaleService _sales;
+        private readonly IPurchaseReturnService _purchaseReturns;
+        private readonly IPurchaseService _purchases;
 
         public CreateModel(
-            IRefundService refunds,
-            ISaleService sales)
+            IPurchaseReturnService purchaseReturns,
+            IPurchaseService purchases)
         {
-            RefundVm = new RefundViewModel();
-            _refunds = refunds;
-            _sales = sales;
+            PurchaseReturnVm = new PurchaseReturnViewModel();
+            _purchaseReturns = purchaseReturns;
+            _purchases = purchases;
         }
 
         public IActionResult OnGet()
@@ -34,7 +34,7 @@ namespace WebUI.Pages.Refunds
         }
 
         [BindProperty]
-        public RefundViewModel RefundVm { get; set; }
+        public PurchaseReturnViewModel PurchaseReturnVm { get; set; }
 
         [TempData] public string Message { get; set; }
         [TempData] public string MessageType { get; set; }
@@ -49,10 +49,10 @@ namespace WebUI.Pages.Refunds
                 return Page();
             }
 
-            RefundDto refund;
+            PurchaseReturnDto purchaseReturn;
             try
             {
-                refund = await _refunds.Add(RefundVm);
+                purchaseReturn = await _purchaseReturns.Add(PurchaseReturnVm);
 
             }
             catch (Exception e)
@@ -68,7 +68,7 @@ namespace WebUI.Pages.Refunds
             }
 
             MessageType = "success";
-            Message = $"Refund: {refund.Id} - {refund.Customer.FullName} created!";
+            Message = $"PurchaseReturn: {purchaseReturn.Id} - {purchaseReturn.Supplier.FullName} created!";
 
             return RedirectToPage("./Index");
 

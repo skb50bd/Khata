@@ -16,15 +16,24 @@ namespace ImportData.Services
     public static class Dump
     {
         static string[] Shops = new string[0];
-        static Dictionary<string, Customer> Customers = new Dictionary<string, Customer>();
-        static Dictionary<string, Supplier> Suppliers = new Dictionary<string, Supplier>();
-        static Dictionary<string, Expense> Expenses = new Dictionary<string, Expense>();
-        static Dictionary<string, Employee> Employees = new Dictionary<string, Employee>();
-        static Dictionary<string, DebtPayment> DebtPayments = new Dictionary<string, DebtPayment>();
-        static Dictionary<string, SupplierPayment> SupplierPayments = new Dictionary<string, SupplierPayment>();
-        static Dictionary<string, Purchase> Purchases = new Dictionary<string, Purchase>();
-        static Dictionary<string, Dictionary<string, Sale>> Sales = new Dictionary<string, Dictionary<string, Sale>>();
-        static Dictionary<string, Dictionary<string, Product>> Products = new Dictionary<string, Dictionary<string, Product>>();
+        static readonly Dictionary<string, Customer> Customers =
+            new Dictionary<string, Customer>();
+        static readonly Dictionary<string, Supplier> Suppliers =
+            new Dictionary<string, Supplier>();
+        static readonly Dictionary<string, Expense> Expenses =
+            new Dictionary<string, Expense>();
+        static readonly Dictionary<string, Employee> Employees =
+            new Dictionary<string, Employee>();
+        static readonly Dictionary<string, DebtPayment> DebtPayments =
+            new Dictionary<string, DebtPayment>();
+        static readonly Dictionary<string, SupplierPayment> SupplierPayments =
+            new Dictionary<string, SupplierPayment>();
+        static readonly Dictionary<string, Purchase> Purchases =
+            new Dictionary<string, Purchase>();
+        static readonly Dictionary<string, Dictionary<string, Sale>> Sales =
+            new Dictionary<string, Dictionary<string, Sale>>();
+        static readonly Dictionary<string, Dictionary<string, Product>> Products =
+            new Dictionary<string, Dictionary<string, Product>>();
         static Dictionary<string, Product> AllProducts
         {
             get
@@ -40,10 +49,10 @@ namespace ImportData.Services
                 return prods;
             }
         }
-        static JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+        static readonly JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
-        static IMongoDatabase Mongo = new MongoClient().GetDatabase("BShopManDb");
-        static string workingDir = @"D:\Dump";
+        static readonly IMongoDatabase Mongo = new MongoClient().GetDatabase("BShopManDb");
+        static readonly string workingDir = @"D:\Dump";
 
         public static void CreateDump()
         {
@@ -58,7 +67,6 @@ namespace ImportData.Services
             for (var i = 0; i < count; i++)
             {
                 Console.WriteLine($"Adding { i + 1 } of { count }");
-                add(items[i]);
                 try
                 {
                     //db.Complete();
@@ -86,39 +94,69 @@ namespace ImportData.Services
             {
                 var ans = "";
 
+                #region Customers
                 DumpCustomers();
                 Console.Write("Customers? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(Customers.Values.ToList(), db.Customers.Add, db);
+                    foreach (var c in Customers.Values.ToList())
+                    {
+                        db.Customers.Add(c);
+                    }
                 }
+                #endregion
 
+                #region Suppliers
                 DumpSuppliers();
                 Console.Write("Suppliers? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(Suppliers.Values.ToList(), db.Suppliers.Add, db);
+                    foreach (var c in Suppliers.Values.ToList())
+                    {
+                        db.Suppliers.Add(c);
+                    }
                 }
+                #endregion
 
+                #region Employees
                 DumpEmployees();
                 Console.Write("Employees? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(Employees.Values.ToList(), db.Employees.Add, db);
+                    foreach (var c in Employees.Values.ToList())
+                    {
+                        db.Employees.Add(c);
+                    }
                 }
+                #endregion
 
+                #region Expenses
                 DumpExpenses();
                 Console.Write("Expenses? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(Expenses.Values.ToList(), db.Expenses.Add, db);
+                    foreach (var c in Expenses.Values)
+                    {
+                        db.Expenses.Add(c);
+                    }
+                    db.Complete();
+                    foreach (var item in Expenses.Values)
+                    {
+                        var withdrawal = new Withdrawal(item as IWithdrawal)
+                        {
+                            Metadata = item.Metadata
+                        };
+                        db.Withdrawals.Add(withdrawal);
+                    }
+                    db.Complete();
                 }
+                #endregion
 
-                db.Complete();
+                #region Create Cash Customers and Suppliers
                 var customer = new Customer
                 {
                     FirstName = "Cash",
@@ -132,7 +170,9 @@ namespace ImportData.Services
                     LastName = "Supplier",
                     Metadata = Metadata.CreatedNew("auto")
                 };
+                #endregion
 
+                #region DebtPayments
                 DumpDebtPayments();
                 Console.Write("Debt Payments? (enter N to cancel): ");
                 ans = Console.ReadLine();
@@ -144,10 +184,23 @@ namespace ImportData.Services
                             dp.Customer = customer;
                         if (dp.Invoice.Customer == null)
                             dp.Invoice.Customer = customer;
-                    }
-                    AddItems(DebtPayments.Values.ToList(), db.DebtPayments.Add, db);
-                }
 
+                        db.DebtPayments.Add(dp);
+                    }
+                    db.Complete();
+                    foreach (var item in DebtPayments.Values)
+                    {
+                        var deposit = new Deposit(item as IDeposit)
+                        {
+                            Metadata = item.Metadata
+                        };
+                        db.Deposits.Add(deposit);
+                    }
+                    db.Complete();
+                }
+                #endregion
+
+                #region SupplierPayments
                 DumpSupplierPayments();
                 Console.Write("Supplier Payments? (enter N to cancel): ");
                 ans = Console.ReadLine();
@@ -159,20 +212,39 @@ namespace ImportData.Services
                             sp.Supplier = supplier;
                         if (sp.Vouchar.Supplier == null)
                             sp.Vouchar.Supplier = supplier;
+                        db.SupplierPayments.Add(sp);
                     }
-                    AddItems(SupplierPayments.Values.ToList(), db.SupplierPayments.Add, db);
-                }
+                    db.Complete();
+                    foreach (var item in SupplierPayments.Values)
+                    {
+                        var withdrawal = new Withdrawal(item as IWithdrawal)
+                        {
+                            Metadata = item.Metadata
+                        };
+                        db.Withdrawals.Add(withdrawal);
+                    }
+                    db.Complete();
 
+                }
+                #endregion
+
+                #region Products
                 DumpProducts();
                 var shopId = Shops[index];
                 Console.Write("Products? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
-                    AddItems(AllProducts.Values.ToList(), db.Products.Add, db);
+                    foreach (var p in AllProducts.Values.ToList())
+                    {
+                        db.Products.Add(p);
+                    }
                 }
+                #endregion
+
                 db.Complete();
 
+                #region Purchase
                 DumpPurchases();
                 Console.Write("Purchase? (enter N to cancel): ");
                 ans = Console.ReadLine();
@@ -190,16 +262,26 @@ namespace ImportData.Services
                         }
                         db.Purchases.Add(purchase);
                     }
+                    db.Complete();
+                    foreach (var item in Purchases.Values)
+                    {
+                        var withdrawal = new Withdrawal(item as IWithdrawal)
+                        {
+                            Metadata = item.Metadata
+                        };
+                        db.Withdrawals.Add(withdrawal);
+                    }
+                    db.Complete();
                 }
-                db.Complete();
+                #endregion
 
+                #region Sales
                 DumpSales();
                 Console.Write("Sales? (enter N to cancel): ");
                 ans = Console.ReadLine();
                 if (ans.ToUpperInvariant() != "N")
                 {
                     var added = 0;
-                    //AddItems(Sales[shopId].Values.ToList(), db.Sales.Add, db);
                     foreach (var sale in Sales[shopId].Values)
                     {
                         Console.WriteLine($"CustomerId: {sale.CustomerId}");
@@ -216,8 +298,18 @@ namespace ImportData.Services
                         db.Sales.Add(sale);
                         Console.WriteLine($"{added++} customers added");
                     }
+                    db.Complete();
+                    foreach (var item in Sales[shopId].Values)
+                    {
+                        var deposit = new Deposit(item as IDeposit)
+                        {
+                            Metadata = item.Metadata
+                        };
+                        db.Deposits.Add(deposit);
+                    }
+                    db.Complete();
                 }
-                db.Complete();
+                #endregion
 
                 Console.WriteLine("Everything Added...");
             }

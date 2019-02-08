@@ -18,32 +18,33 @@ namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RefundsController : ControllerBase
+    public class PurchaseReturnsController : ControllerBase
     {
-        private readonly IRefundService _refunds;
-        private readonly ISaleService _sales;
+        private readonly IPurchaseReturnService _purchaseReturns;
+        private readonly IPurchaseService _purchases;
         private readonly PfService _pfService;
 
-        public RefundsController(IRefundService refunds,
-            ISaleService sales,
+        public PurchaseReturnsController(
+            IPurchaseReturnService purchaseReturns,
+            IPurchaseService purchases,
             PfService pfService)
         {
-            _refunds = refunds;
-            _sales = sales;
+            _purchaseReturns = purchaseReturns;
+            _purchases = purchases;
             _pfService = pfService;
         }
 
-        // GET: api/Refunds
+        // GET: api/PurchaseReturns
         [HttpGet]
-        public async Task<IEnumerable<RefundDto>> Get(
+        public async Task<IEnumerable<PurchaseReturnDto>> Get(
             string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
-            => await _refunds.Get(
+            => await _purchaseReturns.Get(
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
-        // GET: api/Refunds/5
+        // GET: api/PurchaseReturns/5
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute]int id)
@@ -54,44 +55,46 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            return Ok(await _refunds.Get(id));
+            return Ok(await _purchaseReturns.Get(id));
         }
 
-        // GET: api/Refunds/Sales
-        [HttpGet("Sales/")]
-        public async Task<IActionResult> GetSales(
+        // GET: api/PurchaseReturns/Purchases
+        [HttpGet("Purchases/")]
+        public async Task<IActionResult> GetPurchases(
             [FromQuery]string term)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            IEnumerable<SaleDto> sales;
+            IEnumerable<PurchaseDto> purchases;
             IList<object> results = new List<object>();
 
-            sales = await _sales.Get(
+            purchases = await _purchases.Get(
                         _pfService.CreateNewPf(term, 1, int.MaxValue),
                         DateTime.Today.AddYears(-1),
                         DateTime.Now);
 
-            string getLabel(int saleId, int invoiceId, string customerName)
+            string getLabel(int purchaseId,
+                int invoiceId,
+                string supplierName)
             {
                 var sb = new StringBuilder();
-                sb.Append("S");
-                sb.Append(saleId.ToString().PadLeft(6, '0'));
-                sb.Append(" I");
+                sb.Append("P");
+                sb.Append(purchaseId.ToString().PadLeft(6, '0'));
+                sb.Append(" V");
                 sb.Append(invoiceId.ToString().PadLeft(6, '0'));
                 sb.Append(" - ");
-                sb.Append(customerName);
+                sb.Append(supplierName);
                 return sb.ToString();
             }
-            sales.ForEach(
+            purchases.ForEach(
                         s => results.Add(
                             new
                             {
-                                Label = getLabel(s.Id, s.InvoiceId, s.Customer.FullName),
+                                Label = getLabel(s.Id, s.VoucharId, s.Supplier.FullName),
                                 s.Id,
-                                s.CustomerId,
-                                Date = s.SaleDate,
+                                s.SupplierId,
+                                Date = s.PurchaseDate,
                                 Paid = s.PaymentPaid,
                                 ItemsCount = s.Cart.Count
                             }
@@ -100,25 +103,25 @@ namespace WebUI.Controllers
         }
 
 
-        // GET: api/Refunds/LineItems/5
-        [HttpGet("LineItems/{saleId:int}")]
+        // GET: api/PurchaseReturns/LineItems/5
+        [HttpGet("LineItems/{purchaseId:int}")]
         public async Task<IActionResult> GetLineItems(
-            [FromRoute]int saleId,
+            [FromRoute]int purchaseId,
             [FromQuery]string term)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            IEnumerable<SaleLineItem> results =
-                (await _sales.Get(saleId)).Cart
-                    .Where(li => li.Type == LineItemType.Product
-                        && (string.IsNullOrWhiteSpace(term)
-                        || li.Name.ToLowerInvariant().Contains(term.ToLowerInvariant())));
+            IEnumerable<PurchaseLineItem> results =
+                (await _purchases.Get(purchaseId)).Cart
+                    .Where(li => string.IsNullOrWhiteSpace(term)
+                                || li.Name.ToLowerInvariant()
+                                    .Contains(term.ToLowerInvariant()));
 
-            var sales = new List<object>();
+            var purchaseItems = new List<object>();
             foreach (var item in results)
             {
-                sales.Add(
+                purchaseItems.Add(
                     new
                     {
                         Label = item.Name,
@@ -127,19 +130,19 @@ namespace WebUI.Controllers
                     }
                 );
             }
-            return Ok(sales);
+            return Ok(purchaseItems);
         }
 
 
-        // POST: api/Refunds
+        // POST: api/PurchaseReturns
         [HttpPost]
         public async Task<IActionResult> Post(
-            [FromBody] RefundViewModel model)
+            [FromBody] PurchaseReturnViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var dto = await _refunds.Add(model);
+            var dto = await _purchaseReturns.Add(model);
 
             if (dto == null)
                 return BadRequest();
@@ -149,11 +152,11 @@ namespace WebUI.Controllers
                 dto);
         }
 
-        // PUT: api/Refunds/5
+        // PUT: api/PurchaseReturns/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(
             [FromRoute]int id,
-            [FromBody]RefundViewModel vm)
+            [FromBody]PurchaseReturnViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -164,7 +167,7 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = await _refunds.Update(vm);
+            var dto = await _purchaseReturns.Update(vm);
 
             if (dto == null)
                 return BadRequest();
@@ -172,14 +175,14 @@ namespace WebUI.Controllers
             return Ok(dto);
         }
 
-        // DELETE: api/Refunds/5
+        // DELETE: api/PurchaseReturns/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var dto = await _refunds.Remove(id);
+            var dto = await _purchaseReturns.Remove(id);
 
             if (dto == null)
                 return BadRequest();
@@ -187,7 +190,7 @@ namespace WebUI.Controllers
             return Ok(dto);
         }
 
-        // DELETE: api/Refunds/Permanent/5
+        // DELETE: api/PurchaseReturns/Permanent/5
         [HttpDelete("Permanent/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -197,7 +200,7 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = await _refunds.Delete(id);
+            var dto = await _purchaseReturns.Delete(id);
 
             if (dto == null)
                 return BadRequest();
@@ -206,6 +209,6 @@ namespace WebUI.Controllers
         }
 
         private async Task<bool> Exists(int id) =>
-            await _refunds.Exists(id);
+            await _purchaseReturns.Exists(id);
     }
 }

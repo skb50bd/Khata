@@ -41,7 +41,8 @@ namespace Khata.Data.Persistence
             services.AddTransient<ICashRegisterRepository, CashRegisterRepository>();
             services.AddTransient<IRepository<Withdrawal>, WithdrawalRepository>();
             services.AddTransient<IRepository<Deposit>, DepositRepository>();
-            services.AddTransient<ITrackingRepository<Refund>, TrackingRepository<Refund>>();
+            services.AddTransient<ITrackingRepository<Refund>, RefundRepository>();
+            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;

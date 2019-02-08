@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Khata.ViewModels
 {
-    public class RefundViewModel
+    public class PurchaseReturnViewModel
     {
         public int? Id { get; set; }
 
-        public int SaleId { get; set; }
+        public int PurchaseId { get; set; }
 
         public ICollection<LineItemViewModel> Cart { get; set; }
 

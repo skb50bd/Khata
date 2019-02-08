@@ -338,6 +338,16 @@ namespace Khata.Services.Mapper
             CreateMap<Vouchar, VoucharDto>();
 
             #endregion
+
+            #region Refund / Purchase Return Mapping
+
+            CreateMap<Refund, RefundDto>();
+            CreateMap<RefundViewModel, Refund>();
+
+            CreateMap<PurchaseReturn, PurchaseReturnDto>();
+            CreateMap<PurchaseReturnViewModel, PurchaseReturn>();
+
+            #endregion
         }
     }
 }

@@ -6,8 +6,8 @@ function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
 
-const saleId = document.getElementById('SaleId');
-const saleSelector = document.getElementById('sale-selector');
+const purchaseId = document.getElementById('PurchaseId');
+const purchaseSelector = document.getElementById('purchase-selector');
 const lineItemId = document.getElementById('lineitem-id');
 const lineItemType = document.getElementById('lineitem-type');
 const lineItemSelector = document.getElementById('lineitem-selector');
@@ -125,14 +125,14 @@ function createCartItem(newItem) {
         <div class="col-12">
         <div class="col" hidden>
             <input type="number"
-                name="Cart.Index"
+                name="PurchaseReturnVm.Cart.Index"
                 value="`+ itemsAdded + `" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].ItemId" 
+                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].ItemId" 
                 class="cart-item-itemid"
                 value="` + newItem.itemId + `" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].Type" 
+                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].Type" 
                     class="cart-item-type"
                     value="` + newItem.type + `"/>
         </div>        
@@ -167,7 +167,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].Quantity" 
+                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
                 data-toggle="tooltip" title="Quantity"
                 value="` + newItem.quantity + `"/>            
@@ -177,7 +177,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].NetPrice" 
+                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].NetPrice" 
                 class="text-right cart-item-netprice cart-item form-control"
                 data-toggle="tooltip" title="Net Price"
                 value="` + newItem.netPrice + `"/>
@@ -217,10 +217,10 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $('#sale-selector').autocomplete({
+    $('#purchase-selector').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: saleSelector.getAttribute("data-path"),
+                url: purchaseSelector.getAttribute("data-path"),
                 type: 'GET',
                 cache: true,
                 data: request,
@@ -238,16 +238,16 @@ $(document).ready(function () {
         minLength: 0,
         select: function (event, ui) {
             event.preventDefault();
-            fetch('/Sales/Details/Brief?id=' + ui.item.value)
+            fetch('/Purchases/Details/Brief?id=' + ui.item.value)
                 .then((response) => {
                     return response.text();
                 })
                 .then((result) => {
-                    document.getElementById('sale-briefing').innerHTML = result;
-                    saleSelector.value = ui.item.label;
-                    saleId.value = ui.item.value;
+                    document.getElementById('purchase-briefing').innerHTML = result;
                 })
                 .then(function () {
+                    purchaseSelector.value = ui.item.label;
+                    purchaseId.value = ui.item.value;
                     debtBefore.value = document.getElementById('current-due').valueAsNumber;
                 });
         }
@@ -256,7 +256,7 @@ $(document).ready(function () {
     $('#lineitem-selector').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: "/api/Refunds/LineItems/" + saleId.valueAsNumber,
+                url: "/api/PurchaseReturns/LineItems/" + purchaseId.valueAsNumber,
                 type: 'GET',
                 cache: true,
                 data: request,
@@ -277,9 +277,9 @@ $(document).ready(function () {
             var lineitem = ui.item.value;
 
             lineItemType.value = 1;
-            lineItemId.value = lineitem.itemId;
-            lineItemUnitPrice.value = lineitem.unitPrice;
-            lineItemNetPrice.value = lineitem.netPrice;
+            lineItemId.value = lineitem.productId;
+            lineItemUnitPrice.value = lineitem.unitPurchasePrice;
+            lineItemNetPrice.value = lineitem.netPurcahsePrice;
             lineItemQuantity.setAttribute('max', lineitem.quantity);
 
             lineItemSelector.value = lineitem.name;

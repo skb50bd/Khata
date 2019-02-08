@@ -27,6 +27,11 @@ namespace Khata.DTOs
         [DataType(DataType.Currency)]
         public decimal PaymentSubTotal { get; set; }
 
+        [Display(Name = "Total")]
+        [DataType(DataType.Currency)]
+        public decimal PaymentTotal { get; set; }
+
+
         [Display(Name = "Paid")]
         [DataType(DataType.Currency)]
         public decimal PaymentPaid { get; set; }

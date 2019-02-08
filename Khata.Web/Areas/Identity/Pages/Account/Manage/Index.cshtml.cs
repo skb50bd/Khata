@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using Khata.Domain;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +49,8 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public IFormFile Avatar { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -87,6 +91,17 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+
+            if (Input.Avatar?.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await Input.Avatar.CopyToAsync(memoryStream);
+                    user.Avatar = memoryStream.ToArray();
+                    await _userManager.UpdateAsync(user);
+                }
+            }
+
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)
             {
@@ -108,6 +123,7 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

@@ -1,23 +1,21 @@
 ﻿using System.Threading.Tasks;
 
-using AutoMapper;
-
-using Khata.Data.Core;
 using Khata.DTOs;
+using Khata.Services.CRUD;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace WebUI.Pages.Purchases
 {
     public class DetailsModel : PageModel
     {
-        private readonly IUnitOfWork _db;
-        private readonly IMapper _mapper;
-        public DetailsModel(IUnitOfWork db, IMapper mapper)
+        private readonly IPurchaseService _purchases;
+
+        public DetailsModel(IPurchaseService purchases)
         {
-            _db = db;
-            _mapper = mapper;
+            _purchases = purchases;
         }
 
         public PurchaseDto Purchase { get; set; }
@@ -29,15 +27,29 @@ namespace WebUI.Pages.Purchases
                 return NotFound();
             }
 
-            var purchase = await _db.Purchases.GetById((int)id);
+            Purchase = await _purchases.Get((int)id);
 
-            if (purchase == null)
+            if (Purchase == null)
             {
                 return NotFound();
             }
 
-            Purchase = _mapper.Map<PurchaseDto>(purchase);
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
+        {
+            var purchase = await _purchases.Get(id);
+
+            if (purchase is null)
+            {
+                return NotFound();
+            }
+            return new PartialViewResult
+            {
+                ViewName = "_PurchaseBriefing",
+                ViewData = new ViewDataDictionary<PurchaseDto>(ViewData, purchase)
+            };
         }
     }
 }

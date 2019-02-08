@@ -3,16 +3,6 @@
 
 
 $(document).ready(function () {
-    // Sidebar
-
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar, #content').toggleClass('active');
-        $('.collapse.in').toggleClass('in');
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-    });
-
-    // Sidebar end
-
     //$('.collapse').collapse();
 
     $('.datepicker').datepicker();
@@ -179,5 +169,20 @@ $(document).ready(function () {
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+    var fixHeight = function () {
+        $(".navbar-nav").css("max-height", document.documentElement.clientHeight - 150);
+    };
+    fixHeight();
+    $(window).resize(function () {
+        fixHeight();
+    });
+    $(".navbar .navbar-toggler").on("click", function () {
+        fixHeight();
+    });
+    $(".navbar-toggler, .overlay").on("click", function () {
+        $(".mobileMenu, .overlay").toggleClass("open");
     });
 });

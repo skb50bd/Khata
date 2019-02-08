@@ -36,6 +36,24 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Avatar"></label>
+                <div class="custom-file">
+                    <input asp-for="Input.Avatar"
+                           type="file"
+                           class="form-control custom-file-input"
+                           id="validatedCustomFile">
+                    <label class="custom-file-label"
+                           for="validatedCustomFile">
+                        Choose image...
+                    </label>
+                </div>
+                <div>
+                    <span asp-validation-for="Input.Avatar"
+                          class="invalid-feedback"></span>
+                </div>
+            </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

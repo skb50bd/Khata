@@ -67,7 +67,8 @@ namespace Khata.Services.CRUD
 
             var dm = _mapper.Map<Refund>(model);
 
-            dm.Customer = await _db.Customers.GetById(model.CustomerId);
+            var sale = await _db.Sales.GetById(model.SaleId);
+            dm.Customer = await _db.Customers.GetById(sale.CustomerId);
 
             dm.Cart = new List<SaleLineItem>();
             if (model.Cart?.Count > 0)

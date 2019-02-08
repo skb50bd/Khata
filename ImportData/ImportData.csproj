@@ -36,5 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Khata.Data\Data.csproj" />
     <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
+    <ProjectReference Include="..\Khata.Services\Services.csproj" />
   </ItemGroup>
 </Project>

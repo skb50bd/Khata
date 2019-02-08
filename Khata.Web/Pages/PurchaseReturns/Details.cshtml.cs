@@ -6,17 +6,17 @@ using Khata.Services.CRUD;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Pages.Refunds
+namespace WebUI.Pages.PurchaseReturns
 {
     public class DetailsModel : PageModel
     {
-        private readonly IRefundService _refunds;
-        public DetailsModel(IRefundService refunds)
+        private readonly IPurchaseReturnService _purchaseReturns;
+        public DetailsModel(IPurchaseReturnService purchaseReturns)
         {
-            _refunds = refunds;
+            _purchaseReturns = purchaseReturns;
         }
 
-        public RefundDto Refund { get; set; }
+        public PurchaseReturnDto PurchaseReturn { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,9 +25,9 @@ namespace WebUI.Pages.Refunds
                 return NotFound();
             }
 
-            Refund = await _refunds.Get((int)id);
+            PurchaseReturn = await _purchaseReturns.Get((int)id);
 
-            if (Refund == null)
+            if (PurchaseReturn == null)
             {
                 return NotFound();
             }

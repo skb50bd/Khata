@@ -5,6 +5,7 @@ using Khata.Services.CRUD;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace WebUI.Pages.Sales
 {
@@ -32,6 +33,21 @@ namespace WebUI.Pages.Sales
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
+        {
+            var sale = await _sales.Get(id);
+
+            if (sale is null)
+            {
+                return NotFound();
+            }
+            return new PartialViewResult
+            {
+                ViewName = "_SaleBriefing",
+                ViewData = new ViewDataDictionary<SaleDto>(ViewData, sale)
+            };
         }
     }
 }

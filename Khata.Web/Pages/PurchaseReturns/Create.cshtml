@@ -1,0 +1,39 @@
+﻿@page
+@model WebUI.Pages.PurchaseReturns.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="display-4">Create a Purchase Return</h1>
+<hr />
+
+@if (!(Model.Message is null))
+{
+    <div class="alert alert-@Model.MessageType" role="alert">
+        @Model.Message
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <partial name="_PurchaseReturnForm" for="PurchaseReturnVm" />
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-primary"><strong>Create</strong></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/purchaseReturnForm.js"></script>
+}

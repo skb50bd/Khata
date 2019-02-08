@@ -118,6 +118,14 @@ namespace Khata.Data.Persistence
                         .HasForeignKey<Refund>(r => r.SaleId)
                         .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<PurchaseReturn>(entity =>
+            {
+                entity.HasOne(r => r.Purchase)
+                        .WithOne()
+                        .HasForeignKey<PurchaseReturn>(r => r.PurchaseId)
+                        .OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         public virtual DbSet<CashRegister> CashRegister { get; set; }
@@ -139,6 +147,7 @@ namespace Khata.Data.Persistence
         public virtual DbSet<SalaryIssue> SalaryIssues { get; set; }
         public virtual DbSet<SalaryPayment> SalaryPayments { get; set; }
         public virtual DbSet<Refund> Refunds { get; set; }
+        public virtual DbSet<PurchaseReturn> PurchaseReturns { get; set; }
 
     }
 }

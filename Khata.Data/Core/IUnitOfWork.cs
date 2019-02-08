@@ -24,6 +24,7 @@ namespace Khata.Data.Core
         ITrackingRepository<SalaryIssue> SalaryIssues { get; }
         ITrackingRepository<SalaryPayment> SalaryPayments { get; }
         ITrackingRepository<Refund> Refunds { get; }
+        ITrackingRepository<PurchaseReturn> PurchaseReturns { get; }
         void Complete();
 
         Task CompleteAsync();

@@ -27,6 +27,7 @@ namespace Khata.Data.Persistence
         public IRepository<Deposit> Deposits { get; }
         public IRepository<Withdrawal> Withdrawals { get; }
         public ITrackingRepository<Refund> Refunds { get; }
+        public ITrackingRepository<PurchaseReturn> PurchaseReturns { get; }
 
         public UnitOfWork(KhataContext context,
             ICashRegisterRepository cashRegister,
@@ -46,7 +47,8 @@ namespace Khata.Data.Persistence
             ITrackingRepository<Employee> employees,
             ITrackingRepository<SalaryIssue> salaryIssues,
             ITrackingRepository<SalaryPayment> salaryPayments,
-            ITrackingRepository<Refund> refunds)
+            ITrackingRepository<Refund> refunds,
+            ITrackingRepository<PurchaseReturn> purchaseReturns)
         {
             Context = context;
             CashRegister = cashRegister;
@@ -67,6 +69,7 @@ namespace Khata.Data.Persistence
             SalaryIssues = salaryIssues;
             SalaryPayments = salaryPayments;
             Refunds = refunds;
+            PurchaseReturns = purchaseReturns;
         }
 
         public void Complete()

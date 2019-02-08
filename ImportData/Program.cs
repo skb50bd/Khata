@@ -2,6 +2,8 @@ using System.IO;
 
 using ImportData.Models;
 
+using Khata.Services.Mapper;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -53,6 +55,7 @@ namespace ImportData
                 .Build();
 
             serviceCollection.ConfigureSqlData(configuration.GetValue<string>("DefaultConnection"));
+            serviceCollection.ConfigureMapper();
             serviceCollection.AddOptions();
             serviceCollection.Configure<AppSettings>(configuration.GetSection("Configuration"));
             ConfigureConsole(configuration);
