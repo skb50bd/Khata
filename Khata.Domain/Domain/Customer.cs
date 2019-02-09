@@ -9,5 +9,6 @@ namespace Khata.Domain
 
         public virtual ICollection<Sale> Purchases { get; set; }
         public virtual ICollection<DebtPayment> DebtPayments { get; set; }
+        public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Khata.Data.Core
         ITrackingRepository<Product> Products { get; }
         ITrackingRepository<Service> Services { get; }
         ITrackingRepository<Customer> Customers { get; }
-        ITrackingRepository<Sale> Sales { get; }
+        ISaleRepository Sales { get; }
         ITrackingRepository<CustomerInvoice> Invoices { get; }
         ITrackingRepository<Vouchar> Vouchars { get; }
         ITrackingRepository<DebtPayment> DebtPayments { get; }

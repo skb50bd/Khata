@@ -5,6 +5,7 @@ using Khata.Domain;
 using Khata.Services.CRUD;
 using Khata.Services.Mapper;
 using Khata.Services.PageFilterSort;
+using Khata.Services.Reports;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,8 @@ namespace WebUI
             services.ConfigureData(connectionString);
 
             services.ConfigureSieve(Configuration);
+
+            services.AddReports();
 
             services.ConfigureMapper();
 

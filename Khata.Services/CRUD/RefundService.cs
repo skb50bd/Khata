@@ -155,5 +155,16 @@ namespace Khata.Services.CRUD
         {
             return await _db.Refunds.Count(from, to);
         }
+
+        public async Task<IEnumerable<RefundDto>> GetCustomerRefunds(int customerId)
+        {
+            var res = await _db.Refunds.Get(
+                s => s.CustomerId == customerId,
+                p => p.Id,
+                1,
+                int.MaxValue);
+            ;
+            return res.CastList(c => _mapper.Map<RefundDto>(c));
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -15,6 +16,7 @@ namespace Khata.Services.CRUD
         Task<DebtPaymentDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<DebtPaymentDto> Get(int id);
+        Task<IEnumerable<DebtPaymentDto>> GetCustomerDebtPayments(int customerId);
         Task<IPagedList<DebtPaymentDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<DebtPaymentDto> Remove(int id);
         Task<DebtPaymentDto> Update(DebtPaymentViewModel vm);

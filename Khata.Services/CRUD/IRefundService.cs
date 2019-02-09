@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -15,6 +16,7 @@ namespace Khata.Services.CRUD
         Task<RefundDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<RefundDto> Get(int id);
+        Task<IEnumerable<RefundDto>> GetCustomerRefunds(int customerId);
         Task<IPagedList<RefundDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<RefundDto> Remove(int id);
         Task<RefundDto> Update(RefundViewModel vm);

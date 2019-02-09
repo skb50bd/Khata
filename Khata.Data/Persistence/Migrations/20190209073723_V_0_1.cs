@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Khata.Data.Persistence.Migrations
 {
-    public partial class V0_1 : Migration
+    public partial class V_0_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -607,7 +607,7 @@ namespace Khata.Data.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sales",
+                name: "Sale",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -625,21 +625,21 @@ namespace Khata.Data.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sales", x => x.Id);
+                    table.PrimaryKey("PK_Sale", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sales_Customers_CustomerId",
+                        name: "FK_Sale_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Sales_Invoice_InvoiceId",
+                        name: "FK_Sale_Invoice_InvoiceId",
                         column: x => x.InvoiceId,
                         principalTable: "Invoice",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Sales_Metadata_MetadataId",
+                        name: "FK_Sale_Metadata_MetadataId",
                         column: x => x.MetadataId,
                         principalTable: "Metadata",
                         principalColumn: "Id",
@@ -684,32 +684,40 @@ namespace Khata.Data.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PurchaseLineItem",
+                name: "PurchaseReturns",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
-                    UnitPurchasePrice = table.Column<decimal>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
-                    PurchaseId = table.Column<int>(nullable: true)
+                    MetadataId = table.Column<int>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    SupplierId = table.Column<int>(nullable: false),
+                    PurchaseId = table.Column<int>(nullable: false),
+                    CashBack = table.Column<decimal>(nullable: false),
+                    DebtRollback = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PurchaseLineItem", x => x.Id);
+                    table.PrimaryKey("PK_PurchaseReturns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchaseLineItem_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_PurchaseReturns_Metadata_MetadataId",
+                        column: x => x.MetadataId,
+                        principalTable: "Metadata",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseLineItem_Purchases_PurchaseId",
+                        name: "FK_PurchaseReturns_Purchases_PurchaseId",
                         column: x => x.PurchaseId,
                         principalTable: "Purchases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PurchaseReturns_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -742,9 +750,45 @@ namespace Khata.Data.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Refunds_Sales_SaleId",
+                        name: "FK_Refunds_Sale_SaleId",
                         column: x => x.SaleId,
-                        principalTable: "Sales",
+                        principalTable: "Sale",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchaseLineItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Quantity = table.Column<decimal>(nullable: false),
+                    UnitPurchasePrice = table.Column<decimal>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    PurchaseId = table.Column<int>(nullable: true),
+                    PurchaseReturnId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseLineItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseLineItem_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PurchaseLineItem_Purchases_PurchaseId",
+                        column: x => x.PurchaseId,
+                        principalTable: "Purchases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PurchaseLineItem_PurchaseReturns_PurchaseReturnId",
+                        column: x => x.PurchaseReturnId,
+                        principalTable: "PurchaseReturns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -774,9 +818,9 @@ namespace Khata.Data.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SaleLineItem_Sales_SaleId",
+                        name: "FK_SaleLineItem_Sale_SaleId",
                         column: x => x.SaleId,
-                        principalTable: "Sales",
+                        principalTable: "Sale",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -897,6 +941,27 @@ namespace Khata.Data.Persistence.Migrations
                 column: "PurchaseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseLineItem_PurchaseReturnId",
+                table: "PurchaseLineItem",
+                column: "PurchaseReturnId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseReturns_MetadataId",
+                table: "PurchaseReturns",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseReturns_PurchaseId",
+                table: "PurchaseReturns",
+                column: "PurchaseId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseReturns_SupplierId",
+                table: "PurchaseReturns",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Purchases_MetadataId",
                 table: "Purchases",
                 column: "MetadataId");
@@ -949,6 +1014,22 @@ namespace Khata.Data.Persistence.Migrations
                 column: "MetadataId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sale_CustomerId",
+                table: "Sale",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sale_InvoiceId",
+                table: "Sale",
+                column: "InvoiceId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sale_MetadataId",
+                table: "Sale",
+                column: "MetadataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SaleLineItem_RefundId",
                 table: "SaleLineItem",
                 column: "RefundId");
@@ -957,22 +1038,6 @@ namespace Khata.Data.Persistence.Migrations
                 name: "IX_SaleLineItem_SaleId",
                 table: "SaleLineItem",
                 column: "SaleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sales_CustomerId",
-                table: "Sales",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sales_InvoiceId",
-                table: "Sales",
-                column: "InvoiceId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sales_MetadataId",
-                table: "Sales",
-                column: "MetadataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Services_MetadataId",
@@ -1069,7 +1134,7 @@ namespace Khata.Data.Persistence.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Purchases");
+                name: "PurchaseReturns");
 
             migrationBuilder.DropTable(
                 name: "Employees");
@@ -1078,7 +1143,10 @@ namespace Khata.Data.Persistence.Migrations
                 name: "Refunds");
 
             migrationBuilder.DropTable(
-                name: "Sales");
+                name: "Purchases");
+
+            migrationBuilder.DropTable(
+                name: "Sale");
 
             migrationBuilder.DropTable(
                 name: "Invoice");

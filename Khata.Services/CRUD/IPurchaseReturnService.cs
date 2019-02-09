@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Khata.DTOs;
 using Khata.Services.PageFilterSort;
 using Khata.ViewModels;
+
 using SharedLibrary;
 
 namespace Khata.Services.CRUD
@@ -14,6 +17,7 @@ namespace Khata.Services.CRUD
         Task<PurchaseReturnDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<PurchaseReturnDto> Get(int id);
+        Task<IEnumerable<PurchaseReturnDto>> GetSupplierPurchaseReturns(int supplierId);
         Task<IPagedList<PurchaseReturnDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<PurchaseReturnDto> Remove(int id);
         Task<PurchaseReturnDto> Update(PurchaseReturnViewModel vm);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Khata.DTOs;
@@ -19,5 +20,6 @@ namespace Khata.Services.CRUD
         Task<PurchaseDto> Remove(int id);
         Task<PurchaseDto> Update(PurchaseViewModel vm);
         Task<int> Count(DateTime? from, DateTime? to);
+        Task<IEnumerable<PurchaseDto>> GetSupplierPurchases(int supplierId);
     }
 }

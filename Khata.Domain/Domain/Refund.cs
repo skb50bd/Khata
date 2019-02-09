@@ -18,10 +18,14 @@ namespace Khata.Domain
         public decimal CashBack { get; set; }
 
         public decimal DebtRollback { get; set; }
+        public decimal TotalBackPaid => CashBack + DebtRollback;
 
         public string Description { get; set; }
 
         public decimal TotalPrice => Cart?.Sum(li => li.NetPrice) ?? 0;
+
+        public decimal ApparantLoss => Cart?.Sum(li => li.NetPrice - li.NetPurchasePrice) ?? 0;
+        public decimal EffectiveLoss => TotalPrice - CashBack - DebtRollback;
 
         public decimal Amount => CashBack;
 

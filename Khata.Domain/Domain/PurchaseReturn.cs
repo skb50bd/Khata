@@ -19,6 +19,8 @@ namespace Khata.Domain
 
         public decimal DebtRollback { get; set; }
 
+        public decimal TotalBackPaid => CashBack + DebtRollback;
+
         public string Description { get; set; }
 
         public decimal TotalPrice => Cart?.Sum(li => li.NetPurchasePrice) ?? 0;

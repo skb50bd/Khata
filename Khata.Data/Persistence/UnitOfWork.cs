@@ -13,7 +13,7 @@ namespace Khata.Data.Persistence
         public ITrackingRepository<Service> Services { get; }
         public ITrackingRepository<Customer> Customers { get; }
         public ITrackingRepository<DebtPayment> DebtPayments { get; }
-        public ITrackingRepository<Sale> Sales { get; }
+        public ISaleRepository Sales { get; }
         public ITrackingRepository<CustomerInvoice> Invoices { get; }
         public ITrackingRepository<Vouchar> Vouchars { get; }
         public ITrackingRepository<Expense> Expenses { get; }
@@ -37,7 +37,7 @@ namespace Khata.Data.Persistence
             ITrackingRepository<Service> services,
             ITrackingRepository<Customer> customers,
             ITrackingRepository<DebtPayment> debtPayments,
-            ITrackingRepository<Sale> sales,
+            ISaleRepository sales,
             ITrackingRepository<CustomerInvoice> invoices,
             ITrackingRepository<Vouchar> vouchars,
             ITrackingRepository<Expense> expenses,

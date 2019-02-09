@@ -1049,7 +1049,7 @@ namespace Khata.Data.Persistence.Migrations
             modelBuilder.Entity("Khata.Domain.Refund", b =>
                 {
                     b.HasOne("Khata.Domain.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Refunds")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
 

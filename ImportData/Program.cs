@@ -84,7 +84,7 @@ namespace ImportData
             services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();
             services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
             services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
-            services.AddTransient<ITrackingRepository<Sale>, SaleRepository>();
+            services.AddTransient<ISaleRepository, SaleRepository>();
             services.AddTransient<ITrackingRepository<CustomerInvoice>, InvoiceRepository>();
             services.AddTransient<ITrackingRepository<Vouchar>, VoucharRepository>();
             services.AddTransient<ITrackingRepository<Expense>, TrackingRepository<Expense>>();
@@ -97,7 +97,8 @@ namespace ImportData
             services.AddTransient<ICashRegisterRepository, CashRegisterRepository>();
             services.AddTransient<IRepository<Withdrawal>, WithdrawalRepository>();
             services.AddTransient<IRepository<Deposit>, DepositRepository>();
-            services.AddTransient<ITrackingRepository<Refund>, TrackingRepository<Refund>>();
+            services.AddTransient<ITrackingRepository<Refund>, RefundRepository>();
+            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;

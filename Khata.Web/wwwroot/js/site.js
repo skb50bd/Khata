@@ -1,7 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-const swalDelete = Swal.mixin({
+﻿const swalDelete = Swal.mixin({
     confirmButtonClass: 'btn btn-danger',
     cancelButtonClass: 'btn btn-secondary mr-4',
     buttonsStyling: false
@@ -12,6 +9,11 @@ const swalSave = Swal.mixin({
     cancelButtonClass: 'btn btn-danger mr-4',
     buttonsStyling: false
 });
+
+function attachClickableRow()  {
+    var ref = $(this).data("href");
+    window.location.href = ref;
+}
 
 $(document).ready(function () {
     //$('.collapse').collapse();
@@ -38,13 +40,11 @@ $(document).ready(function () {
             }
         });
     });
-       
+
     $('.datepicker').datepicker();
     $('.datepicker').datepicker("option", "dateFormat", "dd/mm/yy");
 
-    $(".js-clickable-row").click(function () {
-        window.location = $(this).data("href");
-    });
+    $(".js-clickable-row").click(attachClickableRow);
 
     $(".js-clickable-transaction").click(function () {
         window.location = "/" + $(this).data("table") + "/Details?id=" + $(this).data("row");
@@ -103,6 +103,20 @@ $(document).ready(function () {
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $(".ajax-tab").click((e) => {
+        fetch($(e.target).attr("data-partial-source"))
+            .then((response) => {
+                return response.text();
+            })
+            .then((result) => {
+                var id = $(e.target).attr("aria-controls");
+                var d = document.getElementById(id);
+                d.innerHTML = result;
+            }).then(() =>
+                $(".js-clickable-row")
+                    .click(attachClickableRow));
     });
 });
 

@@ -1,5 +1,6 @@
 ﻿using Khata.Data.Core;
 using Khata.Domain;
+using Khata.Queries;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -44,6 +45,9 @@ namespace Khata.Data.Persistence
             services.AddTransient<ITrackingRepository<Refund>, RefundRepository>();
             services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<IReportRepository<CustomerReport>, ReportRepository<CustomerReport>>();
+            services.AddTransient<IReportRepository<SupplierReport>, ReportRepository<SupplierReport>>();
 
             return services;
         }

@@ -1,0 +1,65 @@
+@model Khata.Queries.SupplierReport
+
+
+<div class="card" style="width:40rem">
+
+    <div class="card-header">
+        <div>Supplier# @Model.Id</div>
+    </div>
+
+    <div class="card-body">
+        <h3 class="card-title">@Model.FullName</h3>
+        <table class="table table-sm table-hover mt-4">
+            <tr>
+                <th>Address</th>
+                <td>@Html.DisplayFor(model => model.Address)</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>@Html.DisplayFor(model => model.Phone)</td>
+            </tr>
+            <tr class="table-danger">
+                <th>Due</th>
+                <td>@Html.DisplayFor(model => model.Payable)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Number of Purchases</th>
+                <td>@Html.DisplayFor(model => model.PurchasesCount)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Purchases Worth</th>
+                <td>@Html.DisplayFor(model => model.PurchasesWorth)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Purchase Paid</th>
+                <td>@Html.DisplayFor(model => model.PurchasePaid)</td>
+            </tr>
+            <tr class="table-info">
+                <th>Number of Payable Payments</th>
+                <td>@Html.DisplayFor(model => model.SupplierPaymentsCount)</td>
+            </tr>
+            <tr class="table-info">
+                <th>Due Paid</th>
+                <td>@Html.DisplayFor(model => model.SupplierPaymentPaid)</td>
+            </tr>
+            <tr class="table-warning">
+                <th>Number of PurchaseReturns</th>
+                <td>@Html.DisplayFor(model => model.PurchaseReturnCount)</td>
+            </tr>
+            <tr class="table-warning">
+                <th>PurchaseReturn Amount</th>
+                <td>@Html.DisplayFor(model => model.PurchaseReturnAmount)</td>
+            </tr>
+        </table>
+
+        <hr />
+        <div class="row">
+            <div class="col text-right">
+                <a asp-page="./Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

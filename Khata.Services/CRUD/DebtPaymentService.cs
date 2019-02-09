@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -128,6 +129,17 @@ namespace Khata.Services.CRUD
         public async Task<int> Count(DateTime? from = null, DateTime? to = null)
         {
             return await _db.DebtPayments.Count(from, to);
+        }
+
+        public async Task<IEnumerable<DebtPaymentDto>> GetCustomerDebtPayments(int customerId)
+        {
+            var res = await _db.DebtPayments.Get(
+                s => s.CustomerId == customerId,
+                p => p.Id,
+                1,
+                int.MaxValue);
+            ;
+            return res.CastList(c => _mapper.Map<DebtPaymentDto>(c));
         }
     }
 }

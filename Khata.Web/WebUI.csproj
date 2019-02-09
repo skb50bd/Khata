@@ -63,4 +63,9 @@
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Pages\Dashboard\" />
+  </ItemGroup>
+
 </Project>

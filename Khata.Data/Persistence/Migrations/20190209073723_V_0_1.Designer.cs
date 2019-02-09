@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Persistence.Migrations
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190208094946_AddedSavedSaleTable")]
-    partial class AddedSavedSaleTable
+    [Migration("20190209073723_V_0_1")]
+    partial class V_0_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1051,7 +1051,7 @@ namespace Khata.Data.Persistence.Migrations
             modelBuilder.Entity("Khata.Domain.Refund", b =>
                 {
                     b.HasOne("Khata.Domain.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Refunds")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
 

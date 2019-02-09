@@ -213,5 +213,17 @@ namespace Khata.Services.CRUD
         {
             return await _db.Purchases.Count(from, to);
         }
+
+        public async Task<IEnumerable<PurchaseDto>> GetSupplierPurchases(int supplierId)
+        {
+            var res = await _db.Purchases.Get(
+                s => s.SupplierId == supplierId,
+                p => p.Id,
+                1,
+                int.MaxValue,
+                DateTime.Today.AddYears(-1),
+                DateTime.Now);
+            return res.CastList(c => _mapper.Map<PurchaseDto>(c));
+        }
     }
 }

@@ -1,5 +1,8 @@
 ﻿
+using System.Linq;
+
 using Khata.Domain;
+using Khata.Queries;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +13,12 @@ namespace Khata.Data.Persistence
     {
         public KhataContext(DbContextOptions<KhataContext> options) : base(options)
         {
-            //IHostingEnvironment env
-            //Database.EnsureCreated();
+            var pm = Database.GetPendingMigrations();
+            if (pm.Any())
+            {
+                Database.Migrate();
+                Database.EnsureCreated();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -126,6 +133,49 @@ namespace Khata.Data.Persistence
                         .HasForeignKey<PurchaseReturn>(r => r.PurchaseId)
                         .OnDelete(DeleteBehavior.Restrict);
             });
+
+
+            modelBuilder.Query<CustomerReport>().ToQuery(() =>
+                Customers.Select(c => new CustomerReport
+                {
+                    Id = c.Id,
+                    FullName = c.FullName,
+                    Phone = c.Phone,
+                    Address = c.Address,
+                    Debt = c.Debt,
+                    SalesCount = c.Purchases.Count(),
+                    SaleReceives = c.Purchases.Sum(s => s.Payment.Paid),
+                    SalesWorth = c.Purchases.Sum(s => s.Payment.Total),
+                    Profit = c.Purchases.Sum(s => s.Profit),
+
+                    DebtPaymentsCount = c.DebtPayments.Count(),
+                    DebtPaymentReceives = c.DebtPayments.Sum(d => d.Amount),
+
+                    RefundCount = c.Refunds.Count(),
+                    RefundLoss = c.Refunds.Sum(r => r.EffectiveLoss),
+                    RefundAmount = c.Refunds.Sum(r => r.TotalBackPaid)
+                })
+            );
+
+            modelBuilder.Query<SupplierReport>().ToQuery(() =>
+                Suppliers.Select(c => new SupplierReport
+                {
+                    Id = c.Id,
+                    FullName = c.FullName,
+                    Phone = c.Phone,
+                    Address = c.Address,
+                    Payable = c.Payable,
+                    PurchasesCount = c.Purchases.Count(),
+                    PurchasePaid = c.Purchases.Sum(s => s.Payment.Paid),
+                    PurchasesWorth = c.Purchases.Sum(s => s.Payment.Total),
+
+                    SupplierPaymentsCount = c.Payments.Count(),
+                    SupplierPaymentPaid = c.Payments.Sum(d => d.Amount),
+
+                    PurchaseReturnCount = c.PurchaseReturns.Count(),
+                    PurchaseReturnAmount = c.PurchaseReturns.Sum(r => r.TotalBackPaid)
+                })
+            );
         }
 
         public virtual DbSet<CashRegister> CashRegister { get; set; }
@@ -151,6 +201,9 @@ namespace Khata.Data.Persistence
         public virtual DbSet<SalaryPayment> SalaryPayments { get; set; }
         public virtual DbSet<Refund> Refunds { get; set; }
         public virtual DbSet<PurchaseReturn> PurchaseReturns { get; set; }
+
+        public virtual DbQuery<CustomerReport> CustomerReports { get; set; }
+        public virtual DbQuery<SupplierReport> SupplierReports { get; set; }
 
     }
 }

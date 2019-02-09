@@ -155,5 +155,17 @@ namespace Khata.Services.CRUD
         {
             return await _db.PurchaseReturns.Count(from, to);
         }
+
+        public async Task<IEnumerable<PurchaseReturnDto>> GetSupplierPurchaseReturns(int supplierId)
+        {
+            var res = await _db.PurchaseReturns.Get(
+                        s => s.SupplierId == supplierId,
+                        p => p.Id,
+                        1,
+                        int.MaxValue,
+                        DateTime.Today.AddYears(-1),
+                        DateTime.Now);
+            return res.CastList(c => _mapper.Map<PurchaseReturnDto>(c));
+        }
     }
 }

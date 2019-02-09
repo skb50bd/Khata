@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
@@ -11,7 +13,15 @@ namespace WebUI
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            try
+            {
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)

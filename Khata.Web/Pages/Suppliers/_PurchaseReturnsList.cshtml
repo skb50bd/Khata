@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Khata.DTOs.PurchaseReturnDto>
+@model IEnumerable<Khata.DTOs.PurchaseReturnDto>
 
 <table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
     <thead>
@@ -17,7 +17,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="js-clickable-row" data-href="@Url.Page("PurchaseReturns/Details", new { id = item.Id })">
+            <tr class="js-clickable-row" data-href="@Url.Page("/PurchaseReturns/Details", new { id = item.Id })">
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.Supplier.FullName)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.PurchaseId)</td>
