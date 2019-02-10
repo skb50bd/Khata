@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" class="immutable-submit">
+        <form method="post" class="immutable-submit" autocomplete="on">
             @await Component.InvokeAsync(
                 nameof(ExpenseForm),
                 new { expense = Model.ExpenseVm })

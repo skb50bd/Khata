@@ -99,5 +99,19 @@ namespace WebUI.Pages.Suppliers
                 ViewData = new ViewDataDictionary<IEnumerable<PurchaseReturnDto>>(ViewData, purchaseReturns)
             };
         }
+
+        public async Task<IActionResult> OnGetBriefAsync(int supplierId)
+        {
+            if (!await _suppliers.Exists(supplierId))
+            {
+                return NotFound();
+            }
+            var supplier = await _suppliers.Get(supplierId);
+            return new PartialViewResult
+            {
+                ViewName = "_SupplierBriefInfo",
+                ViewData = new ViewDataDictionary<SupplierDto>(ViewData, supplier)
+            };
+        }
     }
 }

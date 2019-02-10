@@ -29,6 +29,7 @@ const customerCompanyName = document.getElementById('Customer_CompanyName');
 const customerAddress = document.getElementById('Customer_Address');
 const customerPhone = document.getElementById('Customer_Phone');
 const customerEmail = document.getElementById('Customer_Email');
+const customerBriefInfo = document.getElementById('customer-brief-info');
 const lineItemId = document.getElementById('lineitem-id');
 const lineItemType = document.getElementById('lineitem-type');
 const lineItemSelector = document.getElementById('lineitem-selector');
@@ -308,6 +309,13 @@ $(document).ready(function () {
                     customerFirstName.value = data.firstName;
                     customerLastName.value = data.lastName;
                 }
+            }).then(() => {
+                fetch('/Customers/Details/Brief?customerId=' + ui.item.value)
+                    .then((response) => {
+                        return response.text();
+                    }).then((result) => {
+                        customerBriefInfo.innerHTML = result;
+                    });
             });
             customerSelector.value = ui.item.label;
             customerId.value = ui.item.value;
@@ -390,6 +398,7 @@ $(document).ready(function () {
         if (this.checked === true) {
             customerId.value = '0';
             customerSelector.value = '';
+            customerBriefInfo.innerHTML = '';
             customerInputsReadonly(false);
         }
         else {

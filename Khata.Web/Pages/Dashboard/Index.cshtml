@@ -1,0 +1,32 @@
+﻿@page
+@model WebUI.Pages.Dashboard.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="display-4">Dashboard</h1>
+
+<div class="row mt-4">
+    <div class="col-lg-4 col-md-6">
+        <partial name="_Incomes" for="IncomeReports" />
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-lg-4 col-md-6">
+        <partial name="_Assets" for="AssetReport" />
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <partial name="_Liabilities" for="LiabilityReport" />
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/chart.js/Chart.bundle.js"></script>
+    <script src="~/js/dashboard.js"></script>
+}

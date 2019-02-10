@@ -28,6 +28,7 @@ const supplierCompanyName = document.getElementById('Supplier_CompanyName');
 const supplierAddress = document.getElementById('Supplier_Address');
 const supplierPhone = document.getElementById('Supplier_Phone');
 const supplierEmail = document.getElementById('Supplier_Email');
+const supplierBriefInfo = document.getElementById('supplier-brief-info');
 const lineItemId = document.getElementById('lineitem-id');
 const lineItemType = document.getElementById('lineitem-type');
 const lineItemSelector = document.getElementById('lineitem-selector');
@@ -306,6 +307,13 @@ $(document).ready(function () {
                     supplierFirstName.value = data.firstName;
                     supplierLastName.value = data.lastName;
                 }
+            }).then(() => {
+                fetch('/Suppliers/Details/Brief?supplierId=' + ui.item.value)
+                    .then((response) => {
+                        return response.text();
+                    }).then((result) => {
+                        supplierBriefInfo.innerHTML = result;
+                    });
             });
             supplierSelector.value = ui.item.label;
             supplierId.value = ui.item.value;
@@ -384,6 +392,7 @@ $(document).ready(function () {
             supplierId.value = '0';
             supplierSelector.value = '';
             supplierInputsReadonly(false);
+            supplierBriefInfo.innerHTML = '';
         }
         else {
             supplierInputsReadonly(true);

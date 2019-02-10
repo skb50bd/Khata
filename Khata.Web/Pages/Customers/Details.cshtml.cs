@@ -97,5 +97,19 @@ namespace WebUI.Pages.Customers
                 ViewData = new ViewDataDictionary<IEnumerable<RefundDto>>(ViewData, refunds)
             };
         }
+
+        public async Task<IActionResult> OnGetBriefAsync(int customerId)
+        {
+            if (!await _customers.Exists(customerId))
+            {
+                return NotFound();
+            }
+            var customer = await _customers.Get(customerId);
+            return new PartialViewResult
+            {
+                ViewName = "_CustomerBriefInfo",
+                ViewData = new ViewDataDictionary<CustomerDto>(ViewData, customer)
+            };
+        }
     }
 }

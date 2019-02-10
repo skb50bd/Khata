@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Linq;
 
 using Khata.Domain;
@@ -136,46 +137,126 @@ namespace Khata.Data.Persistence
 
 
             modelBuilder.Query<CustomerReport>().ToQuery(() =>
-                Customers.Select(c => new CustomerReport
+                Customers.Where(s => !s.IsRemoved).Select(c => new CustomerReport
                 {
                     Id = c.Id,
                     FullName = c.FullName,
                     Phone = c.Phone,
                     Address = c.Address,
                     Debt = c.Debt,
-                    SalesCount = c.Purchases.Count(),
-                    SaleReceives = c.Purchases.Sum(s => s.Payment.Paid),
-                    SalesWorth = c.Purchases.Sum(s => s.Payment.Total),
-                    Profit = c.Purchases.Sum(s => s.Profit),
+                    SalesCount = c.Purchases.Where(p => !p.IsRemoved).Count(),
+                    SaleReceives = c.Purchases.Where(p => !p.IsRemoved).Sum(s => s.Payment.Paid),
+                    SalesWorth = c.Purchases.Where(p => !p.IsRemoved).Sum(s => s.Payment.Total),
+                    Profit = c.Purchases.Where(p => !p.IsRemoved).Sum(s => s.Profit),
 
-                    DebtPaymentsCount = c.DebtPayments.Count(),
-                    DebtPaymentReceives = c.DebtPayments.Sum(d => d.Amount),
+                    DebtPaymentsCount = c.DebtPayments.Where(p => !p.IsRemoved).Count(),
+                    DebtPaymentReceives = c.DebtPayments.Where(p => !p.IsRemoved).Sum(d => d.Amount),
 
-                    RefundCount = c.Refunds.Count(),
-                    RefundLoss = c.Refunds.Sum(r => r.EffectiveLoss),
-                    RefundAmount = c.Refunds.Sum(r => r.TotalBackPaid)
+                    RefundCount = c.Refunds.Where(p => !p.IsRemoved).Count(),
+                    RefundLoss = c.Refunds.Where(p => !p.IsRemoved).Sum(r => r.EffectiveLoss),
+                    RefundAmount = c.Refunds.Where(p => !p.IsRemoved).Sum(r => r.TotalBackPaid)
                 })
             );
 
             modelBuilder.Query<SupplierReport>().ToQuery(() =>
-                Suppliers.Select(c => new SupplierReport
+                Suppliers.Where(s => !s.IsRemoved).Select(c => new SupplierReport
                 {
                     Id = c.Id,
                     FullName = c.FullName,
                     Phone = c.Phone,
                     Address = c.Address,
                     Payable = c.Payable,
-                    PurchasesCount = c.Purchases.Count(),
-                    PurchasePaid = c.Purchases.Sum(s => s.Payment.Paid),
-                    PurchasesWorth = c.Purchases.Sum(s => s.Payment.Total),
+                    PurchasesCount = c.Purchases.Where(p => !p.IsRemoved).Count(),
+                    PurchasePaid = c.Purchases.Where(p => !p.IsRemoved).Sum(s => s.Payment.Paid),
+                    PurchasesWorth = c.Purchases.Where(p => !p.IsRemoved).Sum(s => s.Payment.Total),
 
-                    SupplierPaymentsCount = c.Payments.Count(),
-                    SupplierPaymentPaid = c.Payments.Sum(d => d.Amount),
+                    SupplierPaymentsCount = c.Payments.Where(p => !p.IsRemoved).Count(),
+                    SupplierPaymentPaid = c.Payments.Where(p => !p.IsRemoved).Sum(d => d.Amount),
 
-                    PurchaseReturnCount = c.PurchaseReturns.Count(),
-                    PurchaseReturnAmount = c.PurchaseReturns.Sum(r => r.TotalBackPaid)
+                    PurchaseReturnCount = c.PurchaseReturns.Where(p => !p.IsRemoved).Count(),
+                    PurchaseReturnAmount = c.PurchaseReturns.Where(p => !p.IsRemoved).Sum(r => r.TotalBackPaid)
                 })
             );
+
+            modelBuilder.Query<AssetReport>().ToQuery(() =>
+                CashRegister.Select(cr => new AssetReport
+                {
+                    DueCount = Customers.Count(c => !c.IsRemoved && c.Debt > 0),
+                    TotalDue = Customers.Where(c => !c.IsRemoved).Sum(c => c.Debt),
+
+                    Cash = CashRegister.First().Balance,
+
+                    InventoryCount = Products.Count(p => !p.IsRemoved && p.Inventory.TotalStock > 0),
+                    InventoryWorth = Products.Where(p => !p.IsRemoved).Sum(p => p.Inventory.TotalStock * p.Price.Purchase)
+                })
+            );
+
+            modelBuilder.Query<LiabilityReport>().ToQuery(() =>
+                CashRegister.Select(cr => new LiabilityReport
+                {
+                    DueCount = Suppliers.Count(c => !c.IsRemoved && c.Payable > 0),
+                    TotalDue = Suppliers.Where(c => !c.IsRemoved).Sum(c => c.Payable),
+
+                    UnpaidEmployees = Employees.Count(p => !p.IsRemoved && p.Balance > 0),
+                    UnpaidAmount = Employees.Where(p => !p.IsRemoved).Sum(p => p.Balance)
+                })
+            );
+
+            modelBuilder.Query<DailyIncomeReport>().ToQuery(() =>
+                CashRegister.Select(cr => new DailyIncomeReport
+                {
+                    SaleCount = Deposits.Where(
+                        d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Count(),
+                    SaleReceived = Deposits.Where(d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Sum(d => d.Amount),
+                    DebtPaymentCount = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Count(),
+                    DebtReceived = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Sum(d => d.Amount)
+                })
+            );
+            modelBuilder.Query<WeeklyIncomeReport>().ToQuery(() =>
+                CashRegister.Select(cr => new WeeklyIncomeReport
+                {
+                    SaleCount = Deposits.Where(
+                        d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Count(),
+                    SaleReceived = Deposits.Where(d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Sum(d => d.Amount),
+                    DebtPaymentCount = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Count(),
+                    DebtReceived = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Sum(d => d.Amount)
+                })
+            );
+            modelBuilder.Query<MonthlyIncomeReport>().ToQuery(() =>
+                CashRegister.Select(cr => new MonthlyIncomeReport
+                {
+                    SaleCount = Deposits.Where(
+                        d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Count(),
+                    SaleReceived = Deposits.Where(d => d.TableName == "Sale"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Sum(d => d.Amount),
+                    DebtPaymentCount = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Count(),
+                    DebtReceived = Deposits.Where(d => d.TableName == "DebtPayment"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Sum(d => d.Amount)
+                })
+            );
+
         }
 
         public virtual DbSet<CashRegister> CashRegister { get; set; }
@@ -204,6 +285,10 @@ namespace Khata.Data.Persistence
 
         public virtual DbQuery<CustomerReport> CustomerReports { get; set; }
         public virtual DbQuery<SupplierReport> SupplierReports { get; set; }
-
+        public virtual DbQuery<AssetReport> AssetReport { get; set; }
+        public virtual DbQuery<LiabilityReport> LiabilityReport { get; set; }
+        public virtual DbQuery<DailyIncomeReport> DailyIncomeReport { get; set; }
+        public virtual DbQuery<WeeklyIncomeReport> WeeklyIncomeReport { get; set; }
+        public virtual DbQuery<MonthlyIncomeReport> MonthlyIncomeReport { get; set; }
     }
 }

@@ -1,0 +1,36 @@
+﻿@model Khata.Queries.AssetReport
+
+<div class="card  mb-3"
+     style="        max-width: 24rem;">
+    <div class="card-header">Assets</div>
+    <div class="card-body">
+        <canvas id="assetChart" class="w-100" height="200"></canvas>
+        <h5 class="card-title display-4 text-right">
+            @((Model.Cash + Model.InventoryWorth + Model.TotalDue).ToString("C2"))
+        </h5>
+        <table class="table table-sm table-hover table-borderless table-striped">
+            <tbody>
+                <tr>
+                    <th>Customers with Due</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.DueCount)</td>
+                </tr>
+                <tr>
+                    <th>Due Amount</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.TotalDue)</td>
+                </tr>
+                <tr>
+                    <th>Cash</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.Cash)</td>
+                </tr>
+                <tr>
+                    <th>Products in Stock</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.InventoryCount)</td>
+                </tr>
+                <tr>
+                    <th>Products' Purchase Price</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.InventoryWorth)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

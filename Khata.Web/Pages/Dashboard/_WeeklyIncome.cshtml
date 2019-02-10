@@ -1,0 +1,42 @@
+﻿@model Khata.Queries.WeeklyIncomeReport
+
+<div class="card mb-3"
+     style="max-width: 24rem;">
+    <div class="card-header">
+        Incomes
+    </div>
+    <div class="card-body">
+        <canvas id="weeklyIncomeChart" class="w-100" height="200"></canvas>
+        <h5 class="card-title display-4 text-right">
+            @((Model.DebtReceived + Model.SaleReceived + Model.DepositAmount).ToString("C2"))
+        </h5>
+        <table class="table table-sm table-hover table-borderless table-striped">
+            <tbody>
+                <tr>
+                    <th>Number of Sales</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.SaleCount)</td>
+                </tr>
+                <tr>
+                    <th>Sale Received</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.SaleReceived)</td>
+                </tr>
+                <tr>
+                    <th>Number of Debt Received</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.DebtPaymentCount)</td>
+                </tr>
+                <tr>
+                    <th>Debt Received</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.DebtReceived)</td>
+                </tr>
+                <tr>
+                    <th>Number of Deposit</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.DepositsCount)</td>
+                </tr>
+                <tr>
+                    <th>Deposits Total</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.DepositAmount)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

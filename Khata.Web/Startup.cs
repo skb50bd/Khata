@@ -20,6 +20,8 @@ using Newtonsoft.Json.Serialization;
 
 using Swashbuckle.AspNetCore.Swagger;
 
+using WebUI.Hubs;
+
 namespace WebUI
 {
     public class Startup
@@ -114,6 +116,7 @@ namespace WebUI
             }
             );
 
+            services.AddSignalR();
 
             services.Configure<OutletOptions>(Configuration.GetSection("OutletOptions"));
         }
@@ -139,6 +142,11 @@ namespace WebUI
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ReportsHub>("/Reports");
+            });
 
             app.UseMvc();
 
