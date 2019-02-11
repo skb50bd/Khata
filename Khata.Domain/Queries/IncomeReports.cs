@@ -2,7 +2,7 @@
 
 namespace Khata.Queries
 {
-    public class Income : Report
+    public class IncomeBase : Report
     {
         [Display(Name = "Number of Sales")]
         public int SaleCount { get; set; }
@@ -23,9 +23,9 @@ namespace Khata.Queries
 
     }
 
-    public class DailyIncomeReport : Income { }
-    public class WeeklyIncomeReport : Income { }
-    public class MonthlyIncomeReport : Income { }
+    public class DailyIncomeReport : IncomeBase { }
+    public class WeeklyIncomeReport : IncomeBase { }
+    public class MonthlyIncomeReport : IncomeBase { }
 
     public class IncomeReports
     {
@@ -33,4 +33,5 @@ namespace Khata.Queries
         public WeeklyIncomeReport Weekly { get; set; }
         public MonthlyIncomeReport Monthly { get; set; }
     }
+
 }

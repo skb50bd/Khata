@@ -6,9 +6,11 @@ using Khata.Queries;
 
 namespace Khata.Services.Reports
 {
-    public class ReportService<TReport> : IReportService<TReport> where TReport : Report
+    public class ReportService<TReport>
+        : IReportService<TReport>
+            where TReport : Report
     {
-        private readonly IReportRepository<TReport> _reports;
+        protected readonly IReportRepository<TReport> _reports;
         public ReportService(IReportRepository<TReport> reports)
         {
             _reports = reports;
@@ -17,10 +19,23 @@ namespace Khata.Services.Reports
         public async Task<IEnumerable<TReport>> Get()
             => await _reports.Get();
 
-        public async Task<TReport> Get(int id)
-            => await _reports.GetById(id);
 
         public async Task<int> Count()
             => await _reports.Count();
+    }
+
+    public class IndividualReportService<TReport> :
+        ReportService<TReport>, IIndividualReportService<TReport>
+            where TReport : IndividaulReport
+    {
+        protected readonly IIndividualReportRepository<TReport> _individualReports;
+        public IndividualReportService(IIndividualReportRepository<TReport> reports)
+            : base(reports as IReportRepository<TReport>)
+        {
+            _individualReports = reports;
+        }
+
+        public async Task<TReport> Get(int id)
+            => await _individualReports.GetById(id);
     }
 }

@@ -9,6 +9,10 @@ namespace Khata.Data.Core
     {
         Task<int> Count();
         Task<IEnumerable<TReport>> Get();
+    }
+
+    public interface IIndividualReportRepository<TReport> where TReport : IndividaulReport
+    {
         Task<TReport> GetById(int id);
     }
 }

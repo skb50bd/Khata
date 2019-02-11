@@ -26,7 +26,7 @@ namespace ImportData
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Warning()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();

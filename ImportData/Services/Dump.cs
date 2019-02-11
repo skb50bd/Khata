@@ -304,7 +304,7 @@ namespace ImportData.Services
                         }
 
                         db.Sales.Add(sale);
-                        Console.WriteLine($"{added++} customers added");
+                        Console.WriteLine($"{added++} sales added");
                     }
                     db.Complete();
                     foreach (var item in Sales[shopId].Values)
@@ -598,8 +598,8 @@ namespace ImportData.Services
                     : null;
                 if (supplier is null)
                 {
-                    Console.WriteLine("WARNING- SUPPLIER NOT FOUND");
-                    Console.ReadKey();
+                    //Console.WriteLine("WARNING- SUPPLIER NOT FOUND");
+                    //Console.ReadKey();
                 }
                 var amount = p["totalAmount"].ToDecimal();
                 var less = p["less"].ToDecimal();

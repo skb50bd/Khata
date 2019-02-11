@@ -18,14 +18,14 @@ namespace WebUI.Pages.Suppliers
         private readonly IPurchaseService _purchases;
         private readonly ISupplierPaymentService _supplierPayments;
         private readonly IPurchaseReturnService _purchaseReturns;
-        private readonly IReportService<SupplierReport> _reports;
+        private readonly IIndividualReportService<SupplierReport> _reports;
 
         public DetailsModel(
             ISupplierService suppliers,
             IPurchaseService purchases,
             ISupplierPaymentService supplierPayments,
             IPurchaseReturnService purchaseReturns,
-            IReportService<SupplierReport> reports)
+            IIndividualReportService<SupplierReport> reports)
         {
             _suppliers = suppliers;
             _purchases = purchases;

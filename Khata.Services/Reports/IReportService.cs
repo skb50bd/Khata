@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Khata.Queries;
 
 namespace Khata.Services.Reports
@@ -8,6 +9,11 @@ namespace Khata.Services.Reports
     {
         Task<int> Count();
         Task<IEnumerable<TReport>> Get();
+    }
+
+    public interface IIndividualReportService<TReport> : IReportService<TReport>
+        where TReport : IndividaulReport
+    {
         Task<TReport> Get(int id);
     }
 }

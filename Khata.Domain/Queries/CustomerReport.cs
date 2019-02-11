@@ -2,7 +2,7 @@
 
 namespace Khata.Queries
 {
-    public class CustomerReport : Report
+    public class CustomerReport : IndividaulReport
     {
         public string FullName { get; set; }
 

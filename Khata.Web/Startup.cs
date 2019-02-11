@@ -85,6 +85,7 @@ namespace WebUI
                         options.Conventions.AuthorizeFolder("/Deposits", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Employees", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Cash", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Dashboard", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Expenses", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Invoices", "UserRights");
                         options.Conventions.AuthorizeFolder("/Products", "AdminRights");

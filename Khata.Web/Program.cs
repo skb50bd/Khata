@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -11,30 +12,46 @@ namespace WebUI
 {
     public class Program
     {
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
+
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                //.ReadFrom.Configuration(Configuration)
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                        @"D:\Khata\log.txt",
+                        fileSizeLimitBytes: 5_000_000,
+                        rollOnFileSizeLimit: true,
+                        shared: true,
+                        flushToDiskInterval: TimeSpan.FromSeconds(1))
+        .CreateLogger();
             try
             {
+                Log.Information("Starting Web Host");
                 CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.ReadLine();
+                Log.Fatal(e, "Host terminated unexpectedly!");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
-
             return WebHost.CreateDefaultBuilder(args)
-            .UseApplicationInsights()
             .ConfigureAppConfiguration((hostingContext, config) =>
             {
                 var env = hostingContext.HostingEnvironment;
@@ -43,8 +60,7 @@ namespace WebUI
                           optional: true, reloadOnChange: true);
                 config.AddEnvironmentVariables();
             })
-            .ConfigureLogging((hostingContext, logging) =>
-                logging.AddSerilog(Log.Logger))
+            .UseSerilog()
             .UseStartup<Startup>();
         }
     }

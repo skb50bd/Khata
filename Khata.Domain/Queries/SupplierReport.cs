@@ -2,7 +2,7 @@
 
 namespace Khata.Queries
 {
-    public class SupplierReport : Report
+    public class SupplierReport : IndividaulReport
     {
         public string FullName { get; set; }
 

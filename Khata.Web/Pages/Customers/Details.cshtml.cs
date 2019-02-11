@@ -18,12 +18,12 @@ namespace WebUI.Pages.Customers
         private readonly ISaleService _sales;
         private readonly IDebtPaymentService _debtPayments;
         private readonly IRefundService _refunds;
-        private readonly IReportService<CustomerReport> _reports;
+        private readonly IIndividualReportService<CustomerReport> _reports;
         public DetailsModel(ICustomerService customers,
             ISaleService sales,
             IDebtPaymentService debtPayments,
             IRefundService refunds,
-            IReportService<CustomerReport> reports)
+            IIndividualReportService<CustomerReport> reports)
         {
             _customers = customers;
             _sales = sales;

@@ -1,19 +1,19 @@
-﻿@model Khata.Queries.MonthlyIncomeReport
+﻿@model Khata.Queries.IncomeBase
 
 <div class="card mb-3"
      style="max-width: 24rem;">
     <div class="card-header">
-        Incomes
+        Income
     </div>
     <div class="card-body">
-        <canvas id="monthlyIncomeChart" class="w-100" height="200"></canvas>
-        <h5 class="card-title display-4 text-right">
+        <canvas class="w-100 income-chart" height="200"></canvas>
+        <p class="card-title lead text-right chart-info-big">
             @((Model.DebtReceived + Model.SaleReceived + Model.DepositAmount).ToString("C2"))
-        </h5>
+        </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
-                    <th>Number of Sales</th>
+                    <th>Sales</th>
                     <td class="text-right">@Html.DisplayFor(model => Model.SaleCount)</td>
                 </tr>
                 <tr>
@@ -21,7 +21,7 @@
                     <td class="text-right">@Html.DisplayFor(model => Model.SaleReceived)</td>
                 </tr>
                 <tr>
-                    <th>Number of Debt Received</th>
+                    <th>Debt Received</th>
                     <td class="text-right">@Html.DisplayFor(model => Model.DebtPaymentCount)</td>
                 </tr>
                 <tr>
@@ -29,13 +29,15 @@
                     <td class="text-right">@Html.DisplayFor(model => Model.DebtReceived)</td>
                 </tr>
                 <tr>
-                    <th>Number of Deposit</th>
+                    <th>Deposit</th>
                     <td class="text-right">@Html.DisplayFor(model => Model.DepositsCount)</td>
                 </tr>
                 <tr>
                     <th>Deposits Total</th>
                     <td class="text-right">@Html.DisplayFor(model => Model.DepositAmount)</td>
                 </tr>
+                <tr><th>&nbsp;</th><td></td></tr>
+                <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>
     </div>

@@ -6,20 +6,21 @@
 
 <h1 class="display-4">Dashboard</h1>
 
-<div class="row mt-4">
-    <div class="col-lg-4 col-md-6">
-        <partial name="_Incomes" for="IncomeReports" />
+
+@*<partial name="_PeriodicalReport" for="@Model" />*@
+
+<div class="row">
+    <div class="col-lg-8 col-md-12 mb-3">
+        <partial name="PerDayReport" />
     </div>
 </div>
 
-<hr />
-
 <div class="row">
-    <div class="col-lg-4 col-md-6">
+    <div class="col-lg-4 col-md-6 widget">
         <partial name="_Assets" for="AssetReport" />
     </div>
 
-    <div class="col-lg-4 col-md-6">
+    <div class="col-lg-4 col-md-6 widget">
         <partial name="_Liabilities" for="LiabilityReport" />
     </div>
 </div>

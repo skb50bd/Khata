@@ -11,6 +11,9 @@ using Khata.Services.PageFilterSort;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 using SharedLibrary;
 
@@ -18,15 +21,21 @@ namespace Khata.Services.CRUD
 {
     public class CustomerService : ICustomerService
     {
+        private readonly ILogger<CustomerService> _log;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
 
-        public CustomerService(IUnitOfWork db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CustomerService(
+            IUnitOfWork db,
+            IMapper mapper,
+            ILogger<CustomerService> log,
+            IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
+            _log = log;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -59,6 +68,10 @@ namespace Khata.Services.CRUD
             _db.Customers.Add(dm);
             await _db.CompleteAsync();
 
+
+            _log.LogInformation("Added new customer: \n"
+                + JsonConvert.SerializeObject(dm, Formatting.Indented));
+
             return _mapper.Map<CustomerDto>(dm);
         }
 
@@ -66,10 +79,14 @@ namespace Khata.Services.CRUD
         {
             var newCustomer = _mapper.Map<Customer>(vm);
             var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
+
+            var oldState = JsonConvert.SerializeObject(originalCustomer, Formatting.Indented);
+
             var meta = originalCustomer.Metadata.Modified(CurrentUser);
             originalCustomer.SetValuesFrom(newCustomer);
             originalCustomer.Metadata = meta;
 
+            var newState = JsonConvert.SerializeObject(originalCustomer, Formatting.Indented);
             await _db.CompleteAsync();
 
             return _mapper.Map<CustomerDto>(originalCustomer);

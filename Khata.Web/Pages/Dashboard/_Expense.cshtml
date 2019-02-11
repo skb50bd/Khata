@@ -1,0 +1,54 @@
+﻿@model Khata.Queries.ExpenseBase
+
+<div class="card mb-3"
+     style="max-width: 24rem;">
+    <div class="card-header">
+        Expense
+    </div>
+    <div class="card-body">
+        <canvas class="w-100 expense-chart" height="200"></canvas>
+        <p class="card-title lead text-right chart-info-big">
+            @((Model.PurchasePaid
+                + Model.SupplierPaymentAmount
+                + Model.EmployeePaymentAmount
+                + Model.WithdrawalAmount)
+            .ToString("C2"))
+        </p>
+        <table class="table table-sm table-hover table-borderless table-striped">
+            <tbody>
+                <tr>
+                    <th>Purchases</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.PurchaseCount)</td>
+                </tr>
+                <tr>
+                    <th>Purchase Paid</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.PurchasePaid)</td>
+                </tr>
+                <tr>
+                    <th>Supplier Payments</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.SupplierPaymentCount)</td>
+                </tr>
+                <tr>
+                    <th>Supplier Paid</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.SupplierPaymentAmount)</td>
+                </tr>
+                <tr>
+                    <th>Employee Payments</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.EmployeePaymentCount)</td>
+                </tr>
+                <tr>
+                    <th>Employee Paid</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.EmployeePaymentAmount)</td>
+                </tr>
+                <tr>
+                    <th>Withrawals</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.WithdrawalCount)</td>
+                </tr>
+                <tr>
+                    <th>Withdrawal Total</th>
+                    <td class="text-right">@Html.DisplayFor(model => Model.WithdrawalAmount)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

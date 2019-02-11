@@ -8,6 +8,9 @@ using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
+
+using WebUI.Hubs;
 
 namespace WebUI.Pages.Cash
 {
@@ -15,11 +18,15 @@ namespace WebUI.Pages.Cash
     {
         private readonly ICashRegisterService _cashRegister;
         private readonly ITransactionsService _transactions;
+
+        private readonly IHubContext<ReportsHub> _reportsHub;
         public IndexModel(ICashRegisterService cashRegister,
-            ITransactionsService trasactions)
+            ITransactionsService trasactions,
+            IHubContext<ReportsHub> reportsHub)
         {
             _cashRegister = cashRegister;
             _transactions = trasactions;
+            _reportsHub = reportsHub;
         }
 
         public CashRegister Cash { get; set; } = new CashRegister();
@@ -50,6 +57,7 @@ namespace WebUI.Pages.Cash
             }
 
             var deposit = await _transactions.Add(NewDeposit);
+            await _reportsHub.Clients.All.SendAsync("RefreshData");
             return RedirectToPage("");
         }
 
@@ -62,6 +70,7 @@ namespace WebUI.Pages.Cash
             }
 
             var withdrawal = await _transactions.Add(NewWithdrawal);
+            await _reportsHub.Clients.All.SendAsync("RefreshData");
             return RedirectToPage("");
         }
     }

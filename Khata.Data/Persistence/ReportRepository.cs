@@ -9,10 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Khata.Data.Persistence
 {
-    public class ReportRepository<TReport>
-        : IReportRepository<TReport> where TReport : Report
+    public class ReportRepository<TReport> : IReportRepository<TReport> where TReport : Report
     {
-        private readonly KhataContext _db;
+        protected readonly KhataContext _db;
         public ReportRepository(KhataContext db)
         {
             _db = db;
@@ -24,6 +23,15 @@ namespace Khata.Data.Persistence
         public async Task<IEnumerable<TReport>> Get()
             => await _db.Query<TReport>()
             .ToListAsync();
+
+    }
+
+    public class IndividualReportRepository<TReport>
+        : ReportRepository<TReport>,
+            IIndividualReportRepository<TReport>
+                where TReport : IndividaulReport
+    {
+        public IndividualReportRepository(KhataContext db) : base(db) { }
 
         public async Task<TReport> GetById(int id)
             => await _db.Query<TReport>()
