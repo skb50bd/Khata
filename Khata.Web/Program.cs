@@ -52,7 +52,7 @@ namespace WebUI
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((hostingContext, config) =>
+                .ConfigureAppConfiguration((hostingContext, config) =>
             {
                 var env = hostingContext.HostingEnvironment;
                 config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -60,6 +60,8 @@ namespace WebUI
                           optional: true, reloadOnChange: true);
                 config.AddEnvironmentVariables();
             })
+            .UseKestrel()
+            .UseConfiguration(Configuration)
             .UseSerilog()
             .UseStartup<Startup>();
         }
