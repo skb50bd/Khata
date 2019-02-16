@@ -22,6 +22,9 @@ namespace Khata.DTOs
 
         public decimal InventoryAlertAt { get; set; }
 
+        [DataType(DataType.Currency)]
+        public decimal TotalPurchaseCost => InventoryTotalStock * PricePurchase;
+
         [Display(Name = "Total Stock")]
         public decimal InventoryTotalStock { get; set; }
 

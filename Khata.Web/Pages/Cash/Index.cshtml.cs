@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
 
+using SharedLibrary;
+
 using WebUI.Hubs;
 
 namespace WebUI.Pages.Cash
@@ -31,7 +33,7 @@ namespace WebUI.Pages.Cash
 
         public CashRegister Cash { get; set; } = new CashRegister();
 
-        public IEnumerable<Deposit> Despsits { get; set; }
+        public IEnumerable<Deposit> Deposits { get; set; }
         public IEnumerable<Withdrawal> Withdrawals { get; set; }
 
         [BindProperty]
@@ -40,23 +42,53 @@ namespace WebUI.Pages.Cash
         [BindProperty]
         public WithdrawalViewModel NewWithdrawal { get; set; } = new WithdrawalViewModel();
 
+        [BindProperty]
+        public string FromText { get; set; }
+        [BindProperty]
+        public string ToText { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync()
         {
             Cash = await _cashRegister.Get();
-            Despsits = await _transactions.GetDeposits(DateTime.Now.AddDays(-7), DateTime.Now);
-            Withdrawals = await _transactions.GetWithdrawals(DateTime.Now.AddDays(-7), DateTime.Now);
+            Deposits = await _transactions.GetDeposits(
+                DateTime.Now.AddDays(-7),
+                DateTime.Now);
+
+            Withdrawals = await _transactions.GetWithdrawals(
+                DateTime.Now.AddDays(-7),
+                DateTime.Now);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostWithDateRangeAsync()
+        {
+            Cash = await _cashRegister.Get();
+            Deposits =
+                await _transactions.GetDeposits(
+                    FromText.ParseDate(),
+                    ToText.ParseDate()
+                );
+            Withdrawals =
+                await _transactions.GetWithdrawals(
+                    FromText.ParseDate(),
+                    ToText.ParseDate()
+                );
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostDepositAsync()
         {
             if (NewDeposit.Amount <= 0
-                || NewDeposit.TableName != "Deposit")
+                || NewDeposit.TableName != "Deposit"
+                || string.IsNullOrWhiteSpace(NewDeposit.Description))
             {
                 return Page();
             }
 
-            var deposit = await _transactions.Add(NewDeposit);
+            _ = await _transactions.Add(NewDeposit);
             await _reportsHub.Clients.All.SendAsync("RefreshData");
             return RedirectToPage("");
         }
@@ -64,12 +96,13 @@ namespace WebUI.Pages.Cash
         public async Task<IActionResult> OnPostWithdrawalAsync()
         {
             if (NewWithdrawal.Amount <= 0
-                || NewWithdrawal.TableName != "Withdrawal")
+                || NewWithdrawal.TableName != "Withdrawal"
+                || string.IsNullOrWhiteSpace(NewWithdrawal.Description))
             {
                 return Page();
             }
 
-            var withdrawal = await _transactions.Add(NewWithdrawal);
+            _ = await _transactions.Add(NewWithdrawal);
             await _reportsHub.Clients.All.SendAsync("RefreshData");
             return RedirectToPage("");
         }

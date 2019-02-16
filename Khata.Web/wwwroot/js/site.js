@@ -1,4 +1,31 @@
-﻿const swalDelete = Swal.mixin({
+﻿const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+};
+
+function toFixedIfNecessary(value, dp) {
+    return parseFloat(value).toFixed(dp);
+}
+
+function getDate(elem = null) {
+    var date;
+    try {
+        date = $.datepicker.parseDate("dd/mm/yy", elem.value);
+    } catch (error) {
+        date = new Date();
+    }
+
+    var year = date.getFullYear(),
+        month = (date.getMonth() + 1).toString(),
+        formatedMonth = month.length === 1 ? "0" + month : month,
+        day = date.getDate().toString(),
+        formatedDay = day.length === 1 ? "0" + day : day;
+    return formatedDay + "/" + formatedMonth + "/" + year;
+}
+
+
+
+
+const swalDelete = Swal.mixin({
     confirmButtonClass: 'btn btn-danger',
     cancelButtonClass: 'btn btn-secondary mr-4',
     buttonsStyling: false
@@ -10,7 +37,7 @@ const swalSave = Swal.mixin({
     buttonsStyling: false
 });
 
-function attachClickableRow()  {
+function attachClickableRow() {
     var ref = $(this).data("href");
     window.location.href = ref;
 }
@@ -117,6 +144,18 @@ $(document).ready(function () {
             }).then(() =>
                 $(".js-clickable-row")
                     .click(attachClickableRow));
+    });
+
+    $(function () {
+        from = $("#from")
+            .datepicker()
+            .on("change", function () {
+                to.datepicker("option", "minDate", getDate(this));
+            });
+        to = $("#to").datepicker()
+            .on("change", function () {
+                from.datepicker("option", "maxDate", getDate(this));
+            });
     });
 });
 

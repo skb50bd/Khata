@@ -1,24 +1,35 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 namespace Khata.Data.Persistence
 {
     public partial class KhataContext : IdentityDbContext
     {
-        public KhataContext(DbContextOptions<KhataContext> options) : base(options)
+        private readonly ILogger<KhataContext> _logger;
+        public KhataContext(
+            DbContextOptions<KhataContext> options, 
+            ILogger<KhataContext> logger) 
+                : base(options)
         {
+            _logger = logger;
             var pm = Database.GetPendingMigrations();
-            if (pm.Any())
+
+            try
             {
-                Database.Migrate();
-                Database.EnsureCreated();
-                #region PerDayReportView
-                Database.ExecuteSqlCommand(@"
+                if (pm.Any())
+                {
+                    Database.Migrate();
+                    #region PerDayReportView
+                    Database.ExecuteSqlCommand(@"
                     DROP VIEW IF EXISTS PerDayReport
                 ");
-                Database.ExecuteSqlCommand(@"
+                    Database.ExecuteSqlCommand(@"
                     CREATE VIEW PerDayReport AS
                         SELECT TOP(30) * FROM (
                             SELECT  TOP(30) 
@@ -37,9 +48,14 @@ namespace Khata.Data.Persistence
                             ORDER BY 'Date' DESC
                         ) SQ ORDER BY 'Date' ASC
                 ");
-                #endregion
+                    #endregion
+                }
             }
-
+            catch (System.Exception e)
+            {
+                _logger.LogError("Could not apply Migrations" + JsonConvert.SerializeObject(pm));
+                _logger.LogError(e.Message);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

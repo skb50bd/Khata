@@ -101,6 +101,7 @@ namespace WebUI
                         options.Conventions.AuthorizeFolder("/Suppliers", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Vouchars", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Withdrawals", "AdminRights");
+                        options.Conventions.AuthorizeFolder("/Reporting", "AdminRights");
                     }
                 ); ;
 
@@ -130,6 +131,10 @@ namespace WebUI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                //{
+                //    HotModuleReplacement = true
+                //});
             }
             else
             {
@@ -149,7 +154,12 @@ namespace WebUI
                 routes.MapHub<ReportsHub>("/Reports");
             });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
+            });
 
             app.UseSwagger().UseSwaggerUI(c =>
             {

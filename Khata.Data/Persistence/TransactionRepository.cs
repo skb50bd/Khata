@@ -12,7 +12,7 @@ namespace Khata.Data.Persistence
         public override void Add(Deposit item)
         {
             Context.Deposits.Add(item);
-            Context.CashRegister.First().Balance += item.Amount;
+            Context.CashRegister.FirstOrDefault().Balance += item.Amount;
         }
     }
 
@@ -22,7 +22,7 @@ namespace Khata.Data.Persistence
         public override void Add(Withdrawal item)
         {
             Context.Withdrawals.Add(item);
-            Context.CashRegister.First().Balance -= item.Amount;
+            Context.CashRegister.FirstOrDefault().Balance -= item.Amount;
         }
     }
 }

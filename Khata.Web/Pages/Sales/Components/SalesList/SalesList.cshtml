@@ -24,7 +24,15 @@
                 <td>@Html.DisplayFor(modelItem => item.Type)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentTotal)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentDue)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.Profit)</td>
+                <td class="text-right">
+                    @if (Context.User.IsInRole("Admin"))
+                    {
+                        @Html.DisplayFor(modelItem => item.Profit)
+                    } else
+                    {
+                        @($"{0:c2}");
+                    }
+                    </td>
                 <td class="text-right">@Html.ValueFor(modelItem => item.Cart.Count)</td>
                 <td class="text-right">@Html.ValueFor(modelItem => item.Metadata.CreatedAt)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.Creator)</td>

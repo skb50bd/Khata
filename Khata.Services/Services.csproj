@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Khata.Services</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <PackageId>skb50bd.khata.services</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Shakib Haris</Authors>
+    <Product>Khata.Services</Product>
   </PropertyGroup>
 
   <ItemGroup>

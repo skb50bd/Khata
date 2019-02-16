@@ -54,11 +54,6 @@ namespace ImportData.Services
         static readonly IMongoDatabase Mongo = new MongoClient().GetDatabase("BShopManDb");
         static readonly string workingDir = @"D:\Dump";
 
-        public static void CreateDump()
-        {
-
-        }
-
 
         public static void AddItems<T>(IList<T> items, Action<T> add, IUnitOfWork db)
         {
@@ -106,6 +101,7 @@ namespace ImportData.Services
                     }
                 }
                 #endregion
+                db.Complete();
 
                 #region Suppliers
                 DumpSuppliers();
@@ -119,6 +115,7 @@ namespace ImportData.Services
                     }
                 }
                 #endregion
+                db.Complete();
 
                 #region Employees
                 DumpEmployees();
@@ -299,7 +296,7 @@ namespace ImportData.Services
                         {
                             sale.CustomerId = (await db.Customers.Get(
                                 c => c.FullName.ToLowerInvariant().Contains("cash"),
-                                c => c.Id, 1, 0)).First().Id;
+                                c => c.Id, 1, 0)).FirstOrDefault().Id;
                             sale.Invoice.CustomerId = sale.CustomerId;
                         }
 
@@ -338,7 +335,7 @@ namespace ImportData.Services
             foreach (var c in customersCollection)
             {
                 var nameTokens = c["fullName"].ToString().Split();
-                var firstName = nameTokens.First();
+                var firstName = nameTokens.FirstOrDefault();
                 var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
                 var email = c["emailAddress"].ToString();
                 var phone = c["phone"].ToString();
@@ -369,7 +366,7 @@ namespace ImportData.Services
             foreach (var s in customersCollection)
             {
                 var nameTokens = s["fullName"].ToString().Split();
-                var firstName = nameTokens.First();
+                var firstName = nameTokens.FirstOrDefault();
                 var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
                 var email = s["emailAddress"].ToString();
                 var phone = s["phone"].ToString();
@@ -400,7 +397,7 @@ namespace ImportData.Services
             foreach (var e in employeesCollection)
             {
                 var nameTokens = e["fullName"].ToString().Split();
-                var firstName = nameTokens.First();
+                var firstName = nameTokens.FirstOrDefault();
                 var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
                 var email = e["emailAddress"].ToString();
                 var phone = e["phone"].ToString();

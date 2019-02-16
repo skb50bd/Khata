@@ -63,7 +63,7 @@ namespace WebUI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var customers = await Get(searchString: term);
+            var customers = await Get(searchString: term, 50, 1);
             return Ok(customers.Select(s =>
                 new
                 {
@@ -81,8 +81,8 @@ namespace WebUI.Controllers
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(_pfService.CreateNewPf(term, 1, 0));
-            var services = await _services.Get(_pfService.CreateNewPf(term, 1, 0));
+            var products = await _products.Get(_pfService.CreateNewPf(term, 1, 50));
+            var services = await _services.Get(_pfService.CreateNewPf(term, 1, 50));
 
             products.ForEach(p => results.Add(new
             {

@@ -51,20 +51,20 @@ namespace WebUI.Pages.Dashboard
 
         public async Task OnGetAsync()
         {
-            AssetReport = (await _assetReports.Get()).First();
-            LiabilityReport = (await _liabilityReports.Get()).First();
+            AssetReport = (await _assetReports.Get()).FirstOrDefault();
+            LiabilityReport = (await _liabilityReports.Get()).FirstOrDefault();
             IncomeReports = new IncomeReports
             {
-                Daily = (await _dailyIncomeReports.Get()).First(),
-                Weekly = (await _weeklyIncomeReports.Get()).First(),
-                Monthly = (await _monthlyIncomeReports.Get()).First()
+                Daily = (await _dailyIncomeReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyIncomeReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyIncomeReports.Get()).FirstOrDefault()
             };
 
             ExpenseReports = new ExpenseReports
             {
-                Daily = (await _dailyExpenseReports.Get()).First(),
-                Weekly = (await _weeklyExpenseReports.Get()).First(),
-                Monthly = (await _monthlyExpenseReports.Get()).First()
+                Daily = (await _dailyExpenseReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyExpenseReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyExpenseReports.Get()).FirstOrDefault()
             };
 
             PerDayReports = await _perDayReports.Get();

@@ -50,26 +50,26 @@ namespace Khata.Data.Persistence
             ITrackingRepository<Refund> refunds,
             ITrackingRepository<PurchaseReturn> purchaseReturns)
         {
-            Context = context;
-            CashRegister = cashRegister;
-            Deposits = deposits;
-            Withdrawals = withdrawals;
-            Products = products;
-            Services = services;
-            Customers = customers;
-            DebtPayments = debtPayments;
-            Sales = sales;
-            Invoices = invoices;
-            Vouchars = vouchars;
-            Expenses = expenses;
-            Suppliers = suppliers;
+            Context          = context;
+            CashRegister     = cashRegister;
+            Deposits         = deposits;
+            Withdrawals      = withdrawals;
+            Products         = products;
+            Services         = services;
+            Customers        = customers;
+            DebtPayments     = debtPayments;
+            Sales            = sales;
+            Invoices         = invoices;
+            Vouchars         = vouchars;
+            Expenses         = expenses;
+            Suppliers        = suppliers;
             SupplierPayments = supplierPayments;
-            Purchases = purchases;
-            Employees = employees;
-            SalaryIssues = salaryIssues;
-            SalaryPayments = salaryPayments;
-            Refunds = refunds;
-            PurchaseReturns = purchaseReturns;
+            Purchases        = purchases;
+            Employees        = employees;
+            SalaryIssues     = salaryIssues;
+            SalaryPayments   = salaryPayments;
+            Refunds          = refunds;
+            PurchaseReturns  = purchaseReturns;
         }
 
         public void Complete()

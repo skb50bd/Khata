@@ -8,4 +8,13 @@
     <h1 class="display-4">@Model.Options.Title</h1>
     <p class="h4 lead"><lead>@Model.Options.Slogan</lead></p>
     <p><lead>@Model.Options.Address</lead></p>
+    <div class="row text-center">
+        <div class="col-5"></div>
+        <div class="col-md-2 text-center">
+            <a asp-page="/Sales/Create" class="btn btn-outline-primary btn-block">Create a new Sale</a>
+            <a asp-page="/Expenses/Create" class="btn btn-outline-danger btn-block">Create a new Expense</a>
+            <a asp-page="/Purchases/Create" class="btn btn-outline-info btn-block">Create a new Purchase</a>
+        </div>
+        <div class="col-5"></div>
+    </div>
 </div>

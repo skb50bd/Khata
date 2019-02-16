@@ -10,6 +10,9 @@ namespace SharedLibrary
 {
     public static class StringExtensions
     {
+        public static DateTime ParseDate(this string date) =>
+            DateTime.ParseExact(date, @"dd/MM/yyyy", CultureInfo.InvariantCulture.DateTimeFormat);
+
         public static string FromPascalCase(this string str)
         {
             List<string> words = new List<string>();

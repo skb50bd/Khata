@@ -6,16 +6,6 @@ function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
 
-function getDate() {
-    var date = new Date(),
-        year = date.getFullYear(),
-        month = (date.getMonth() + 1).toString(),
-        formatedMonth = month.length === 1 ? "0" + month : month,
-        day = date.getDate().toString(),
-        formatedDay = day.length === 1 ? "0" + day : day;
-    return formatedDay + "/" + formatedMonth + "/" + year;
-}
-
 const purchaseDate = document.getElementById('PurchaseDate');
 const retail = document.getElementById('retail');
 const bulk = document.getElementById('bulk');

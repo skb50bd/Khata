@@ -66,25 +66,25 @@ function getPerDayData(perDayData) {
     return {
         datasets: [
             {
+                label: "New Due",
+                backgroundColor: "rgba(255,152,0 ,0.8)",
+                borderColor: "rgba(255,152,0 ,0.8)",
+                data: perDayData.map(d => d.newReceivable)
+            }, {
                 label: "Cash In",
-                backgroundColor: "#66BB6A",
-                borderColor: "#388E3C",
+                backgroundColor: "rgba(76,175,80 ,0.8)",
+                borderColor: "rgba(76,175,80 ,0.8)",
                 data: perDayData.map(d => d.cashIn)
             },
             {
                 label: "Cash Out",
-                backgroundColor: "#ef5350",
-                borderColor: "#d32f2f",
+                backgroundColor: "rgba(33, 150, 243 , 0.8)",
+                borderColor: "rgba(33, 150, 243 , 0.8)",
                 data: perDayData.map(d => d.cashOut)
-            }, {
-                label: "New Due",
-                backgroundColor: "#42A5F5",
-                borderColor: "#1976D2",
-                data: perDayData.map(d => d.newReceivable)
-            }, {
+            },{
                 label: "New Payable",
-                backgroundColor: "#FFA726",
-                borderColor: "#F57C00",
+                backgroundColor: "rgba(156,39,176 ,0.8)",
+                borderColor: "rgba(156,39,176 ,0.8)",
                 data: perDayData.map(d => d.newPayable)
             }],
 

@@ -5,6 +5,9 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>Khata</RootNamespace>
     <AssemblyName>Khata.Domain</AssemblyName>
+    <PackageId>skb50bd.khata.domain</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Shakib Haris</Authors>
     <!-- <NullableReferenceTypes>true</NullableReferenceTypes> -->
   </PropertyGroup>
 

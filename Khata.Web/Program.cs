@@ -22,7 +22,7 @@ namespace WebUI
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                //.ReadFrom.Configuration(Configuration)
+                .ReadFrom.Configuration(Configuration)
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
@@ -60,8 +60,6 @@ namespace WebUI
                           optional: true, reloadOnChange: true);
                 config.AddEnvironmentVariables();
             })
-            .UseKestrel()
-            .UseConfiguration(Configuration)
             .UseSerilog()
             .UseStartup<Startup>();
         }

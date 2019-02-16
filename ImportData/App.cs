@@ -27,7 +27,6 @@ namespace ImportData
         public async System.Threading.Tasks.Task RunAsync()
         {
             _logger.LogInformation($"App Running");
-            Dump.CreateDump();
             await Dump.InsertAllAsync(_db);
 
             System.Console.ReadKey();

@@ -8,6 +8,8 @@ using Khata.Domain;
 using Khata.DTOs;
 using Khata.ViewModels;
 
+using SharedLibrary;
+
 namespace Khata.Services.Mapper
 {
     public class MappingProfile : Profile
@@ -117,11 +119,7 @@ namespace Khata.Services.Mapper
                 .ForMember(
                     dest => dest.SaleDate,
                     opt => opt.MapFrom(
-                        src => DateTimeOffset.ParseExact(
-                            src.SaleDate,
-                            @"dd/MM/yyyy",
-                            CultureInfo.InvariantCulture.DateTimeFormat
-                        )
+                        src => src.SaleDate.ParseDate()
                    )
                 );
             CreateMap<SaleDto, SaleViewModel>().ForMember(

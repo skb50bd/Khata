@@ -4,18 +4,20 @@ using Khata.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Khata.Data.Persistence.Migrations
+namespace Khata.Data.Persistence.Migrations.SQLServer
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20190216104553_V_0_1_SQLServer")]
+    partial class V_0_1_SQLServer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1041,7 +1043,7 @@ namespace Khata.Data.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Khata.Domain.Supplier", "Supplier")
-                        .WithMany()
+                        .WithMany("PurchaseReturns")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

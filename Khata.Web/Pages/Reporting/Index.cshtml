@@ -1,0 +1,43 @@
+﻿@page
+@model WebUI.Pages.Reporting.IndexModel
+
+@{
+    ViewData["Title"] = "Reporting";
+}
+<div class="row text-center">
+    <div class="col">
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Customer Due Report</h5>
+                <p class="card-text">
+                    List the Customers who has outstanding debt to the business.
+                </p>
+                <a asp-page="/Reporting/DueReport" class="card-link">Click Here</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Supplier Due Report</h5>
+                <p class="card-text">
+                    List the Suppliers who the business owes to.
+                </p>
+                <a asp-page="/Reporting/SupplierDueReport" class="card-link">Click Here</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Stock Report</h5>
+                <p class="card-text">
+                    Check the current status of the Products.
+                </p>
+                <a asp-page="/Reporting/StockReport" class="card-link">Click Here</a>
+            </div>
+        </div>
+    </div>
+</div>

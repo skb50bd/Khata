@@ -20,22 +20,22 @@
         <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
             <div class="col-md-8">
                 <div id="brand">
-                    <h1 class="display-4">Brotal Incorporated</h1>
+                    <h1 class="display-4">@Model.Outlet.Title</h1>
                     <p class="lead">
-                        A place for product, a place for quality.
+                        @Model.Outlet.Slogan
                     </p>
                     <table class="table-hover">
                         <tr>
                             <td>Address &nbsp; &nbsp;</td>
-                            <td>: Somewhere with a very long name.</td>
+                            <td>: @Model.Outlet.Address</td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td>: <a href="mailto:info@brotal.net">info@brotal.net</a></td>
+                            <td>: <a href="mailto:@Model.Outlet.Email">@Model.Outlet.Email</a></td>
                         </tr>
                         <tr>
                             <td>Phone</td>
-                            <td>: +88001676203752</td>
+                            <td>: @Model.Outlet.Phone</td>
                         </tr>
                     </table>
                 </div>

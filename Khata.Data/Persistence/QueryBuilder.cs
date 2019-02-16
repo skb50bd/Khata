@@ -62,7 +62,7 @@ namespace Khata.Data.Persistence
                     DueCount = db.Customers.Count(c => !c.IsRemoved && c.Debt > 0),
                     TotalDue = db.Customers.Where(c => !c.IsRemoved).Sum(c => c.Debt),
 
-                    Cash = db.CashRegister.First().Balance,
+                    Cash = db.CashRegister.FirstOrDefault().Balance,
 
                     InventoryCount = db.Products.Count(p => !p.IsRemoved && p.Inventory.TotalStock > 0),
                     InventoryWorth = db.Products.Where(p => !p.IsRemoved).Sum(p => p.Inventory.TotalStock * p.Price.Purchase)

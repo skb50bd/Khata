@@ -52,22 +52,22 @@ namespace WebUI.Hubs
 
         public async Task UpdateChartData()
         {
-            Asset = (await _assetReport.Get()).First();
+            Asset = (await _assetReport.Get()).FirstOrDefault();
 
-            Liability = (await _liabilityReport.Get()).First();
+            Liability = (await _liabilityReport.Get()).FirstOrDefault();
 
             Income = new IncomeReports
             {
-                Daily = (await _dailyIncomeReports.Get()).First(),
-                Weekly = (await _weeklyIncomeReports.Get()).First(),
-                Monthly = (await _monthlyIncomeReports.Get()).First()
+                Daily = (await _dailyIncomeReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyIncomeReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyIncomeReports.Get()).FirstOrDefault()
             };
 
             Expense = new ExpenseReports
             {
-                Daily = (await _dailyExpenseReports.Get()).First(),
-                Weekly = (await _weeklyExpenseReports.Get()).First(),
-                Monthly = (await _monthlyExpenseReports.Get()).First()
+                Daily = (await _dailyExpenseReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyExpenseReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyExpenseReports.Get()).FirstOrDefault()
             };
 
             PerDayReports = await _perDayReports.Get();

@@ -1,4 +1,6 @@
-﻿using Khata.Domain;
+﻿using System.Linq;
+
+using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -116,6 +118,13 @@ namespace Khata.Data.Persistence
                         .HasForeignKey<PurchaseReturn>(r => r.PurchaseId)
                         .OnDelete(DeleteBehavior.Restrict);
             });
+
+            foreach (var property in modelBuilder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetProperties())
+            .Where(p => p.ClrType == typeof(decimal)))
+                    {
+                        property.Relational().ColumnType = "decimal(18, 6)";
+                    }
 
             return modelBuilder;
         }

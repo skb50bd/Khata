@@ -1,6 +1,7 @@
 ﻿#page {
-    /*min-width: 8.27in;*/
-    max-width: 5.8in;
+    font-size: 14pt; 
+    min-width: 8.27in;
+    /*max-width: 5.8in;*/
 }
 
 #top {

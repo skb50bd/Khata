@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Version>0.1.0</Version>
+    <Authors>Shakib Haris</Authors>
+    <Product>SharedLibrary</Product>
+    <PackageId>skb50bd.sharedlibrary</PackageId>
   </PropertyGroup>
 
 </Project>

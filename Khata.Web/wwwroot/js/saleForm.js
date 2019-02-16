@@ -1,22 +1,4 @@
-﻿const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-function toFixedIfNecessary(value, dp) {
-    return parseFloat(value).toFixed(dp);
-}
-
-function getDate() {
-    var date = new Date(),
-        year = date.getFullYear(),
-        month = (date.getMonth() + 1).toString(),
-        formatedMonth = month.length === 1 ? "0" + month : month,
-        day = date.getDate().toString(),
-        formatedDay = day.length === 1 ? "0" + day : day;
-    return formatedDay + "/" + formatedMonth + "/" + year;
-}
-
-const saleDate = document.getElementById('SaleDate');
+﻿const saleDate = document.getElementById('SaleDate');
 const saleType = document.getElementById('Type');
 const retail = document.getElementById('retail');
 const bulk = document.getElementById('bulk');
@@ -273,9 +255,10 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    if (saleDate.value === '')
-        saleDate.value = getDate();
+    if (saleDate.value === '') {
+        saleDate.value = getDate(new Date());
 
+    }
     if (isNaN(itemsAdded.valueAsNumber))
         itemsAdded.value = 0;
 
@@ -393,6 +376,13 @@ $(document).ready(function () {
             lineItemSelector.value = lineitem.name;
         }
     });
+    
+
+    document.getElementById('sale-form')
+        .addEventListener('reset', function () {
+            customerBriefInfo.innerHTML = "";
+            cart.innerHTML = "";
+        });
 
     registerNewCustomer.addEventListener('change', function () {
         if (this.checked === true) {
