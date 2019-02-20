@@ -8,7 +8,7 @@ using Khata.Domain;
 using Khata.DTOs;
 using Khata.ViewModels;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Services.Mapper
 {

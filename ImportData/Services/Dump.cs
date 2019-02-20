@@ -49,6 +49,9 @@ namespace ImportData.Services
                 return prods;
             }
         }
+
+        static decimal CashBalance { get; set; }
+
         static readonly JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
         static readonly IMongoDatabase Mongo = new MongoClient().GetDatabase("BShopManDb");
@@ -316,6 +319,19 @@ namespace ImportData.Services
                 }
                 #endregion
 
+                #region Cash
+                GetCashData();
+                Console.Write("Cash? (enter N to cancel): ");
+                ans = Console.ReadLine();
+                if (ans.ToUpperInvariant() != "N")
+                {
+                    var cr = await db.CashRegister.Get();
+                    cr.Balance = CashBalance;
+                }
+                #endregion
+
+                db.Complete();
+
                 Console.WriteLine("Everything Added...");
             }
         }
@@ -327,6 +343,13 @@ namespace ImportData.Services
             Console.WriteLine($"{Shops.Count()} Shops Found");
             foreach (var shop in Shops)
                 System.IO.Directory.CreateDirectory(workingDir + @"\" + shop);
+        }
+
+        private static void GetCashData()
+        {
+            var cashCollection = Mongo.GetCollection<BsonDocument>("Cash").Find(new BsonDocument()).ToList();
+            CashBalance = cashCollection.ToArray().FirstOrDefault()["current"].ToDecimal();
+            Console.WriteLine($"Current Balance {CashBalance}");
         }
 
         private static void DumpCustomers()

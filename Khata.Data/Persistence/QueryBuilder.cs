@@ -159,6 +159,12 @@ namespace Khata.Data.Persistence
                     EmployeePaymentAmount = db.Withdrawals.Where(d => d.TableName == "EmployeePayment"
                             && d.Metadata.CreationTime >= DateTime.Today
                         ).Sum(d => d.Amount),
+                    RefundCount = db.Refunds.Where(d => d.TableName == "Refund"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Count(),
+                    RefundAmount = db.Refunds.Where(d => d.TableName == "Refund"
+                            && d.Metadata.CreationTime >= DateTime.Today
+                        ).Sum(d => d.Amount),
                     WithdrawalCount = db.Withdrawals.Where(
                         d => d.TableName == "Withdrawal"
                             && d.Metadata.CreationTime >= DateTime.Today
@@ -200,6 +206,14 @@ namespace Khata.Data.Persistence
                     WithdrawalAmount = db.Withdrawals.Where(d => d.TableName == "Withdrawal"
                             && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
                         ).Sum(d => d.Amount),
+                    RefundCount = db.Withdrawals.Where(
+                        d => d.TableName == "Refund"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Count(),
+                    RefundAmount = db.Withdrawals.Where(
+                        d => d.TableName == "Refund"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-7)
+                        ).Sum(d => d.Amount),
                 })
             );
 
@@ -232,6 +246,14 @@ namespace Khata.Data.Persistence
                             && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
                         ).Count(),
                     WithdrawalAmount = db.Withdrawals.Where(d => d.TableName == "Withdrawal"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Sum(d => d.Amount),
+                    RefundCount = db.Withdrawals.Where(
+                        d => d.TableName == "Refund"
+                            && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
+                        ).Count(),
+                    RefundAmount = db.Withdrawals.Where(
+                        d => d.TableName == "Refund"
                             && d.Metadata.CreationTime >= DateTime.Today.AddDays(-30)
                         ).Sum(d => d.Amount),
                 })

@@ -1,41 +1,64 @@
-﻿@model Khata.Queries.IncomeBase
+﻿@model WebUI.Pages.Dashboard.IncomeReportWithSpan
 
-<div class="card mb-3"
-     style="max-width: 24rem;">
+<div class="card widget-tall mb-3">
     <div class="card-header">
         Income
     </div>
     <div class="card-body">
-        <canvas class="w-100 income-chart" height="200"></canvas>
-        <p class="card-title lead text-right chart-info-big">
-            @((Model.DebtReceived + Model.SaleReceived + Model.DepositAmount).ToString("C2"))
+        <canvas id="@Model.Span-income-chart" height="200"></canvas>
+        <p class="card-title lead text-right chart-info-big"
+           id="@Model.Span-income-total">
+            @((Model.Income.DebtReceived 
+                + Model.Income.SaleReceived 
+                + Model.Income.DepositAmount
+            ).ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
                     <th>Sales</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.SaleCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-sales">
+                        @Html.DisplayFor(model => Model.Income.SaleCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Sale Received</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.SaleReceived)</td>
+                    <td class="text-right"
+                        id="@Model.Span-sale-receives">
+                        @Html.DisplayFor(model => Model.Income.SaleReceived)
+                    </td>
                 </tr>
                 <tr>
-                    <th>Debt Received</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DebtPaymentCount)</td>
+                    <th>Debt Receive Count</th>
+                    <td class="text-right"
+                        id="@Model.Span-debt-receive-count">
+                        @Html.DisplayFor(model => Model.Income.DebtPaymentCount)
+                    </td>
                 </tr>
                 <tr>
-                    <th>Debt Received</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DebtReceived)</td>
+                    <th>Debt Received Amount</th>
+                    <td class="text-right"
+                        id="@Model.Span-debt-receive-amount">
+                        @Html.DisplayFor(model => Model.Income.DebtReceived)
+                    </td>
                 </tr>
                 <tr>
                     <th>Deposit</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DepositsCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-deposits-count">
+                        @Html.DisplayFor(model => Model.Income.DepositsCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Deposits Total</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DepositAmount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-deposits-amount">
+                        @Html.DisplayFor(model => Model.Income.DepositAmount)
+                    </td>
                 </tr>
+                <tr><th>&nbsp;</th><td></td></tr>
+                <tr><th>&nbsp;</th><td></td></tr>
                 <tr><th>&nbsp;</th><td></td></tr>
                 <tr><th>&nbsp;</th><td></td></tr>
             </tbody>

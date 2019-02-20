@@ -6,7 +6,7 @@ using Khata.DTOs;
 using Khata.Services.PageFilterSort;
 using Khata.ViewModels;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Services.CRUD
 {

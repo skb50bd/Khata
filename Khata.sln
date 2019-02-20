@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Khata", "Khata.Domain\Khata.csproj", "{53C9567F-A987-40A7-BCF7-C7D8D23CD371}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "Khata.Web\WebUI.csproj", "{17BA53BE-75B7-4283-9B9A-4A670E7D482E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Khata.Services\Services.csproj", "{262F7466-F93D-4030-93C4-4F13FE660E8E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{D966956C-F32D-4CB6-9CD4-99BFB21659C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportData", "ImportData\ImportData.csproj", "{FE756418-988D-4514-895F-08CC5A9762CD}"
 EndProject
@@ -37,10 +35,6 @@ Global
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{262F7466-F93D-4030-93C4-4F13FE660E8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D966956C-F32D-4CB6-9CD4-99BFB21659C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Release|Any CPU.ActiveCfg = Release|Any CPU

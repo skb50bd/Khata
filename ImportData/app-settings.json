@@ -1,6 +1,5 @@
 {
-  "DefaultConnection": "Server=.\\SQLEXPRESS;Database=Khata;Trusted_Connection=True;MultipleActiveResultSets=true",
-  //"DefaultConnection": "Data Source:D:\\Khata.db",
+  "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=Khata;Trusted_Connection=True;MultipleActiveResultSets=true",
   "Configuration":
   {
     "ConsoleTitle": "Khata Data Importer"

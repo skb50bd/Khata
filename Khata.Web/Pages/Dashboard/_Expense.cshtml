@@ -1,52 +1,91 @@
-﻿@model Khata.Queries.ExpenseBase
+﻿@model WebUI.Pages.Dashboard.ExpenseReportWithSpan
 
-<div class="card mb-3"
-     style="max-width: 24rem;">
+<div class="card widget-tall mb-3">
     <div class="card-header">
         Expense
     </div>
     <div class="card-body">
-        <canvas class="w-100 expense-chart" height="200"></canvas>
-        <p class="card-title lead text-right chart-info-big">
-            @((Model.PurchasePaid
-                + Model.SupplierPaymentAmount
-                + Model.EmployeePaymentAmount
-                + Model.WithdrawalAmount)
+        <canvas id="@Model.Span-expense-chart" height="200"></canvas>
+        <p class="card-title lead text-right chart-info-big"
+           id="@Model.Span-expense-total">
+            @((Model.Expense.PurchasePaid
+                + Model.Expense.SupplierPaymentAmount
+                + Model.Expense.EmployeePaymentAmount
+                + Model.Expense.WithdrawalAmount
+                + Model.Expense.RefundAmount)
             .ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
                     <th>Purchases</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.PurchaseCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-purchases">
+                        @Html.DisplayFor(model => Model.Expense.PurchaseCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Purchase Paid</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.PurchasePaid)</td>
+                    <td class="text-right"
+                        id="@Model.Span-purchase-paid">
+                        @Html.DisplayFor(model => Model.Expense.PurchasePaid)
+                    </td>
                 </tr>
                 <tr>
                     <th>Supplier Payments</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.SupplierPaymentCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-supplier-payments">
+                        @Html.DisplayFor(model => Model.Expense.SupplierPaymentCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Supplier Paid</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.SupplierPaymentAmount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-supplier-paid">
+                        @Html.DisplayFor(model => Model.Expense.SupplierPaymentAmount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Employee Payments</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.EmployeePaymentCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-employee-payments">
+                        @Html.DisplayFor(model => Model.Expense.EmployeePaymentCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Employee Paid</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.EmployeePaymentAmount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-employee-paid">
+                        @Html.DisplayFor(model => Model.Expense.EmployeePaymentAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Refund</th>
+                    <td class="text-right"
+                        id="@Model.Span-refund-count">
+                        @Html.DisplayFor(model => Model.Expense.RefundCount)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Refund Total</th>
+                    <td class="text-right"
+                        id="@Model.Span-refund-amount">
+                        @Html.DisplayFor(model => Model.Expense.RefundAmount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Withrawals</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.WithdrawalCount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-withdrawals-count">
+                        @Html.DisplayFor(model => Model.Expense.WithdrawalCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Withdrawal Total</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.WithdrawalAmount)</td>
+                    <td class="text-right"
+                        id="@Model.Span-withdrawals-amount">
+                        @Html.DisplayFor(model => Model.Expense.WithdrawalAmount)
+                    </td>
                 </tr>
             </tbody>
         </table>

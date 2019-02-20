@@ -4,30 +4,46 @@
     <div class="card-header">Assets</div>
     <div class="card-body">
         <canvas id="assetChart" class="" height="200"></canvas>
-        <p class="card-title lead text-right chart-info-big">
+        <p class="card-title lead text-right chart-info-big"
+           id="asset-total">
             @((Model.Cash + Model.InventoryWorth + Model.TotalDue).ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
                     <th>Customers with Due</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DueCount)</td>
+                    <td class="text-right"
+                        id="customers-with-due">
+                        @Html.DisplayFor(model => Model.DueCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Due Amount</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.TotalDue)</td>
+                    <td class="text-right"
+                        id="due-amount">
+                        @Html.DisplayFor(model => Model.TotalDue)
+                    </td>
                 </tr>
                 <tr>
                     <th>Cash</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.Cash)</td>
+                    <td class="text-right"
+                        id="cash-in-hand">
+                        @Html.DisplayFor(model => Model.Cash)
+                    </td>
                 </tr>
                 <tr>
                     <th>Products in Stock</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.InventoryCount)</td>
+                    <td class="text-right"
+                        id="products-in-stock">
+                        @Html.DisplayFor(model => Model.InventoryCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Purchase Total</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.InventoryWorth)</td>
+                    <td class="text-right"
+                        id="products-total-cost">
+                        @Html.DisplayFor(model => Model.InventoryWorth)
+                    </td>
                 </tr>
             </tbody>
         </table>

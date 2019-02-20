@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Khata.Domain;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Data.Core
 {

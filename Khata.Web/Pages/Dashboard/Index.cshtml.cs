@@ -72,4 +72,14 @@ namespace WebUI.Pages.Dashboard
             var c = PerDayReports;
         }
     }
+    public struct IncomeReportWithSpan
+    {
+        public IncomeBase Income { get; set; }
+        public string Span { get; set; }
+    }
+    public struct ExpenseReportWithSpan
+    {
+        public ExpenseBase Expense { get; set; }
+        public string Span { get; set; }
+    }
 }

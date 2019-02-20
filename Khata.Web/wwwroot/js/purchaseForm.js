@@ -1,12 +1,4 @@
-﻿const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-function toFixedIfNecessary(value, dp) {
-    return parseFloat(value).toFixed(dp);
-}
-
-const purchaseDate = document.getElementById('PurchaseDate');
+﻿const purchaseDate = document.getElementById('PurchaseDate');
 const retail = document.getElementById('retail');
 const bulk = document.getElementById('bulk');
 const supplierId = document.getElementById('SupplierId');

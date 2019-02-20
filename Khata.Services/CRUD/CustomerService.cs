@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Services.CRUD
 {

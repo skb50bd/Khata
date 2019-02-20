@@ -4,26 +4,39 @@
     <div class="card-header">Liabilities</div>
     <div class="card-body">
         <canvas id="liabilityChart" class="" height="200"></canvas>
-        <p class="card-title lead text-right chart-info-big">
+        <p class="card-title lead text-right chart-info-big"
+           id="liability-total">
             @((Model.UnpaidAmount + Model.TotalDue).ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
                     <th>Suppliers with Due</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.DueCount)</td>
+                    <td class="text-right"
+                        id="suppliers-with-due">
+                        @Html.DisplayFor(model => Model.DueCount)
+                    </td>
                 </tr>
                 <tr>
                     <th>Due Amount</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.TotalDue)</td>
+                    <td class="text-right"
+                        id="total-supplier-due">
+                        @Html.DisplayFor(model => Model.TotalDue)
+                    </td>
                 </tr>
                 <tr>
                     <th>Unpaid Employees</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.UnpaidEmployees)</td>
+                    <td class="text-right"
+                        id="unpaid-employees">
+                        @Html.DisplayFor(model => Model.UnpaidEmployees)
+                    </td>
                 </tr>
                 <tr>
                     <th>Unpaid Amount</th>
-                    <td class="text-right">@Html.DisplayFor(model => Model.UnpaidAmount)</td>
+                    <td class="text-right"
+                        id="unpaid-amount">
+                        @Html.DisplayFor(model => Model.UnpaidAmount)
+                    </td>
                 </tr>
                 <tr><th>&nbsp;</th><td></td></tr>
             </tbody>

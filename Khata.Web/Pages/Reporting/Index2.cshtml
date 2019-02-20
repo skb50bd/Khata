@@ -1,0 +1,60 @@
+﻿@page
+@model WebUI.Pages.Reporting.Index2Model
+@{
+    ViewData["Title"] = "Reporting";
+}
+
+<div class="row">
+    <div class="col-12">
+        <form method="post"
+              asp-page-handler="WithDateRange"
+              class="form-inline">
+            <input type="text"
+                   asp-for="FromText"
+                   class="form-control datepicker mb-2 mr-sm-2"
+                   id="from"
+                   placeholder="From" autocomplete="off">
+            <input type="text"
+                   asp-for="ToText"
+                   class="form-control datepicker mb-2 mr-sm-2"
+                   id="to"
+                   placeholder="To" autocomplete="off">
+            <button type="submit" class="btn btn-outline-primary mb-2">Go</button>
+        </form>
+    </div>
+    <div class="col-12">
+        <h2 class="h2">Sales</h2>
+        <table class="table table-sm table-borderless table-hover">
+            <tbody>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesCount)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesCount)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.CostOfGoodsSold)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.CostOfGoodsSold)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PriceOfGoodsSold)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.PriceOfGoodsSold)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesProfit)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesProfit)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesDue)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesDue)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesProfitReceived)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesProfitReceived)</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="accordion" id="sales-list">
+
+        </div>
+    </div>
+</div>
+

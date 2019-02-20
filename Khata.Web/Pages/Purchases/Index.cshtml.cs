@@ -7,7 +7,7 @@ using Khata.Services.PageFilterSort;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace WebUI.Pages.Purchases
 {

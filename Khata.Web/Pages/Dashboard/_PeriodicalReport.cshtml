@@ -1,4 +1,5 @@
-﻿@model WebUI.Pages.Dashboard.IndexModel
+﻿@using WebUI.Pages.Dashboard
+@model IndexModel
 
 <ul class="nav nav-pills mt-3"
     id="income-tabs"
@@ -40,19 +41,49 @@
 </ul>
 
 
-
 <div class="tab-content" id="tab-contents">
-
+    @{
+        var dailyIncome = new IncomeReportWithSpan
+        {
+            Span = "daily",
+            Income = Model.IncomeReports.Daily
+        };
+        var dailyExpense = new ExpenseReportWithSpan
+        {
+            Span = "daily",
+            Expense = Model.ExpenseReports.Daily
+        };
+        var weeklyIncome = new IncomeReportWithSpan
+        {
+            Span = "weekly",
+            Income = Model.IncomeReports.Weekly
+        };
+        var weeklyExpense = new ExpenseReportWithSpan
+        {
+            Span = "weekly",
+            Expense = Model.ExpenseReports.Weekly
+        };
+        var monthlyIncome = new IncomeReportWithSpan
+        {
+            Span = "monthly",
+            Income = Model.IncomeReports.Monthly
+        };
+        var monthlyExpense = new ExpenseReportWithSpan
+        {
+            Span = "monthly",
+            Expense = Model.ExpenseReports.Monthly
+        };
+    }
     <div class="tab-pane fade show active"
          id="daily"
          role="tabpanel"
          aria-labelledby="daily-tab">
         <div class="row mt-4">
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Income" for="IncomeReports.Daily" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Income" for="@dailyIncome" />
             </div>
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Expense" for="ExpenseReports.Daily" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Expense" for="@dailyExpense" />
             </div>
         </div>
     </div>
@@ -62,11 +93,11 @@
          role="tabpanel"
          aria-labelledby="weekly-tab">
         <div class="row mt-4">
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Income" for="IncomeReports.Weekly" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Income" for="@weeklyIncome" />
             </div>
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Expense" for="ExpenseReports.Weekly" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Expense" for="@weeklyExpense" />
             </div>
         </div>
 
@@ -77,11 +108,11 @@
          role="tabpanel"
          aria-labelledby="monthly-tab">
         <div class="row mt-4">
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Income" for="IncomeReports.Monthly" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Income" for="@monthlyIncome" />
             </div>
-            <div class="col-lg-4 col-md-6">
-                <partial name="_Expense" for="ExpenseReports.Monthly" />
+            <div class="col-lg-4 col-md-6 widget">
+                <partial name="_Expense" for="@monthlyExpense" />
             </div>
         </div>
     </div>

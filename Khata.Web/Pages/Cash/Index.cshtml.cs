@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 using WebUI.Hubs;
 
@@ -64,16 +64,19 @@ namespace WebUI.Pages.Cash
 
         public async Task<IActionResult> OnPostWithDateRangeAsync()
         {
+            if (string.IsNullOrWhiteSpace(FromText)
+                || string.IsNullOrWhiteSpace(ToText))
+                return Page();
             Cash = await _cashRegister.Get();
             Deposits =
                 await _transactions.GetDeposits(
                     FromText.ParseDate(),
-                    ToText.ParseDate()
+                    ToText.ParseDate().AddMinutes(23 * 60 + 59)
                 );
             Withdrawals =
                 await _transactions.GetWithdrawals(
                     FromText.ParseDate(),
-                    ToText.ParseDate()
+                    ToText.ParseDate().AddMinutes(23 * 60 + 59)
                 );
 
             return Page();

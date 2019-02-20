@@ -164,6 +164,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Brotal.Extensions" Version="0.1.0" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
@@ -180,7 +182,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Khata.Domain\Khata.csproj" />
     <ProjectReference Include="..\Khata.Services\Services.csproj" />
-    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
 

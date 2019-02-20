@@ -6,10 +6,7 @@
 
 <h1 class="display-4">Dashboard</h1>
 
-
-@*<partial name="_PeriodicalReport" for="@Model" />*@
-
-<div class="row">
+<div class="row pt-3">
     <div class="col-lg-8 col-md-12 mb-3">
         <div class="card w-100">
             <div class="card-body">
@@ -18,7 +15,11 @@
         </div>
     </div>
 </div>
+<hr />
 
+<partial name="_PeriodicalReport" for="@Model" />
+
+<hr />
 <div class="row">
     <div class="col-lg-4 col-md-6 widget">
         <partial name="_Assets" for="AssetReport" />

@@ -9,7 +9,7 @@ using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Data.Persistence
 {

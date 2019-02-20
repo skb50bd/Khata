@@ -2,6 +2,15 @@
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 
+const formatter = new Intl.NumberFormat('en-BD', {
+    style: 'currency',
+    currency: 'BDT',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
+
 function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }

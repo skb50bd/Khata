@@ -9,7 +9,7 @@ using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
-using SharedLibrary;
+using Brotal.Extensions;
 
 namespace Khata.Data.Persistence
 {
@@ -45,7 +45,6 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Cart)
                 .Include(s => s.Customer)
-                .Include(s => s.Metadata)
                 .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -59,7 +58,6 @@ namespace Khata.Data.Persistence
             => await Context.Sales
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
-                        .Include(d => d.Metadata)
                         .FirstOrDefaultAsync(s => s.Id == id);
 
         public async Task<IEnumerable<Sale>> GetSavedSales()
@@ -67,7 +65,6 @@ namespace Khata.Data.Persistence
                         .AsNoTracking()
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
-                        .Include(d => d.Metadata)
                         .ToListAsync();
 
         public async Task<Sale> GetSavedSale(int id)
@@ -75,7 +72,6 @@ namespace Khata.Data.Persistence
                         .AsNoTracking()
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
-                        .Include(d => d.Metadata)
                         .FirstOrDefaultAsync(ss => ss.Id == id);
 
         public async Task DeleteSavedSale(int id)

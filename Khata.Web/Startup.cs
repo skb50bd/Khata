@@ -64,6 +64,7 @@ namespace WebUI
                 options.AddPolicy("UserRights", policy => policy.RequireRole("User"));
             });
 
+            //services.AddWebOptimizer();
             services.AddMvc()
                 .AddJsonOptions(options =>
                      {
@@ -131,19 +132,16 @@ namespace WebUI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                //{
-                //    HotModuleReplacement = true
-                //});
             }
             else
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                // app.UseHsts();
+                app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            //app.UseWebOptimizer();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
