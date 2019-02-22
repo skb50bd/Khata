@@ -1,7 +1,6 @@
 ﻿@page
 @using WebUI.Pages.Components.Pagination
 @using WebUI.Pages.Components.Search
-@using WebUI.Pages.SalaryPayments.Components.SalaryPaymentsList
 @model WebUI.Pages.SalaryPayments.IndexModel
 
 @{
@@ -32,9 +31,7 @@
 }
 
 <div>
-    @await Component.InvokeAsync(
-        nameof(SalaryPaymentsList),
-        new { salaryPayments = Model.SalaryPayments })
+    <partial name="_SalaryPaymentsList" for="SalaryPayments" />
 
     @await  Component.InvokeAsync(
         nameof(Pagination),

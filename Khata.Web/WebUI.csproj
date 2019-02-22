@@ -214,4 +214,11 @@
     <TypeScriptCompile Include="wwwroot\lib\signalr\dist\esm\XhrHttpClient.d.ts" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="Pages\Shared\_SalesList.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

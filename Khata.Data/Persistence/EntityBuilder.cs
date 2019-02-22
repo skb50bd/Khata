@@ -10,19 +10,9 @@ namespace Khata.Data.Persistence
     {
         public static ModelBuilder BuildEntities(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Owned<Metadata>();
             modelBuilder.Owned<Pricing>();
             modelBuilder.Owned<Inventory>();
             modelBuilder.Owned<PaymentInfo>();
-
-            modelBuilder.Entity<Metadata>(entity =>
-            {
-                entity.HasKey(m => m.Id);
-                entity.Property(m => m.Creator).HasDefaultValue("admin");
-                entity.Property(m => m.Modifier).HasDefaultValue("admin");
-                entity.Property(m => m.CreationTime).HasDefaultValueSql("GETDATE()");
-                entity.Property(m => m.ModificationTime).HasDefaultValueSql("GETDATE()");
-            });
 
             modelBuilder.Entity<DebtPayment>(entity =>
             {
@@ -125,6 +115,14 @@ namespace Khata.Data.Persistence
                     {
                         property.Relational().ColumnType = "decimal(18, 6)";
                     }
+
+            var metas =
+                modelBuilder.Model.GetEntityTypes().SelectMany(
+                    d => d.GetNavigations())
+                        .Where(p => p.Name == nameof(Document.Metadata));
+
+            foreach (var p in metas)
+                p.IsEagerLoaded = true;
 
             return modelBuilder;
         }

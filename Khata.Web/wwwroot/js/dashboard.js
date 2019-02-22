@@ -223,7 +223,7 @@ function setPeriodicalData(p, incomeData, expenseData) {
     document.getElementById(p + '-deposits-count').innerHTML = incomeData.depositsCount;
     document.getElementById(p + '-deposits-amount').innerHTML = formatter.format(incomeData.depositAmount);
     
-    document.getElementById(p + 'expense-total').innerHTML
+    document.getElementById(p + '-expense-total').innerHTML
         = formatter.format(expenseData.supplierPaymentAmount
             + expenseData.purchasePaid
             + expenseData.employeePaymentAmount

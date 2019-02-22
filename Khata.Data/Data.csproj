@@ -10,12 +10,6 @@
     <Company>Shakib Haris</Company>
     <Product>Khata.Data</Product>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Persistence\Migrations\SQLite\**" />
-    <EmbeddedResource Remove="Persistence\Migrations\SQLite\**" />
-    <None Remove="Persistence\Migrations\SQLite\**" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.2" />
@@ -46,6 +40,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\SQLServer\" />
   </ItemGroup>
 
 </Project>

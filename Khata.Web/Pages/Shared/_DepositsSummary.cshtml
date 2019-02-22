@@ -1,8 +1,7 @@
 ﻿@using Khata.Domain
-@using Brotal.Extensions
 @model IEnumerable<Deposit>
 
-<table class="table table-sm table-hover table-striped">
+<table class="table table-sm table-hover">
     <thead>
         <tr class="table-success">
             <th colspan="3">
@@ -12,6 +11,9 @@
                 <span class="badge badge-success">@(Model.Count())</span>
             </td>
         </tr>
+    </thead>
+    <tbody>
+        
         <tr>
             <th colspan="2">Sales</th>
             <td colspan="2" class="text-right">
@@ -19,7 +21,7 @@
                     @(Model.Count(d => d.TableName == nameof(Sale)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(Sale))
-                       .Sum(d => d.Amount).ToString("C2"))
+                                                               .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
@@ -29,7 +31,7 @@
                     @(Model.Count(d => d.TableName == nameof(DebtPayment)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(DebtPayment))
-                       .Sum(d => d.Amount).ToString("C2"))
+                                                               .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
@@ -39,7 +41,7 @@
                     @(Model.Count(d => d.TableName == nameof(PurchaseReturn)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(PurchaseReturn))
-                       .Sum(d => d.Amount).ToString("C2"))
+                                                               .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr><td colspan="4">&nbsp;</td></tr>
@@ -50,7 +52,7 @@
                     @(Model.Count(d => d.TableName == nameof(Deposit)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(Deposit))
-                       .Sum(d => d.Amount).ToString("C2"))
+                                                               .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr class="table-active">
@@ -59,38 +61,5 @@
                 @(Model.Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
-        <tr class="thead-dark">
-            <th>Id</th>
-            <th>Type</th>
-            <th class="text-right">Amount</th>
-            <th class="text-right">Created At</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var d in Model)
-        {
-            string content;
-            {
-                content = "<table class=\"table table-sm\">"
-                + "<tbody>" + (d.RowId is null ? "" : ("<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
-                + "<tr><td><strong>Amount</strong></td><td> " + d.Amount + "</td></tr>"
-                + "<tr><td><strong>Description</strong></td><td> " + d.Description + "</td></tr>"
-                + "</tbody><strong></table>";
-            }
-            <tr class="js-clickable-row"
-                data-href="@("../" + d.TableName + "s/Details?id=" + (d.RowId ?? d.Id))"
-                data-toggle="popover"
-                data-trigger="hover"
-                data-html="true"
-                data-placement="top"
-                title="@d.TableName.FromPascalCase()"
-                data-content="@content">
-
-                <td>@d.RowId</td>
-                <td>@d.TableName.FromPascalCase()</td>
-                <td class="text-right">@(d.Amount.ToString("C2"))</td>
-                <td class="text-right">@d.Metadata.ModifiedAt</td>
-            </tr>
-        }
     </tbody>
 </table>

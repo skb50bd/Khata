@@ -2,7 +2,7 @@
 @using Brotal.Extensions
 @model IEnumerable<Withdrawal>
 
-<table class="table table-sm table-hover table-striped">
+<table class="table table-sm table-hover">
     <thead>
         <tr class="table-danger">
             <th colspan="3">
@@ -12,91 +12,64 @@
                 <span class="badge badge-danger">@(Model.Count())</span>
             </td>
         </tr>
+        </thead>
+    <tbody>
         <tr>
-            <td colspan="2">Expenses</td>
+            <th colspan="2">Expenses</th>
             <td colspan="2" class="text-right">
                 <span class="badge badge-dark">
                     @(Model.Count(d => d.TableName == nameof(Expense)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(Expense))
-                                     .Sum(d => d.Amount).ToString("C2"))
+                                                                     .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
-            <td colspan="2">Purchases</td>
+            <th colspan="2">Purchases</th>
             <td colspan="2" class="text-right">
                 <span class="badge badge-dark">
                     @(Model.Count(d => d.TableName == nameof(Purchase)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(Purchase))
-                                    .Sum(d => d.Amount).ToString("C2"))
+                                                                    .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
-            <td colspan="2">Supplier Payments</td>
+            <th colspan="2">Supplier Payments</th>
             <td colspan="2" class="text-right">
                 <span class="badge badge-dark">
                     @(Model.Count(d => d.TableName == nameof(SupplierPayment)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(SupplierPayment))
-                                    .Sum(d => d.Amount).ToString("C2"))
+                                                                    .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
-            <td colspan="2">Salary Payments</td>
+            <th colspan="2">Salary Payments</th>
             <td colspan="2" class="text-right">
                 <span class="badge badge-dark">
                     @(Model.Count(d => d.TableName == nameof(SalaryPayment)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(SalaryPayment))
-                                    .Sum(d => d.Amount).ToString("C2"))
+                                                                    .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr>
-            <td colspan="2">Others</td>
+            <th colspan="2">Others</th>
             <td colspan="2" class="text-right">
                 <span class="badge badge-dark">
                     @(Model.Count(d => d.TableName == nameof(Withdrawal)))
                 </span>
                 @(Model.Where(d => d.TableName == nameof(Withdrawal))
-                                    .Sum(d => d.Amount).ToString("C2"))
+                                                                    .Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
         <tr class="table-active">
-            <td colspan="2">Total</td>
+            <th colspan="2">Total</th>
             <td colspan="2" class="text-right">
                 @(Model.Sum(d => d.Amount).ToString("C2"))
             </td>
         </tr>
-        <tr class="thead-dark">
-            <th>Id</th>
-            <th>Type</th>
-            <th class="text-right">Amount</th>
-            <th class="text-right">Created At</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var d in Model)
-        {
-            var content = "<table class=\"table table-sm\">"
-            + "<tbody>" + (d.RowId is null ? "" : ("<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
-            + "<tr><td><strong>Amount</strong></td><td> " + d.Amount + "</td></tr>"
-            + "<tr><td><strong>Description</strong></td><td> " + d.Description + "</td></tr>"
-            + "</tbody></table>";
-
-            <tr class="js-clickable-row"
-                data-href="@("../" + d.TableName + "s/Details?id=" + (d.RowId ?? d.Id))"
-                data-toggle="popover"
-                data-trigger="hover"
-                data-html="true"
-                data-placement="top"
-                title="@d.TableName.FromPascalCase()"
-                data-content="@content">
-                <td>@d.RowId</td>
-                <td>@d.TableName.FromPascalCase()</td>
-                <td class="text-right">@(d.Amount.ToString("C2"))</td>
-                <td class="text-right">@d.Metadata.ModifiedAt</td>
-            </tr>
-        }
+        
     </tbody>
 </table>

@@ -26,6 +26,6 @@ namespace Khata.Data.Persistence
         }
 
         public virtual async Task<CashRegister> Get()
-            => await Context.CashRegister.Include(c => c.Metadata).FirstAsync();
+            => await Context.CashRegister.Include(c => c.Metadata).FirstOrDefaultAsync();
     }
 }

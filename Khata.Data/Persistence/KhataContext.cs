@@ -25,29 +25,81 @@ namespace Khata.Data.Persistence
                 if (pm.Any())
                 {
                     Database.Migrate();
+
                     #region PerDayReportView
                     Database.ExecuteSqlCommand(@"
-                    DROP VIEW IF EXISTS PerDayReport
-                ");
+                        DROP VIEW IF EXISTS PerDayReport
+                    ");
                     Database.ExecuteSqlCommand(@"
-                    CREATE VIEW PerDayReport AS
-                        SELECT TOP(30) * FROM (
-                            SELECT  TOP(30) 
-                                    CAST(m.CreationTime AS DATE) as 'Date',
-                                    COALESCE(SUM(d.Amount), 0) AS CashIn, 
-                                    COALESCE(SUM(w.Amount), 0) AS CashOut, 
-                                    COALESCE(SUM(s.Payment_Subtotal - s.Payment_DiscountCash - s.Payment_Paid), 0) AS NewReceivable,
-                                    COALESCE(SUM(p.Payment_Subtotal - p.Payment_DiscountCash - p.Payment_Paid + COALESCE(si.Amount, 0)), 0) AS NewPayable
-                            FROM Metadata m
-                            FULL JOIN Deposits d ON d.MetadataId = m.Id
-                            FULL JOIN Withdrawals w ON w.MetadataId = m.Id
-                            FULL JOIN Sale s ON s.MetadataId = m.Id 
-                            FULL JOIN Purchases p ON p.MetadataId = m.Id
-                            FULL JOIN SalaryIssues si ON si.MetadataId = m.Id
-                            GROUP BY CAST(m.CreationTime AS DATE)
-                            ORDER BY 'Date' DESC
-                        ) SQ ORDER BY 'Date' ASC
-                ");
+                        CREATE VIEW PerDayReport AS
+                            SELECT TOP(30) * FROM (
+                                SELECT  TOP(30) 
+                                        CAST(m.CreationTime AS DATE) as 'Date',
+                                        COALESCE(SUM(d.Amount), 0) AS CashIn, 
+                                        COALESCE(SUM(w.Amount), 0) AS CashOut, 
+                                        COALESCE(SUM(s.Payment_Subtotal - s.Payment_DiscountCash - s.Payment_Paid), 0) AS NewReceivable,
+                                        COALESCE(SUM(p.Payment_Subtotal - p.Payment_DiscountCash - p.Payment_Paid + COALESCE(si.Amount, 0)), 0) AS NewPayable
+                                FROM Metadata m
+                                FULL JOIN Deposits d ON d.MetadataId = m.Id
+                                FULL JOIN Withdrawals w ON w.MetadataId = m.Id
+                                FULL JOIN Sale s ON s.MetadataId = m.Id 
+                                FULL JOIN Purchases p ON p.MetadataId = m.Id
+                                FULL JOIN SalaryIssues si ON si.MetadataId = m.Id
+                                GROUP BY CAST(m.CreationTime AS DATE)
+                                ORDER BY 'Date' DESC
+                            ) SQ ORDER BY 'Date' ASC
+                    ");
+                    #endregion
+
+                    #region Periodical Reports
+                    Database.ExecuteSqlCommand(@"
+                        CREATE OR ALTER FUNCTION dbo.incomeReport (@fromDate DATETIMEOFFSET(7), @toDate DATETIMEOFFSET(7))
+                            RETURNS TABLE
+                            AS
+                            RETURN
+                            (
+                                SELECT CAST(@fromDate AS DATE) as 'FromDate',
+                                        CAST(@toDate AS DATE) as 'ToDate',
+                                        COUNT(s.Id) AS SaleCount, 
+                                        COALESCE(SUM(s.Payment_Paid), 0) AS SaleReceived, 
+                                        COUNT(dp.Id) AS DebtPaymentCount, 
+                                        COALESCE(SUM(dp.Amount), 0) AS DebtReceived, 
+                                        COUNT(pr.Id) AS PurchaseReturnCount, 
+                                        COALESCE(SUM(pr.CashBack), 0) AS PurchaseReturnReceived, 
+                                        COUNT(d.Id)AS DepositCount, 
+                                        COALESCE(SUM(d.Amount), 0) AS DepositTotal
+                                    FROM Metadata m
+                                    FULL JOIN Deposits d ON d.MetadataId = m.Id
+                                    FULL JOIN PurchaseReturns pr ON pr.MetadataId = m.Id
+                                    FULL JOIN Sale s ON s.MetadataId = m.Id 
+                                    FULL JOIN DebtPayments dp ON dp.MetadataId = m.Id
+                                    WHERE m.CreationTime >= @fromDate
+                            )
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS DailyIncomeReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW DailyIncomeReport AS
+                            SELECT * FROM dbo.incomeReport(CAST(GETDATE() AS DATE), GETDATE())
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS WeeklyIncomeReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW WeeklyIncomeReport AS
+                            SELECT * FROM dbo.incomeReport(DATEADD(day, -7, GETDATE()), GETDATE())
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS MonthlyIncomeReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW MonthlyIncomeReport AS
+                            SELECT * FROM dbo.incomeReport(DATEADD(day, -30, GETDATE()), GETDATE())
+                    ");
                     #endregion
                 }
             }

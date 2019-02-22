@@ -16,6 +16,14 @@ namespace Khata.Queries
         [DataType(DataType.Currency)]
         public decimal DebtReceived { get; set; }
 
+
+
+        public int PurchaseReturnsCount { get; set; }
+
+        [DataType(DataType.Currency)]
+        public decimal PurchaseReturnsReceived { get; set; }
+
+
         public int DepositsCount { get; set; }
 
         [DataType(DataType.Currency)]
