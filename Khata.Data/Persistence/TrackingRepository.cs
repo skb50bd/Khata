@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Brotal.Extensions;
+
 using Khata.Data.Core;
 using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
-
-using Brotal.Extensions;
 
 namespace Khata.Data.Persistence
 {
@@ -44,14 +44,12 @@ namespace Khata.Data.Persistence
         public override async Task<IList<T>> GetAll()
             => await Context.Set<T>()
                         .AsNoTracking()
-                        .Include(e => e.Metadata)
                         .Where(e => !e.IsRemoved)
                         .ToListAsync();
 
         public virtual async Task<IList<T>> GetRemovedItems()
             => await Context.Set<T>()
                         .AsNoTracking()
-                        .Include(e => e.Metadata)
                         .Where(e => e.IsRemoved)
                         .ToListAsync();
 

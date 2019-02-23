@@ -9,82 +9,85 @@
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-expense-total">
             @((Model.Expense.PurchasePaid
-                + Model.Expense.SupplierPaymentAmount
-                + Model.Expense.EmployeePaymentAmount
-                + Model.Expense.WithdrawalAmount
-                + Model.Expense.RefundAmount)
-            .ToString("C2"))
+                    + Model.Expense.ExpenseAmount
+                    + Model.Expense.SupplierPaymentAmount
+                    + Model.Expense.EmployeePaymentAmount
+                    + Model.Expense.WithdrawalAmount
+                    + Model.Expense.RefundAmount)
+                .ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
-                    <th>Purchases</th>
-                    <td class="text-right"
-                        id="@Model.Span-purchases">
-                        @Html.DisplayFor(model => Model.Expense.PurchaseCount)
+                    <th>Expenses</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-expenses">
+                            @Html.DisplayFor(model => Model.Expense.ExpenseCount)
+                        </span>
+                        <span id="@Model.Span-expense-amount">
+                            @Html.DisplayFor(model => Model.Expense.ExpenseAmount)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Purchase Paid</th>
-                    <td class="text-right"
-                        id="@Model.Span-purchase-paid">
-                        @Html.DisplayFor(model => Model.Expense.PurchasePaid)
+                    <th>Purchases</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-purchases">
+                            @Html.DisplayFor(model => Model.Expense.PurchaseCount)
+                        </span>
+                        <span id="@Model.Span-purchase-paid">
+                            @Html.DisplayFor(model => Model.Expense.PurchasePaid)
+                        </span>
                     </td>
                 </tr>
                 <tr>
                     <th>Supplier Payments</th>
-                    <td class="text-right"
-                        id="@Model.Span-supplier-payments">
-                        @Html.DisplayFor(model => Model.Expense.SupplierPaymentCount)
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-supplier-payments">
+                            @Html.DisplayFor(model => Model.Expense.SupplierPaymentCount)
+                        </span>
+                        <span id="@Model.Span-supplier-paid">
+                            @Html.DisplayFor(model => Model.Expense.SupplierPaymentAmount)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Supplier Paid</th>
-                    <td class="text-right"
-                        id="@Model.Span-supplier-paid">
-                        @Html.DisplayFor(model => Model.Expense.SupplierPaymentAmount)
+                    <th>Salary Payments</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-employee-payments">
+                            @Html.DisplayFor(model => Model.Expense.EmployeePaymentCount)
+                        </span>
+                        <span id="@Model.Span-employee-paid">
+                            @Html.DisplayFor(model => Model.Expense.EmployeePaymentAmount)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Employee Payments</th>
-                    <td class="text-right"
-                        id="@Model.Span-employee-payments">
-                        @Html.DisplayFor(model => Model.Expense.EmployeePaymentCount)
+                    <th>Refunds</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-refund-count">
+                            @Html.DisplayFor(model => Model.Expense.RefundCount)
+                        </span>
+                        <span id="@Model.Span-refund-amount">
+                            @Html.DisplayFor(model => Model.Expense.RefundAmount)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Employee Paid</th>
-                    <td class="text-right"
-                        id="@Model.Span-employee-paid">
-                        @Html.DisplayFor(model => Model.Expense.EmployeePaymentAmount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Refund</th>
-                    <td class="text-right"
-                        id="@Model.Span-refund-count">
-                        @Html.DisplayFor(model => Model.Expense.RefundCount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Refund Total</th>
-                    <td class="text-right"
-                        id="@Model.Span-refund-amount">
-                        @Html.DisplayFor(model => Model.Expense.RefundAmount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Withrawals</th>
-                    <td class="text-right"
-                        id="@Model.Span-withdrawals-count">
-                        @Html.DisplayFor(model => Model.Expense.WithdrawalCount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Withdrawal Total</th>
-                    <td class="text-right"
-                        id="@Model.Span-withdrawals-amount">
-                        @Html.DisplayFor(model => Model.Expense.WithdrawalAmount)
+                    <th>Withdrawals</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-withdrawals-count">
+                            @Html.DisplayFor(model => Model.Expense.WithdrawalCount)
+                        </span>
+                        <span id="@Model.Span-withdrawals-amount">
+                            @Html.DisplayFor(model => Model.Expense.WithdrawalAmount)
+                        </span>
                     </td>
                 </tr>
             </tbody>

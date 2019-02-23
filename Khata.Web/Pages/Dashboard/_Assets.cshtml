@@ -11,38 +11,34 @@
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
-                    <th>Customers with Due</th>
-                    <td class="text-right"
-                        id="customers-with-due">
-                        @Html.DisplayFor(model => Model.DueCount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Due Amount</th>
-                    <td class="text-right"
-                        id="due-amount">
-                        @Html.DisplayFor(model => Model.TotalDue)
-                    </td>
-                </tr>
-                <tr>
                     <th>Cash</th>
                     <td class="text-right"
                         id="cash-in-hand">
                         @Html.DisplayFor(model => Model.Cash)
                     </td>
                 </tr>
-                <tr>
-                    <th>Products in Stock</th>
-                    <td class="text-right"
-                        id="products-in-stock">
-                        @Html.DisplayFor(model => Model.InventoryCount)
+                <tr data-toggle="tooltip" title="Purchase Price of the Products in Stock">
+                    <th>Inventory Assets</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="products-in-stock">
+                            @Html.DisplayFor(model => Model.InventoryCount)
+                        </span>
+                        <span id="products-total-cost">
+                            @Html.DisplayFor(model => Model.InventoryWorth)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Purchase Total</th>
-                    <td class="text-right"
-                        id="products-total-cost">
-                        @Html.DisplayFor(model => Model.InventoryWorth)
+                    <th>Customer Dues</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="customers-with-due">
+                            @Html.DisplayFor(model => Model.DueCount)
+                        </span>
+                        <span id="due-amount">
+                            @Html.DisplayFor(model => Model.TotalDue)
+                        </span>
                     </td>
                 </tr>
             </tbody>

@@ -11,31 +11,27 @@
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
-                    <th>Suppliers with Due</th>
-                    <td class="text-right"
-                        id="suppliers-with-due">
-                        @Html.DisplayFor(model => Model.DueCount)
+                    <th>Supplier Dues</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="suppliers-with-due">
+                            @Html.DisplayFor(model => Model.DueCount)
+                        </span>
+                        <span id="total-supplier-due">
+                            @Html.DisplayFor(model => Model.TotalDue)
+                        </span>
                     </td>
                 </tr>
-                <tr>
-                    <th>Due Amount</th>
-                    <td class="text-right"
-                        id="total-supplier-due">
-                        @Html.DisplayFor(model => Model.TotalDue)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Unpaid Employees</th>
-                    <td class="text-right"
-                        id="unpaid-employees">
-                        @Html.DisplayFor(model => Model.UnpaidEmployees)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Unpaid Amount</th>
-                    <td class="text-right"
-                        id="unpaid-amount">
-                        @Html.DisplayFor(model => Model.UnpaidAmount)
+                <tr  data-toggle="tooltip" title="Outstanding Salaries of the Employees">
+                    <th>Salaries Unpaid</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="unpaid-employees">
+                            @Html.DisplayFor(model => Model.UnpaidEmployees)
+                        </span>
+                        <span id="unpaid-amount">
+                            @Html.DisplayFor(model => Model.UnpaidAmount)
+                        </span>
                     </td>
                 </tr>
                 <tr><th>&nbsp;</th><td></td></tr>

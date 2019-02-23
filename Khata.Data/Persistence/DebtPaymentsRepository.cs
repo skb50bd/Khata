@@ -3,12 +3,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Brotal.Extensions;
+
 using Khata.Data.Core;
 using Khata.Domain;
 
 using Microsoft.EntityFrameworkCore;
-
-using Brotal.Extensions;
 
 namespace Khata.Data.Persistence
 {
@@ -35,7 +35,6 @@ namespace Khata.Data.Persistence
                 PageSize = pageSize,
                 ResultCount = await Context.DebtPayments
                     .AsNoTracking()
-                    .Include(d => d.Metadata)
                     .Include(d => d.Customer)
                     .Where(predicate)
                     .CountAsync()
@@ -44,7 +43,6 @@ namespace Khata.Data.Persistence
             res.AddRange(await Context.DebtPayments
                 .AsNoTracking()
                 .Include(s => s.Customer)
-                .Include(s => s.Metadata)
                 .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -57,7 +55,6 @@ namespace Khata.Data.Persistence
         public override async Task<DebtPayment> GetById(int id)
             => await Context.DebtPayments
             .Include(s => s.Customer)
-            .Include(d => d.Metadata)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 }

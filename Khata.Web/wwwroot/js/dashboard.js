@@ -176,13 +176,14 @@ window.monthlyExpenseChart = new Chart(monthlyExpenseChartElem, {
 function getIncomeChartData(incomeReport) {
     return {
         datasets: [{
-            data: [incomeReport.debtReceived, incomeReport.saleReceived, incomeReport.depositAmount],
-            backgroundColor: ['#0093fd', '#fd6900', 'green']
+            data: [incomeReport.debtReceived, incomeReport.saleReceived, incomeReport.purchaseReturnsReceived, incomeReport.depositAmount],
+            backgroundColor: ['#0093fd', '#4CAF50', '#9C27B0','#FF5722']
         }],
 
         labels: [
             'Debt',
             'Sale',
+            'Purchase Return',
             'Deposit'
         ]
     };
@@ -215,26 +216,36 @@ function setPeriodicalData(p, incomeData, expenseData) {
     document.getElementById(p + '-income-total').innerHTML
         = formatter.format(incomeData.saleReceived
             + incomeData.debtReceived
+            + incomeData.purchaseReturnsReceived
             + incomeData.depositAmount);
     document.getElementById(p + '-sales').innerHTML = incomeData.saleCount;
     document.getElementById(p + '-sale-receives').innerHTML = formatter.format(incomeData.saleReceived);
     document.getElementById(p + '-debt-receive-count').innerHTML = incomeData.debtPaymentCount;
     document.getElementById(p + '-debt-receive-amount').innerHTML = formatter.format(incomeData.debtReceived);
+    document.getElementById(p + '-purchase-returns-count').innerHTML = incomeData.purchaseReturnsCount;
+    document.getElementById(p + '-purchase-returns-amount').innerHTML = formatter.format(incomeData.purchaseReturnsReceived);
     document.getElementById(p + '-deposits-count').innerHTML = incomeData.depositsCount;
     document.getElementById(p + '-deposits-amount').innerHTML = formatter.format(incomeData.depositAmount);
     
     document.getElementById(p + '-expense-total').innerHTML
         = formatter.format(expenseData.supplierPaymentAmount
+            + expenseData.expenseAmount
             + expenseData.purchasePaid
             + expenseData.employeePaymentAmount
             + expenseData.refundAmount
             + expenseData.withdrawalAmount);
+    document.getElementById(p + '-expenses').innerHTML = expenseData.expenseCount;
+    document.getElementById(p + '-expense-amount').innerHTML = formatter.format(expenseData.expenseAmount);
     document.getElementById(p + '-purchases').innerHTML = expenseData.purchaseCount;
     document.getElementById(p + '-purchase-paid').innerHTML = formatter.format(expenseData.purchasePaid);
     document.getElementById(p + '-supplier-payments').innerHTML = expenseData.supplierPaymentCount;
     document.getElementById(p + '-supplier-paid').innerHTML = formatter.format(expenseData.supplierPaymentAmount);
     document.getElementById(p + '-employee-payments').innerHTML = expenseData.employeePaymentCount;
     document.getElementById(p + '-employee-paid').innerHTML = formatter.format(expenseData.employeePaymentAmount);
+    document.getElementById(p + '-refund-count').innerHTML = expenseData.refundCount;
+    document.getElementById(p + '-refund-amount').innerHTML = formatter.format(expenseData.refundAmount);
+    document.getElementById(p + '-withdrawals-count').innerHTML = expenseData.withdrawalCount;
+    document.getElementById(p + '-withdrawals-amount').innerHTML = formatter.format(expenseData.withdrawalAmount);
 }
 function updatePeriodicalReport() {
     var p = ['daily', 'weekly', 'monthly'];

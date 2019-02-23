@@ -8,57 +8,61 @@
         <canvas id="@Model.Span-income-chart" height="200"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-income-total">
-            @((Model.Income.DebtReceived 
-                + Model.Income.SaleReceived 
-                + Model.Income.DepositAmount
-            ).ToString("C2"))
+            @((Model.Income.DebtReceived
+                        + Model.Income.SaleReceived
+                        + Model.Income.DepositAmount
+                    ).ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
             <tbody>
                 <tr>
                     <th>Sales</th>
-                    <td class="text-right"
-                        id="@Model.Span-sales">
-                        @Html.DisplayFor(model => Model.Income.SaleCount)
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-sales">
+                            @Html.DisplayFor(model => Model.Income.SaleCount)
+                        </span>
+                        <span id="@Model.Span-sale-receives">
+                            @Html.DisplayFor(model => Model.Income.SaleReceived)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Sale Received</th>
-                    <td class="text-right"
-                        id="@Model.Span-sale-receives">
-                        @Html.DisplayFor(model => Model.Income.SaleReceived)
+                    <th>Debt Payments</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-debt-receive-count">
+                            @Html.DisplayFor(model => Model.Income.DebtPaymentCount)
+                        </span>
+                        <span id="@Model.Span-debt-receive-amount">
+                            @Html.DisplayFor(model => Model.Income.DebtReceived)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Debt Receive Count</th>
-                    <td class="text-right"
-                        id="@Model.Span-debt-receive-count">
-                        @Html.DisplayFor(model => Model.Income.DebtPaymentCount)
+                    <th>Purchase Retunrns</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-purchase-returns-count">
+                            @Html.DisplayFor(model => Model.Income.PurchaseReturnsCount)
+                        </span>
+                        <span id="@Model.Span-purchase-returns-amount">
+                            @Html.DisplayFor(model => Model.Income.PurchaseReturnsReceived)
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <th>Debt Received Amount</th>
-                    <td class="text-right"
-                        id="@Model.Span-debt-receive-amount">
-                        @Html.DisplayFor(model => Model.Income.DebtReceived)
+                    <th>Deposits</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark"
+                              id="@Model.Span-deposits-count">
+                            @Html.DisplayFor(model => Model.Income.DepositsCount)
+                        </span>
+                        <span id="@Model.Span-deposits-amount">
+                            @Html.DisplayFor(model => Model.Income.DepositAmount)
+                        </span>
                     </td>
                 </tr>
-                <tr>
-                    <th>Deposit</th>
-                    <td class="text-right"
-                        id="@Model.Span-deposits-count">
-                        @Html.DisplayFor(model => Model.Income.DepositsCount)
-                    </td>
-                </tr>
-                <tr>
-                    <th>Deposits Total</th>
-                    <td class="text-right"
-                        id="@Model.Span-deposits-amount">
-                        @Html.DisplayFor(model => Model.Income.DepositAmount)
-                    </td>
-                </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
-                <tr><th>&nbsp;</th><td></td></tr>
                 <tr><th>&nbsp;</th><td></td></tr>
                 <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
