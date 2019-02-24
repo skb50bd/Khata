@@ -2,6 +2,7 @@ using System.Globalization;
 
 using Khata.Data.Persistence;
 using Khata.Domain;
+using Khata.Services.Auth;
 using Khata.Services.CRUD;
 using Khata.Services.Mapper;
 using Khata.Services.PageFilterSort;
@@ -11,12 +12,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
+using Services.Auth;
 
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -122,6 +126,8 @@ namespace WebUI
             services.AddSignalR();
 
             services.Configure<OutletOptions>(Configuration.GetSection("OutletOptions"));
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("SendGrid"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Brotal.Extensions;
+
 using Khata.Domain;
 using Khata.Services.CRUD;
 using Khata.ViewModels;
@@ -9,8 +11,6 @@ using Khata.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
-
-using Brotal.Extensions;
 
 using WebUI.Hubs;
 
