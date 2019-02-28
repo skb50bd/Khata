@@ -24,6 +24,14 @@ namespace Khata.Services.Mapper
 
             #endregion
 
+            #region Outlet Mapping
+
+            CreateMap<OutletViewModel, Outlet>();
+            CreateMap<Outlet, OutletDto>();
+            CreateMap<OutletDto, OutletViewModel>();
+
+            #endregion
+
             #region Product Mapping
             CreateMap<Product, ProductViewModel>();
             CreateMap<ProductViewModel, Product>()

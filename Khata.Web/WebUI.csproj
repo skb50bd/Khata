@@ -21,9 +21,13 @@
 
   <ItemGroup>
     <Compile Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
+    <Compile Remove="Pages\Outlets\Components\ProductsList\**" />
     <Content Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
+    <Content Remove="Pages\Outlets\Components\ProductsList\**" />
     <EmbeddedResource Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
+    <EmbeddedResource Remove="Pages\Outlets\Components\ProductsList\**" />
     <None Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
+    <None Remove="Pages\Outlets\Components\ProductsList\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +56,11 @@
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.min.js" />
+    <None Include="wwwroot\lib\Material-Icons\codepoints" />
+    <None Include="wwwroot\lib\Material-Icons\MaterialIcons-Regular.ijmap" />
+    <None Include="wwwroot\lib\Material-Icons\MaterialIcons-Regular.svg" />
+    <None Include="wwwroot\lib\Material-Icons\MaterialIcons-Regular.woff2" />
+    <None Include="wwwroot\lib\Material-Icons\README.md" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.js" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.js.map" />
     <None Include="wwwroot\lib\signalr\dist\browser\signalr.min.js" />

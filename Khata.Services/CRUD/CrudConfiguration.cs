@@ -8,6 +8,7 @@ namespace Khata.Services.CRUD
             this IServiceCollection services)
         {
             services.AddTransient<ICashRegisterService, CashRegisterService>();
+            services.AddTransient<IOutletService, OutletService>();
             services.AddTransient<ITransactionsService, TransactionsService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IProductService, ProductService>();

@@ -32,8 +32,6 @@ function getDate(elem = null) {
 }
 
 
-
-
 const swalDelete = Swal.mixin({
     confirmButtonClass: 'btn btn-danger',
     cancelButtonClass: 'btn btn-secondary mr-4',

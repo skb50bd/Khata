@@ -1,0 +1,12 @@
+﻿@page
+@model WebUI.Pages.Outlets.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@await Component.InvokeAsync(
+    nameof(Components.OutletInfo.OutletInfo),
+        new { outlet = Model.Outlet }
+    )

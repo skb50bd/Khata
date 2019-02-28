@@ -7,6 +7,7 @@ namespace Khata.Data.Persistence
 {
     public partial class KhataContext : IdentityDbContext
     {
+        public virtual DbSet<Outlet> Outlets { get; set; }
         public virtual DbSet<CashRegister> CashRegister { get; set; }
         public virtual DbSet<Deposit> Deposits { get; set; }
         public virtual DbSet<Withdrawal> Withdrawals { get; set; }

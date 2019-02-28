@@ -27,6 +27,7 @@ namespace Khata.Data.Persistence
               .AddDefaultUI(UIFramework.Bootstrap4)
               .AddEntityFrameworkStores<KhataContext>();
 
+            services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();
             services.AddTransient<ITrackingRepository<Product>, TrackingRepository<Product>>();
             services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();
             services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();

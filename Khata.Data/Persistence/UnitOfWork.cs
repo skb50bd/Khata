@@ -9,6 +9,7 @@ namespace Khata.Data.Persistence
     {
         protected readonly KhataContext Context;
 
+        public ITrackingRepository<Outlet> Outlets { get; }
         public ITrackingRepository<Product> Products { get; }
         public ITrackingRepository<Service> Services { get; }
         public ITrackingRepository<Customer> Customers { get; }
@@ -30,6 +31,7 @@ namespace Khata.Data.Persistence
         public ITrackingRepository<PurchaseReturn> PurchaseReturns { get; }
 
         public UnitOfWork(KhataContext context,
+            ITrackingRepository<Outlet> outlets,
             ICashRegisterRepository cashRegister,
             IRepository<Deposit> deposits,
             IRepository<Withdrawal> withdrawals,
@@ -51,6 +53,7 @@ namespace Khata.Data.Persistence
             ITrackingRepository<PurchaseReturn> purchaseReturns)
         {
             Context          = context;
+            Outlets          = outlets;
             CashRegister     = cashRegister;
             Deposits         = deposits;
             Withdrawals      = withdrawals;
