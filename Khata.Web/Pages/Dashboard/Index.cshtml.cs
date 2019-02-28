@@ -19,12 +19,20 @@ namespace WebUI.Pages.Dashboard
         private readonly IReportService<DailyExpenseReport> _dailyExpenseReports;
         private readonly IReportService<WeeklyExpenseReport> _weeklyExpenseReports;
         private readonly IReportService<MonthlyExpenseReport> _monthlyExpenseReports;
+        private readonly IReportService<DailyPayableReport> _dailyPayableReports;
+        private readonly IReportService<WeeklyPayableReport> _weeklyPayableReports;
+        private readonly IReportService<MonthlyPayableReport> _monthlyPayableReports;
+        private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
+        private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
+        private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
         private readonly IReportService<PerDayReport> _perDayReports;
 
         public AssetReport AssetReport { get; set; }
         public LiabilityReport LiabilityReport { get; set; }
         public IncomeReports IncomeReports { get; set; }
         public ExpenseReports ExpenseReports { get; set; }
+        public PayableReports Payable { get; set; }
+        public ReceivableReports Receivable { get; set; }
         public IEnumerable<PerDayReport> PerDayReports { get; set; }
 
 
@@ -36,6 +44,12 @@ namespace WebUI.Pages.Dashboard
             IReportService<DailyExpenseReport> dailyExpenseReports,
             IReportService<WeeklyExpenseReport> weeklyExpenseReports,
             IReportService<MonthlyExpenseReport> monthlyExpenseReports,
+            IReportService<DailyPayableReport> dailyPayableReports,
+            IReportService<WeeklyPayableReport> weeklyPayableReports,
+            IReportService<MonthlyPayableReport> monthlyPayableReports,
+            IReportService<DailyReceivableReport> dailyReceivableReports,
+            IReportService<WeeklyReceivableReport> weeklyReceivableReports,
+            IReportService<MonthlyReceivableReport> monthlyReceivableReports,
             IReportService<PerDayReport> perDayReports)
         {
             _assetReports = assetReports;
@@ -46,6 +60,12 @@ namespace WebUI.Pages.Dashboard
             _dailyExpenseReports = dailyExpenseReports;
             _weeklyExpenseReports = weeklyExpenseReports;
             _monthlyExpenseReports = monthlyExpenseReports;
+            _dailyPayableReports = dailyPayableReports;
+            _weeklyPayableReports = weeklyPayableReports;
+            _monthlyPayableReports = monthlyPayableReports;
+            _dailyReceivableReports = dailyReceivableReports;
+            _weeklyReceivableReports = weeklyReceivableReports;
+            _monthlyReceivableReports = monthlyReceivableReports;
             _perDayReports = perDayReports;
         }
 
@@ -67,9 +87,22 @@ namespace WebUI.Pages.Dashboard
                 Monthly = (await _monthlyExpenseReports.Get()).FirstOrDefault()
             };
 
-            PerDayReports = await _perDayReports.Get();
 
-            var c = PerDayReports;
+            Payable = new PayableReports
+            {
+                Daily = (await _dailyPayableReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyPayableReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyPayableReports.Get()).FirstOrDefault()
+            };
+
+            Receivable = new ReceivableReports
+            {
+                Daily = (await _dailyReceivableReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyReceivableReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
+            };
+
+            PerDayReports = await _perDayReports.Get();
         }
     }
     public struct IncomeReportWithSpan
@@ -80,6 +113,18 @@ namespace WebUI.Pages.Dashboard
     public struct ExpenseReportWithSpan
     {
         public ExpenseBase Expense { get; set; }
+        public string Span { get; set; }
+    }
+
+    public struct PayableWithSpan
+    {
+        public PayableBase Payable { get; set; }
+        public string Span { get; set; }
+    }
+
+    public struct ReceivableWithSpan
+    {
+        public ReceivableBase Receivable { get; set; }
         public string Span { get; set; }
     }
 }

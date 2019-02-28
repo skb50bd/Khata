@@ -2,7 +2,7 @@
 
 namespace Khata.Queries
 {
-    public class ExpenseBase : Report
+    public abstract class ExpenseBase : Report
     {
         public int PurchaseCount { get; set; }
 

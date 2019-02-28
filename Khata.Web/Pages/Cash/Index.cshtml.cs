@@ -78,7 +78,6 @@ namespace WebUI.Pages.Cash
                     FromText.ParseDate(),
                     ToText.ParseDate().AddMinutes(23 * 60 + 59)
                 );
-
             return Page();
         }
 

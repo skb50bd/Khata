@@ -54,10 +54,16 @@ namespace Khata.Data.Persistence
             services.AddTransient<IReportRepository<LiabilityReport>, ReportRepository<LiabilityReport>>();
             services.AddTransient<IReportRepository<DailyIncomeReport>, ReportRepository<DailyIncomeReport>>();
             services.AddTransient<IReportRepository<DailyExpenseReport>, ReportRepository<DailyExpenseReport>>();
+            services.AddTransient<IReportRepository<DailyPayableReport>, ReportRepository<DailyPayableReport>>();
+            services.AddTransient<IReportRepository<DailyReceivableReport>, ReportRepository<DailyReceivableReport>>();
             services.AddTransient<IReportRepository<WeeklyIncomeReport>, ReportRepository<WeeklyIncomeReport>>();
             services.AddTransient<IReportRepository<WeeklyExpenseReport>, ReportRepository<WeeklyExpenseReport>>();
+            services.AddTransient<IReportRepository<WeeklyPayableReport>, ReportRepository<WeeklyPayableReport>>();
+            services.AddTransient<IReportRepository<WeeklyReceivableReport>, ReportRepository<WeeklyReceivableReport>>();
             services.AddTransient<IReportRepository<MonthlyIncomeReport>, ReportRepository<MonthlyIncomeReport>>();
             services.AddTransient<IReportRepository<MonthlyExpenseReport>, ReportRepository<MonthlyExpenseReport>>();
+            services.AddTransient<IReportRepository<MonthlyPayableReport>, ReportRepository<MonthlyPayableReport>>();
+            services.AddTransient<IReportRepository<MonthlyReceivableReport>, ReportRepository<MonthlyReceivableReport>>();
             services.AddTransient<IReportRepository<PerDayReport>, ReportRepository<PerDayReport>>();
 
 

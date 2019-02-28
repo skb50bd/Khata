@@ -119,8 +119,8 @@ function getPerDayChartData(perDayData) {
             },
             {
                 label: "Cash Out",
-                backgroundColor: "rgba(33, 150, 243 , 0.8)",
-                borderColor: "rgba(33, 150, 243 , 0.8)",
+                backgroundColor: "rgba(255,87,34 ,0.8)",
+                borderColor: "rgba(255,87,34 ,0.8)",
                 data: perDayData.map(d => d.cashOut)
             }, {
                 label: "New Payable",
@@ -136,23 +136,43 @@ function getPerDayChartData(perDayData) {
 
 const dailyIncomeChartElem = document.getElementById("daily-income-chart");
 const dailyExpenseChartElem = document.getElementById("daily-expense-chart");
+const dailyPayableChartElem = document.getElementById("daily-payable-chart");
+const dailyReceivableChartElem = document.getElementById("daily-receivable-chart");
 const weeklyIncomeChartElem = document.getElementById("weekly-income-chart");
 const weeklyExpenseChartElem = document.getElementById("weekly-expense-chart");
+const weeklyPayableChartElem = document.getElementById("weekly-payable-chart");
+const weeklyReceivableChartElem = document.getElementById("weekly-receivable-chart");
 const monthlyIncomeChartElem = document.getElementById("monthly-income-chart");
 const monthlyExpenseChartElem = document.getElementById("monthly-expense-chart");
+const monthlyPayableChartElem = document.getElementById("monthly-payable-chart");
+const monthlyReceivableChartElem = document.getElementById("monthly-receivable-chart");
 
 window.dailyIncomeData = null;
 window.dailyExpenseData = null;
+window.dailyPayableData = null;
+window.dailyReceivableData = null;
 window.weeklyIncomeData = null;
 window.weeklyExpenseData = null;
+window.weeklyPayableData = null;
+window.weeklyReceivableData = null;
 window.monthlyIncomeData = null;
 window.monthlyExpenseData = null;
+window.monthlyPayableData = null;
+window.monthlyReceivableData = null;
 
 window.dailyIncomeChart = new Chart(dailyIncomeChartElem, {
     type: 'pie',
     data: {}
 });
 window.dailyExpenseChart = new Chart(dailyExpenseChartElem, {
+    type: 'pie',
+    data: {}
+});
+window.dailyPayableChart = new Chart(dailyPayableChartElem, {
+    type: 'pie',
+    data: {}
+});
+window.dailyReceivableChart = new Chart(dailyReceivableChartElem, {
     type: 'pie',
     data: {}
 });
@@ -164,11 +184,27 @@ window.weeklyExpenseChart = new Chart(weeklyExpenseChartElem, {
     type: 'pie',
     data: {}
 });
+window.weeklyPayableChart = new Chart(weeklyPayableChartElem, {
+    type: 'pie',
+    data: {}
+});
+window.weeklyReceivableChart = new Chart(weeklyReceivableChartElem, {
+    type: 'pie',
+    data: {}
+});
 window.monthlyIncomeChart = new Chart(monthlyIncomeChartElem, {
     type: 'pie',
     data: {}
 });
 window.monthlyExpenseChart = new Chart(monthlyExpenseChartElem, {
+    type: 'pie',
+    data: {}
+});
+window.monthlyPayableChart = new Chart(monthlyPayableChartElem, {
+    type: 'pie',
+    data: {}
+});
+window.monthlyReceivableChart = new Chart(monthlyReceivableChartElem, {
     type: 'pie',
     data: {}
 });
@@ -211,8 +247,36 @@ function getExpenseChartData(expenseReport) {
         ]
     };
 }
+function getPayableChartData(payableReport) {
+    return {
+        datasets: [{
+            data: [payableReport.purchaseDueAmount, payableReport.salaryIssueAmount, payableReport.debtOverPaymentAmount],
+            backgroundColor: ['#0093fd', '#4CAF50', '#9C27B0']
+        }],
 
-function setPeriodicalData(p, incomeData, expenseData) {
+        labels: [
+            'Purchases Due',
+            'Salary Issues',
+            'Customer Advance'
+        ]
+    };
+}
+function getReceivableChartData(receivableReport) {
+    return {
+        datasets: [{
+            data: [receivableReport.salesDueAmount, receivableReport.supplierOverPaymentAmount, receivableReport.salaryOverPaymentAmount],
+            backgroundColor: ['#0093fd', '#4CAF50', '#9C27B0']
+        }],
+
+        labels: [
+            'Sales Due',
+            'Supplier Advance',
+            'Salary Advance'
+        ]
+    };
+}
+
+function setPeriodicalData(p, incomeData, expenseData, payableData, receivableData) {
     document.getElementById(p + '-income-total').innerHTML
         = formatter.format(incomeData.saleReceived
             + incomeData.debtReceived
@@ -246,14 +310,40 @@ function setPeriodicalData(p, incomeData, expenseData) {
     document.getElementById(p + '-refund-amount').innerHTML = formatter.format(expenseData.refundAmount);
     document.getElementById(p + '-withdrawals-count').innerHTML = expenseData.withdrawalCount;
     document.getElementById(p + '-withdrawals-amount').innerHTML = formatter.format(expenseData.withdrawalAmount);
+
+    document.getElementById(p + '-payable-total').innerHTML
+        = formatter.format(
+            + payableData.purchaseDueAmount
+            + payableData.salaryIssueAmount
+            + payableData.debtOverPaymentAmount);
+    document.getElementById(p + '-purchases-due-count').innerHTML = payableData.purchaseDueCount;
+    document.getElementById(p + '-purchases-due-amount').innerHTML = formatter.format(payableData.purchaseDueAmount);
+    document.getElementById(p + '-salary-issue-count').innerHTML = payableData.salaryIssueCount;
+    document.getElementById(p + '-salary-issue-amount').innerHTML = formatter.format(payableData.salaryIssueAmount);
+    document.getElementById(p + '-debt-over-payment-count').innerHTML = payableData.debtOverPaymentCount;
+    document.getElementById(p + '-debt-over-payment-amount').innerHTML = formatter.format(payableData.debtOverPaymentAmount);
+
+    document.getElementById(p + '-receivable-total').innerHTML 
+        = formatter.format(expenseData.supplierPaymentAmount
+            + receivableData.salesDueAmount
+            + receivableData.supplierOverPaymentAmount
+            + receivableData.salaryOverPaymentAmount);
+    document.getElementById(p + '-sales-due-count').innerHTML = receivableData.salesDueCount;
+    document.getElementById(p + '-sales-due-amount').innerHTML = formatter.format(receivableData.salesDueAmount);
+    document.getElementById(p + '-supplier-over-payment-count').innerHTML = receivableData.supplierOverPaymentCount;
+    document.getElementById(p + '-supplier-over-payment-amount').innerHTML = formatter.format(receivableData.supplierOverPaymentAmount);
+    document.getElementById(p + '-salary-over-payment-count').innerHTML = receivableData.salaryOverPaymentCount;
+    document.getElementById(p + '-salary-over-payment-amount').innerHTML = formatter.format(receivableData.salaryOverPaymentAmount);
 }
 function updatePeriodicalReport() {
     var p = ['daily', 'weekly', 'monthly'];
     var incomes = [window.dailyIncomeData, window.weeklyIncomeData, window.monthlyIncomeData];
     var expenses = [window.dailyExpenseData, window.weeklyExpenseData, window.monthlyExpenseData];
+    var payables = [window.dailyPayableData, window.weeklyPayableData, window.monthlyPayableData];
+    var receivables = [window.dailyReceivableData, window.weeklyReceivableData, window.monthlyReceivableData];
 
     for (var i = 0; i < p.length; i++) {
-        setPeriodicalData(p[i], incomes[i], expenses[i]);
+        setPeriodicalData(p[i], incomes[i], expenses[i], payables[i], receivables[i]);
     }
 }
 
@@ -275,22 +365,40 @@ function updateChart(data) {
 
     window.dailyIncomeData = data.income.daily;
     window.dailyExpenseData = data.expense.daily;
+    window.dailyPayableData = data.payable.daily;
+    window.dailyReceivableData = data.receivable.daily;
     window.weeklyIncomeData = data.income.weekly;
     window.weeklyExpenseData = data.expense.weekly;
+    window.weeklyPayableData = data.payable.weekly;
+    window.weeklyReceivableData = data.receivable.weekly;
     window.monthlyIncomeData = data.income.monthly;
     window.monthlyExpenseData = data.expense.monthly;
+    window.monthlyPayableData = data.payable.monthly;
+    window.monthlyReceivableData = data.receivable.monthly;
     window.dailyIncomeChart.data = getIncomeChartData(data.income.daily);
     window.dailyIncomeChart.update();
     window.dailyExpenseChart.data = getExpenseChartData(data.expense.daily);
     window.dailyExpenseChart.update();
+    window.dailyPayableChart.data = getPayableChartData(data.payable.daily);
+    window.dailyPayableChart.update();
+    window.dailyReceivableChart.data = getReceivableChartData(data.receivable.daily);
+    window.dailyReceivableChart.update();
     window.weeklyIncomeChart.data = getIncomeChartData(data.income.weekly);
     window.weeklyIncomeChart.update();
     window.weeklyExpenseChart.data = getExpenseChartData(data.expense.weekly);
     window.weeklyExpenseChart.update();
+    window.weeklyPayableChart.data = getPayableChartData(data.payable.weekly);
+    window.weeklyPayableChart.update();
+    window.weeklyReceivableChart.data = getReceivableChartData(data.receivable.weekly);
+    window.weeklyReceivableChart.update();
     window.monthlyIncomeChart.data = getIncomeChartData(data.income.monthly);
     window.monthlyIncomeChart.update();
     window.monthlyExpenseChart.data = getExpenseChartData(data.expense.monthly);
     window.monthlyExpenseChart.update();
+    window.monthlyPayableChart.data = getPayableChartData(data.payable.monthly);
+    window.monthlyPayableChart.update();
+    window.monthlyReceivableChart.data = getReceivableChartData(data.receivable.monthly);
+    window.monthlyReceivableChart.update();
     updatePeriodicalReport();
 }
 

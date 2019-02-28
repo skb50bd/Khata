@@ -1,4 +1,6 @@
-﻿namespace Khata.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Khata.Domain
 {
     public class SaleLineItem : Entity
     {
@@ -36,11 +38,22 @@
 
 
         public string Name { get; set; }
+
         public decimal Quantity { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal UnitPrice { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal UnitPurchasePrice { get; set; }
+
+        [DataType(DataType.Currency)]
         public decimal NetPrice => UnitPrice * Quantity;
+
+        [DataType(DataType.Currency)]
         public decimal NetPurchasePrice => UnitPurchasePrice * Quantity;
+
+        [DataType(DataType.Currency)]
         public decimal Profit => NetPrice - NetPurchasePrice;
 
         public int ItemId { get; set; }

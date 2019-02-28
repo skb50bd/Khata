@@ -1,6 +1,5 @@
 ﻿using System;
-
-using DateTimeExtensions;
+using Brotal.Extensions;
 namespace Khata.Domain
 {
     public class Metadata : Entity
@@ -12,13 +11,13 @@ namespace Khata.Domain
         public DateTimeOffset ModificationTime { get; set; }
 
 
-        public string Summary => "Updated " + ModificationTime.DateTime.ToNaturalText(DateTime.Now)
+        public string Summary => "Updated " + ModificationTime.Natural()
                                     + " ago by " + Modifier;
         public string ModifiedAt => ModificationTime.ToString("dd/MM/yyyy HH:mm");
         public string CreatedAt => CreationTime.ToString("dd/MM/yyyy HH:mm");
 
-        public string CreatedAgo => CreationTime.DateTime.ToNaturalText(DateTime.Now);
-        public string UpdatedAgo => ModificationTime.DateTime.ToNaturalText(DateTime.Now);
+        public string CreatedAgo => CreationTime.Natural();
+        public string UpdatedAgo => ModificationTime.Natural();
 
         public Metadata()
         {

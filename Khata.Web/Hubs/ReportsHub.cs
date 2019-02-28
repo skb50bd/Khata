@@ -19,6 +19,12 @@ namespace WebUI.Hubs
         private readonly IReportService<DailyExpenseReport> _dailyExpenseReports;
         private readonly IReportService<WeeklyExpenseReport> _weeklyExpenseReports;
         private readonly IReportService<MonthlyExpenseReport> _monthlyExpenseReports;
+        private readonly IReportService<DailyPayableReport> _dailyPayableReports;
+        private readonly IReportService<WeeklyPayableReport> _weeklyPayableReports;
+        private readonly IReportService<MonthlyPayableReport> _monthlyPayableReports;
+        private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
+        private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
+        private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
         private readonly IReportService<PerDayReport> _perDayReports;
 
 
@@ -26,6 +32,8 @@ namespace WebUI.Hubs
         public LiabilityReport Liability { get; set; }
         public IncomeReports Income { get; set; }
         public ExpenseReports Expense { get; set; }
+        public PayableReports Payable { get; set; }
+        public ReceivableReports Receivable { get; set; }
         public IEnumerable<PerDayReport> PerDayReports { get; set; }
 
         public ReportsHub(
@@ -37,6 +45,12 @@ namespace WebUI.Hubs
             IReportService<DailyExpenseReport> dailyExpenseReports,
             IReportService<WeeklyExpenseReport> weeklyExpenseReports,
             IReportService<MonthlyExpenseReport> monthlyExpenseReports,
+            IReportService<DailyPayableReport> dailyPayableReports,
+            IReportService<WeeklyPayableReport> weeklyPayableReports,
+            IReportService<MonthlyPayableReport> monthlyPayableReports,
+            IReportService<DailyReceivableReport> dailyReceivableReports,
+            IReportService<WeeklyReceivableReport> weeklyReceivableReports,
+            IReportService<MonthlyReceivableReport> monthlyReceivableReports,
             IReportService<PerDayReport> perDayReports)
         {
             _assetReport = assetReport;
@@ -47,6 +61,12 @@ namespace WebUI.Hubs
             _dailyExpenseReports = dailyExpenseReports;
             _weeklyExpenseReports = weeklyExpenseReports;
             _monthlyExpenseReports = monthlyExpenseReports;
+            _dailyPayableReports = dailyPayableReports;
+            _weeklyPayableReports = weeklyPayableReports;
+            _monthlyPayableReports = monthlyPayableReports;
+            _dailyReceivableReports = dailyReceivableReports;
+            _weeklyReceivableReports = weeklyReceivableReports;
+            _monthlyReceivableReports = monthlyReceivableReports;
             _perDayReports = perDayReports;
         }
 
@@ -70,13 +90,27 @@ namespace WebUI.Hubs
                 Monthly = (await _monthlyExpenseReports.Get()).FirstOrDefault()
             };
 
+            Payable = new PayableReports
+            {
+                Daily = (await _dailyPayableReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyPayableReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyPayableReports.Get()).FirstOrDefault()
+            };
+
+            Receivable = new ReceivableReports
+            {
+                Daily = (await _dailyReceivableReports.Get()).FirstOrDefault(),
+                Weekly = (await _weeklyReceivableReports.Get()).FirstOrDefault(),
+                Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
+            };
+
             PerDayReports = await _perDayReports.Get();
         }
 
         public async Task InitChartData()
         {
             await UpdateChartData();
-            await Clients.All.SendAsync("UpdateChart", new { Asset, Liability, Income, Expense, PerDayReports });
+            await Clients.All.SendAsync("UpdateChart", new { Asset, Liability, Income, Expense, Payable, Receivable, PerDayReports });
         }
 
         public async Task RefreshData() => await InitChartData();

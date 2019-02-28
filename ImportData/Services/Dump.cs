@@ -723,8 +723,9 @@ namespace ImportData.Services
                     {
                         var prod = Products[shopId][productId];
                         var q = li["quantity"].ToDecimal();
+                        var up = li["unitPrice"].ToDecimal();
                         var upp = li["unitPurchasePrice"].ToDecimal();
-                        cart.Add(new SaleLineItem(prod, q, q * upp));
+                        cart.Add(new SaleLineItem(prod, q, q * up, q * upp));
                     }
                 }
 
@@ -773,7 +774,8 @@ namespace ImportData.Services
             }
         }
 
-        private static string RemoveBsonNull(string str) => str == "BsonNull" ? "" : str;
+        private static string RemoveBsonNull(string str) 
+            => str == "BsonNull" ? "" : str;
 
         private static Metadata GetMetadata(BsonDocument d)
         {

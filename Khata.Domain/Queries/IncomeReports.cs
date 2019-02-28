@@ -2,7 +2,7 @@
 
 namespace Khata.Queries
 {
-    public class IncomeBase : Report
+    public abstract class IncomeBase : Report
     {
         [Display(Name = "Number of Sales")]
         public int SaleCount { get; set; }
