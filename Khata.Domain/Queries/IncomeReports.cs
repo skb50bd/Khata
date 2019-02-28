@@ -11,6 +11,9 @@ namespace Khata.Queries
         public decimal SaleReceived { get; set; }
 
 
+        [DataType(DataType.Currency)]
+        public decimal SaleProfit { get; set; }
+
         public int DebtPaymentCount { get; set; }
 
         [DataType(DataType.Currency)]

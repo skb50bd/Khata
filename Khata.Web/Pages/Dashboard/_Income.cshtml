@@ -28,6 +28,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Profit</th>
+                    <td class="text-right">
+                        <span id="@Model.Span-sale-profit">
+                            @Html.DisplayFor(model => Model.Income.SaleProfit)
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                     <th>Debt Payments</th>
                     <td class="text-right">
                         <span class="badge badge-dark"
@@ -63,7 +71,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
                 <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>

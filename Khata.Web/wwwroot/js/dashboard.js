@@ -284,6 +284,7 @@ function setPeriodicalData(p, incomeData, expenseData, payableData, receivableDa
             + incomeData.depositAmount);
     document.getElementById(p + '-sales').innerHTML = incomeData.saleCount;
     document.getElementById(p + '-sale-receives').innerHTML = formatter.format(incomeData.saleReceived);
+    document.getElementById(p + '-sale-profit').innerHTML = formatter.format(incomeData.saleProfit);
     document.getElementById(p + '-debt-receive-count').innerHTML = incomeData.debtPaymentCount;
     document.getElementById(p + '-debt-receive-amount').innerHTML = formatter.format(incomeData.debtReceived);
     document.getElementById(p + '-purchase-returns-count').innerHTML = incomeData.purchaseReturnsCount;

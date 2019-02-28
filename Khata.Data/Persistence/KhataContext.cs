@@ -59,22 +59,31 @@ namespace Khata.Data.Persistence
                             AS
                             RETURN
                             (
-                                SELECT CAST(@fromDate AS DATE)				AS FromDate,
-                                        CAST(@toDate AS DATE)				AS ToDate,
-                                        COUNT(s.Id)							AS SaleCount, 
-                                        COALESCE(SUM(s.Payment_Paid), 0)	AS SaleReceived, 
-                                        COUNT(dp.Id)						AS DebtPaymentCount, 
-                                        COALESCE(SUM(dp.Amount), 0)			AS DebtReceived, 
-                                        COUNT(pr.Id)						AS PurchaseReturnsCount, 
-                                        COALESCE(SUM(pr.CashBack), 0)		AS PurchaseReturnsReceived, 
-                                        COUNT(d.Id)							AS DepositsCount, 
-                                        COALESCE(SUM(d.Amount), 0)			AS DepositAmount
-                                    FROM Metadata m
-                                    FULL JOIN Deposits d					ON d.MetadataId = m.Id AND d.TableName = 'Deposit'
-                                    FULL JOIN PurchaseReturns pr			ON pr.MetadataId = m.Id AND pr.IsRemoved = 'False'
-                                    FULL JOIN Sale s						ON s.MetadataId = m.Id  AND s.IsRemoved = 'False'
-                                    FULL JOIN DebtPayments dp				ON dp.MetadataId = m.Id AND dp.IsRemoved = 'False'
-                                    WHERE m.CreationTime BETWEEN @fromDate AND @toDate
+                                SELECT CAST(@fromDate AS DATE)					AS FromDate,
+                                    CAST(@toDate AS DATE)						AS ToDate,
+                                    COUNT(sl.SaleId)							AS SaleCount, 
+                                    ROUND(COALESCE(SUM(sl.Payment_Paid), 0), 2)	AS SaleReceived, 
+                                    ROUND(COALESCE(SUM(sl.Profit), 0), 2)		AS SaleProfit, 
+                                    COUNT(dp.Id)								AS DebtPaymentCount, 
+                                    ROUND(COALESCE(SUM(dp.Amount), 0), 2)		AS DebtReceived, 
+                                    COUNT(pr.Id)								AS PurchaseReturnsCount, 
+                                    ROUND(COALESCE(SUM(pr.CashBack), 0), 2)		AS PurchaseReturnsReceived, 
+                                    COUNT(d.Id)									AS DepositsCount, 
+                                    ROUND(COALESCE(SUM(d.Amount), 0), 2)		AS DepositAmount
+                                FROM Metadata m
+                                FULL JOIN Deposits d			ON d.MetadataId = m.Id AND d.TableName = 'Deposit'
+                                FULL JOIN PurchaseReturns pr	ON pr.MetadataId = m.Id AND pr.IsRemoved = 'False'
+                                FULL JOIN DebtPayments dp		ON dp.MetadataId = m.Id AND dp.IsRemoved = 'False'
+                                FULL JOIN 
+	                                (SELECT 
+		                                s.Id AS SaleId, s.Payment_Paid, 
+		                                COALESCE(SUM(sli.UnitPrice * sli.Quantity - sli.UnitPurchasePrice * sli.Quantity), 0) AS Profit,
+		                                s.MetadataId, s.IsRemoved
+	                                FROM Sale s
+	                                LEFT JOIN SaleLineItem sli ON sli.SaleId = s.Id AND s.IsRemoved = 'False'
+	                                GROUP BY s.Id, s.Payment_Paid, s.MetadataId, s.IsRemoved) sl 
+								                                ON sl.MetadataId = m.Id AND sl.IsRemoved = 'False'
+                                WHERE m.CreationTime BETWEEN @fromDate AND @toDate
                             )
                     ");
 
