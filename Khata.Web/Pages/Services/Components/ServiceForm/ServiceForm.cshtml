@@ -16,6 +16,11 @@
 </div>
 
 <div class="form-group">
+    <label asp-for="OutletId" class="control-label"></label>
+    <select asp-for="OutletId" class="form-control" asp-items="ViewBag.Outlets"></select>
+</div>
+
+<div class="form-group">
     <label asp-for="Description" class="control-label"></label>
     <textarea asp-for="Description" class="form-control"></textarea>
     <span asp-validation-for="Description" class="text-danger"></span>

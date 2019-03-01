@@ -6,7 +6,8 @@ namespace Khata.Domain
     public abstract class Invoice : TrackedDocument
     {
         public DateTimeOffset Date { get; set; }
-        public virtual ICollection<InvoiceLineItem> Cart { get; set; } = new List<InvoiceLineItem>();
+        public virtual ICollection<InvoiceLineItem> Cart { get; set; } 
+            = new List<InvoiceLineItem>();
 
         public decimal PreviousDue { get; set; }
         public decimal PaymentSubtotal { get; set; }
@@ -14,7 +15,6 @@ namespace Khata.Domain
         public decimal PaymentPayable => PaymentTotal - PaymentDiscountCash;
         public decimal PaymentPaid { get; set; }
         public decimal DueAfter => PaymentPayable - PaymentPaid;
-
 
         public decimal PaymentDiscountCash { get; set; }
         public decimal PaymentDiscountPercentage => PaymentSubtotal > 0

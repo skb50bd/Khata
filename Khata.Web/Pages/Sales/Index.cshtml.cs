@@ -40,7 +40,7 @@ namespace WebUI.Pages.Sales
             int pageIndex = 1)
         {
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Sales = await _sales.Get(Pf);
+            Sales = await _sales.Get(0, Pf);
             return Page();
         }
     }

@@ -11,7 +11,7 @@ namespace Khata.Services.CRUD
 {
     public interface IProductService
     {
-        Task<IPagedList<ProductDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
+        Task<IPagedList<ProductDto>> Get(int outletId, PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<ProductDto> Get(int id);
         Task<ProductDto> Add(ProductViewModel model);
         Task<ProductDto> Update(ProductViewModel vm);

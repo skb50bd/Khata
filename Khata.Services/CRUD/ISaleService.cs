@@ -17,7 +17,7 @@ namespace Khata.Services.CRUD
         Task<bool> Exists(int id);
         Task<SaleDto> Get(int id);
         Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId);
-        Task<IPagedList<SaleDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
+        Task<IPagedList<SaleDto>> Get(int outletId, PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<SaleDto> Remove(int id);
         Task<SaleDto> Update(SaleViewModel vm);
         Task<int> Count(DateTime? from, DateTime? to);

@@ -11,7 +11,7 @@ namespace Khata.Services.CRUD
 {
     public interface IServiceService
     {
-        Task<IPagedList<ServiceDto>> Get(PageFilter pf, DateTime? from = null, DateTime? to = null);
+        Task<IPagedList<ServiceDto>> Get(int outletId, PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<ServiceDto> Get(int id);
         Task<ServiceDto> Add(ServiceViewModel model);
         Task<ServiceDto> Update(ServiceViewModel vm);

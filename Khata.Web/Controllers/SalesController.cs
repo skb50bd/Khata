@@ -39,6 +39,7 @@ namespace WebUI.Controllers
             int pageSize = 0,
             int pageIndex = 1)
             => await _sales.Get(
+                0,
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
@@ -81,8 +82,8 @@ namespace WebUI.Controllers
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(_pfService.CreateNewPf(term, 1, 50));
-            var services = await _services.Get(_pfService.CreateNewPf(term, 1, 50));
+            var products = await _products.Get(0, _pfService.CreateNewPf(term, 1, 50));
+            var services = await _services.Get(0, _pfService.CreateNewPf(term, 1, 50));
 
             products.ForEach(p => results.Add(new
             {

@@ -34,12 +34,13 @@ namespace WebUI.Pages.Services
         #endregion
 
         public async Task<IActionResult> OnGetAsync(
+            int? outletId,
             string searchString = "",
             int pageIndex = 1,
             int pageSize = 0)
         {
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Services = await _services.Get(Pf);
+            Services = await _services.Get(0, Pf);
             return Page();
         }
     }

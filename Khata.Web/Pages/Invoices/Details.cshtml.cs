@@ -13,13 +13,9 @@ namespace WebUI.Pages.Invoices
     public class DetailsModel : PageModel
     {
         private readonly ICustomerInvoiceService _invoices;
-        public OutletOptions Outlet { get; set; }
 
-        public DetailsModel(
-            ICustomerInvoiceService invoices,
-            IOptionsMonitor<OutletOptions> options)
+        public DetailsModel(ICustomerInvoiceService invoices)
         {
-            Outlet = options.CurrentValue;
             _invoices = invoices;
         }
 

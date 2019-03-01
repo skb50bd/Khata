@@ -9,6 +9,11 @@ namespace Khata.DTOs
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
         public string Name { get; set; }
+
+        public int OutletId { get; set; }
+
+        public OutletDto Outlet { get; set; }
+
         public string Description { get; set; }
 
         [DataType(DataType.Currency)]

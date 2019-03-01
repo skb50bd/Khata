@@ -13,6 +13,7 @@ namespace Khata.Domain
         public string Email { get; set; }
 
         public ICollection<Product> Products { get; set; }
+        public ICollection<Service> Services { get; set; }
         public ICollection<Sale> Sales { get; set; }
     }
 }

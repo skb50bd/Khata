@@ -43,7 +43,7 @@ namespace WebUI.Pages.Products
             )
         {
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Products = await _products.Get(Pf);
+            Products = await _products.Get(0, Pf);
             return Page();
         }
     }

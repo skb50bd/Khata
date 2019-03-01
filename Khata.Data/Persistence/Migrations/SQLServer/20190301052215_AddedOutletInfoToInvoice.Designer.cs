@@ -4,14 +4,16 @@ using Khata.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Khata.Data.Persistence.Migrations.SQLServer
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20190301052215_AddedOutletInfoToInvoice")]
+    partial class AddedOutletInfoToInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -572,16 +574,12 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("OutletId");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 6)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MetadataId");
-
-                    b.HasIndex("OutletId");
 
                     b.ToTable("Services");
                 });
@@ -1240,11 +1238,6 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
-
-                    b.HasOne("Khata.Domain.Outlet", "Outlet")
-                        .WithMany("Services")
-                        .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Khata.Domain.Supplier", b =>

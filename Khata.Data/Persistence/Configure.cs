@@ -29,7 +29,7 @@ namespace Khata.Data.Persistence
 
             services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();
             services.AddTransient<ITrackingRepository<Product>, ProductRepository>();
-            services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();
+            services.AddTransient<ITrackingRepository<Service>, ServiceRepository>();
             services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
             services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
             services.AddTransient<ISaleRepository, SaleRepository>();

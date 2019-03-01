@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
-
+using Khata.Domain;
 using Khata.Services.CRUD;
 using Khata.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Pages.Services
 {
@@ -13,15 +14,23 @@ namespace WebUI.Pages.Services
     public class CreateModel : PageModel
     {
         private readonly IServiceService _services;
+        private readonly IOutletService _outlets;
 
-        public CreateModel(IServiceService services)
+        public CreateModel(IServiceService services,
+            IOutletService outlets)
         {
             _services = services;
+            _outlets = outlets;
             ServiceVm = new ServiceViewModel();
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            ViewData["Outlets"] = new SelectList(
+                await _outlets.Get(),
+                nameof(Outlet.Id),
+                nameof(Outlet.Title)
+            );
             return Page();
         }
 

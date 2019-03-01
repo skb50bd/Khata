@@ -20,22 +20,27 @@
         <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
             <div class="col-md-8">
                 <div id="brand">
-                    <h1 class="display-4">@Model.Outlet.Title</h1>
+                    <h1 class="display-4">@Model.Invoice.Outlet.Title</h1>
                     <p class="lead">
-                        @Model.Outlet.Slogan
+                        @Model.Invoice.Outlet.Slogan
                     </p>
                     <table class="table-hover">
                         <tr>
                             <td>Address &nbsp; &nbsp;</td>
-                            <td>: @Model.Outlet.Address</td>
+                            <td>: @Model.Invoice.Outlet.Address</td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td>: <a href="mailto:@Model.Outlet.Email">@Model.Outlet.Email</a></td>
+                            <td>
+                                :
+                                <a href="mailto:@Model.Invoice.Outlet.Email">
+                                    @Model.Invoice.Outlet.Email
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>Phone</td>
-                            <td>: @Model.Outlet.Phone</td>
+                            <td>: @Model.Invoice.Outlet.Phone</td>
                         </tr>
                     </table>
                 </div>

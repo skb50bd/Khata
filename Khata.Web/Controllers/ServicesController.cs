@@ -31,6 +31,7 @@ namespace WebUI.Controllers
             int pageSize = 0,
             int pageIndex = 1)
             => await _services.Get(
+                0,
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 

@@ -14,7 +14,8 @@ namespace Khata.DTOs
 
         public DateTimeOffset Date { get; set; }
 
-        public virtual ICollection<InvoiceLineItemDto> Cart { get; set; } = new List<InvoiceLineItemDto>();
+        public virtual ICollection<InvoiceLineItemDto> Cart { get; set; } 
+            = new List<InvoiceLineItemDto>();
 
         [DataType(DataType.Currency)]
         public decimal PreviousDue { get; set; }

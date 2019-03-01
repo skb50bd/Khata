@@ -79,7 +79,7 @@ namespace WebUI.Pages.Reporting
 
         public async Task Load()
         {
-            Sales = await _sales.Get(_pf.CreateNewPf(""), FromDate, ToDate);
+            Sales = await _sales.Get(0, _pf.CreateNewPf(""), FromDate, ToDate);
             DebtPayments = await _debtPayments.Get(_pf.CreateNewPf(""), FromDate, ToDate);
             Deposits = (await _transaction.GetDeposits(FromDate, ToDate))
                 .Where(d => d.TableName == nameof(Deposit));

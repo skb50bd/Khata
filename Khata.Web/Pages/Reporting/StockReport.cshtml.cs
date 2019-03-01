@@ -49,6 +49,7 @@ namespace WebUI.Pages.Reporting
         public async System.Threading.Tasks.Task OnGetAsync()
         {
             Products = (await _products.Get(
+                0,
                 _pfService.CreateNewPf("", 1, int.MaxValue)))
                 .OrderBy(p => p.Name);
         }

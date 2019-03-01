@@ -78,7 +78,6 @@
     position: absolute;
     top: 0;
     width: 250px;
-    margin:;
     padding: 0;
     list-style: none;
 }
@@ -87,7 +86,6 @@
         text-indent: 10px;
         line-height: 40px;
         border-bottom: 1px solid #eee;
-        //shawn
     }
 
         .sidebar-nav li a {
@@ -100,8 +98,7 @@
             display: block;
             color: #555;
             font-weight: bold;
-            x border-top:1px solid #ddd;
-            //shawn
+            border-top:1px solid #ddd;
         }
 
         .sidebar-nav li a:hover {
@@ -182,7 +179,7 @@
 
 .thumbnail {
     margin-bottom: 0px;
-    xborder: 0px
+    border: 0px
 }
 
 .outer .inner {
@@ -199,8 +196,7 @@
     padding: 10px 15px;
     background: #fff;
     border-top: 1px solid #e5e5e5;
-    xborder-top: 0px; <!--
-    if n border around thumbnail, also do this -->
+    border-top: 0px;
 }
 
 .btn-circle {
@@ -224,5 +220,9 @@
 }
 
 .material-icons {
+    padding-right: 5px;
+}
 
+i {
+    vertical-align: middle !important;
 }

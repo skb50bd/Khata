@@ -36,6 +36,7 @@ namespace Khata.Services.CRUD
         }
 
         public async Task<IPagedList<SaleDto>> Get(
+            int outletId,
             PageFilter pf,
             DateTime? from = null,
             DateTime? to = null)
@@ -45,6 +46,11 @@ namespace Khata.Services.CRUD
                 : s => s.Id.ToString() == pf.Filter
                     || s.InvoiceId.ToString() == pf.Filter
                     || s.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
+
+            if(outletId != 0)
+            {
+                predicate = predicate.And(s => s.OutletId == outletId);
+            }
 
             var res = await _db.Sales.Get(
                 predicate,

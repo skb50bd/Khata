@@ -60,7 +60,7 @@ namespace WebUI.Controllers
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(_pfService.CreateNewPf(term, 1, 0));
+            var products = await _products.Get(0, _pfService.CreateNewPf(term, 1, 0));
 
             products.ForEach(p => results.Add(new
             {

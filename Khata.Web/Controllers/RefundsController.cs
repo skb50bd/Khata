@@ -68,7 +68,7 @@ namespace WebUI.Controllers
             IEnumerable<SaleDto> sales;
             IList<object> results = new List<object>();
 
-            sales = await _sales.Get(
+            sales = await _sales.Get(0,
                         _pfService.CreateNewPf(term, 1, int.MaxValue),
                         DateTime.Today.AddYears(-1),
                         DateTime.Now);

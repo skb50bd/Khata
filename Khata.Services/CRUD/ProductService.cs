@@ -31,14 +31,20 @@ namespace Khata.Services.CRUD
         }
 
         public async Task<IPagedList<ProductDto>> Get(
+            int outletId,
             PageFilter pf,
             DateTime? from = null,
             DateTime? to = null)
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Product, bool>>)(p => true)
+                ? (Expression<Func<Product, bool>>)(p => !p.IsRemoved)
                 : p => p.Id.ToString() == pf.Filter
                     || p.Name.ToLowerInvariant().Contains(pf.Filter);
+
+            if (outletId != 0)
+            {
+                predicate = predicate.And(p => p.OutletId == outletId);
+            }
 
             var res = await _db.Products.Get(
                 predicate,

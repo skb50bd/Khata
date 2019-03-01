@@ -12,13 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Khata.Data.Persistence
 {
-    public class InvoiceRepository : TrackingRepository<CustomerInvoice>, ITrackingRepository<CustomerInvoice>
+    public class ServiceRepository : TrackingRepository<Service>, ITrackingRepository<Service>
     {
-        public InvoiceRepository(KhataContext context) : base(context) { }
+        public ServiceRepository(KhataContext context) : base(context) { }
 
-        public override async Task<IPagedList<CustomerInvoice>> Get<T>(
-            Expression<Func<CustomerInvoice, bool>> predicate,
-            Expression<Func<CustomerInvoice, T>> order,
+        public override async Task<IPagedList<Service>> Get<T>(
+            Expression<Func<Service, bool>> predicate,
+            Expression<Func<Service, T>> order,
             int pageIndex,
             int pageSize,
             DateTime? from = null,
@@ -29,23 +29,20 @@ namespace Khata.Data.Persistence
                     && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
                     && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
 
-            var res = new PagedList<CustomerInvoice>()
+            var res = new PagedList<Service>()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 ResultCount =
-                    await Context.Invoices
+                    await Context.Services
                         .AsNoTracking()
-                        .Include(d => d.Customer)
-                        .Include(d => d.Outlet)
                         .Where(predicate)
                         .CountAsync()
             };
 
-            res.AddRange(await Context.Invoices
+            res.AddRange(await Context.Services
                 .AsNoTracking()
-                .Include(s => s.Customer)
-                .Include(d => d.Outlet)
+                .Include(s => s.Outlet)
                 .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -55,10 +52,9 @@ namespace Khata.Data.Persistence
             return res;
         }
 
-        public override async Task<CustomerInvoice> GetById(int id)
-            => await Context.Invoices
-            .Include(s => s.Customer)
-            .Include(d => d.Outlet)
+        public override async Task<Service> GetById(int id)
+            => await Context.Services
+            .Include(s => s.Outlet)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 }
