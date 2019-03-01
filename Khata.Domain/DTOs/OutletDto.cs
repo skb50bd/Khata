@@ -1,6 +1,7 @@
 ﻿using Khata.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Khata.DTOs
@@ -9,6 +10,8 @@ namespace Khata.DTOs
     {
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
+
+        [Display(Name = "Outlet Name")]
         public string Title { get; set; }
         public string Slogan { get; set; }
         public string Address { get; set; }

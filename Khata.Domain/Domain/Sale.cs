@@ -6,6 +6,9 @@ namespace Khata.Domain
 {
     public class Sale : TrackedDocument, IDeposit
     {
+        public int OutletId { get; set; }
+        public virtual Outlet Outlet { get; set; }
+
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }
 

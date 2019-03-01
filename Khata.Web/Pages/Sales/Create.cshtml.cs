@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Khata.Domain;
 using Khata.DTOs;
 using Khata.Services.CRUD;
 using Khata.ViewModels;
@@ -10,6 +10,7 @@ using Khata.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Pages.Sales
 {
@@ -17,15 +18,25 @@ namespace WebUI.Pages.Sales
     public class CreateModel : PageModel
     {
         private readonly ISaleService _sales;
+        private readonly IOutletService _outlets;
 
-        public CreateModel(ISaleService sales)
+        public CreateModel(
+            ISaleService sales,
+            IOutletService outlets)
         {
             SaleVm = new SaleViewModel();
             _sales = sales;
+            _outlets = outlets;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            ViewData["Outlets"] =
+                new SelectList(
+                    await _outlets.Get(),
+                    nameof(Outlet.Id),
+                    nameof(Outlet.Title)
+                );
             return Page();
         }
 

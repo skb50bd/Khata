@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Brotal.Extensions;
+using System.Linq;
 
 namespace WebUI.Pages.Products
 {
@@ -35,6 +36,7 @@ namespace WebUI.Pages.Products
 
 
         public async Task<IActionResult> OnGetAsync(
+            [FromRoute]int? outletId,
             string searchString = "",
                 int pageIndex = 1,
                 int pageSize = 0

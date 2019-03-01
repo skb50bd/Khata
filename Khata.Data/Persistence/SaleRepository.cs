@@ -45,6 +45,7 @@ namespace Khata.Data.Persistence
                 .AsNoTracking()
                 .Include(s => s.Cart)
                 .Include(s => s.Customer)
+                .Include(s => s.Outlet)
                 .Where(predicate)
                 .OrderByDescending(order)
                 .Skip((pageIndex - 1) * pageSize)
@@ -58,6 +59,7 @@ namespace Khata.Data.Persistence
             => await Context.Sales
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
+                .Include(s => s.Outlet)
                         .FirstOrDefaultAsync(s => s.Id == id);
 
         public async Task<IEnumerable<Sale>> GetSavedSales()
@@ -65,6 +67,7 @@ namespace Khata.Data.Persistence
                         .AsNoTracking()
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
+                .Include(s => s.Outlet)
                         .ToListAsync();
 
         public async Task<Sale> GetSavedSale(int id)
@@ -72,6 +75,7 @@ namespace Khata.Data.Persistence
                         .AsNoTracking()
                         .Include(s => s.Customer)
                         .Include(s => s.Cart)
+                .Include(s => s.Outlet)
                         .FirstOrDefaultAsync(ss => ss.Id == id);
 
         public async Task DeleteSavedSale(int id)

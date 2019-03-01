@@ -37,12 +37,22 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            <label asp-for="SaleDate" class="control-label"></label>
-                            <input asp-for="SaleDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
-                            <span asp-validation-for="SaleDate" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="SaleDate" class="control-label"></label>
+                                    <input asp-for="SaleDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
+                                    <span asp-validation-for="SaleDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="OutletId" class="control-label"></label>
+                                    <select asp-for="OutletId" class="form-control form-control-sm" asp-items="ViewBag.Outlets"></select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label asp-for="Type" class="control-label"></label>

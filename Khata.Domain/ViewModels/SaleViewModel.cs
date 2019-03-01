@@ -9,6 +9,10 @@ namespace Khata.ViewModels
     {
         public int? Id { get; set; }
         public SaleType Type { get; set; }
+
+        [Display(Name = "Outlet")]
+        public int OutletId { get; set; }
+        
         public int CustomerId { get; set; }
 
         [Display(Name = "Add New Customer")]

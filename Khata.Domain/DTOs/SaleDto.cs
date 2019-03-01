@@ -11,6 +11,9 @@ namespace Khata.DTOs
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
 
+        public int OutletId { get; set; }
+        public virtual OutletDto Outlet { get; set; }
+
         [Display(Name = "Type")]
         public SaleType Type { get; set; }
 

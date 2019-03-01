@@ -34,6 +34,7 @@ namespace WebUI.Pages.Sales
         #endregion
 
         public async Task<IActionResult> OnGetAsync(
+            int? outletId,
             string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
