@@ -16,6 +16,8 @@ namespace ImportData.Services
     public static class Dump
     {
         static string[] Shops = new string[0];
+        static readonly Dictionary<string, Outlet> Outlets =
+            new Dictionary<string, Outlet>();
         static readonly Dictionary<string, Customer> Customers =
             new Dictionary<string, Customer>();
         static readonly Dictionary<string, Supplier> Suppliers =
@@ -49,6 +51,21 @@ namespace ImportData.Services
                 return prods;
             }
         }
+        static Dictionary<string, Sale> AllSales
+        {
+            get
+            {
+                var sales = new Dictionary<string, Sale>();
+                foreach (var key in Sales.Keys)
+                {
+                    foreach ((var id, var sale) in Sales[key])
+                    {
+                        sales[id] = sale;
+                    }
+                }
+                return sales;
+            }
+        }
 
         static decimal CashBalance { get; set; }
 
@@ -57,288 +74,282 @@ namespace ImportData.Services
         static readonly IMongoDatabase Mongo = new MongoClient().GetDatabase("BShopManDb");
         static readonly string workingDir = @"D:\Dump";
 
-
-        public static void AddItems<T>(IList<T> items, Action<T> add, IUnitOfWork db)
-        {
-            var count = items.Count();
-            var failCount = 0;
-            for (var i = 0; i < count; i++)
-            {
-                Console.WriteLine($"Adding { i + 1 } of { count }");
-                try
-                {
-                    //db.Complete();
-                }
-                catch (Exception e)
-                {
-                    failCount++;
-                    Console.WriteLine(e.Message);
-                    string json = JsonConvert.SerializeObject(items[i], Formatting.Indented, jss);
-                    Console.WriteLine("Failed to Write the Object" + json);
-                    System.IO.File.AppendAllText(workingDir + @"\" + typeof(T).Name + "Errors.json", json);
-                }
-            }
-
-            Console.WriteLine($"Failed to add {failCount} items");
-            Console.ReadLine();
-        }
-
         public static async Task InsertAllAsync(IUnitOfWork db)
         {
-            DiscoverShops();
-            Console.Write($"{Shops.Count()} Shops found.\nWhich one to load? (0 - {Shops.Count() - 1})");
-            var shop = Console.ReadLine();
-            if (int.TryParse(shop, out int index) && index < Shops.Count())
+            DumpShops();
+            foreach(var o in Outlets.Values)
             {
-                var ans = "";
-
-                #region Customers
-                DumpCustomers();
-                Console.Write("Customers? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var c in Customers.Values.ToList())
-                    {
-                        db.Customers.Add(c);
-                    }
-                }
-                #endregion
-                db.Complete();
-
-                #region Suppliers
-                DumpSuppliers();
-                Console.Write("Suppliers? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var c in Suppliers.Values.ToList())
-                    {
-                        db.Suppliers.Add(c);
-                    }
-                }
-                #endregion
-                db.Complete();
-
-                #region Employees
-                DumpEmployees();
-                Console.Write("Employees? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var c in Employees.Values.ToList())
-                    {
-                        db.Employees.Add(c);
-                    }
-                }
-                #endregion
-
-                #region Expenses
-                DumpExpenses();
-                Console.Write("Expenses? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var c in Expenses.Values)
-                    {
-                        db.Expenses.Add(c);
-                    }
-                    db.Complete();
-                    foreach (var item in Expenses.Values)
-                    {
-                        var withdrawal = new Withdrawal(item as IWithdrawal)
-                        {
-                            Metadata = item.Metadata
-                        };
-                        db.Withdrawals.Add(withdrawal);
-                    }
-                    db.Complete();
-                }
-                #endregion
-
-                #region Create Cash Customers and Suppliers
-                var customer = new Customer
-                {
-                    FirstName = "Cash",
-                    LastName = "Customer",
-                    Address = "",
-                    Phone = "00000000000",
-                    Email = "someone@example.com",
-                    CompanyName = "N/A",
-                    Metadata = Metadata.CreatedNew("auto")
-                };
-
-                var supplier = new Supplier
-                {
-                    FirstName = "Cash",
-                    LastName = "Supplier",
-                    Address = "",
-                    Phone = "00000000000",
-                    Email = "someone@example.com",
-                    CompanyName = "N/A",
-                    Metadata = Metadata.CreatedNew("auto")
-                };
-                #endregion
-
-                #region DebtPayments
-                DumpDebtPayments();
-                Console.Write("Debt Payments? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var dp in DebtPayments.Values)
-                    {
-                        if (dp.Customer == null)
-                            dp.Customer = customer;
-                        if (dp.Invoice.Customer == null)
-                            dp.Invoice.Customer = customer;
-
-                        db.DebtPayments.Add(dp);
-                    }
-                    db.Complete();
-                    foreach (var item in DebtPayments.Values)
-                    {
-                        var deposit = new Deposit(item as IDeposit)
-                        {
-                            Metadata = item.Metadata
-                        };
-                        db.Deposits.Add(deposit);
-                    }
-                    db.Complete();
-                }
-                #endregion
-
-                #region SupplierPayments
-                DumpSupplierPayments();
-                Console.Write("Supplier Payments? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var sp in SupplierPayments.Values)
-                    {
-                        if (sp.Supplier == null)
-                            sp.Supplier = supplier;
-                        if (sp.Vouchar.Supplier == null)
-                            sp.Vouchar.Supplier = supplier;
-                        db.SupplierPayments.Add(sp);
-                    }
-                    db.Complete();
-                    foreach (var item in SupplierPayments.Values)
-                    {
-                        var withdrawal = new Withdrawal(item as IWithdrawal)
-                        {
-                            Metadata = item.Metadata
-                        };
-                        db.Withdrawals.Add(withdrawal);
-                    }
-                    db.Complete();
-
-                }
-                #endregion
-
-                #region Products
-                DumpProducts();
-                var shopId = Shops[index];
-                Console.Write("Products? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var p in AllProducts.Values.ToList())
-                    {
-                        db.Products.Add(p);
-                    }
-                }
-                #endregion
-
-                db.Complete();
-
-                #region Purchase
-                DumpPurchases();
-                Console.Write("Purchase? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    foreach (var purchase in Purchases.Values)
-                    {
-                        Console.WriteLine($"SupplierId: {purchase.SupplierId}");
-                        var supplierExists = await db.Suppliers.Exists(purchase.SupplierId);
-                        Console.WriteLine($"Supplier Exists: {supplierExists}");
-                        if (!supplierExists)
-                        {
-                            purchase.Supplier = supplier;
-                            purchase.Vouchar.Supplier = supplier;
-                        }
-                        db.Purchases.Add(purchase);
-                    }
-                    db.Complete();
-                    foreach (var item in Purchases.Values)
-                    {
-                        var withdrawal = new Withdrawal(item as IWithdrawal)
-                        {
-                            Metadata = item.Metadata
-                        };
-                        db.Withdrawals.Add(withdrawal);
-                    }
-                    db.Complete();
-                }
-                #endregion
-
-                #region Sales
-                DumpSales();
-                Console.Write("Sales? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    var added = 0;
-                    foreach (var sale in Sales[shopId].Values)
-                    {
-                        Console.WriteLine($"CustomerId: {sale.CustomerId}");
-                        var customerExists = await db.Customers.Exists(sale.CustomerId);
-                        Console.WriteLine($"Customer Exists: {customerExists}");
-                        if (!customerExists)
-                        {
-                            sale.CustomerId = (await db.Customers.Get(
-                                c => c.FullName.ToLowerInvariant().Contains("cash"),
-                                c => c.Id, 1, 0)).FirstOrDefault().Id;
-                            sale.Invoice.CustomerId = sale.CustomerId;
-                        }
-
-                        db.Sales.Add(sale);
-                        Console.WriteLine($"{added++} sales added");
-                    }
-                    db.Complete();
-                    foreach (var item in Sales[shopId].Values)
-                    {
-                        var deposit = new Deposit(item as IDeposit)
-                        {
-                            Metadata = item.Metadata
-                        };
-                        db.Deposits.Add(deposit);
-                    }
-                    db.Complete();
-                }
-                #endregion
-
-                #region Cash
-                GetCashData();
-                Console.Write("Cash? (enter N to cancel): ");
-                ans = Console.ReadLine();
-                if (ans.ToUpperInvariant() != "N")
-                {
-                    var cr = await db.CashRegister.Get();
-                    cr.Balance = CashBalance;
-                }
-                #endregion
-
-                db.Complete();
-
-                Console.WriteLine("Everything Added...");
+                db.Outlets.Add(o);
             }
+            db.Complete();
+
+            var ans = "";
+            #region Customers
+            DumpCustomers();
+            Console.Write("Customers? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var c in Customers.Values.ToList())
+                {
+                    db.Customers.Add(c);
+                }
+            }
+            #endregion
+            db.Complete();
+
+            #region Suppliers
+            DumpSuppliers();
+            Console.Write("Suppliers? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var c in Suppliers.Values.ToList())
+                {
+                    db.Suppliers.Add(c);
+                }
+            }
+            #endregion
+            db.Complete();
+
+            #region Employees
+            DumpEmployees();
+            Console.Write("Employees? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var c in Employees.Values.ToList())
+                {
+                    db.Employees.Add(c);
+                }
+            }
+            #endregion
+
+            #region Expenses
+            DumpExpenses();
+            Console.Write("Expenses? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var c in Expenses.Values)
+                {
+                    db.Expenses.Add(c);
+                }
+                db.Complete();
+                foreach (var item in Expenses.Values)
+                {
+                    var withdrawal = new Withdrawal(item as IWithdrawal)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Withdrawals.Add(withdrawal);
+                }
+                db.Complete();
+            }
+            #endregion
+
+            #region Create Cash Customers and Suppliers
+            var customer = new Customer
+            {
+                FirstName = "Cash",
+                LastName = "Customer",
+                Address = "",
+                Phone = "00000000000",
+                Email = "someone@example.com",
+                CompanyName = "N/A",
+                Metadata = Metadata.CreatedNew("auto")
+            };
+
+            var supplier = new Supplier
+            {
+                FirstName = "Cash",
+                LastName = "Supplier",
+                Address = "",
+                Phone = "00000000000",
+                Email = "someone@example.com",
+                CompanyName = "N/A",
+                Metadata = Metadata.CreatedNew("auto")
+            };
+            #endregion
+
+            #region DebtPayments
+            DumpDebtPayments();
+            Console.Write("Debt Payments? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var dp in DebtPayments.Values)
+                {
+                    if (dp.Customer == null)
+                        dp.Customer = customer;
+                    if (dp.Invoice.Customer == null)
+                        dp.Invoice.Customer = customer;
+
+                    db.DebtPayments.Add(dp);
+                }
+                db.Complete();
+                foreach (var item in DebtPayments.Values)
+                {
+                    var deposit = new Deposit(item as IDeposit)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Deposits.Add(deposit);
+                }
+                db.Complete();
+            }
+            #endregion
+
+            #region SupplierPayments
+            DumpSupplierPayments();
+            Console.Write("Supplier Payments? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var sp in SupplierPayments.Values)
+                {
+                    if (sp.Supplier == null)
+                        sp.Supplier = supplier;
+                    if (sp.Vouchar.Supplier == null)
+                        sp.Vouchar.Supplier = supplier;
+                    db.SupplierPayments.Add(sp);
+                }
+                db.Complete();
+                foreach (var item in SupplierPayments.Values)
+                {
+                    var withdrawal = new Withdrawal(item as IWithdrawal)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Withdrawals.Add(withdrawal);
+                }
+                db.Complete();
+
+            }
+            #endregion
+
+            #region Products
+            DumpProducts();
+            Console.Write("Products? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var p in AllProducts.Values.ToList())
+                {
+                    db.Products.Add(p);
+                }
+            }
+            #endregion
+
+            db.Complete();
+
+            #region Purchase
+            DumpPurchases();
+            Console.Write("Purchase? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var purchase in Purchases.Values)
+                {
+                    Console.WriteLine($"SupplierId: {purchase.SupplierId}");
+                    var supplierExists = await db.Suppliers.Exists(purchase.SupplierId);
+                    Console.WriteLine($"Supplier Exists: {supplierExists}");
+                    if (!supplierExists)
+                    {
+                        purchase.Supplier = supplier;
+                        purchase.Vouchar.Supplier = supplier;
+                    }
+                    db.Purchases.Add(purchase);
+                }
+                db.Complete();
+                foreach (var item in Purchases.Values)
+                {
+                    var withdrawal = new Withdrawal(item as IWithdrawal)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Withdrawals.Add(withdrawal);
+                }
+                db.Complete();
+            }
+            #endregion
+
+            #region Sales
+            DumpSales();
+            Console.Write("Sales? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                var added = 0;
+                foreach (var sale in AllSales.Values)
+                {
+                    Console.WriteLine($"CustomerId: {sale.CustomerId}");
+                    var customerExists = await db.Customers.Exists(sale.CustomerId);
+                    Console.WriteLine($"Customer Exists: {customerExists}");
+                    if (!customerExists)
+                    {
+                        sale.CustomerId = (await db.Customers.Get(
+                            c => c.FullName.ToLowerInvariant().Contains("cash"),
+                            c => c.Id, 1, 0)).FirstOrDefault().Id;
+                        sale.Invoice.CustomerId = sale.CustomerId;
+                    }
+
+                    db.Sales.Add(sale);
+                    Console.WriteLine($"{added++} sales added");
+                }
+                db.Complete();
+                foreach (var item in AllSales.Values)
+                {
+                    var deposit = new Deposit(item as IDeposit)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Deposits.Add(deposit);
+                }
+                db.Complete();
+            }
+            #endregion
+
+            #region Cash
+            GetCashData();
+            Console.Write("Cash? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                var cr = await db.CashRegister.Get();
+                cr.Balance = CashBalance;
+            }
+            #endregion
+
+            db.Complete();
+
+            Console.WriteLine("Everything Added...");
         }
 
-        private static void DiscoverShops()
+        private static void DumpShops()
         {
             var shopsCollection = Mongo.GetCollection<BsonDocument>("Shop").Find(new BsonDocument()).ToList();
+            foreach (var s in shopsCollection)
+            {
+                var title = s["shopName"].ToString();
+                var slogan = s["tagline"].ToString();
+                var address = s["address"].ToString();
+                var phone = string.Join(", ", s["contactNumbers"].AsBsonArray.Select(b => b.ToString()));
+                var email = string.Join(", ", s["emailAddresses"].AsBsonArray.Select(b => b.ToString()));
+
+                Outlets[s["_id"].ToString()] = new Outlet
+                {
+                    Title = title,
+                    Slogan = slogan,
+                    Address = address,
+                    Phone = phone,
+                    Email = email,
+                    Metadata = GetMetadata(s["meta"].AsBsonDocument)
+                };
+            }
+            var json = JsonConvert.SerializeObject(Outlets, Formatting.Indented);
+            System.IO.File.WriteAllText(workingDir + @"\Outlets.json", json);
+
             Shops = shopsCollection.Select(s => s["_id"].ToString()).ToArray();
             Console.WriteLine($"{Shops.Count()} Shops Found");
             foreach (var shop in Shops)
@@ -558,6 +569,7 @@ namespace ImportData.Services
             foreach (var d in productsCollection)
             {
                 var name = d["productName"].ToString();
+                var shopId = d["shopId"].ToString();
                 var unit = d["units"][0]["unitName"].ToString();
                 var shopStock = d["shopStock"].ToDecimal();
                 var warehouseStock = d["godownStock"].ToDecimal();
@@ -573,6 +585,7 @@ namespace ImportData.Services
                 Products[d["shopId"].ToString()][d["_id"].ToString()] = new Product
                 {
                     Name = RemoveBsonNull(name),
+                    OutletId = Outlets[shopId].Id,
                     Unit = RemoveBsonNull(unit),
                     Inventory = new Inventory
                     {
@@ -585,7 +598,7 @@ namespace ImportData.Services
                         Bulk = bulkPrice,
                         Retail = retailPrice,
                         Purchase = purchasePrice,
-                        Margin = purchasePrice * 1.1M
+                        Margin = purchasePrice * 1.01M
                     },
                     IsRemoved = false,
                     Description = RemoveBsonNull(note)
@@ -734,6 +747,7 @@ namespace ImportData.Services
                     CustomerId = customer?.Id ?? 0,
                     SaleDate = dealtime,
                     Type = saleType,
+                    OutletId = Outlets[shopId].Id,
                     Payment = new PaymentInfo
                     {
                         SubTotal = amount,
@@ -748,6 +762,7 @@ namespace ImportData.Services
                 var customerInvoice = new CustomerInvoice
                 {
                     Date = DateTime.Now,
+                    OutletId = Outlets[shopId].Id,
                     PreviousDue = 0,
                     PaymentSubtotal = newItem.Payment.SubTotal,
                     PaymentPaid = newItem.Amount,
@@ -774,7 +789,7 @@ namespace ImportData.Services
             }
         }
 
-        private static string RemoveBsonNull(string str) 
+        private static string RemoveBsonNull(string str)
             => str == "BsonNull" ? "" : str;
 
         private static Metadata GetMetadata(BsonDocument d)

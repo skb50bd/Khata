@@ -80,7 +80,8 @@ namespace ImportData
             //.EnableSensitiveDataLogging());
             //options.UseInMemoryDatabase("Khata"));
 
-            services.AddTransient<ITrackingRepository<Product>, TrackingRepository<Product>>();
+            services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();
+            services.AddTransient<ITrackingRepository<Product>, ProductRepository>();
             services.AddTransient<ITrackingRepository<Service>, TrackingRepository<Service>>();
             services.AddTransient<ITrackingRepository<Customer>, TrackingRepository<Customer>>();
             services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
