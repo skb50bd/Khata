@@ -11,7 +11,6 @@
         <li class="page-item">
             <a asp-route-PageSize="@Model.PageSize"
                asp-route-PageIndex="1"
-               asp-route-PageFilter="@Model."
                class="page-link">First</a>
         </li>
 
@@ -69,7 +68,7 @@
         <li class="page-item">
             <a asp-page="./Index"
                asp-route-PageSize="@Model.PageSize"
-               asp-route-PageIndex="@Model."
+               asp-route-PageIndex="@Model.PageCount"
                class="page-link">Last (@Model.PageCount)</a>
         </li>
     </ul>

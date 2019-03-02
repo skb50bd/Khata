@@ -330,7 +330,7 @@ $(document).ready(function () {
     $('#lineitem-selector').catcomplete({
         source: function (request, response) {
             $.ajax({
-                url: lineItemSelector.getAttribute("data-path"),
+                url: lineItemSelector.getAttribute("data-path") + "?outletId=" + $('#OutletId').val(),
                 type: 'GET',
                 cache: true,
                 data: request,

@@ -45,6 +45,7 @@ namespace Khata.Services.CRUD
                 ? (Expression<Func<Sale, bool>>)(s => !s.IsRemoved)
                 : s => s.Id.ToString() == pf.Filter
                     || s.InvoiceId.ToString() == pf.Filter
+                    || s.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
                     || s.Customer.FullName.ToLowerInvariant().Contains(pf.Filter);
 
             if(outletId != 0)

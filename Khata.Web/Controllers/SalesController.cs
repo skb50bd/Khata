@@ -35,16 +35,17 @@ namespace WebUI.Controllers
 
         // GET: api/Sales
         [HttpGet]
-        public async Task<IEnumerable<SaleDto>> Get(string searchString = "",
+        public async Task<IEnumerable<SaleDto>> Get(
+            int? outletId,
+            string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
             => await _sales.Get(
-                0,
+                outletId ?? 0,
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
         // GET: api/Sales/5
-
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute]int id)
         {
@@ -64,7 +65,7 @@ namespace WebUI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var customers = await Get(searchString: term, 50, 1);
+            var customers = await Get(0, searchString: term, 50, 1);
             return Ok(customers.Select(s =>
                 new
                 {
@@ -76,14 +77,22 @@ namespace WebUI.Controllers
 
         // GET: api/Sales/LineItems
         [HttpGet("LineItems/")]
-        public async Task<IActionResult> GetLineItems([FromQuery]string term)
+        public async Task<IActionResult> GetLineItems(
+            [FromQuery]int outletId, 
+            [FromQuery]string term)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(0, _pfService.CreateNewPf(term, 1, 50));
-            var services = await _services.Get(0, _pfService.CreateNewPf(term, 1, 50));
+            var products = await _products.Get(
+                outletId, 
+                _pfService.CreateNewPf(term, 1, 50)
+            );
+            var services = await _services.Get(
+                outletId, 
+                _pfService.CreateNewPf(term, 1, 50)
+            );
 
             products.ForEach(p => results.Add(new
             {

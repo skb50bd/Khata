@@ -39,6 +39,7 @@ namespace Khata.Services.CRUD
             var predicate = string.IsNullOrEmpty(pf.Filter)
                 ? (Expression<Func<Product, bool>>)(p => !p.IsRemoved)
                 : p => p.Id.ToString() == pf.Filter
+                    || p.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
                     || p.Name.ToLowerInvariant().Contains(pf.Filter);
 
             if (outletId != 0)

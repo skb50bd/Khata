@@ -21,9 +21,13 @@ namespace Khata.Services.CRUD
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
+        private string CurrentUser => 
+            _httpContextAccessor.HttpContext.User.Identity.Name;
 
-        public ServiceService(IUnitOfWork db, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ServiceService(
+            IUnitOfWork db, 
+            IMapper mapper, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _mapper = mapper;
@@ -38,8 +42,9 @@ namespace Khata.Services.CRUD
         {
             var predicate = string.IsNullOrEmpty(pf.Filter)
                 ? (Expression<Func<Service, bool>>)(p => true)
-                : p => p.Id.ToString() == pf.Filter
-                    || p.Name.ToLowerInvariant().Contains(pf.Filter);
+                : s => s.Id.ToString() == pf.Filter
+                    || s.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
+                    || s.Name.ToLowerInvariant().Contains(pf.Filter);
 
             if(outletId != 0)
             {
@@ -48,7 +53,7 @@ namespace Khata.Services.CRUD
 
             var res = await _db.Services.Get(
                 predicate,
-                p => p.Id,
+                s => s.Id,
                 pf.PageIndex,
                 pf.PageSize
             );

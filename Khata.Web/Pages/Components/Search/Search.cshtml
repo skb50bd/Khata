@@ -9,7 +9,7 @@
                aria-label="Search keyword" />
         <input asp-for="@Model.PageSize"
                name="PageSize"
-               value="@Model.PageSize"
+               value="@int.MaxValue"
                class="form-control" hidden />
         <input asp-for="@Model.PageIndex"
                name="PageIndex"

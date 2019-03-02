@@ -27,11 +27,12 @@ namespace WebUI.Controllers
         // GET: api/Services
         [HttpGet]
         public async Task<IEnumerable<ServiceDto>> Get(
+            int? outletId,
             string searchString = "",
             int pageSize = 0,
             int pageIndex = 1)
             => await _services.Get(
-                0,
+                outletId ?? 0,
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
