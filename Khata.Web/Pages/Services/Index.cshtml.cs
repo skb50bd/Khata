@@ -39,8 +39,9 @@ namespace WebUI.Pages.Services
             int pageIndex = 1,
             int pageSize = 0)
         {
+            outletId = outletId ?? 0;
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Services = await _services.Get(0, Pf);
+            Services = await _services.Get((int)outletId, Pf);
             return Page();
         }
     }

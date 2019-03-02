@@ -42,8 +42,9 @@ namespace WebUI.Pages.Products
                 int pageSize = 0
             )
         {
+            outletId = outletId ?? 0;
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Products = await _products.Get(0, Pf);
+            Products = await _products.Get((int)outletId, Pf);
             return Page();
         }
     }

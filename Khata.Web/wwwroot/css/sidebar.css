@@ -223,6 +223,10 @@
     padding-right: 5px;
 }
 
-i {
+a {
+    align-content: center;
+}
+
+a > i {
     vertical-align: middle !important;
 }

@@ -1,7 +1,11 @@
 ﻿<div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-        <li @*class="sidebar-brand"*@>
-            <h2><a asp-page="/Index" class="nav-link">KHATA</a></h2>
+        <li class="mt-2">
+            <h2>
+                <a asp-page="/Index" class="nav-link">
+                    KHATA
+                </a>
+            </h2>
         </li>
 
         <partial name="_SignInPartial" />
@@ -22,13 +26,17 @@
         </li>
 
         <li>
-            <a href="#incomingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <a href="#incomingSubmenu" 
+               data-toggle="collapse" 
+               aria-expanded="false" 
+               class="dropdown-toggle">
                 <i class="material-icons">
                     arrow_forward
                 </i>
                 Incoming
             </a>
-            <ul class="collapse list-unstyled" id="incomingSubmenu">
+            <ul class="collapse list-unstyled" 
+                id="incomingSubmenu">
                 <li>
                     <a asp-area=""
                        asp-page="/Sales/Index">Sales</a>
@@ -93,13 +101,17 @@
         </li>
 
         <li>
-            <a href="#inventorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <a href="#inventorySubmenu" 
+               data-toggle="collapse" 
+               aria-expanded="false" 
+               class="dropdown-toggle">
                 <i class="material-icons">
                     domain
                 </i>
                 Inventory
             </a>
-            <ul class="collapse list-unstyled" id="inventorySubmenu">
+            <ul class="collapse list-unstyled" 
+                id="inventorySubmenu">
                 <li>
                     <a asp-area=""
                        asp-page="/Products/Index">Products</a>
