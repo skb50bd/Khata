@@ -9,21 +9,29 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Brotal.Extensions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace WebUI.Pages.Products
 {
     public class IndexModel : PageModel
     {
         private readonly IProductService _products;
+        private readonly IOutletService _outlets;
         private readonly PfService _pfService;
-        public IndexModel(PfService pfService, IProductService products)
+        public IndexModel(
+            PfService pfService,
+            IOutletService outlets,
+            IProductService products)
         {
             _pfService = pfService;
+            _outlets = outlets;
             _products = products;
             Products = new PagedList<ProductDto>();
         }
 
         public IPagedList<ProductDto> Products { get; set; }
+        public IEnumerable<OutletDto> Outlets { get; set; }
+        public int CurrentOutletId { get; set; }
         public PageFilter Pf { get; set; }
 
         #region TempData
@@ -42,7 +50,10 @@ namespace WebUI.Pages.Products
                 int pageSize = 0
             )
         {
+            Outlets = await _outlets.Get();
             outletId = outletId ?? 0;
+            CurrentOutletId = (int)outletId;
+
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
             Products = await _products.Get((int)outletId, Pf);
             return Page();

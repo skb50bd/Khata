@@ -15,6 +15,7 @@ namespace ImportData.Services
 {
     public static class Dump
     {
+        #region Data Properties
         static string[] Shops = new string[0];
         static readonly Dictionary<string, Outlet> Outlets =
             new Dictionary<string, Outlet>();
@@ -65,7 +66,8 @@ namespace ImportData.Services
                 }
                 return sales;
             }
-        }
+        } 
+        #endregion
 
         static decimal CashBalance { get; set; }
 
@@ -172,34 +174,6 @@ namespace ImportData.Services
             };
             #endregion
 
-            #region DebtPayments
-            DumpDebtPayments();
-            Console.Write("Debt Payments? (enter N to cancel): ");
-            ans = Console.ReadLine();
-            if (ans.ToUpperInvariant() != "N")
-            {
-                foreach (var dp in DebtPayments.Values)
-                {
-                    if (dp.Customer == null)
-                        dp.Customer = customer;
-                    if (dp.Invoice.Customer == null)
-                        dp.Invoice.Customer = customer;
-
-                    db.DebtPayments.Add(dp);
-                }
-                db.Complete();
-                foreach (var item in DebtPayments.Values)
-                {
-                    var deposit = new Deposit(item as IDeposit)
-                    {
-                        Metadata = item.Metadata
-                    };
-                    db.Deposits.Add(deposit);
-                }
-                db.Complete();
-            }
-            #endregion
-
             #region SupplierPayments
             DumpSupplierPayments();
             Console.Write("Supplier Payments? (enter N to cancel): ");
@@ -299,6 +273,34 @@ namespace ImportData.Services
                 }
                 db.Complete();
                 foreach (var item in AllSales.Values)
+                {
+                    var deposit = new Deposit(item as IDeposit)
+                    {
+                        Metadata = item.Metadata
+                    };
+                    db.Deposits.Add(deposit);
+                }
+                db.Complete();
+            }
+            #endregion
+
+            #region DebtPayments
+            DumpDebtPayments();
+            Console.Write("Debt Payments? (enter N to cancel): ");
+            ans = Console.ReadLine();
+            if (ans.ToUpperInvariant() != "N")
+            {
+                foreach (var dp in DebtPayments.Values)
+                {
+                    if (dp.Customer == null)
+                        dp.Customer = customer;
+                    if (dp.Invoice.Customer == null)
+                        dp.Invoice.Customer = customer;
+
+                    db.DebtPayments.Add(dp);
+                }
+                db.Complete();
+                foreach (var item in DebtPayments.Values)
                 {
                     var deposit = new Deposit(item as IDeposit)
                     {
@@ -759,6 +761,15 @@ namespace ImportData.Services
                     Metadata = GetMetadata(s["meta"].AsBsonDocument)
                 };
 
+                var dp = new DebtPayment
+                {
+                    CustomerId = customer?.Id ?? 0,
+                    DebtBefore = newItem.Payment.Paid - newItem.Payment.Total,
+                    Amount = newItem.Payment.Paid - newItem.Payment.Total,
+                    Description = note,
+                    Metadata = GetMetadata(s["meta"].AsBsonDocument)
+                };
+
                 var customerInvoice = new CustomerInvoice
                 {
                     Date = DateTime.Now,
@@ -774,12 +785,23 @@ namespace ImportData.Services
                             UnitPrice = pli.UnitPrice,
                             NetPrice = pli.NetPrice
                         }).ToList(),
-                    Sale = newItem,
                     CustomerId = newItem.CustomerId,
                     Metadata = newItem.Metadata
                 };
                 newItem.Invoice = customerInvoice;
-                Sales[shopId][s["_id"].ToString()] = newItem;
+                dp.Invoice = customerInvoice;
+
+                if(dp.Amount > 0)
+                {
+                    newItem.Payment.Paid -= dp.Amount;
+                    dp.Invoice = customerInvoice;
+                    DebtPayments[s["_id"].ToString()] = dp;
+                }
+                if (newItem.Cart.Any())
+                {
+                    newItem.Invoice = customerInvoice;
+                    Sales[shopId][s["_id"].ToString()] = newItem;
+                }
             }
 
             foreach (var shop in Shops)

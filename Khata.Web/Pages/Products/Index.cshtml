@@ -17,10 +17,31 @@
             new { model = Model.Pf }
             )
     </div>
-    <div class="col-md-6 text-right">
-        <p>
+    <div class="col-md-6 text-right mb-3">
+        <div class="dropdown text-right">
+            <a class="btn btn-outline-secondary dropdown-toggle"
+               href="#"
+               role="button"
+               id="dropdownMenuLink"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                Show Products only for
+            </a>
+
+            <div class="dropdown-menu"
+                 aria-labelledby="dropdownMenuLink">
+                @foreach (var o in Model.Outlets)
+                {
+                    <a class="dropdown-item @(Model.CurrentOutletId == o.Id ? "active": "")"
+                       asp-page=""
+                       asp-route-outletId="@o.Id">
+                        @o.Title
+                    </a>
+                }
+            </div>
             <a asp-page="Create" class="btn btn-primary">Create new</a>
-        </p>
+        </div>
     </div>
 </div>
 @if (!(Model.Message is null))
@@ -35,7 +56,7 @@
         nameof(ProductsList),
         new { products = Model.Products })
 
-    @await  Component.InvokeAsync(
+    @await Component.InvokeAsync(
         nameof(WebUI.Pages.Components.Pagination),
         new { model = Model.Products.EmitPagination })
 </div>

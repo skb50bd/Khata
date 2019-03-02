@@ -8,20 +8,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Brotal.Extensions;
+using System.Collections.Generic;
 
 namespace WebUI.Pages.Services
 {
     public class IndexModel : PageModel
     {
+        private readonly IOutletService _outlets;
         private readonly IServiceService _services;
         private readonly PfService _pfService;
-        public IndexModel(PfService pfService, IServiceService services)
+        public IndexModel(
+            PfService pfService, 
+            IOutletService outlets,
+            IServiceService services)
         {
             _pfService = pfService;
+            _outlets = outlets;
             _services = services;
             Services = new PagedList<ServiceDto>();
         }
 
+        public IEnumerable<OutletDto> Outlets { get; set; }
+        public int CurrentOutletId { get; set; }
         public IPagedList<ServiceDto> Services { get; set; }
         public PageFilter Pf { get; set; }
 
@@ -39,7 +47,10 @@ namespace WebUI.Pages.Services
             int pageIndex = 1,
             int pageSize = 0)
         {
+            Outlets = await _outlets.Get();
             outletId = outletId ?? 0;
+            CurrentOutletId = (int)outletId;
+
             Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
             Services = await _services.Get((int)outletId, Pf);
             return Page();
