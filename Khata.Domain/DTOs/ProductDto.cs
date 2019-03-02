@@ -13,7 +13,7 @@ namespace Khata.DTOs
         public string Name { get; set; }
 
         public int OutletId { get; set; }
-        public Outlet Outlet { get; set; }
+        public OutletDto Outlet { get; set; }
 
         public string Description { get; set; }
 

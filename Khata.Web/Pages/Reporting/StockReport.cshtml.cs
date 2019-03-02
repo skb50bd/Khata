@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-
+using Brotal.Extensions;
 using Khata.DTOs;
 using Khata.Services.CRUD;
 using Khata.Services.PageFilterSort;
@@ -16,18 +16,23 @@ namespace WebUI.Pages.Reporting
     public class StockReportModel : PageModel
     {
         private IProductService _products;
+        private IOutletService _outlets;
         private readonly PfService _pfService;
 
         public StockReportModel(
             IProductService products,
+            IOutletService outlets,
             PfService pfService)
         {
             _products = products;
+            _outlets = outlets;
             _pfService = pfService;
+
         }
 
-        public string ForDate => DateTime.Today.ToString("dd MMM yyy");
+        public string ForDate => DateTime.Now.LocalDateTime();
         public IEnumerable<ProductDto> Products { get; set; } = new List<ProductDto>();
+        public IEnumerable<OutletDto> Outlets { get; set; } = new List<OutletDto>();
 
         public int TotalProducts => Products.Count();
         public int InStock
@@ -48,10 +53,18 @@ namespace WebUI.Pages.Reporting
 
         public async System.Threading.Tasks.Task OnGetAsync()
         {
+            Outlets = await _outlets.Get();
             Products = (await _products.Get(
                 0,
                 _pfService.CreateNewPf("", 1, int.MaxValue)))
                 .OrderBy(p => p.Name);
+
+            foreach(var o in Outlets)
+            {
+                o.Products = Products
+                    .Where(p => p.OutletId == o.Id)
+                    .ToList();
+            }
         }
     }
 }

@@ -34,3 +34,10 @@ for details on configuring this project to bundle and minify static web assets. 
     font-size: 1.5rem;
     font-weight: 500;
 }
+
+.outlet-stock-summary {
+    background-color: black;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
