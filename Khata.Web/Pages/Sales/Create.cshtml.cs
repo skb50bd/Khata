@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Khata.Domain;
 using Khata.DTOs;
 using Khata.Services.CRUD;
@@ -19,14 +20,17 @@ namespace WebUI.Pages.Sales
     {
         private readonly ISaleService _sales;
         private readonly IOutletService _outlets;
+        private readonly IMapper _mapper;
 
         public CreateModel(
             ISaleService sales,
-            IOutletService outlets)
+            IOutletService outlets,
+            IMapper mapper)
         {
             SaleVm = new SaleViewModel();
             _sales = sales;
             _outlets = outlets;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -37,6 +41,19 @@ namespace WebUI.Pages.Sales
                     nameof(Outlet.Id),
                     nameof(Outlet.Title)
                 );
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetSavedAsync(int id)
+        {
+            ViewData["Outlets"] =
+                new SelectList(
+                    await _outlets.Get(),
+                    nameof(Outlet.Id),
+                    nameof(Outlet.Title)
+                );
+            SaleVm = _mapper.Map<SaleViewModel>(await _sales.GetSaved(id));
+
             return Page();
         }
 
@@ -86,6 +103,38 @@ namespace WebUI.Pages.Sales
                 return RedirectToPage("../DebtPayments/Index");
             }
 
+        }
+
+        public async Task<IActionResult> OnPostSaveAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
+                    Debug.WriteLine(e.ErrorMessage);
+                return Page();
+            }
+
+            SaleDto sale;
+            try
+            {
+                sale = await _sales.Save(SaleVm);
+
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Invalid Operation")
+                {
+                    MessageType = "danger";
+                    Message = "Nothing to Create";
+                    return Page();
+                }
+                else
+                    throw;
+            }
+
+            MessageType = "success";
+            Message = $"Sale: {sale.Id} - {sale.Customer.FullName} saved!";
+                return RedirectToPage("./Saved");
         }
     }
 }

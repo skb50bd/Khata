@@ -21,5 +21,11 @@ namespace Khata.Services.CRUD
         Task<SaleDto> Remove(int id);
         Task<SaleDto> Update(SaleViewModel vm);
         Task<int> Count(DateTime? from, DateTime? to);
+
+        Task<SaleDto> Save(SaleViewModel model);
+        Task<SaleDto> GetSaved(int id);
+        Task<IEnumerable<SaleDto>> GetSaved();
+        Task<SaleDto> DeleteSaved(int id);
+        Task DeleteAllSaved();
     }
 }

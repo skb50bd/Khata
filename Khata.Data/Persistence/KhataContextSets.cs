@@ -17,9 +17,7 @@ namespace Khata.Data.Persistence
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<DebtPayment> DebtPayments { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
-
-        public virtual DbSet<Sale> SavedSales { get; set; }
-
+        public virtual DbSet<SavedSale> SavedSales { get; set; }
         public virtual DbSet<CustomerInvoice> Invoices { get; set; }
         public virtual DbSet<Vouchar> Vouchars { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }

@@ -520,8 +520,8 @@ namespace ImportData.Services
                 };
                 DebtPayments[e["_id"].ToString()] = newItem;
             }
-            var json = JsonConvert.SerializeObject(DebtPayments, Formatting.Indented, jss);
-            System.IO.File.WriteAllText(workingDir + @"\DebtPayments.json", json);
+            //var json = JsonConvert.SerializeObject(DebtPayments, Formatting.Indented, jss);
+            //System.IO.File.WriteAllText(workingDir + @"\DebtPayments.json", json);
         }
 
         private static void DumpSupplierPayments()

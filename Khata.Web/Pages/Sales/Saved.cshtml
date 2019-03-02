@@ -1,0 +1,22 @@
+﻿@page
+@using WebUI.Pages.Components.Search
+@using WebUI.Pages.Sales.Components.SalesList
+@model WebUI.Pages.Sales.SavedModel
+
+@{
+    ViewData["Title"] = "Saved Sales";
+}
+
+<h1 class="display-4 text-dark">Saved Sales</h1>
+<p></p>
+
+@if (!(Model.Message is null))
+{
+    <div class="alert alert-@Model.MessageType" role="alert">
+        @Model.Message
+    </div>
+}
+
+<div>
+    <partial name="_SavedSaleList" for="Sales"/>
+</div>

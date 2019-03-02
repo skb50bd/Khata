@@ -132,8 +132,17 @@ namespace Khata.Services.Mapper
                 );
             CreateMap<SaleDto, SaleViewModel>().ForMember(
                 dest => dest.SaleDate,
-                opt => opt.MapFrom(src => src.SaleDate.ToString("dd/MM/yyyy"))
+                opt => opt.MapFrom(src => src.SaleDate.LocalDate())
             );
+
+            CreateMap<SavedSale, SaleDto>();
+            CreateMap<SaleViewModel, SavedSale>()
+                .ForMember(
+                    dest => dest.SaleDate,
+                    opt => opt.MapFrom(
+                        src => src.SaleDate.ParseDate()
+                   )
+                );
 
             CreateMap<SaleLineItem, InvoiceLineItem>();
 

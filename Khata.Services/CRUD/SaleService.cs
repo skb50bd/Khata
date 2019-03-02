@@ -109,12 +109,7 @@ namespace Khata.Services.CRUD
                                 : await Sold(li.ItemId, li.NetPrice)));
             }
 
-            dm.SaleDate =
-                DateTimeOffset.ParseExact(
-                    model.SaleDate,
-                    @"dd/MM/yyyy",
-                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat
-                );
+            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(DateTime.Now);
 
             dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
 
@@ -223,7 +218,8 @@ namespace Khata.Services.CRUD
             return _mapper.Map<SaleDto>(dto);
         }
 
-        private async Task<SaleLineItem> Sold(int productId,
+        private async Task<SaleLineItem> Sold(
+            int productId,
             decimal quantity,
             decimal netPrice)
         {
@@ -233,13 +229,89 @@ namespace Khata.Services.CRUD
             return new SaleLineItem(product, quantity, netPrice);
         }
 
-        private async Task<SaleLineItem> Sold(int serviceId,
+        private async Task<SaleLineItem> Added(
+            int productId,
+            decimal quantity,
+            decimal netPrice)
+        {
+            var product = await _db.Products.GetById(productId);
+            return new SaleLineItem(product, quantity, netPrice);
+        }
+
+        private async Task<SaleLineItem> Sold(
+            int serviceId,
             decimal price)
             => new SaleLineItem(await _db.Services.GetById(serviceId), price);
+
+        private async Task<SaleLineItem> Added(
+            int serviceId,
+            decimal price)
+            => await Sold(serviceId, price);
 
         public async Task<int> Count(DateTime? from = null, DateTime? to = null)
         {
             return await _db.Sales.Count(from, to);
         }
+
+        public async Task<SaleDto> Save(SaleViewModel model)
+        {
+            if (model.Cart is null)
+            {
+                throw new Exception("Invalid Operation");
+            }
+
+            var dm = _mapper.Map<SavedSale>(model);
+
+            dm.Customer =
+                model.RegisterNewCustomer
+                    ? _mapper.Map<Customer>(model.Customer)
+                    : await _db.Customers.GetById(model.CustomerId);
+
+            if (model.RegisterNewCustomer)
+                dm.Customer.Metadata = Metadata.CreatedNew(CurrentUser);
+
+            dm.Cart = new List<SaleLineItem>();
+            if (model.Cart?.Count > 0)
+            {
+                dm.Cart = await Task.WhenAll(
+                    model.Cart
+                        .Select(async (li) =>
+                            li.Type == LineItemType.Product
+                                ? await Added(li.ItemId, li.Quantity, li.NetPrice)
+                                : await Added(li.ItemId, li.NetPrice)));
+            }
+
+            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(DateTime.Now);
+            dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
+            dm.Metadata = Metadata.CreatedNew(CurrentUser);
+
+            _db.Sales.Save(dm);
+            await _db.CompleteAsync();
+
+            return _mapper.Map<SaleDto>(dm);
+        }
+
+        public async Task<SaleDto> GetSaved(int id)
+            => _mapper.Map<SaleDto>(await _db.Sales.GetSaved(id));
+
+        public async Task<IEnumerable<SaleDto>> GetSaved()
+            => (await _db.Sales.GetSaved())
+            .Select(s => 
+                _mapper.Map<SaleDto>(s))
+            .ToList();
+
+        public async Task<SaleDto> DeleteSaved(int id)
+        {
+            if (await GetSaved(id) is null)
+                return null;
+
+            var dto = _mapper.Map<SaleDto>(await _db.Sales.GetSaved(id));
+            await _db.Sales.DeleteSaved(id);
+            await _db.CompleteAsync();
+            return _mapper.Map<SaleDto>(dto);
+        }
+
+        public async Task DeleteAllSaved()
+            => await _db.Sales.DeleteAllSaved();
     }
 }

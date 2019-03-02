@@ -62,7 +62,10 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Outlet)
                         .FirstOrDefaultAsync(s => s.Id == id);
 
-        public async Task<IEnumerable<Sale>> GetSavedSales()
+        public void Save(SavedSale model) 
+            => Context.SavedSales.Add(model);
+
+        public async Task<IEnumerable<SavedSale>> GetSaved()
             => await Context.SavedSales
                         .AsNoTracking()
                         .Include(s => s.Customer)
@@ -70,7 +73,7 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Outlet)
                         .ToListAsync();
 
-        public async Task<Sale> GetSavedSale(int id)
+        public async Task<SavedSale> GetSaved(int id)
             => await Context.SavedSales
                         .AsNoTracking()
                         .Include(s => s.Customer)
@@ -78,16 +81,16 @@ namespace Khata.Data.Persistence
                 .Include(s => s.Outlet)
                         .FirstOrDefaultAsync(ss => ss.Id == id);
 
-        public async Task DeleteSavedSale(int id)
+        public async Task DeleteSaved(int id)
         {
-            var item = await GetSavedSale(id);
+            var item = await GetSaved(id);
             Context.Entry(item).State = EntityState.Deleted;
             await Context.SaveChangesAsync();
         }
 
-        public async Task DeleteAllSavedSales()
+        public async Task DeleteAllSaved()
         {
-            foreach (var item in await GetSavedSales())
+            foreach (var item in await GetSaved())
             {
                 Context.Entry(item).State = EntityState.Deleted;
             }
