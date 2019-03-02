@@ -27,6 +27,7 @@ namespace Khata.Data.Persistence
               .AddDefaultUI(UIFramework.Bootstrap4)
               .AddEntityFrameworkStores<KhataContext>();
 
+            #region Register Entity Repositories
             services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();
             services.AddTransient<ITrackingRepository<Product>, ProductRepository>();
             services.AddTransient<ITrackingRepository<Service>, ServiceRepository>();
@@ -46,9 +47,11 @@ namespace Khata.Data.Persistence
             services.AddTransient<IRepository<Withdrawal>, WithdrawalRepository>();
             services.AddTransient<IRepository<Deposit>, DepositRepository>();
             services.AddTransient<ITrackingRepository<Refund>, RefundRepository>();
-            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>();
+            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>(); 
+            #endregion
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            #region Register Reporting Repositories
             services.AddTransient<IIndividualReportRepository<CustomerReport>, IndividualReportRepository<CustomerReport>>();
             services.AddTransient<IIndividualReportRepository<SupplierReport>, IndividualReportRepository<SupplierReport>>();
             services.AddTransient<IReportRepository<AssetReport>, ReportRepository<AssetReport>>();
@@ -65,7 +68,8 @@ namespace Khata.Data.Persistence
             services.AddTransient<IReportRepository<MonthlyExpenseReport>, ReportRepository<MonthlyExpenseReport>>();
             services.AddTransient<IReportRepository<MonthlyPayableReport>, ReportRepository<MonthlyPayableReport>>();
             services.AddTransient<IReportRepository<MonthlyReceivableReport>, ReportRepository<MonthlyReceivableReport>>();
-            services.AddTransient<IReportRepository<PerDayReport>, ReportRepository<PerDayReport>>();
+            services.AddTransient<IReportRepository<PerDayReport>, ReportRepository<PerDayReport>>(); 
+            #endregion
 
 
             return services;

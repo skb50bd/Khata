@@ -18,8 +18,9 @@ namespace WebUI.Pages.Reporting
 {
     public class IndexModel : PageModel
     {
-
+        #region Dependencies
         private readonly PfService _pf;
+        private readonly IOutletService _outlets;
         private readonly ISaleService _sales;
         private readonly IDebtPaymentService _debtPayments;
         private readonly IPurchaseReturnService _purchaseReturns;
@@ -30,10 +31,13 @@ namespace WebUI.Pages.Reporting
         private readonly IPurchaseService _purchases;
         private readonly ISupplierPaymentService _supplierPayments;
         private readonly ISalaryPaymentService _salaryPaymets;
-        private readonly IRefundService _refunds;
+        private readonly IRefundService _refunds; 
+        #endregion
 
         public IndexModel(
+        #region Injected Dependencies
             PfService pf,
+            IOutletService outlets,
             ISaleService sales,
             IDebtPaymentService debtPayments,
             IPurchaseReturnService purchaseReturns,
@@ -42,23 +46,26 @@ namespace WebUI.Pages.Reporting
             IPurchaseService purchases,
             ISupplierPaymentService supplierPayments,
             ISalaryPaymentService salaryPaymets,
-            IRefundService refunds)
+            IRefundService refunds 
+        #endregion
+        )
         {
-            _pf = pf;
-            _sales = sales;
-            _debtPayments = debtPayments;
-            _purchaseReturns = purchaseReturns;
-            _transaction = transaction;
-            _expenses = expenses;
-            _purchases = purchases;
+            _pf               = pf;
+            _outlets          = outlets;
+            _sales            = sales;
+            _debtPayments     = debtPayments;
+            _purchaseReturns  = purchaseReturns;
+            _transaction      = transaction;
+            _expenses         = expenses;
+            _purchases        = purchases;
             _supplierPayments = supplierPayments;
-            _salaryPaymets = salaryPaymets;
-            _refunds = refunds;
+            _salaryPaymets    = salaryPaymets;
+            _refunds          = refunds;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            FromText = DateTime.Today.ToString("dd/MM/yyyy");
+            FromText = DateTime.Today.LocalDate();
             ToText = FromText;
             await Load();
             return Page();
@@ -79,19 +86,28 @@ namespace WebUI.Pages.Reporting
 
         public async Task Load()
         {
-            Sales = await _sales.Get(0, _pf.CreateNewPf(""), FromDate, ToDate);
-            DebtPayments = await _debtPayments.Get(_pf.CreateNewPf(""), FromDate, ToDate);
-            Deposits = (await _transaction.GetDeposits(FromDate, ToDate))
-                .Where(d => d.TableName == nameof(Deposit));
+            var pf           = _pf.CreateNewPf("");
+            Outlets          = await _outlets.Get();
+            Sales            = await _sales.Get(0, pf, FromDate, ToDate);
+            DebtPayments     = await _debtPayments.Get(pf, FromDate, ToDate);
+            Deposits         = (await _transaction.GetDeposits(FromDate, ToDate))
+                                    .Where(d => d.TableName == nameof(Deposit));
+            PurchaseReturns  = await _purchaseReturns.Get(pf, FromDate, ToDate);
+            Refunds          = await _refunds.Get(pf, FromDate, ToDate);
+            Expenses         = await _expenses.Get(pf, FromDate, ToDate);
+            Purchases        = await _purchases.Get(pf, FromDate, ToDate);
+            SupplierPayments = await _supplierPayments.Get(pf, FromDate, ToDate);
+            SalaryPayments   = await _salaryPaymets.Get(pf, FromDate, ToDate);
+            Withdrawals      = (await _transaction.GetWithdrawals(FromDate, ToDate))
+                                    .Where(w => w.TableName == nameof(Withdrawal));
 
-            Expenses = await _expenses.Get(_pf.CreateNewPf(""), FromDate, ToDate);
-            Purchases = await _purchases.Get(_pf.CreateNewPf(""), FromDate, ToDate);
-            SupplierPayments = await _supplierPayments.Get(_pf.CreateNewPf(""), FromDate, ToDate);
-            SalaryPayments = await _salaryPaymets.Get(_pf.CreateNewPf(""), FromDate, ToDate);
-            Withdrawals = (await _transaction.GetWithdrawals(FromDate, ToDate))
-                .Where(d => d.TableName == nameof(Withdrawal));
+            foreach (var o in Outlets)
+            {
+                o.Sales = Sales.Where(s => s.OutletId == o.Id).ToList();
+            }
         }
 
+        #region Date Time Values
         [BindProperty]
         [Display(Name = "Start Date")]
         public string FromText { get; set; }
@@ -99,10 +115,18 @@ namespace WebUI.Pages.Reporting
         [Display(Name = "End Date")]
         public string ToText { get; set; }
 
-        public DateTime FromDate => (DateTime)FromText.TryParseDate(DateTime.MinValue);
+        public DateTime FromDate =>
+            (DateTime)FromText.TryParseDate(DateTime.MinValue);
         public DateTime ToDate =>
             ((DateTime)ToText.TryParseDate(DateTime.MaxValue))
-                .AddSeconds(86_399); // Till 23:59:59
+                .AddSeconds(86_399); // Till 23:59:59 
+        #endregion
+
+        #region Data Properties (from Database)
+
+        #region Outlets
+        public IEnumerable<OutletDto> Outlets { get; set; }
+        #endregion
 
         #region Sales
         public IEnumerable<SaleDto> Sales { get; set; } = new List<SaleDto>();
@@ -238,6 +262,8 @@ namespace WebUI.Pages.Reporting
         [Display(Name = "Withdrawals Total")]
         [DataType(DataType.Currency)]
         public decimal WithdrawalsTotal => Withdrawals?.Sum(w => w.Amount) ?? 0;
+        #endregion 
+        
         #endregion
     }
 }

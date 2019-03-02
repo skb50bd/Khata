@@ -7,8 +7,8 @@ namespace Khata.Data.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
+        #region Dependencies
         protected readonly KhataContext Context;
-
         public ITrackingRepository<Outlet> Outlets { get; }
         public ITrackingRepository<Product> Products { get; }
         public ITrackingRepository<Service> Services { get; }
@@ -29,8 +29,11 @@ namespace Khata.Data.Persistence
         public IRepository<Withdrawal> Withdrawals { get; }
         public ITrackingRepository<Refund> Refunds { get; }
         public ITrackingRepository<PurchaseReturn> PurchaseReturns { get; }
+        #endregion
 
-        public UnitOfWork(KhataContext context,
+        public UnitOfWork(
+        #region Injected Dependencies
+            KhataContext context,
             ITrackingRepository<Outlet> outlets,
             ICashRegisterRepository cashRegister,
             IRepository<Deposit> deposits,
@@ -50,29 +53,31 @@ namespace Khata.Data.Persistence
             ITrackingRepository<SalaryIssue> salaryIssues,
             ITrackingRepository<SalaryPayment> salaryPayments,
             ITrackingRepository<Refund> refunds,
-            ITrackingRepository<PurchaseReturn> purchaseReturns)
+            ITrackingRepository<PurchaseReturn> purchaseReturns
+        #endregion
+            )
         {
-            Context          = context;
-            Outlets          = outlets;
-            CashRegister     = cashRegister;
-            Deposits         = deposits;
-            Withdrawals      = withdrawals;
-            Products         = products;
-            Services         = services;
-            Customers        = customers;
-            DebtPayments     = debtPayments;
-            Sales            = sales;
-            Invoices         = invoices;
-            Vouchars         = vouchars;
-            Expenses         = expenses;
-            Suppliers        = suppliers;
+            Context = context;
+            Outlets = outlets;
+            CashRegister = cashRegister;
+            Deposits = deposits;
+            Withdrawals = withdrawals;
+            Products = products;
+            Services = services;
+            Customers = customers;
+            DebtPayments = debtPayments;
+            Sales = sales;
+            Invoices = invoices;
+            Vouchars = vouchars;
+            Expenses = expenses;
+            Suppliers = suppliers;
             SupplierPayments = supplierPayments;
-            Purchases        = purchases;
-            Employees        = employees;
-            SalaryIssues     = salaryIssues;
-            SalaryPayments   = salaryPayments;
-            Refunds          = refunds;
-            PurchaseReturns  = purchaseReturns;
+            Purchases = purchases;
+            Employees = employees;
+            SalaryIssues = salaryIssues;
+            SalaryPayments = salaryPayments;
+            Refunds = refunds;
+            PurchaseReturns = purchaseReturns;
         }
 
         public void Complete()
