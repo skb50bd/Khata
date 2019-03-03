@@ -68,17 +68,13 @@ namespace Khata.Data.Persistence
         public async Task<IEnumerable<SavedSale>> GetSaved()
             => await Context.SavedSales
                         .AsNoTracking()
-                        .Include(s => s.Customer)
                         .Include(s => s.Cart)
-                .Include(s => s.Outlet)
                         .ToListAsync();
 
         public async Task<SavedSale> GetSaved(int id)
             => await Context.SavedSales
                         .AsNoTracking()
-                        .Include(s => s.Customer)
                         .Include(s => s.Cart)
-                .Include(s => s.Outlet)
                         .FirstOrDefaultAsync(ss => ss.Id == id);
 
         public async Task DeleteSaved(int id)

@@ -1,0 +1,36 @@
+﻿@model WebUI.Pages.Dashboard.OutletSalesWithSpan
+
+<div class="card widget-tall mb-3">
+    <div class="card-header">
+        Outlet Sales
+    </div>
+    <div class="card-body">
+        <canvas id="@Model.Span-income-chart" height="200"></canvas>
+        <p class="card-title lead text-right chart-info-big"
+           id="@Model.Span-outlet-sales-total">
+            @((Model.OutletSales
+                .Select(s => s.SaleReceived + s.SaleDue)
+                .Sum())
+            .ToString("C2"))
+        </p>
+        <table class="table table-sm table-hover table-borderless table-striped">
+            <tbody>
+                @foreach (var os in Model.OutletSales)
+                {
+                    <tr>
+                        <th>@os.OutletTitle</th>
+                        <td class="text-right">
+                            <span class="badge badge-dark"
+                                  id="@Model.Span-sales-count">
+                                @Html.DisplayFor(model => os.SaleCount)
+                            </span>
+                            @((os.SaleReceived + os.SaleDue).ToString("C2"))
+                        </td>
+                    </tr>
+                }
+
+                <tr><th>&nbsp;</th><td></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

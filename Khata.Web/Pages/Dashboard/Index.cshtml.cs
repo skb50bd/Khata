@@ -11,6 +11,7 @@ namespace WebUI.Pages.Dashboard
 {
     public class IndexModel : PageModel
     {
+        #region Dependencies
         private readonly IReportService<AssetReport> _assetReports;
         private readonly IReportService<LiabilityReport> _liabilityReports;
         private readonly IReportService<DailyIncomeReport> _dailyIncomeReports;
@@ -25,18 +26,26 @@ namespace WebUI.Pages.Dashboard
         private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
         private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
         private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
+        private readonly IReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
+        private readonly IReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
+        private readonly IReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
         private readonly IReportService<PerDayReport> _perDayReports;
+        #endregion
 
+        #region Data Properties (From QUERIES)
         public AssetReport AssetReport { get; set; }
         public LiabilityReport LiabilityReport { get; set; }
         public IncomeReports IncomeReports { get; set; }
         public ExpenseReports ExpenseReports { get; set; }
         public PayableReports Payable { get; set; }
         public ReceivableReports Receivable { get; set; }
-        public IEnumerable<PerDayReport> PerDayReports { get; set; }
+        public OutletSalesReport OutletSales { get; set; }
+        public IEnumerable<PerDayReport> PerDayReports { get; set; } 
+        #endregion
 
-
-        public IndexModel(IReportService<AssetReport> assetReports,
+        public IndexModel(
+        #region Injected Dependencies
+        IReportService<AssetReport> assetReports,
             IReportService<LiabilityReport> liabilityReports,
             IReportService<DailyIncomeReport> dailyIncomeReports,
             IReportService<WeeklyIncomeReport> weeklyIncomeReports,
@@ -50,7 +59,12 @@ namespace WebUI.Pages.Dashboard
             IReportService<DailyReceivableReport> dailyReceivableReports,
             IReportService<WeeklyReceivableReport> weeklyReceivableReports,
             IReportService<MonthlyReceivableReport> monthlyReceivableReports,
-            IReportService<PerDayReport> perDayReports)
+            IReportService<DailyOutletSalesReport> dailyOutletSalesReports,
+            IReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
+            IReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
+            IReportService<PerDayReport> perDayReports 
+        #endregion
+            )
         {
             _assetReports = assetReports;
             _liabilityReports = liabilityReports;
@@ -66,6 +80,9 @@ namespace WebUI.Pages.Dashboard
             _dailyReceivableReports = dailyReceivableReports;
             _weeklyReceivableReports = weeklyReceivableReports;
             _monthlyReceivableReports = monthlyReceivableReports;
+            _dailyOutletSalesReports = dailyOutletSalesReports;
+            _weeklyOutletSalesReports = weeklyOutletSalesReports;
+            _monthlyOutletSalesReports = monthlyOutletSalesReports;
             _perDayReports = perDayReports;
         }
 
@@ -102,6 +119,13 @@ namespace WebUI.Pages.Dashboard
                 Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
             };
 
+            OutletSales = new OutletSalesReport
+            {
+                Daily = await _dailyOutletSalesReports.Get(),
+                Weekly = await _weeklyOutletSalesReports.Get(),
+                Monthly = await _monthlyOutletSalesReports.Get()
+            };
+
             PerDayReports = await _perDayReports.Get();
         }
     }
@@ -125,6 +149,12 @@ namespace WebUI.Pages.Dashboard
     public struct ReceivableWithSpan
     {
         public ReceivableBase Receivable { get; set; }
+        public string Span { get; set; }
+    }
+
+    public struct OutletSalesWithSpan
+    {
+        public IEnumerable<OutletSalesBase> OutletSales { get; set; }
         public string Span { get; set; }
     }
 }

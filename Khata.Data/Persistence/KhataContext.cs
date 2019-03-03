@@ -41,7 +41,7 @@ namespace Khata.Data.Persistence
                                 FROM Metadata m
                                 FULL JOIN Deposits d ON d.MetadataId = m.Id
                                 FULL JOIN Withdrawals w ON w.MetadataId = m.Id
-                                FULL JOIN Sale s ON s.MetadataId = m.Id AND s.IsRemoved = 'False'
+                                FULL JOIN Sales s ON s.MetadataId = m.Id AND s.IsRemoved = 'False'
                                 FULL JOIN Purchases p ON p.MetadataId = m.Id AND s.IsRemoved = 'False'
                                 FULL JOIN SalaryIssues si ON si.MetadataId = m.Id AND si.IsRemoved = 'False'
                                 GROUP BY CAST(m.CreationTime AS DATE)
@@ -79,7 +79,7 @@ namespace Khata.Data.Persistence
 		                                s.Id AS SaleId, s.Payment_Paid, 
 		                                COALESCE(SUM(sli.UnitPrice * sli.Quantity - sli.UnitPurchasePrice * sli.Quantity), 0) AS Profit,
 		                                s.MetadataId, s.IsRemoved
-	                                FROM Sale s
+	                                FROM Sales s
 	                                LEFT JOIN SaleLineItem sli ON sli.SaleId = s.Id AND s.IsRemoved = 'False'
 	                                GROUP BY s.Id, s.Payment_Paid, s.MetadataId, s.IsRemoved) sl 
 								                                ON sl.MetadataId = m.Id AND sl.IsRemoved = 'False'
@@ -100,7 +100,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyIncomeReport AS
-                            SELECT * FROM dbo.incomeReport(DATEADD(day, -7, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.incomeReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
                     Database.ExecuteSqlCommand(@"
@@ -108,7 +108,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyIncomeReport AS
-                            SELECT * FROM dbo.incomeReport(DATEADD(day, -30, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.incomeReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
                     #endregion
 
@@ -159,7 +159,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyExpenseReport AS
-                            SELECT * FROM dbo.expenseReport(DATEADD(day, -7, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.expenseReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
                     Database.ExecuteSqlCommand(@"
@@ -167,7 +167,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyExpenseReport AS
-                            SELECT * FROM dbo.expenseReport(DATEADD(day, -30, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.expenseReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
                     #endregion
 
@@ -225,7 +225,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyPayableReport AS
-                            SELECT * FROM dbo.payableReport(DATEADD(day, -7, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.payableReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
                     Database.ExecuteSqlCommand(@"
@@ -233,7 +233,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyPayableReport AS
-                            SELECT * FROM dbo.payableReport(DATEADD(day, -30, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.payableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
                     #endregion
 
@@ -270,7 +270,7 @@ namespace Khata.Data.Persistence
 		                                0), 
 	                                2)	AS SalaryOverPaymentAmount
                                 FROM Metadata m
-                                FULL JOIN Sale s ON s.MetadataId = m.Id  
+                                FULL JOIN Sales s ON s.MetadataId = m.Id  
 	                                AND s.IsRemoved = 'False' 
 	                                AND s.Payment_SubTotal - s.Payment_DiscountCash - s.Payment_Paid > 0
                                 FULL JOIN SupplierPayments sp ON sp.MetadataId = m.Id 
@@ -296,7 +296,7 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyReceivableReport AS
-                            SELECT * FROM dbo.receivableReport(DATEADD(day, -7, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.receivableReport(DATEADD(day, -7,CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
                     Database.ExecuteSqlCommand(@"
@@ -304,7 +304,78 @@ namespace Khata.Data.Persistence
                     ");
                     Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyReceivableReport AS
-                            SELECT * FROM dbo.receivableReport(DATEADD(day, -30, GETDATE()), GETDATE())
+                            SELECT * FROM dbo.receivableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
+                    ");
+                    #endregion
+
+                    #region Periodical Outlet Sales Report
+                    Database.ExecuteSqlCommand(@"
+                        CREATE OR ALTER FUNCTION dbo.outletSalesReport (
+                                @fromDate DATETIMEOFFSET(7), 
+                                @toDate DATETIMEOFFSET(7))
+                            RETURNS TABLE
+                            AS
+                            RETURN
+                            (
+                                SELECT 
+	                                CAST(@fromDate AS DATE) AS FromDate,
+	                                CAST(@toDate AS DATE) AS ToDate,
+	                                o.Id as Id,
+	                                o.Title as OutletTitle,
+	                                COUNT(sl.SaleId) AS SaleCount,
+	                                ROUND(COALESCE(SUM(sl.Due), 0), 2) AS SaleDue,
+	                                ROUND(COALESCE(SUM(sl.Received), 0), 2)	AS SaleReceived,
+	                                ROUND(COALESCE(SUM(sl.Profit), 0), 2)	AS SaleProfit
+                                FROM Outlets o
+                                LEFT JOIN (SELECT 
+	                                s.Id AS SaleId, 
+	                                s.OutletId AS OutletId,
+	                                s.Payment_Paid AS Received,
+	                                (s.Payment_SubTotal 
+		                                - s.Payment_DiscountCash 
+		                                - s.Payment_Paid) AS Due,
+	                                COALESCE(
+		                                SUM(
+			                                sli.UnitPrice 
+			                                * sli.Quantity 
+			                                - sli.UnitPurchasePrice 
+			                                * sli.Quantity), 
+	                                0) AS Profit
+                                FROM Sales s
+                                LEFT JOIN SaleLineItem sli ON sli.SaleId = s.Id AND s.IsRemoved = 'False'
+                                LEFT JOIN Metadata m ON s.MetadataId = m.Id AND m.CreationTime BETWEEN @fromDate AND @toDate
+                                GROUP BY s.Id, 
+	                                s.OutletId,
+	                                s.Payment_Paid, 
+	                                s.Payment_SubTotal, 
+	                                s.Payment_DiscountCash
+                                ) sl ON sl.OutletId = o.Id
+                                GROUP BY o.Id, o.Title                          
+                        )
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS DailyOutletSalesReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW DailyOutletSalesReport AS
+                            SELECT * FROM dbo.outletSalesReport(CAST(GETDATE() AS DATE), GETDATE())
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS WeeklyOutletSalesReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW WeeklyOutletSalesReport AS
+                            SELECT * FROM dbo.outletSalesReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
+                    ");
+
+                    Database.ExecuteSqlCommand(@"
+                        DROP VIEW IF EXISTS MonthlyOutletSalesReport
+                    ");
+                    Database.ExecuteSqlCommand(@"
+                        CREATE VIEW MonthlyOutletSalesReport AS
+                            SELECT * FROM dbo.outletSalesReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
                     #endregion
                 }

@@ -11,6 +11,7 @@ namespace WebUI.Hubs
 {
     public class ReportsHub : Hub
     {
+        #region Dependencies
         private readonly IReportService<AssetReport> _assetReport;
         private readonly IReportService<LiabilityReport> _liabilityReport;
         private readonly IReportService<DailyIncomeReport> _dailyIncomeReports;
@@ -25,18 +26,25 @@ namespace WebUI.Hubs
         private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
         private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
         private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
+        private readonly IReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
+        private readonly IReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
+        private readonly IReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
         private readonly IReportService<PerDayReport> _perDayReports;
+        #endregion
 
-
+        #region Data Properties (From QUERIES)
         public AssetReport Asset { get; set; }
         public LiabilityReport Liability { get; set; }
         public IncomeReports Income { get; set; }
         public ExpenseReports Expense { get; set; }
         public PayableReports Payable { get; set; }
         public ReceivableReports Receivable { get; set; }
+        public OutletSalesReport OutletSales { get; set; }
         public IEnumerable<PerDayReport> PerDayReports { get; set; }
+        #endregion
 
         public ReportsHub(
+        #region Injected Dependencies
             IReportService<AssetReport> assetReport,
             IReportService<LiabilityReport> liabilityReport,
             IReportService<DailyIncomeReport> dailyIncomeReports,
@@ -51,7 +59,12 @@ namespace WebUI.Hubs
             IReportService<DailyReceivableReport> dailyReceivableReports,
             IReportService<WeeklyReceivableReport> weeklyReceivableReports,
             IReportService<MonthlyReceivableReport> monthlyReceivableReports,
-            IReportService<PerDayReport> perDayReports)
+            IReportService<DailyOutletSalesReport> dailyOutletSalesReports,
+            IReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
+            IReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
+            IReportService<PerDayReport> perDayReports
+        #endregion
+            )
         {
             _assetReport = assetReport;
             _liabilityReport = liabilityReport;
@@ -67,6 +80,9 @@ namespace WebUI.Hubs
             _dailyReceivableReports = dailyReceivableReports;
             _weeklyReceivableReports = weeklyReceivableReports;
             _monthlyReceivableReports = monthlyReceivableReports;
+            _dailyOutletSalesReports = dailyOutletSalesReports;
+            _weeklyOutletSalesReports = weeklyOutletSalesReports;
+            _monthlyOutletSalesReports = monthlyOutletSalesReports;
             _perDayReports = perDayReports;
         }
 
@@ -104,15 +120,35 @@ namespace WebUI.Hubs
                 Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
             };
 
+            OutletSales = new OutletSalesReport
+            {
+                Daily = await _dailyOutletSalesReports.Get(),
+                Weekly = await _weeklyOutletSalesReports.Get(),
+                Monthly = await _monthlyOutletSalesReports.Get()
+            };
+
             PerDayReports = await _perDayReports.Get();
         }
 
         public async Task InitChartData()
         {
             await UpdateChartData();
-            await Clients.All.SendAsync("UpdateChart", new { Asset, Liability, Income, Expense, Payable, Receivable, PerDayReports });
+            await Clients.All.SendAsync(
+                "UpdateChart",
+                new
+                {
+                    Asset,
+                    Liability,
+                    Income,
+                    Expense,
+                    Payable,
+                    Receivable,
+                    OutletSales,
+                    PerDayReports
+                });
         }
 
-        public async Task RefreshData() => await InitChartData();
+        public async Task RefreshData() 
+            => await InitChartData();
     }
 }

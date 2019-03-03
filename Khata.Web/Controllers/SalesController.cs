@@ -78,7 +78,7 @@ namespace WebUI.Controllers
         // GET: api/Sales/LineItems
         [HttpGet("LineItems/")]
         public async Task<IActionResult> GetLineItems(
-            [FromQuery]int outletId, 
+            [FromQuery]int outletId,
             [FromQuery]string term)
         {
             if (!ModelState.IsValid)
@@ -86,11 +86,11 @@ namespace WebUI.Controllers
 
             IList<object> results = new List<object>();
             var products = await _products.Get(
-                outletId, 
+                outletId,
                 _pfService.CreateNewPf(term, 1, 50)
             );
             var services = await _services.Get(
-                outletId, 
+                outletId,
                 _pfService.CreateNewPf(term, 1, 50)
             );
 
@@ -120,7 +120,8 @@ namespace WebUI.Controllers
 
         // POST: api/Sales
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SaleViewModel model)
+        public async Task<IActionResult> Post(
+            [FromBody] SaleViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -137,7 +138,9 @@ namespace WebUI.Controllers
 
         // PUT: api/Sales/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]SaleViewModel vm)
+        public async Task<IActionResult> Put(
+            [FromRoute]int id,
+            [FromBody]SaleViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -191,5 +194,59 @@ namespace WebUI.Controllers
 
         private async Task<bool> Exists(int id) =>
             await _sales.Exists(id);
+
+        // POST: api/Sales/Saved
+        [HttpPost("Saved/")]
+        public async Task<IActionResult> PostSaved(
+                    [FromBody] SaleViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var dto = await _sales.Save(model);
+
+            if (dto == null)
+                return BadRequest();
+
+            return CreatedAtAction(nameof(GetSaved),
+                new { id = dto.Id },
+                dto);
+        }
+
+        // GET: api/Sales/Saved
+        [HttpGet("Saved/")]
+        public async Task<IEnumerable<SaleDto>> GetSaved()
+            => await _sales.GetSaved();
+
+        // GET: api/Sales/Saved/5
+        [HttpGet("Saved/{id}")]
+        public async Task<IActionResult> GetSaved([FromRoute]int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!(await Exists(id)))
+                return NotFound();
+
+            return Ok(await _sales.GetSaved(id));
+        }
+
+        // DELETE: api/Sales/Saved/5
+        [HttpDelete("Saved/{id}")]
+        public async Task<IActionResult> DeleteSaved(int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!(await Exists(id)))
+                return NotFound();
+
+            var dto = await _sales.DeleteSaved(id);
+
+            if (dto == null)
+                return BadRequest();
+
+            return Ok(dto);
+        }
     }
 }

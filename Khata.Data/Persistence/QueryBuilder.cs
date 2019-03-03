@@ -78,15 +78,38 @@ namespace Khata.Data.Persistence
                 })
             );
 
-            modelBuilder.Query<DailyIncomeReport>().ToView("DailyIncomeReport");
-            modelBuilder.Query<WeeklyIncomeReport>().ToView("WeeklyIncomeReport");
-            modelBuilder.Query<MonthlyIncomeReport>().ToView("MonthlyIncomeReport");
+            modelBuilder.Query<DailyIncomeReport>()
+                .ToView("DailyIncomeReport");
 
-            modelBuilder.Query<DailyExpenseReport>().ToView("DailyExpenseReport");
-            modelBuilder.Query<WeeklyExpenseReport>().ToView("WeeklyExpenseReport");
-            modelBuilder.Query<MonthlyExpenseReport>().ToView("MonthlyExpenseReport");
+            modelBuilder.Query<WeeklyIncomeReport>()
+                .ToView("WeeklyIncomeReport");
 
-            modelBuilder.Query<PerDayReport>().ToView("PerDayReport");
+            modelBuilder.Query<MonthlyIncomeReport>()
+                .ToView("MonthlyIncomeReport");
+
+
+            modelBuilder.Query<DailyExpenseReport>()
+                .ToView("DailyExpenseReport");
+
+            modelBuilder.Query<WeeklyExpenseReport>()
+                .ToView("WeeklyExpenseReport");
+
+            modelBuilder.Query<MonthlyExpenseReport>()
+                .ToView("MonthlyExpenseReport");
+
+
+            modelBuilder.Query<DailyOutletSalesReport>()
+                .ToView("DailyOutletSalesReport");
+
+            modelBuilder.Query<WeeklyOutletSalesReport>()
+                .ToView("WeeklyOutletSalesReport");
+
+            modelBuilder.Query<MonthlyOutletSalesReport>()
+                .ToView("MonthlyOutletSalesReport");
+
+
+            modelBuilder.Query<PerDayReport>()
+                .ToView("PerDayReport");
 
             return modelBuilder;
         }

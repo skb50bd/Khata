@@ -15,11 +15,6 @@
     <Compile Remove="Persistence\Migrations\SQLServer\20190301051915_AddedOutletInfoToInvoice.cs" />
     <Compile Remove="Persistence\Migrations\SQLServer\20190301051915_AddedOutletInfoToInvoice.Designer.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\..\Persistence\Migrations\SQLServer\20190302163641_InitialCreate.cs" Link="20190302163641_InitialCreate.cs" />
-    <Compile Include="..\..\..\Persistence\Migrations\SQLServer\20190302163641_InitialCreate.designer.cs" Link="20190302163641_InitialCreate.designer.cs" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.2" />
@@ -50,10 +45,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Migrations\SQLServer\" />
   </ItemGroup>
 
 </Project>

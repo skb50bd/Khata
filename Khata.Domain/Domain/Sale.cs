@@ -8,11 +8,9 @@ namespace Khata.Domain
     public class SaleBase : TrackedDocument
     {
         public int OutletId { get; set; }
-        public virtual Outlet Outlet { get; set; }
         public DateTimeOffset SaleDate { get; set; }
         public SaleType Type { get; set; }
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
         public virtual ICollection<SaleLineItem> Cart { get; set; }
         public PaymentInfo Payment { get; set; }
 
@@ -24,6 +22,8 @@ namespace Khata.Domain
 
     public class Sale : SaleBase, IDeposit
     {
+        public virtual Customer Customer { get; set; }
+        public virtual Outlet Outlet { get; set; }
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }
 
