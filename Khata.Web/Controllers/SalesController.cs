@@ -85,13 +85,17 @@ namespace WebUI.Controllers
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(
+            IEnumerable<ProductDto> products = await _products.Get(
                 outletId,
-                _pfService.CreateNewPf(term, 1, 50)
+                _pfService.CreateNewPf(term, 1, 20)
             );
+            products = products
+                .OrderByDescending(
+                p => p.InventoryTotalStock);
+
             var services = await _services.Get(
                 outletId,
-                _pfService.CreateNewPf(term, 1, 50)
+                _pfService.CreateNewPf(term, 1, 20)
             );
 
             products.ForEach(p => results.Add(new

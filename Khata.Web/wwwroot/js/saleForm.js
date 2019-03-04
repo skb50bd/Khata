@@ -1,35 +1,35 @@
-﻿const saleDate = document.getElementById('SaleDate');
-const saleType = document.getElementById('Type');
-const retail = document.getElementById('retail');
-const bulk = document.getElementById('bulk');
-const customerId = document.getElementById('CustomerId');
-const customerSelector = document.getElementById('customer-selector');
+﻿const saleDate            = document.getElementById('SaleDate');
+const saleType            = document.getElementById('Type');
+const retail              = document.getElementById('retail');
+const bulk                = document.getElementById('bulk');
+const customerId          = document.getElementById('CustomerId');
+const customerSelector    = document.getElementById('customer-selector');
 const registerNewCustomer = document.getElementById('RegisterNewCustomer');
-const customerFirstName = document.getElementById('Customer_FirstName');
-const customerLastName = document.getElementById('Customer_LastName');
+const customerFirstName   = document.getElementById('Customer_FirstName');
+const customerLastName    = document.getElementById('Customer_LastName');
 const customerCompanyName = document.getElementById('Customer_CompanyName');
-const customerAddress = document.getElementById('Customer_Address');
-const customerPhone = document.getElementById('Customer_Phone');
-const customerEmail = document.getElementById('Customer_Email');
-const customerBriefInfo = document.getElementById('customer-brief-info');
-const lineItemId = document.getElementById('lineitem-id');
-const lineItemType = document.getElementById('lineitem-type');
-const lineItemSelector = document.getElementById('lineitem-selector');
-const lineItemQuantity = document.getElementById('lineitem-quantity');
-const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
-const lineItemNetPrice = document.getElementById('lineitem-netprice');
-const lineItemAdd = document.getElementById('lineitem-add-button');
-const lineItemClear = document.getElementById('lineitem-clear-button');
-const lineItemAvailable = document.getElementById('lineitem-available');
-const cart = document.getElementById('cart');
-const subtotal = document.getElementById('subtotal');
-const discountCash = document.getElementById('Payment_DiscountCash');
-const discountPercentage = document.getElementById('Payment_DiscountPercentage');
-const debtBefore = document.getElementById('debt-before');
-const payable = document.getElementById('payable');
-const paid = document.getElementById('Payment_Paid');
-const debtAfter = document.getElementById('debt-after');
-const description = document.getElementById('Description');
+const customerAddress     = document.getElementById('Customer_Address');
+const customerPhone       = document.getElementById('Customer_Phone');
+const customerEmail       = document.getElementById('Customer_Email');
+const customerBriefInfo   = document.getElementById('customer-brief-info');
+const lineItemId          = document.getElementById('lineitem-id');
+const lineItemType        = document.getElementById('lineitem-type');
+const lineItemSelector    = document.getElementById('lineitem-selector');
+const lineItemQuantity    = document.getElementById('lineitem-quantity');
+const lineItemUnitPrice   = document.getElementById('lineitem-unitprice');
+const lineItemNetPrice    = document.getElementById('lineitem-netprice');
+const lineItemAdd         = document.getElementById('lineitem-add-button');
+const lineItemClear       = document.getElementById('lineitem-clear-button');
+const lineItemAvailable   = document.getElementById('lineitem-available');
+const cart                = document.getElementById('cart');
+const subtotal            = document.getElementById('subtotal');
+const discountCash        = document.getElementById('Payment_DiscountCash');
+const discountPercentage  = document.getElementById('Payment_DiscountPercentage');
+const debtBefore          = document.getElementById('debt-before');
+const payable             = document.getElementById('payable');
+const paid                = document.getElementById('Payment_Paid');
+const debtAfter           = document.getElementById('debt-after');
+const description         = document.getElementById('Description');
 
 const itemsAdded = document.getElementById("items-added");
 
@@ -124,11 +124,11 @@ function clearLineItem(event) {
     event.preventDefault();
     lineItemId.value = '';
     lineItemId.removeAttribute('min');
-    lineItemType.value = '';
-    lineItemSelector.value = '';
-    lineItemQuantity.value = '';
+    lineItemType.value      = '';
+    lineItemSelector.value  = '';
+    lineItemQuantity.value  = '';
     lineItemUnitPrice.value = '';
-    lineItemNetPrice.value = '';
+    lineItemNetPrice.value  = '';
 }
 
 function getLineItem() {
@@ -236,7 +236,8 @@ function addLineItem(event) {
     //it.parentElement = cart;
     //it.fadein();
     cart.appendChild(it);
-    document.getElementById('remove-item-button-' + itemsAdded.valueAsNumber).addEventListener('click', removeCartItem);
+    document.getElementById('remove-item-button-' + itemsAdded.valueAsNumber)
+        .addEventListener('click', removeCartItem);
 
     itemsAdded.value = itemsAdded.valueAsNumber + 1;
 
@@ -246,7 +247,11 @@ function addLineItem(event) {
 
 function removeCartItem(event) {
     event.preventDefault();
-    var row = this.parentElement.parentElement.parentElement.parentElement;
+    var row = this
+        .parentElement
+        .parentElement
+        .parentElement
+        .parentElement;
     $(row).fadeOut();
     sleep(500).then(function () {
         row.parentElement.removeChild(row);
