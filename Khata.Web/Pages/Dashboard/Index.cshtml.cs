@@ -26,9 +26,9 @@ namespace WebUI.Pages.Dashboard
         private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
         private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
         private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
-        private readonly IReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
-        private readonly IReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
-        private readonly IReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
+        private readonly IIndividualReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
+        private readonly IIndividualReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
+        private readonly IIndividualReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
         private readonly IReportService<PerDayReport> _perDayReports;
         #endregion
 
@@ -59,9 +59,9 @@ namespace WebUI.Pages.Dashboard
             IReportService<DailyReceivableReport> dailyReceivableReports,
             IReportService<WeeklyReceivableReport> weeklyReceivableReports,
             IReportService<MonthlyReceivableReport> monthlyReceivableReports,
-            IReportService<DailyOutletSalesReport> dailyOutletSalesReports,
-            IReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
-            IReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
+            IIndividualReportService<DailyOutletSalesReport> dailyOutletSalesReports,
+            IIndividualReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
+            IIndividualReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
             IReportService<PerDayReport> perDayReports 
         #endregion
             )
