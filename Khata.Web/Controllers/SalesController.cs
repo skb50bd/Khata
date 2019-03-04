@@ -89,9 +89,9 @@ namespace WebUI.Controllers
                 outletId,
                 _pfService.CreateNewPf(term, 1, 20)
             );
-            products = products
-                .OrderByDescending(
-                p => p.InventoryTotalStock);
+
+            var emptyProducts = products.Where(p => p.InventoryTotalStock == 0);
+            products = products.Except(emptyProducts).Union(emptyProducts);
 
             var services = await _services.Get(
                 outletId,
@@ -108,6 +108,7 @@ namespace WebUI.Controllers
                 ItemId = p.Id,
                 Category = "Product"
             }));
+
             services.ForEach(s => results.Add(new
             {
                 Name = s.Name,
