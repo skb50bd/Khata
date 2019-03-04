@@ -235,6 +235,7 @@ function addLineItem(event) {
     var it = createCartItem(newItem);
     //it.parentElement = cart;
     //it.fadein();
+    removeCartItemIfExists(newItem.itemId, newItem.type);
     cart.appendChild(it);
     document.getElementById('remove-item-button-' + itemsAdded.valueAsNumber)
         .addEventListener('click', removeCartItem);
@@ -243,6 +244,19 @@ function addLineItem(event) {
 
     clearLineItem(event);
     calculatePayment();
+}
+
+function removeCartItemIfExists(itemId, type) {
+    var items = document.getElementsByClassName('cart-item-itemid');
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.valueAsNumber === itemId
+            && item.parentElement.getElementsByClassName('cart-item-type')[0].valueAsNumber === type) {
+            console.log('Found ' + itemId);
+            var row = item.parentElement.parentElement.parentElement;
+            row.parentElement.removeChild(row);
+        }
+    }
 }
 
 function removeCartItem(event) {
