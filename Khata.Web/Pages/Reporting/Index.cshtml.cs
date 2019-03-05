@@ -86,12 +86,13 @@ namespace WebUI.Pages.Reporting
 
         public async Task Load()
         {
-            var pf           = _pf.CreateNewPf("");
+            var pf           = _pf.CreateNewPf("", 1, int.MaxValue);
             Outlets          = await _outlets.Get();
             Sales            = await _sales.Get(0, pf, FromDate, ToDate);
             DebtPayments     = await _debtPayments.Get(pf, FromDate, ToDate);
             Deposits         = (await _transaction.GetDeposits(FromDate, ToDate))
-                                    .Where(d => d.TableName == nameof(Deposit));
+                                    .Where(d => d.TableName == nameof(Deposit))
+                                    .ToList();
             PurchaseReturns  = await _purchaseReturns.Get(pf, FromDate, ToDate);
             Refunds          = await _refunds.Get(pf, FromDate, ToDate);
             Expenses         = await _expenses.Get(pf, FromDate, ToDate);
@@ -99,124 +100,148 @@ namespace WebUI.Pages.Reporting
             SupplierPayments = await _supplierPayments.Get(pf, FromDate, ToDate);
             SalaryPayments   = await _salaryPaymets.Get(pf, FromDate, ToDate);
             Withdrawals      = (await _transaction.GetWithdrawals(FromDate, ToDate))
-                                    .Where(w => w.TableName == nameof(Withdrawal));
+                                    .Where(w => w.TableName == nameof(Withdrawal))
+                                    .ToList();
 
             foreach (var o in Outlets)
             {
-                o.Sales = Sales.Where(s => s.OutletId == o.Id).ToList();
+                o.Sales = Sales.Where(s 
+                    => s.OutletId == o.Id).ToList();
             }
         }
 
-        #region Date Time Values
+        #region Date Range
         [BindProperty]
-        [Display(Name = "Start Date")]
         public string FromText { get; set; }
+
         [BindProperty]
-        [Display(Name = "End Date")]
         public string ToText { get; set; }
 
-        public DateTime FromDate =>
-            (DateTime)FromText.TryParseDate(DateTime.MinValue);
-        public DateTime ToDate =>
-            ((DateTime)ToText.TryParseDate(DateTime.MaxValue))
-                .AddSeconds(86_399); // Till 23:59:59 
+        public DateTime FromDate
+            => FromText.ParseDate();
+        public DateTime ToDate
+            => ToText.ParseDate()
+                .AddMinutes(23 * 60 + 59);
         #endregion
 
-        #region Data Properties (from Database)
-
+        #region Data Properties
         #region Outlets
         public IEnumerable<OutletDto> Outlets { get; set; }
         #endregion
 
         #region Sales
-        public IEnumerable<SaleDto> Sales { get; set; } = new List<SaleDto>();
+        public IEnumerable<SaleDto> Sales { get; set; } 
+            = new List<SaleDto>();
 
         [Display(Name = "Sales Count")]
-        public int SalesCount => Sales?.Count() ?? 0;
+        public int SalesCount 
+            => Sales?.Count() ?? 0;
 
         [Display(Name = "Cost of Goods Sold")]
         [DataType(DataType.Currency)]
-        public decimal CostOfGoodsSold => Sales?.SelectMany(s => s.Cart).Sum(s => s.NetPurchasePrice) ?? 0M;
+        public decimal CostOfGoodsSold 
+            => Sales?.SelectMany(s => s.Cart)
+                    .Sum(s => s.NetPurchasePrice) ?? 0M;
 
         [Display(Name = "Sold Price of Goods")]
         [DataType(DataType.Currency)]
-        public decimal PriceOfGoodsSold => Sales?.Sum(s => s.PaymentTotal) ?? 0M;
+        public decimal PriceOfGoodsSold 
+            => Sales?.Sum(s => s.PaymentTotal) ?? 0M;
 
         [Display(Name = "Sales Profit")]
         [DataType(DataType.Currency)]
-        public decimal SalesProfit => Sales?.Sum(s => s.Profit) ?? 0M;
+        public decimal SalesProfit 
+            => Sales?.Sum(s => s.Profit) ?? 0M;
 
         [Display(Name = "Sales Due")]
         [DataType(DataType.Currency)]
-        public decimal SalesDue => Sales?.Sum(s => s.PaymentDue) ?? 0M;
+        public decimal SalesDue 
+            => Sales?.Sum(s => s.PaymentDue) ?? 0M;
 
         [Display(Name = "Profit Received (Profit - Due)",
             ShortName = "Received Profit")]
         [DataType(DataType.Currency)]
-        public decimal SalesProfitReceived => SalesProfit - SalesDue;
+        public decimal SalesProfitReceived 
+            => SalesProfit - SalesDue;
         #endregion
 
         #region Debt Payments
-        public IEnumerable<DebtPaymentDto> DebtPayments { get; set; } = new List<DebtPaymentDto>();
+        public IEnumerable<DebtPaymentDto> DebtPayments { get; set; } 
+            = new List<DebtPaymentDto>();
 
         [Display(Name = "Debt Payments Count")]
-        public int DebtPaymentsCount => DebtPayments?.Count() ?? 0;
+        public int DebtPaymentsCount 
+            => DebtPayments?.Count() ?? 0;
 
         [Display(Name = "Debt Received Amount")]
         [DataType(DataType.Currency)]
-        public decimal DebtReceivedAmount => DebtPayments?.Sum(d => d.Amount) ?? 0M;
+        public decimal DebtReceivedAmount 
+            => DebtPayments?.Sum(d => d.Amount) ?? 0M;
         #endregion
 
         #region Purchase Returns
-        public IEnumerable<PurchaseReturnDto> PurchaseReturns { get; set; } = new List<PurchaseReturnDto>();
+        public IEnumerable<PurchaseReturnDto> PurchaseReturns { get; set; } 
+            = new List<PurchaseReturnDto>();
 
         [Display(Name = "Purchase Returns Count")]
-        public int PurchaseReturnsCount => PurchaseReturns?.Count() ?? 0;
+        public int PurchaseReturnsCount 
+            => PurchaseReturns?.Count() ?? 0;
 
         [Display(Name = "Purchase Returns Cash Back")]
         [DataType(DataType.Currency)]
-        public decimal PurchaseReturnAmount => PurchaseReturns?.Sum(pr => pr.CashBack) ?? 0M;
+        public decimal PurchaseReturnAmount 
+            => PurchaseReturns?.Sum(pr => pr.CashBack) ?? 0M;
         #endregion
 
         #region Deposits
-        public IEnumerable<Deposit> Deposits { get; set; } = new List<Deposit>();
+        public IEnumerable<Deposit> Deposits { get; set; } 
+            = new List<Deposit>();
 
         [Display(Name = "Deposits Count")]
-        public int DepositsCount => Deposits?.Count() ?? 0;
+        public int DepositsCount 
+            => Deposits?.Count() ?? 0;
 
         [Display(Name = "Deposits Total")]
         [DataType(DataType.Currency)]
-        public decimal DepositsTotal => Deposits?.Sum(d => d.Amount) ?? 0M;
+        public decimal DepositsTotal 
+            => Deposits?.Sum(d => d.Amount) ?? 0M;
         #endregion
 
         #region Expenses
-        public IEnumerable<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
+        public IEnumerable<ExpenseDto> Expenses { get; set; } 
+            = new List<ExpenseDto>();
 
         [Display(Name = "Expenses Count")]
         public int ExpensesCount => Expenses?.Count() ?? 0;
 
         [Display(Name = "Expense Total")]
         [DataType(DataType.Currency)]
-        public decimal ExpenseTotal => Expenses?.Sum(e => e.Amount) ?? 0M;
+        public decimal ExpenseTotal 
+            => Expenses?.Sum(e => e.Amount) ?? 0M;
         #endregion
 
         #region Purchases 
-        public IEnumerable<PurchaseDto> Purchases { get; set; } = new List<PurchaseDto>();
+        public IEnumerable<PurchaseDto> Purchases { get; set; } 
+            = new List<PurchaseDto>();
 
         [Display(Name = "Purchases Count")]
-        public int PurchasesCount => Purchases?.Count() ?? 0;
+        public int PurchasesCount 
+            => Purchases?.Count() ?? 0;
 
         [Display(Name = "Cost of Goods Purchased")]
         [DataType(DataType.Currency)]
-        public decimal CostOfGoodsPurchased => Purchases?.Sum(p => p.PaymentTotal) ?? 0M;
+        public decimal CostOfGoodsPurchased 
+            => Purchases?.Sum(p => p.PaymentTotal) ?? 0M;
 
         [Display(Name = "Purchases Due")]
         [DataType(DataType.Currency)]
-        public decimal PurchasesDue => Purchases?.Sum(p => p.PaymentDue) ?? 0M;
+        public decimal PurchasesDue 
+            => Purchases?.Sum(p => p.PaymentDue) ?? 0M;
 
         [Display(Name = "Purchase Paid")]
         [DataType(DataType.Currency)]
-        public decimal PurchasesPaid => Purchases?.Sum(p => p.PaymentPaid) ?? 0M;
+        public decimal PurchasesPaid 
+            => Purchases?.Sum(p => p.PaymentPaid) ?? 0M;
         #endregion
 
         #region Supplier Payments 
@@ -224,46 +249,56 @@ namespace WebUI.Pages.Reporting
             = new List<SupplierPaymentDto>();
 
         [Display(Name = "Supplier Payments Count")]
-        public int SupplierPaymentsCount => SupplierPayments?.Count() ?? 0;
+        public int SupplierPaymentsCount 
+            => SupplierPayments?.Count() ?? 0;
 
         [Display(Name = "Supplier Payments Amount")]
         [DataType(DataType.Currency)]
-        public decimal SupplierPaymentsAmount => SupplierPayments?.Sum(s => s.Amount) ?? 0M;
+        public decimal SupplierPaymentsAmount 
+            => SupplierPayments?.Sum(s => s.Amount) ?? 0M;
         #endregion
 
         #region Salary Payments
-        public IEnumerable<SalaryPaymentDto> SalaryPayments { get; set; } = new List<SalaryPaymentDto>();
+        public IEnumerable<SalaryPaymentDto> SalaryPayments { get; set; } 
+            = new List<SalaryPaymentDto>();
 
         [Display(Name = "Salary Payments Count")]
-        public int SalaryPaymentsCount => SalaryPayments?.Count() ?? 0;
+        public int SalaryPaymentsCount 
+            => SalaryPayments?.Count() ?? 0;
 
         [Display(Name = "Salary Paid")]
         [DataType(DataType.Currency)]
-        public decimal SalaryPaid => SalaryPayments?.Sum(sp => sp.Amount) ?? 0M;
+        public decimal SalaryPaid 
+            => SalaryPayments?.Sum(sp => sp.Amount) ?? 0M;
         #endregion
 
         #region Refunds
-        public IEnumerable<RefundDto> Refunds { get; set; } = new List<RefundDto>();
+        public IEnumerable<RefundDto> Refunds { get; set; } 
+            = new List<RefundDto>();
 
         [Display(Name = "Refunds Count")]
-        public int RefundsCount => Refunds?.Count() ?? 0;
+        public int RefundsCount 
+            => Refunds?.Count() ?? 0;
 
         [Display(Name = "Refunds Cash Back")]
         [DataType(DataType.Currency)]
-        public decimal RefundsCashBack => Refunds?.Sum(r => r.CashBack) ?? 0M;
+        public decimal RefundsCashBack 
+            => Refunds?.Sum(r => r.CashBack) ?? 0M;
         #endregion
 
         #region Withdrawals
-        public IEnumerable<Withdrawal> Withdrawals { get; set; } = new List<Withdrawal>();
+        public IEnumerable<Withdrawal> Withdrawals { get; set; } 
+            = new List<Withdrawal>();
 
         [Display(Name = "Withdrawals Count")]
-        public int WithdrawalsCount => Withdrawals?.Count() ?? 0;
+        public int WithdrawalsCount 
+            => Withdrawals?.Count() ?? 0;
 
         [Display(Name = "Withdrawals Total")]
         [DataType(DataType.Currency)]
-        public decimal WithdrawalsTotal => Withdrawals?.Sum(w => w.Amount) ?? 0;
+        public decimal WithdrawalsTotal 
+            => Withdrawals?.Sum(w => w.Amount) ?? 0;
         #endregion 
-        
         #endregion
     }
 }

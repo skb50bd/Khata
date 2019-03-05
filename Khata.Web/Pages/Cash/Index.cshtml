@@ -29,7 +29,11 @@
                                                class="form-control datetimepicker-input"
                                                data-target="#fromDate"
                                                placeholder="From e.g. dd/mm/yyyy"
-                                               asp-for="FromText" />
+                                               asp-for="FromText" 
+                                               data-toggle="tooltip"
+                                               title="Start Date"
+                                               autocomplete="off"
+                                               required/>
                                         <div class="input-group-append"
                                              data-target="#fromDate"
                                              data-toggle="datetimepicker">
@@ -48,7 +52,11 @@
                                                class="form-control datetimepicker-input"
                                                data-target="#toDate"
                                                placeholder="To e.g. dd/mm/yyyy"
-                                               asp-for="ToText" />
+                                               asp-for="ToText" 
+                                               data-toggle="tooltip"
+                                               title="End Date"
+                                               autocomplete="off"
+                                               required/>
                                         <div class="input-group-append"
                                              data-target="#toDate"
                                              data-toggle="datetimepicker">
@@ -82,8 +90,8 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $("#from").val('');
-            $("#to").val('');
+            $("#FromText").val(@Model.FromText);
+            $("#ToText").val(@Model.ToText);
         });
     </script>
 }

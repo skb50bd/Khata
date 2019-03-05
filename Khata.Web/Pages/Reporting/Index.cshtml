@@ -1,4 +1,4 @@
-﻿@page  "{handler?}"
+﻿@page
 @model WebUI.Pages.Reporting.IndexModel
 
 @{
@@ -20,7 +20,11 @@
                                    class="form-control datetimepicker-input"
                                    data-target="#fromDate"
                                    placeholder="From e.g. dd/mm/yyyy"
-                                   asp-for="FromText" />
+                                   asp-for="FromText" 
+                                   data-toggle="tooltip"
+                                   title="Start Date"
+                                   autocomplete="off"
+                                   required/>
                             <div class="input-group-append"
                                  data-target="#fromDate"
                                  data-toggle="datetimepicker">
@@ -39,7 +43,11 @@
                                    class="form-control datetimepicker-input"
                                    data-target="#toDate"
                                    placeholder="To e.g. dd/mm/yyyy"
-                                   asp-for="ToText" />
+                                   asp-for="ToText" 
+                                   data-toggle="tooltip"
+                                   title="End Date"
+                                   autocomplete="off"
+                                   required/>
                             <div class="input-group-append"
                                  data-target="#toDate"
                                  data-toggle="datetimepicker">
@@ -124,6 +132,70 @@
                         <partial name="_SalesList" for="Sales" />
                     </div>
                 </div>
+
+                @foreach (var outlet in Model.Outlets)
+                {
+                    <div class="card">
+                        <div class="card-body"
+                             id="outlet-sales-summary-@outlet.Id">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr class="" style="font-size:1.2rem; font-weight:100">
+                                        <th class="text-uppercase text-primary">
+                                            @outlet.Title
+                                        </th>
+                                        <td class="text-right">
+                                            <span class="badge badge-dark text-right">
+                                                @Html.DisplayFor(model => outlet.SalesCount)
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => outlet.CostOfGoodsSold)</th>
+                                        <td class="text-right">
+                                            @Html.DisplayFor(model => outlet.CostOfGoodsSold)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => outlet.PriceOfGoodsSold)</th>
+                                        <td class="text-right">@Html.DisplayFor(model => outlet.PriceOfGoodsSold)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfit)</th>
+                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfit)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => outlet.SalesDue)</th>
+                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesDue)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfitReceived)</th>
+                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfitReceived)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="#OutletSalesList-@outlet.Id"
+                               class="card-link"
+                               data-toggle="collapse"
+                               data-target="#outlet-sales-list-@outlet.Id"
+                               aria-expanded="true"
+                               aria-controls="outlet-sales-list-@outlet.Id">
+                                List
+                            </a>
+                        </div>
+                        <div id="outlet-sales-list-@outlet.Id"
+                             class="collapse"
+                             aria-labelledby="outlet-sales-summary-@outlet.Id"
+                             data-parent="#reports-accordion">
+                            <div class="card-body">
+                                <partial name="_SalesList" for="@outlet.Sales" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <div class="card">
                     <div class="card-body"
                          id="debt-payments-summary">

@@ -68,7 +68,17 @@ var pdrcc = {
     data: {},
     options: {
         tooltips: {
-            mode: 'index'
+            mode: 'index',
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                    if (label) {
+                        label += ': ';
+                    }
+                    return label + formatter.format(tooltipItem.yLabel);
+                }
+            }
         },
         fill: false,
         responsive: true,
@@ -96,6 +106,12 @@ var pdrcc = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Amount'
+                },
+                ticks: {
+                    beginAtZero: true,
+                    callback: function (value, index, values) {
+                        return formatter.format(value);
+                    }
                 }
             }]
         }

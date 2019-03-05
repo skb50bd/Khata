@@ -14,9 +14,14 @@
     <tbody>
         @foreach (var d in Model)
         {
-            var content = (d.RowId is null ? "" : ("<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
-            + "<tr><td><strong>Amount</strong></td><td> " + d.Amount + "</td></tr>"
-            + "<tr><td><strong>Description</strong></td><td> " + d.Description + "</td></tr>";
+            var content = (d.RowId is null 
+                ? "" 
+                : (
+                "<table class=\"table table-sm\">" 
+                    + "<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
+                    + "<tr><td><strong>Amount</strong></td><td> " + d.Amount.ToString("C2") + "</td></tr>"
+                    + "<tr><td><strong>Description&nbsp;&nbsp;</strong></td><td> " + d.Description + "</td></tr>"
+                + "</table>";
 
             <tr class="js-clickable-row"
                 data-href="@("../" + d.TableName + "s/Details?id=" + (d.RowId ?? d.Id))"

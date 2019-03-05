@@ -399,7 +399,7 @@ $(document).ready(function () {
             lineItemSelector.value = lineitem.name;
         }
     });
-    
+
 
     document.getElementById('sale-form')
         .addEventListener('reset', function () {

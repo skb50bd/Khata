@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
@@ -20,9 +21,10 @@ namespace WebUI.Pages.Cash
     {
         private readonly ICashRegisterService _cashRegister;
         private readonly ITransactionsService _transactions;
-
         private readonly IHubContext<ReportsHub> _reportsHub;
-        public IndexModel(ICashRegisterService cashRegister,
+
+        public IndexModel(
+            ICashRegisterService cashRegister,
             ITransactionsService trasactions,
             IHubContext<ReportsHub> reportsHub)
         {
@@ -31,34 +33,44 @@ namespace WebUI.Pages.Cash
             _reportsHub = reportsHub;
         }
 
-        public CashRegister Cash { get; set; } = new CashRegister();
+        #region Data Properties
+        public CashRegister Cash { get; set; }
+            = new CashRegister();
 
         public IEnumerable<Deposit> Deposits { get; set; }
         public IEnumerable<Withdrawal> Withdrawals { get; set; }
+        #endregion
+
+        #region Deposit-Withdrawal Form Data
+        [BindProperty]
+        public DepositViewModel NewDeposit { get; set; }
+            = new DepositViewModel();
 
         [BindProperty]
-        public DepositViewModel NewDeposit { get; set; } = new DepositViewModel();
+        public WithdrawalViewModel NewWithdrawal { get; set; }
+            = new WithdrawalViewModel();
+        #endregion
 
-        [BindProperty]
-        public WithdrawalViewModel NewWithdrawal { get; set; } = new WithdrawalViewModel();
-
+        #region Date Range
         [BindProperty]
         public string FromText { get; set; }
+
         [BindProperty]
         public string ToText { get; set; }
 
+        public DateTime FromDate
+            => FromText.ParseDate();
+        public DateTime ToDate
+            => ToText.ParseDate()
+                .AddMinutes(23 * 60 + 59);
+        #endregion
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Cash = await _cashRegister.Get();
-            Deposits = await _transactions.GetDeposits(
-                DateTime.Now.AddDays(-7),
-                DateTime.Now);
+            FromText = DateTime.Today.AddDays(-7).LocalDate();
+            ToText = DateTime.Today.LocalDate();
 
-            Withdrawals = await _transactions.GetWithdrawals(
-                DateTime.Now.AddDays(-7),
-                DateTime.Now);
-
+            await Load();
             return Page();
         }
 
@@ -66,19 +78,26 @@ namespace WebUI.Pages.Cash
         {
             if (string.IsNullOrWhiteSpace(FromText)
                 || string.IsNullOrWhiteSpace(ToText))
+            {
                 return Page();
+            }
+            await Load();
+            return Page();
+        }
+
+        private async Task Load()
+        {
             Cash = await _cashRegister.Get();
             Deposits =
-                await _transactions.GetDeposits(
-                    FromText.ParseDate(),
-                    ToText.ParseDate().AddMinutes(23 * 60 + 59)
-                );
+                await _transactions
+                    .GetDeposits(
+                        FromDate,
+                        ToDate);
             Withdrawals =
-                await _transactions.GetWithdrawals(
-                    FromText.ParseDate(),
-                    ToText.ParseDate().AddMinutes(23 * 60 + 59)
-                );
-            return Page();
+                await _transactions
+                    .GetWithdrawals(
+                        FromDate,
+                        ToDate);
         }
 
         public async Task<IActionResult> OnPostDepositAsync()
