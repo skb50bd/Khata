@@ -254,6 +254,10 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
+    $('#purchase-date').datetimepicker({
+        format: 'DD/MM/YYYY',
+        useCurrent: true
+    });
     if (purchaseDate.value === '')
         purchaseDate.value = getDate();
 

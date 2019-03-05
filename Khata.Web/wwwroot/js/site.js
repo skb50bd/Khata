@@ -10,7 +10,6 @@ const formatter = new Intl.NumberFormat('en-BD', {
     maximumFractionDigits: 2
 });
 
-
 function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
@@ -163,6 +162,23 @@ $(document).ready(function () {
             .on("change", function () {
                 from.datepicker("option", "maxDate", getDate(this));
             });
+    });
+
+    $(function () {
+        $('#fromDate').datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: true
+        });
+        $('#toDate').datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
+        });
+        $("#fromDate").on("change.datetimepicker", function (e) {
+            $('#datetimepicker8').datetimepicker('minDate', e.date);
+        });
+        $("#toDate").on("change.datetimepicker", function (e) {
+            $('#fromDate').datetimepicker('maxDate', e.date);
+        });
     });
 });
 

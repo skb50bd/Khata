@@ -169,6 +169,12 @@
     <None Include="wwwroot\lib\signalr\dist\esm\WebSocketTransport.js.map" />
     <None Include="wwwroot\lib\signalr\dist\esm\XhrHttpClient.js" />
     <None Include="wwwroot\lib\signalr\dist\esm\XhrHttpClient.js.map" />
+    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
   </ItemGroup>
 
 

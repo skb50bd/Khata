@@ -12,19 +12,47 @@
                 <form method="post"
                       asp-page-handler="WithDateRange"
                       class="form-inline">
-                    <input type="text"
-                           asp-for="FromText"
-                           class="form-control datepicker mb-2 mr-sm-2"
-                           id="from"
-                           placeholder="From" autocomplete="off">
-                    <input type="text"
-                           asp-for="ToText"
-                           class="form-control datepicker mb-2 mr-sm-2"
-                           id="to"
-                           placeholder="To" autocomplete="off">
-                    <input type="submit" 
-                           class="btn btn-outline-primary mb-2" 
+                    <div class="form-group mb-2 mr-sm-2 d-inline">
+                        <div class="input-group date"
+                             id="fromDate"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="form-control datetimepicker-input"
+                                   data-target="#fromDate"
+                                   placeholder="From e.g. dd/mm/yyyy"
+                                   asp-for="FromText" />
+                            <div class="input-group-append"
+                                 data-target="#fromDate"
+                                 data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-2 mr-sm-2 d-inline">
+                        <div class="input-group date"
+                             id="toDate"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="form-control datetimepicker-input"
+                                   data-target="#toDate"
+                                   placeholder="To e.g. dd/mm/yyyy"
+                                   asp-for="ToText" />
+                            <div class="input-group-append"
+                                 data-target="#toDate"
+                                 data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit"
+                           class="btn btn-outline-primary mb-2"
                            value="Go">
+
                 </form>
             </div>
             <div class="col-md-6 text-right">

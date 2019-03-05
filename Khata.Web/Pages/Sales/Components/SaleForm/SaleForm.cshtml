@@ -41,8 +41,24 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="SaleDate" class="control-label"></label>
-                                    <input asp-for="SaleDate" type="text" class="form-control form-control-sm datepicker" autocomplete="off" />
-                                    <span asp-validation-for="SaleDate" class="text-danger"></span>
+                                        <div class="input-group input-group-sm date"
+                                             id="sale-date"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   class="form-control datetimepicker-input"
+                                                   data-target="#sale-date"
+                                                   placeholder="To e.g. dd/mm/yyyy"
+                                                   asp-for="SaleDate" />
+                                            <div class="input-group-append"
+                                                 data-target="#sale-date"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <span asp-validation-for="SaleDate" 
+                                          class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">

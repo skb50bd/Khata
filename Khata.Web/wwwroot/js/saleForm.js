@@ -274,10 +274,14 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
+    $('#sale-date').datetimepicker({
+        format: 'DD/MM/YYYY',
+        useCurrent: true
+    });
     if (saleDate.value === '') {
         saleDate.value = getDate(new Date());
-
     }
+
     if (isNaN(itemsAdded.valueAsNumber))
         itemsAdded.value = 0;
 
