@@ -68,7 +68,7 @@ namespace WebUI
                 options.AddPolicy("UserRights", policy => policy.RequireRole("User"));
             });
 
-            //services.AddWebOptimizer();
+            services.AddWebOptimizer();
             services.AddMvc()
                 .AddJsonOptions(options =>
                      {
@@ -146,7 +146,7 @@ namespace WebUI
                 app.UseHsts();
             }
 
-            //app.UseWebOptimizer();
+            app.UseWebOptimizer();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

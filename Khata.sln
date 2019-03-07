@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28701.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Khata", "Khata.Domain\Khata.csproj", "{53C9567F-A987-40A7-BCF7-C7D8D23CD371}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Khata.Services\Services.csproj", "{262F7466-F93D-4030-93C4-4F13FE660E8E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportData", "ImportData\ImportData.csproj", "{FE756418-988D-4514-895F-08CC5A9762CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackupRestore", "BackupRestore\BackupRestore.csproj", "{423486C1-DA8F-492F-8E7E-2A4D301785B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE756418-988D-4514-895F-08CC5A9762CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{423486C1-DA8F-492F-8E7E-2A4D301785B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{423486C1-DA8F-492F-8E7E-2A4D301785B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{423486C1-DA8F-492F-8E7E-2A4D301785B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{423486C1-DA8F-492F-8E7E-2A4D301785B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

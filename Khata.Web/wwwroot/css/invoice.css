@@ -1,5 +1,16 @@
-﻿#page {
-    font-size: 14pt; 
+﻿#invoice-page {
+    font-size: 12pt; 
+    /*min-width: 8.27in;*/
+    max-width: 5.8in;
+}
+
+#brand > h1 {
+    font-size: 3.5rem;
+    font-weight: 500;
+}
+
+#page {
+    font-size: 1.5rem;
     min-width: 8.27in;
     /*max-width: 5.8in;*/
 }

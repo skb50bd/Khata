@@ -75,10 +75,8 @@ namespace ImportData
         public static IServiceCollection ConfigureSqlData(this IServiceCollection services, string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-            //options.UseSqlite(cnnString));
-            options.UseSqlServer(cnnString));
-            //.EnableSensitiveDataLogging());
-            //options.UseInMemoryDatabase("Khata"));
+                options.UseSqlServer(cnnString)
+            );
 
             services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();
             services.AddTransient<ITrackingRepository<Product>, ProductRepository>();

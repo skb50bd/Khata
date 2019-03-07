@@ -24,25 +24,6 @@
                     <p class="lead">
                         @Model.Invoice.Outlet.Slogan
                     </p>
-                    <table class="table-hover">
-                        <tr>
-                            <td>Address &nbsp; &nbsp;</td>
-                            <td>: @Model.Invoice.Outlet.Address</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td>
-                                :
-                                <a href="mailto:@Model.Invoice.Outlet.Email">
-                                    @Model.Invoice.Outlet.Email
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td>: @Model.Invoice.Outlet.Phone</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
             <div class="col-md-4 text-right">
@@ -52,6 +33,24 @@
                     <small>@Model.Invoice.DateLocalDate</small>
                 </p>
             </div>
+            <table class="table table-sm table-hover w-100">
+                <tr>
+                    <th>Address &nbsp; &nbsp;</th>
+                    <td class="text-right">@Model.Invoice.Outlet.Address</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td class="text-right">
+                        <a href="mailto:@Model.Invoice.Outlet.Email">
+                            @Model.Invoice.Outlet.Email
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td class="text-right">@Model.Invoice.Outlet.Phone</td>
+                </tr>
+            </table>
         </div>
 
         <div class="row">

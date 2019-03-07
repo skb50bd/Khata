@@ -63,11 +63,6 @@
             Span = "daily",
             Receivable = Model.Receivable.Daily
         };
-        var dailyOutletSales = new OutletSalesWithSpan
-        {
-            Span = "daily",
-            OutletSales = Model.OutletSales.Daily
-        };
         var weeklyIncome = new IncomeReportWithSpan
         {
             Span = "weekly",
@@ -87,11 +82,6 @@
         {
             Span = "weekly",
             Receivable = Model.Receivable.Weekly
-        };
-        var weeklyOutletSales = new OutletSalesWithSpan
-        {
-            Span = "weekly",
-            OutletSales = Model.OutletSales.Weekly
         };
         var monthlyIncome = new IncomeReportWithSpan
         {
@@ -113,11 +103,23 @@
             Span = "monthly",
             Receivable = Model.Receivable.Monthly
         };
-        var monthlyOutletSales = new OutletSalesWithSpan
-        {
-            Span = "monthly",
-            OutletSales = Model.OutletSales.Monthly
-        };}
+    }
+    @*//var dailyOutletSales = new OutletSalesWithSpan
+    //{
+    //    Span = "daily",
+    //    OutletSales = Model.OutletSales.Daily
+    //};
+    //var weeklyOutletSales = new OutletSalesWithSpan
+    //{
+    //    Span = "weekly",
+    //    OutletSales = Model.OutletSales.Weekly
+    //};
+    //var monthlyOutletSales = new OutletSalesWithSpan
+    //{
+    //    Span = "monthly",
+    //    OutletSales = Model.OutletSales.Monthly
+    //};*@
+
     <div class="tab-pane fade show active"
          id="daily"
          role="tabpanel"

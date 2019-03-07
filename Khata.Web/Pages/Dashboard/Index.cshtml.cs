@@ -26,9 +26,9 @@ namespace WebUI.Pages.Dashboard
         private readonly IReportService<DailyReceivableReport> _dailyReceivableReports;
         private readonly IReportService<WeeklyReceivableReport> _weeklyReceivableReports;
         private readonly IReportService<MonthlyReceivableReport> _monthlyReceivableReports;
-        private readonly IIndividualReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
-        private readonly IIndividualReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
-        private readonly IIndividualReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
+        //private readonly IIndividualReportService<DailyOutletSalesReport> _dailyOutletSalesReports;
+        //private readonly IIndividualReportService<WeeklyOutletSalesReport> _weeklyOutletSalesReports;
+        //private readonly IIndividualReportService<MonthlyOutletSalesReport> _monthlyOutletSalesReports;
         private readonly IReportService<PerDayReport> _perDayReports;
         #endregion
 
@@ -39,7 +39,7 @@ namespace WebUI.Pages.Dashboard
         public ExpenseReports ExpenseReports { get; set; }
         public PayableReports Payable { get; set; }
         public ReceivableReports Receivable { get; set; }
-        public OutletSalesReport OutletSales { get; set; }
+        //public OutletSalesReport OutletSales { get; set; }
         public IEnumerable<PerDayReport> PerDayReports { get; set; } 
         #endregion
 
@@ -59,9 +59,9 @@ namespace WebUI.Pages.Dashboard
             IReportService<DailyReceivableReport> dailyReceivableReports,
             IReportService<WeeklyReceivableReport> weeklyReceivableReports,
             IReportService<MonthlyReceivableReport> monthlyReceivableReports,
-            IIndividualReportService<DailyOutletSalesReport> dailyOutletSalesReports,
-            IIndividualReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
-            IIndividualReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
+            //IIndividualReportService<DailyOutletSalesReport> dailyOutletSalesReports,
+            //IIndividualReportService<WeeklyOutletSalesReport> weeklyOutletSalesReports,
+            //IIndividualReportService<MonthlyOutletSalesReport> monthlyOutletSalesReports,
             IReportService<PerDayReport> perDayReports 
         #endregion
             )
@@ -80,9 +80,9 @@ namespace WebUI.Pages.Dashboard
             _dailyReceivableReports = dailyReceivableReports;
             _weeklyReceivableReports = weeklyReceivableReports;
             _monthlyReceivableReports = monthlyReceivableReports;
-            _dailyOutletSalesReports = dailyOutletSalesReports;
-            _weeklyOutletSalesReports = weeklyOutletSalesReports;
-            _monthlyOutletSalesReports = monthlyOutletSalesReports;
+            //_dailyOutletSalesReports = dailyOutletSalesReports;
+            //_weeklyOutletSalesReports = weeklyOutletSalesReports;
+            //_monthlyOutletSalesReports = monthlyOutletSalesReports;
             _perDayReports = perDayReports;
         }
 
@@ -119,12 +119,12 @@ namespace WebUI.Pages.Dashboard
                 Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
             };
 
-            OutletSales = new OutletSalesReport
-            {
-                Daily = await _dailyOutletSalesReports.Get(),
-                Weekly = await _weeklyOutletSalesReports.Get(),
-                Monthly = await _monthlyOutletSalesReports.Get()
-            };
+            //OutletSales = new OutletSalesReport
+            //{
+            //    Daily = await _dailyOutletSalesReports.Get(),
+            //    Weekly = await _weeklyOutletSalesReports.Get(),
+            //    Monthly = await _monthlyOutletSalesReports.Get()
+            //};
 
             PerDayReports = await _perDayReports.Get();
         }

@@ -16,10 +16,9 @@ namespace Khata.Data.Persistence
             string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-            //options.UseSqlite(cnnString));
-            options.UseSqlServer(cnnString));
-            //.EnableSensitiveDataLogging());
-            //options.UseInMemoryDatabase("Khata"));
+                options.UseSqlServer(cnnString)
+            );
+
             services.AddDefaultIdentity<ApplicationUser>(config =>
             {
                 config.SignIn.RequireConfirmedEmail = true;
