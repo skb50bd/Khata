@@ -208,14 +208,16 @@ namespace ImportData.Services
             ans = Console.ReadLine();
             if (ans.ToUpperInvariant() != "N")
             {
-                foreach (var p in AllProducts.Values.ToList())
+                foreach (var p in 
+                    AllProducts.Values
+                        .OrderBy(p => p.Name))
                 {
                     db.Products.Add(p);
                 }
+                db.Complete();
             }
             #endregion
 
-            db.Complete();
 
             #region Purchase
             DumpPurchases();
@@ -320,6 +322,11 @@ namespace ImportData.Services
             {
                 var cr = await db.CashRegister.Get();
                 cr.Balance = CashBalance;
+            }
+            else
+            {
+                var cr = await db.CashRegister.Get();
+                cr.Balance = 0M;
             }
             #endregion
 
