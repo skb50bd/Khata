@@ -8,13 +8,13 @@ namespace Khata.Data.Persistence
 {
     public static class EntityBuilder
     {
-        public static ModelBuilder BuildEntities(this ModelBuilder modelBuilder)
+        public static ModelBuilder BuildEntities(this ModelBuilder builder)
         {
-            modelBuilder.Owned<Pricing>();
-            modelBuilder.Owned<Inventory>();
-            modelBuilder.Owned<PaymentInfo>();
+            builder.Owned<Pricing>();
+            builder.Owned<Inventory>();
+            builder.Owned<PaymentInfo>();
 
-            modelBuilder.Entity<DebtPayment>(entity =>
+            builder.Entity<DebtPayment>(entity =>
             {
                 entity.Property(d => d.CustomerId).IsRequired();
                 entity.HasOne(dp => dp.Invoice)
@@ -24,12 +24,12 @@ namespace Khata.Data.Persistence
                     .IsRequired(false);
             });
 
-            modelBuilder.Entity<SaleLineItem>(entity =>
+            builder.Entity<SaleLineItem>(entity =>
             {
                 entity.HasKey(li => li.Id);
             });
 
-            modelBuilder.Entity<Sale>(entity =>
+            builder.Entity<Sale>(entity =>
             {
                 entity.HasOne(s => s.Invoice)
                         .WithOne(i => i.Sale)
@@ -38,7 +38,7 @@ namespace Khata.Data.Persistence
                         .IsRequired(false);
             });
 
-            modelBuilder.Entity<CustomerInvoice>(entity =>
+            builder.Entity<CustomerInvoice>(entity =>
             {
                 entity.HasBaseType<Invoice>();
                 entity.HasOne(i => i.Sale)
@@ -51,7 +51,7 @@ namespace Khata.Data.Persistence
                         .HasKey(s => s.Id);
             });
 
-            modelBuilder.Entity<Purchase>(entity =>
+            builder.Entity<Purchase>(entity =>
             {
                 entity.HasOne(p => p.Vouchar)
                         .WithOne(v => v.Purchase)
@@ -60,7 +60,7 @@ namespace Khata.Data.Persistence
                         .IsRequired(false);
             });
 
-            modelBuilder.Entity<SupplierPayment>(entity =>
+            builder.Entity<SupplierPayment>(entity =>
             {
                 entity.Property(sp => sp.SupplierId).IsRequired();
                 entity.HasOne(sp => sp.Vouchar)
@@ -70,7 +70,7 @@ namespace Khata.Data.Persistence
                         .IsRequired(false);
             });
 
-            modelBuilder.Entity<Vouchar>(entity =>
+            builder.Entity<Vouchar>(entity =>
             {
                 entity.HasBaseType<Invoice>();
                 entity.HasOne(v => v.Purchase)
@@ -83,17 +83,17 @@ namespace Khata.Data.Persistence
                         .HasKey(s => s.Id);
             });
 
-            modelBuilder.Entity<SalaryIssue>(entity =>
+            builder.Entity<SalaryIssue>(entity =>
             {
                 entity.Property(si => si.EmployeeId).IsRequired();
             });
 
-            modelBuilder.Entity<SalaryPayment>(entity =>
+            builder.Entity<SalaryPayment>(entity =>
             {
                 entity.Property(sp => sp.EmployeeId).IsRequired();
             });
 
-            modelBuilder.Entity<Refund>(entity =>
+            builder.Entity<Refund>(entity =>
             {
                 entity.HasOne(r => r.Sale)
                         .WithOne()
@@ -101,7 +101,7 @@ namespace Khata.Data.Persistence
                         .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<PurchaseReturn>(entity =>
+            builder.Entity<PurchaseReturn>(entity =>
             {
                 entity.HasOne(r => r.Purchase)
                         .WithOne()
@@ -109,7 +109,13 @@ namespace Khata.Data.Persistence
                         .OnDelete(DeleteBehavior.Restrict);
             });
 
-            foreach (var property in modelBuilder.Model.GetEntityTypes()
+            builder.Entity<Outlet>(entity => {
+                entity.HasMany(e => e.Sales).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Products).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Services).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
+            });
+
+            foreach (var property in builder.Model.GetEntityTypes()
             .SelectMany(t => t.GetProperties())
             .Where(p => p.ClrType == typeof(decimal)))
                     {
@@ -117,14 +123,14 @@ namespace Khata.Data.Persistence
                     }
 
             var metas =
-                modelBuilder.Model.GetEntityTypes().SelectMany(
+                builder.Model.GetEntityTypes().SelectMany(
                     d => d.GetNavigations())
                         .Where(p => p.Name == nameof(Document.Metadata));
 
             foreach (var p in metas)
                 p.IsEagerLoaded = true;
 
-            return modelBuilder;
+            return builder;
         }
     }
 }

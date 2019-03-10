@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Khata.Data.Persistence.Migrations.SQLServer
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial_Create_V_0_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -496,7 +496,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                         column: x => x.OutletId,
                         principalTable: "Outlets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -526,7 +526,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                         column: x => x.OutletId,
                         principalTable: "Outlets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -724,7 +724,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                         column: x => x.OutletId,
                         principalTable: "Outlets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

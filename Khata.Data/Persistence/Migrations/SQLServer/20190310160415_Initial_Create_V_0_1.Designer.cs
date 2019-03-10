@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Khata.Data.Persistence.Migrations.SQLServer
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190303165649_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190310160415_Initial_Create_V_0_1")]
+    partial class Initial_Create_V_0_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1038,7 +1038,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Products")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("Khata.Domain.Inventory", "Inventory", b1 =>
                         {
@@ -1229,7 +1229,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Sales")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("Khata.Domain.PaymentInfo", "Payment", b1 =>
                         {
@@ -1313,7 +1313,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Services")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Khata.Domain.Supplier", b =>

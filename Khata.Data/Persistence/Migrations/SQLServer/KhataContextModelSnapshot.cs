@@ -1036,7 +1036,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Products")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("Khata.Domain.Inventory", "Inventory", b1 =>
                         {
@@ -1227,7 +1227,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Sales")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("Khata.Domain.PaymentInfo", "Payment", b1 =>
                         {
@@ -1311,7 +1311,7 @@ namespace Khata.Data.Persistence.Migrations.SQLServer
                     b.HasOne("Khata.Domain.Outlet", "Outlet")
                         .WithMany("Services")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Khata.Domain.Supplier", b =>
