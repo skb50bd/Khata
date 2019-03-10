@@ -40,11 +40,17 @@ namespace Khata.Services.CRUD
             DateTime? from = null,
             DateTime? to = null)
         {
+            Expression<Func<Service, bool>> fuzzySearch =
+                p => p.Id.ToString() == pf.Filter
+                    //|| p.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
+                    || p.Name.ToLowerInvariant().Contains(pf.Filter);
+            Expression<Func<Service, bool>> strictSearch =
+                p => p.Id.ToString() == pf.Filter
+                    || p.Name.ToLowerInvariant().StartsWith(pf.Filter);
+
             var predicate = string.IsNullOrEmpty(pf.Filter)
-                ? (Expression<Func<Service, bool>>)(p => true)
-                : s => s.Id.ToString() == pf.Filter
-                    || s.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
-                    || s.Name.ToLowerInvariant().Contains(pf.Filter);
+                ? (p => !p.IsRemoved)
+                : strictSearch;
 
             if(outletId != 0)
             {
