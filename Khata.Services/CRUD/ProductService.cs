@@ -73,6 +73,7 @@ namespace Khata.Services.CRUD
         public async Task<ProductDto> Update(ProductViewModel vm)
         {
             var newProduct = _mapper.Map<Product>(vm);
+            newProduct.Outlet = await _db.Outlets.GetById(vm.OutletId);
             var originalProduct = await _db.Products.GetById(newProduct.Id);
             var meta = originalProduct.Metadata.Modified(CurrentUser);
             originalProduct.SetValuesFrom(newProduct);

@@ -78,6 +78,7 @@ namespace Khata.Services.CRUD
         public async Task<ServiceDto> Update(ServiceViewModel vm)
         {
             var newService = _mapper.Map<Service>(vm);
+            newService.Outlet = await _db.Outlets.GetById(vm.OutletId);
             var originalService = await _db.Services.GetById(newService.Id);
             var meta = originalService.Metadata.Modified(CurrentUser);
             originalService.SetValuesFrom(newService);
