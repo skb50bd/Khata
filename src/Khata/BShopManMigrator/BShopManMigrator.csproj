@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <AssemblyName>BShopManMigrator</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>skb50bd.khata.importdata</PackageId>
@@ -12,6 +13,10 @@
     <StartupObject />
     <Authors>Shakib Haris</Authors>
     <ApplicationIcon>BShopManMigration.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
