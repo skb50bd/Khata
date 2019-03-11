@@ -1,0 +1,135 @@
+﻿@model DTOs.PurchaseReturnDto
+
+<div class="card" style="width:40rem">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6">Purchase Return# @Model.Id</div>
+            <div class="col-6 text-right">
+                @if (Model.IsRemoved)
+                {
+                    <span class="badge badge-danger">Removed</span>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <a class="card-title h3"
+           asp-page="/Suppliers/Details"
+           asp-route-id="@Model.SupplierId">
+            @Model.Supplier.FullName
+        </a>
+        <table class="table table-sm table-hover mt-4">
+            <tbody>
+                <tr>
+                    <th>Company</th>
+                    <td>@Model.Supplier.CompanyName</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>@Model.Supplier.Address</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>@Model.Supplier.Phone</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Supplier.Email</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        <h4 class="card-title">Payment Information</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <tbody>
+                <tr>
+                    <td>Cash Back</td>
+                    <td class="text-right">@Html.DisplayFor(model => model.CashBack)</td>
+                </tr>
+                <tr>
+                    <td>Debt Rollback</td>
+                    <td class="text-right">@Html.DisplayFor(model => model.DebtRollback)</td>
+                </tr>
+                @{ var recordClass = ""; }
+                @if (Model.Supplier.Payable > 0)
+                {
+                    recordClass = "warning";
+                }
+                <tr class="table-@recordClass">
+
+                    <td>Current Payable</td>
+                    <td class="text-right">@Html.DisplayFor(model => model.Supplier.Payable)</td>
+                </tr>
+        </table>
+
+        <hr />
+        <h4 class="card-title">Return Cart</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Net Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => item.Name)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.Quantity)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.UnitPurchasePrice)</td>
+                        <td class="text-right">@Html.DisplayFor(model => item.UnitPurchasePrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <hr />
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <table class="table table-sm table-borderless table-hover">
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+            </table>
+        }
+        <div class="row">
+
+            <div class="col-md-6">
+                @if (!Model.IsRemoved)
+                {
+                    @*<a asp-page="./Edit"
+                        asp-route-id="@Model.Id"
+                        class="card-link btn btn-link btn-secondary text-white">Edit</a>*@
+
+                    <a asp-page="../Purchases/Details"
+                       asp-route-id="@Model.PurchaseId"
+                       target="_blank"
+                       class="card-link btn btn-outline-success">Purchase</a>
+
+                    <a href="#"
+                       class="card-link btn btn-link btn-danger text-white js-remove-item"
+                       data-href="@Url.Action("Remove", "PurchaseReturns", new {id = Model.Id})"
+                       data-returnUrl="@Url.Page("./Index")">
+                        Remove
+                    </a>
+                }
+            </div>
+            <div class="col-md-6 text-right">
+                <a asp-page="./Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <partial name="_UpdateSummary" for="Metadata" />
+    </div>
+</div>

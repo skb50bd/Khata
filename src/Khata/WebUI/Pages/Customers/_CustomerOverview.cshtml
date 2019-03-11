@@ -1,0 +1,77 @@
+﻿@model Queries.CustomerReport
+
+
+<div class="card" style="width:40rem">
+
+    <div class="card-header">
+        <div>Customer# @Model.Id</div>
+    </div>
+
+    <div class="card-body">
+        <h3 class="card-title">@Model.FullName</h3>
+        <table class="table table-sm table-hover mt-4">
+            <tr>
+                <th>Address</th>
+                <td>@Html.DisplayFor(model => model.Address)</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>@Html.DisplayFor(model => model.Phone)</td>
+            </tr>
+            <tr class="table-danger">
+                <th>Due</th>
+                <td>@Html.DisplayFor(model => model.Debt)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Number of Sales</th>
+                <td>@Html.DisplayFor(model => model.SalesCount)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Sales Worth</th>
+                <td>@Html.DisplayFor(model => model.SalesWorth)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Sale Paid</th>
+                <td>@Html.DisplayFor(model => model.SaleReceives)</td>
+            </tr>
+            <tr class="table-success">
+                <th>Profit</th>
+                <td>@Html.DisplayFor(model => model.Profit)</td>
+            </tr>
+            <tr class="table-info">
+                <th>Number of Debt Payments</th>
+                <td>@Html.DisplayFor(model => model.DebtPaymentsCount)</td>
+            </tr>
+            <tr class="table-info">
+                <th>Due Paid</th>
+                <td>@Html.DisplayFor(model => model.DebtPaymentReceives)</td>
+            </tr>
+            <tr class="table-info">
+                <th>Delta (Profit - Debt)</th>
+                <td>@Html.DisplayFor(model => model.Delta)</td>
+            </tr>
+            <tr class="table-warning">
+                <th>Number of Refunds</th>
+                <td>@Html.DisplayFor(model => model.RefundCount)</td>
+            </tr>
+            <tr class="table-warning">
+                <th>Refund Loss</th>
+                <td>@Html.DisplayFor(model => model.RefundLoss)</td>
+            </tr>
+            <tr class="table-warning">
+                <th>Refund Amount</th>
+                <td>@Html.DisplayFor(model => model.RefundAmount)</td>
+            </tr>
+        </table>
+
+        <hr />
+        <div class="row">
+            <div class="col text-right">
+                <a asp-page="./Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

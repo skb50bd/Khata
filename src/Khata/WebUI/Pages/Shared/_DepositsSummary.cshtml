@@ -1,0 +1,65 @@
+﻿@using Domain
+@model IEnumerable<Deposit>
+
+<table class="table table-sm table-hover">
+    <thead>
+        <tr class="table-success">
+            <th colspan="3">
+                DEPOSITS
+            </th>
+            <td class="text-right">
+                <span class="badge badge-success">@(Model.Count())</span>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <th colspan="2">Sales</th>
+            <td colspan="2" class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(Sale)))
+                </span>
+                @(Model.Where(d => d.TableName == nameof(Sale))
+                                                               .Sum(d => d.Amount).ToString("C2"))
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Debt Payments</th>
+            <td colspan="2" class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(DebtPayment)))
+                </span>
+                @(Model.Where(d => d.TableName == nameof(DebtPayment))
+                                                               .Sum(d => d.Amount).ToString("C2"))
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Purchase Return</th>
+            <td colspan="2" class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(PurchaseReturn)))
+                </span>
+                @(Model.Where(d => d.TableName == nameof(PurchaseReturn))
+                                                               .Sum(d => d.Amount).ToString("C2"))
+            </td>
+        </tr>
+        <tr><td colspan="4">&nbsp;</td></tr>
+        <tr>
+            <th colspan="2">Others</th>
+            <td colspan="2" class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(Deposit)))
+                </span>
+                @(Model.Where(d => d.TableName == nameof(Deposit))
+                                                               .Sum(d => d.Amount).ToString("C2"))
+            </td>
+        </tr>
+        <tr class="table-active">
+            <th colspan="2">Total</th>
+            <td colspan="2" class="text-right">
+                @(Model.Sum(d => d.Amount).ToString("C2"))
+            </td>
+        </tr>
+    </tbody>
+</table>

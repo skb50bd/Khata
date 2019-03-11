@@ -1,0 +1,74 @@
+﻿@model DTOs.SalaryIssueDto
+
+<div class="card" style="width:40rem">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6">Salary Issue# @Model.Id</div>
+            <div class="col-6 text-right">
+                @if (Model.IsRemoved)
+                {
+                    <span class="badge badge-danger">Removed</span>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <a class="h3 card-title"
+           asp-page="/Employees/Details"
+           asp-route-id="@Model.EmployeeId">
+            @Model.EmployeeFullName
+        </a>
+        <table class="table table-sm table-hover mt-4">
+            <tr>
+                <th>Balance Before</th>
+                <td>@Html.DisplayFor(model => model.BalanceBefore)</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>
+                    @Html.DisplayFor(model => model.Amount)
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <th>Balance After</th>
+                <td>@Html.DisplayFor(model => model.BalanceAfter)</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>@Html.DisplayFor(model => model.Description)</td>
+            </tr>
+        </table>
+
+        <hr />
+        <div class="row">
+
+            <div class="col-md-6">
+                @if (!Model.IsRemoved)
+                {
+                    @*<a asp-page="./Edit"
+                        asp-route-id="@Model.Id"
+                        class="card-link btn btn-link btn-secondary">Edit</a>*@
+
+                    <a href="#"
+                       class="card-link text-white btn btn-link btn-danger js-remove-item"
+                       data-href="@Url.Action("Remove", "SalaryIssues", new {id = Model.Id})"
+                       data-returnUrl="@Url.Page("./Index")">
+                        Remove
+                    </a>
+                }
+            </div>
+            <div class="col-md-6 text-right">
+                <a asp-page="./Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <partial name="_UpdateSummary" for="Metadata" />
+    </div>
+</div>

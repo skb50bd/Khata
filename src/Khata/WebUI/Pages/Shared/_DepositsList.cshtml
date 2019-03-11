@@ -1,0 +1,44 @@
+﻿@using Domain
+@using Brotal.Extensions
+@model IEnumerable<Deposit>
+
+<table class="table table-sm table-hover table-striped">
+    <thead>
+        <tr class="thead-dark">
+            <th>Id</th>
+            <th>Type</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            string content;
+            {
+                content = (d.RowId is null
+                    ? ""
+                    : (
+                    "<table class=\"table table-sm\">" 
+                        + "<tr>" + "<td><strong>Id</strong></td><td> " + @d.Id + "</td></tr>"))
+                        + "<tr><td><strong>Amount</strong></td><td> " + d.Amount.ToString("C2") + "</td></tr>"
+                        + "<tr><td><strong>Description&nbsp;&nbsp;</strong></td><td> " + d.Description + "</td></tr>" 
+                    + "</table>";
+            }
+            <tr class="js-clickable-row"
+                data-href="@("../" + d.TableName + "s/Details?id=" + (d.RowId ?? d.Id))"
+                data-toggle="popover"
+                data-trigger="hover"
+                data-html="true"
+                data-placement="top"
+                title="@d.TableName.FromPascalCase()"
+                data-content="@content">
+
+                <td>@d.RowId</td>
+                <td>@d.TableName.FromPascalCase()</td>
+                <td class="text-right">@(d.Amount.ToString("C2"))</td> 
+                <td class="text-right">@d.Metadata.ModifiedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

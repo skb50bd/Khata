@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+using DTOs;
+using Business.CRUD;
+using Business.PageFilterSort;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+
+namespace WebUI.Pages.Reporting
+{
+    public class SupplierDueReportModel : PageModel
+    {
+        private ISupplierService _suppliers;
+        private readonly PfService _pfService;
+
+        public SupplierDueReportModel(
+            ISupplierService suppliers,
+            PfService pfService)
+        {
+            _suppliers = suppliers;
+            _pfService = pfService;
+        }
+
+
+        public IEnumerable<SupplierDto> Suppliers;
+        public int Count => Suppliers?.Count() ?? 0;
+        [DataType(DataType.Currency)]
+        public decimal TotalDue => Suppliers?.Sum(c => c.Payable) ?? 0M;
+        [DataType(DataType.Currency)]
+        public decimal AverageDue => Count == 0 ? 0M : TotalDue / Count;
+
+        public string ForDate => DateTime.Today.ToString("dd MMM yyy");
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            Suppliers = (await _suppliers.Get(
+                 _pfService.CreateNewPf("", 1, int.MaxValue)))
+                .Where(c => c.Payable > 0)
+                .OrderByDescending(c => c.Payable);
+            return Page();
+        }
+    }
+}
