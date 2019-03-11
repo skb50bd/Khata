@@ -340,11 +340,11 @@ namespace ImportData.Services
             var shopsCollection = Mongo.GetCollection<BsonDocument>("Shop").Find(new BsonDocument()).ToList();
             foreach (var s in shopsCollection)
             {
-                var title = s["shopName"].ToString();
-                var slogan = s["tagline"].ToString();
-                var address = s["address"].ToString();
-                var phone = string.Join(", ", s["contactNumbers"].AsBsonArray.Select(b => b.ToString()));
-                var email = string.Join(", ", s["emailAddresses"].AsBsonArray.Select(b => b.ToString()));
+                var title = s["shopName"].ToString().Trim();
+                var slogan = s["tagline"].ToString().Trim();
+                var address = s["address"].ToString().Trim();
+                var phone = string.Join(", ", s["contactNumbers"].AsBsonArray.Select(b => b.ToString())).Trim();
+                var email = string.Join(", ", s["emailAddresses"].AsBsonArray.Select(b => b.ToString())).Trim();
 
                 Outlets[s["_id"].ToString()] = new Outlet
                 {
@@ -379,12 +379,14 @@ namespace ImportData.Services
             {
                 var nameTokens = c["fullName"].ToString().Split();
                 var firstName = nameTokens.FirstOrDefault();
-                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
-                var email = c["emailAddress"].ToString();
-                var phone = c["phone"].ToString();
-                var address = c["address"].ToString();
-                var companyName = c["companyName"].ToString();
-                var note = c["note"].ToString();
+                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1)).Trim();
+                if (firstName.Length == 0) firstName = "_____";
+                if (lastName.Length == 0) lastName = "_____";
+                var email = c["emailAddress"].ToString().Trim();
+                var phone = c["phone"].ToString().Trim();
+                var address = c["address"].ToString().Trim();
+                var companyName = c["companyName"].ToString().Trim();
+                var note = c["note"].ToString().Trim();
                 Customers[c["_id"].ToString()] = new Customer
                 {
                     FirstName = firstName,
@@ -410,12 +412,14 @@ namespace ImportData.Services
             {
                 var nameTokens = s["fullName"].ToString().Split();
                 var firstName = nameTokens.FirstOrDefault();
-                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
-                var email = s["emailAddress"].ToString();
-                var phone = s["phone"].ToString();
-                var address = s["address"].ToString();
-                var companyName = s["companyName"].ToString();
-                var note = s["note"].ToString();
+                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1)).Trim();
+                if (firstName.Length == 0) firstName = "_____";
+                if (lastName.Length == 0) lastName = "_____";
+                var email = s["emailAddress"].ToString().Trim();
+                var phone = s["phone"].ToString().Trim();
+                var address = s["address"].ToString().Trim();
+                var companyName = s["companyName"].ToString().Trim();
+                var note = s["note"].ToString().Trim();
                 Suppliers[s["_id"].ToString()] = new Supplier
                 {
                     FirstName = firstName,
@@ -441,15 +445,15 @@ namespace ImportData.Services
             {
                 var nameTokens = e["fullName"].ToString().Split();
                 var firstName = nameTokens.FirstOrDefault();
-                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1));
-                var email = e["emailAddress"].ToString();
-                var phone = e["phone"].ToString();
-                var address = e["address"].ToString();
-                var designation = e["designation"].ToString();
+                var lastName = string.Join(' ', nameTokens.TakeLast(nameTokens.Count() - 1)).Trim();
+                var email = e["emailAddress"].ToString().Trim();
+                var phone = e["phone"].ToString().Trim();
+                var address = e["address"].ToString().Trim();
+                var designation = e["designation"].ToString().Trim();
                 var balance = e["currentBalance"].ToDecimal();
-                var nid = e["nationalIdN"].ToString();
+                var nid = e["nationalIdN"].ToString().Trim();
                 var salary = e["monthlySalary"].ToDecimal();
-                var note = e["note"].ToString();
+                var note = e["note"].ToString().Trim();
                 Employees[e["_id"].ToString()] = new Employee
                 {
                     FirstName = firstName,
@@ -475,20 +479,22 @@ namespace ImportData.Services
             var expensesCollection = Mongo.GetCollection<BsonDocument>("Expense").Find(new BsonDocument()).ToList();
             foreach (var e in expensesCollection)
             {
-                var note = e["note"].ToString();
+                var note = e["note"].ToString().Trim();
                 var amount = e["totalAmount"].ToDecimal();
                 foreach (var cartItem in e["cart"].AsBsonArray)
                 {
-                    note += $". { cartItem["productName"].ToString()}- " +
+                    if (!string.IsNullOrWhiteSpace(note)) note += ". \n";
+                    note += $"{ cartItem["productName"].ToString()}- " +
                         $"{ cartItem["unitPurchasePrice"].ToDecimal() * cartItem["quantity"].ToDecimal()}";
                 }
+                note = note.Trim();
                 Expenses[e["_id"].ToString()] = new Expense
                 {
-                    Name = "Expense",
-                    Amount = amount,
+                    Name        = "Expense",
+                    Amount      = amount,
                     Description = note,
-                    IsRemoved = false,
-                    Metadata = GetMetadata(e["meta"].AsBsonDocument)
+                    IsRemoved   = false,
+                    Metadata    = GetMetadata(e["meta"].AsBsonDocument)
                 };
             }
             var json = JsonConvert.SerializeObject(Expenses, Formatting.Indented);
@@ -497,7 +503,9 @@ namespace ImportData.Services
 
         private static void DumpDebtPayments()
         {
-            var debtPaymentsCollection = Mongo.GetCollection<BsonDocument>("DebtCollection").Find(new BsonDocument()).ToList();
+            var debtPaymentsCollection = 
+                Mongo.GetCollection<BsonDocument>("DebtCollection")
+                    .Find(new BsonDocument()).ToList();
             foreach (var e in debtPaymentsCollection)
             {
                 var amount = e["amount"].ToDecimal();
@@ -533,7 +541,9 @@ namespace ImportData.Services
 
         private static void DumpSupplierPayments()
         {
-            var supplierPaymentsCollection = Mongo.GetCollection<BsonDocument>("Repayment").Find(new BsonDocument()).ToList();
+            var supplierPaymentsCollection = 
+                Mongo.GetCollection<BsonDocument>("Repayment")
+                    .Find(new BsonDocument()).ToList();
             foreach (var e in supplierPaymentsCollection)
             {
                 var supplierId = e["supplierId"].ToString();
@@ -577,19 +587,19 @@ namespace ImportData.Services
             var productsCollection = Mongo.GetCollection<BsonDocument>("Product").Find(new BsonDocument()).ToList();
             foreach (var d in productsCollection)
             {
-                var name = d["productName"].ToString();
+                var name = d["productName"].ToString().Trim();
                 var shopId = d["shopId"].ToString();
-                var unit = d["units"][0]["unitName"].ToString();
+                var unit = d["units"][0]["unitName"].ToString().Trim();
                 var shopStock = d["shopStock"].ToDecimal();
                 var warehouseStock = d["godownStock"].ToDecimal();
                 var alertStock = d["alertStock"].ToDecimal();
                 var purchasePrice = d["purchasePrice"].ToDecimal();
                 var retailPrice = d["retailPrice"].ToDecimal();
                 var bulkPrice = d["wholeSalePrice"].ToDecimal();
-                var specification = d["specification"].ToString();
-                var category = d["category"].ToString();
-                var manufacturer = d["manufacturer"].ToString();
-                var note = d["notes"].ToString();
+                var specification = d["specification"].ToString().Trim();
+                var category = d["category"].ToString().Trim();
+                var manufacturer = d["manufacturer"].ToString().Trim();
+                var note = d["notes"].ToString().Trim();
 
                 Products[d["shopId"].ToString()][d["_id"].ToString()] = new Product
                 {
@@ -610,10 +620,10 @@ namespace ImportData.Services
                         Margin = purchasePrice * 1.01M
                     },
                     IsRemoved = false,
-                    Description = RemoveBsonNull(note)
+                    Description = (RemoveBsonNull(note)
                             + $"\nManufacturer: {manufacturer}"
                             + $"\nCategory: {category}"
-                            + $"\nSpecification: {specification}",
+                            + $"\nSpecification: {specification}").Trim(),
                     Metadata = GetMetadata(d["meta"].AsBsonDocument)
 
                 };
@@ -646,7 +656,7 @@ namespace ImportData.Services
                 var amount = p["totalAmount"].ToDecimal();
                 var less = p["less"].ToDecimal();
                 var paid = p["paid"].ToDecimal();
-                var note = RemoveBsonNull(p["note"].ToString());
+                var note = RemoveBsonNull(p["note"].ToString()).Trim();
 
                 var dealtime = DateTime.SpecifyKind(p["dealTime"].ToUniversalTime(), DateTimeKind.Utc);
 
@@ -720,7 +730,9 @@ namespace ImportData.Services
                 Sales[shop] = new Dictionary<string, Sale>();
             }
 
-            var salesCollection = Mongo.GetCollection<BsonDocument>("Sale").Find(new BsonDocument()).ToList();
+            var salesCollection = 
+                Mongo.GetCollection<BsonDocument>("Sale")
+                    .Find(new BsonDocument()).ToList();
             foreach (var s in salesCollection)
             {
                 var customerId = s["customerId"].ToString();
@@ -733,7 +745,7 @@ namespace ImportData.Services
                 var amount = s["totalAmount"].ToDecimal();
                 var less = s["less"].ToDecimal();
                 var paid = s["paid"].ToDecimal();
-                var note = RemoveBsonNull(s["notes"].ToString());
+                var note = RemoveBsonNull(s["notes"].ToString()).Trim();
                 var dealtime = DateTime.SpecifyKind(s["dealTime"].ToUniversalTime(), DateTimeKind.Utc);
                 var saleType = (SaleType)s["saleType"].ToInt32();
 
@@ -819,7 +831,7 @@ namespace ImportData.Services
         }
 
         private static string RemoveBsonNull(string str)
-            => str == "BsonNull" ? "" : str;
+            => str == "BsonNull" ? "" : str.Trim();
 
         private static Metadata GetMetadata(BsonDocument d)
         {
