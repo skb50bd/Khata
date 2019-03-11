@@ -10,6 +10,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>2.0.0</Version>
     <LangVersion>latest</LangVersion>
+    <ApplicationIcon>storing_Z60_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
