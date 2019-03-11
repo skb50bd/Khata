@@ -64,7 +64,7 @@ namespace WebUI.Controllers
 
             products.ForEach(p => results.Add(new
             {
-                Name = p.Name,
+                Name = p.Id.ToString().PadLeft(4, '0') + "-" + p.Name,
                 Available = p.InventoryTotalStock,
                 UnitPurchasePrice = p.PricePurchase,
                 ItemId = p.Id,

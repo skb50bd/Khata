@@ -100,7 +100,7 @@ namespace WebUI.Controllers
 
             products.ForEach(p => results.Add(new
             {
-                Name = p.Name,
+                Name = p.Id.ToString().PadLeft(4, '0') + "-" + p.Name,
                 Available = p.InventoryTotalStock,
                 UnitPriceRetail = p.PriceRetail,
                 UnitPriceBulk = p.PriceBulk,
@@ -111,7 +111,7 @@ namespace WebUI.Controllers
 
             services.ForEach(s => results.Add(new
             {
-                Name = s.Name,
+                Name = s.Id.ToString().PadLeft(4, '0') + "-" + s.Name,
                 Available = -1,
                 UnitPriceRetail = s.Price,
                 UnitPriceBulk = s.Price,
