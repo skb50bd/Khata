@@ -9,17 +9,24 @@ using ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Domain;
 
 namespace WebUI.Pages.Products
 {
     public class EditModel : PageModel
     {
         private readonly IProductService _products;
+        private readonly IOutletService _outlets;
         private readonly IMapper _mapper;
 
-        public EditModel(IProductService products, IMapper mapper)
+        public EditModel(
+            IProductService products, 
+            IOutletService outlets,
+            IMapper mapper)
         {
             _products = products;
+            _outlets = outlets;
             _mapper = mapper;
         }
 
@@ -37,6 +44,11 @@ namespace WebUI.Pages.Products
                 return NotFound();
             }
 
+            ViewData["Outlets"] = new SelectList(
+                await _outlets.Get(),
+                nameof(Outlet.Id),
+                nameof(Outlet.Title)
+            );
             var product = await _products.Get((int)id);
 
             if (product is null)

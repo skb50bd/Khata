@@ -621,9 +621,9 @@ namespace ImportData.Services
                     },
                     IsRemoved = false,
                     Description = (RemoveBsonNull(note)
-                            + $"\nManufacturer: {manufacturer}"
-                            + $"\nCategory: {category}"
-                            + $"\nSpecification: {specification}").Trim(),
+                            + $"\nManufacturer: {manufacturer}."
+                            + $"\nCategory: {category}."
+                            + $"\nSpecification: {specification}.").Trim(),
                     Metadata = GetMetadata(d["meta"].AsBsonDocument)
 
                 };

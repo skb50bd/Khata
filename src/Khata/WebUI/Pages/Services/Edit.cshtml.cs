@@ -7,17 +7,24 @@ using ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Domain;
 
 namespace WebUI.Pages.Services
 {
     public class EditModel : PageModel
     {
         private readonly IServiceService _services;
+        private readonly IOutletService _outlets;
         private readonly IMapper _mapper;
 
-        public EditModel(IServiceService services, IMapper mapper)
+        public EditModel(
+            IServiceService services,
+            IOutletService outlets,
+            IMapper mapper)
         {
             _services = services;
+            _outlets = outlets;
             _mapper = mapper;
         }
 
@@ -35,6 +42,11 @@ namespace WebUI.Pages.Services
                 return NotFound();
             }
 
+            ViewData["Outlets"] = new SelectList(
+                await _outlets.Get(),
+                nameof(Outlet.Id),
+                nameof(Outlet.Title)
+            );
             ServiceVm = _mapper.Map<ServiceViewModel>(
                 await _services.Get((int)id));
 
