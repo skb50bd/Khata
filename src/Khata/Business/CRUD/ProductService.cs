@@ -36,12 +36,12 @@ namespace Business.CRUD
             DateTime? from = null,
             DateTime? to = null)
         {
+            int id;
             Expression<Func<Product, bool>> fuzzySearch =
                 p => p.Id.ToString() == pf.Filter
-                    //|| p.Outlet.Title.ToLowerInvariant().Contains(pf.Filter)
                     || p.Name.ToLowerInvariant().Contains(pf.Filter);
             Expression<Func<Product, bool>> strictSearch =
-                p => p.Id.ToString() == pf.Filter
+                p => (int.TryParse(pf.Filter, out id) && p.Id == id)
                     || p.Name.ToLowerInvariant().StartsWith(pf.Filter);
 
             var predicate = string.IsNullOrEmpty(pf.Filter)
