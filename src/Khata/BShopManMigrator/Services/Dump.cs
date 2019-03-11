@@ -213,8 +213,8 @@ namespace ImportData.Services
                         .OrderBy(p => p.Name))
                 {
                     db.Products.Add(p);
-                }
                 db.Complete();
+                }
             }
             #endregion
 
