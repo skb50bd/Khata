@@ -13,7 +13,7 @@
   <Authors>Shakib Haris</Authors>
   <Description>Khata is a ERP solution built by Shakib Haris.</Description>
   <Copyright>Shakib Haris</Copyright>
-  <ApplicationIcon>computer_and_books_studying_tools_4bS_icon.ico</ApplicationIcon>
+  <ApplicationIcon>Khata.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

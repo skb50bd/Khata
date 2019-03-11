@@ -11,7 +11,7 @@
     <LangVersion>latest</LangVersion>
     <StartupObject />
     <Authors>Shakib Haris</Authors>
-    <ApplicationIcon>bird_migration_pN1_icon.ico</ApplicationIcon>
+    <ApplicationIcon>BShopManMigration.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,10 +28,6 @@
     <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="app-settings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

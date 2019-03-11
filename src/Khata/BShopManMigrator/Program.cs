@@ -22,7 +22,7 @@ namespace ImportData
 
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Warning()
@@ -51,7 +51,7 @@ namespace ImportData
             // build configuration
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("app-settings.json", false)
+                .AddJsonFile("appsettings.json", false)
                 .Build();
 
             serviceCollection.ConfigureSqlData(configuration.GetValue<string>("DefaultConnection"));
