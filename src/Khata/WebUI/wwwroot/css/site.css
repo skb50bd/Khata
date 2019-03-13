@@ -5,6 +5,13 @@ for details on configuring this project to bundle and minify static web assets. 
     z-index: 9999999;
 }
 
+.ui-autocomplete {
+    font-size: 0.9rem;
+    max-height: 20rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .ui-autocomplete-category {
     font-weight: bold;
     padding: .2em .4em;

@@ -99,7 +99,7 @@ function calculateItemPrice(event) {
     if (isNaN(lineItemUnitPrice.valueAsNumber) || lineItemUnitPrice.valueAsNumber < minimumPrice)
         lineItemUnitPrice.value = minimumPrice;
 
-    lineItemNetPrice.value = lineItemQuantity.valueAsNumber * lineItemUnitPrice.valueAsNumber;
+    lineItemNetPrice.value = toFixedIfNecessary(lineItemQuantity.valueAsNumber * lineItemUnitPrice.valueAsNumber);
 }
 
 function setUnitPriceFromNetPrice(event) {
@@ -115,9 +115,9 @@ function setUnitPriceFromNetPrice(event) {
     var minimumNetPrice = minimumPrice * lineItemQuantity.valueAsNumber;
 
     if (isNaN(lineItemNetPrice.valueAsNumber) || lineItemNetPrice.valueAsNumber < minimumNetPrice)
-        lineItemNetPrice.value = minimumNetPrice;
+        lineItemNetPrice.value = toFixedIfNecessary(minimumNetPrice);
 
-    lineItemUnitPrice.value = lineItemNetPrice.valueAsNumber / lineItemQuantity.valueAsNumber;
+    lineItemUnitPrice.value = toFixedIfNecessary(lineItemNetPrice.valueAsNumber / lineItemQuantity.valueAsNumber);
 }
 
 function clearLineItem(event) {
@@ -369,6 +369,7 @@ $(document).ready(function () {
             });
         },
         minLength: 0,
+        scroll: true,
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
