@@ -92,6 +92,7 @@ namespace WebUI.Controllers
 
             var emptyProducts = products.Where(p => p.InventoryTotalStock == 0);
             products = products.Except(emptyProducts).Union(emptyProducts);
+            products = products.OrderBy(p => p.Name);
 
             var services = await _services.Get(
                 outletId,
