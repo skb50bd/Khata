@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using Brotal.Extensions;
+using System.Linq;
 
 namespace Business.CRUD
 {
@@ -49,10 +50,17 @@ namespace Business.CRUD
                 : p => p.Id.ToString() == pf.Filter
                     || p.FullName.ToLowerInvariant().Contains(pf.Filter)
                     || p.CompanyName.ToLowerInvariant().Contains(pf.Filter)
-                    || p.Phone.Contains(pf.Filter)
-                    || p.Email.Contains(pf.Filter);
+                    || p.Phone.Contains(pf.Filter);
 
-            var res = await _db.Customers.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize, from, to);
+            var res = 
+                await _db.Customers.Get(
+                    predicate, 
+                    p => p.Id, 
+                    pf.PageIndex, 
+                    pf.PageSize, 
+                    from, 
+                    to);
+
             return res.CastList(c => _mapper.Map<CustomerDto>(c));
         }
 
