@@ -62,8 +62,10 @@ namespace WebUI
             services.AddAuthorization(options =>
             {
 
-                options.AddPolicy("AdminRights", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("UserRights", policy => policy.RequireRole("User"));
+                options.AddPolicy("AdminRights", 
+                    policy => policy.RequireRole("Admin"));
+                options.AddPolicy("UserRights", 
+                    policy => policy.RequireRole("User"));
             });
 
             services.AddWebOptimizer();
@@ -129,7 +131,10 @@ namespace WebUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             //app.UseResponseCompression();
             if (env.IsDevelopment())
