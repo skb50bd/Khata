@@ -125,9 +125,11 @@ namespace WebUI
 
             services.AddSignalR();
 
-            services.Configure<OutletOptions>(Configuration.GetSection("OutletOptions"));
+            services.Configure<OutletOptions>(
+                Configuration.GetSection("OutletOptions"));
             services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("SendGrid"));
+            services.Configure<AuthMessageSenderOptions>(
+                Configuration.GetSection("SendGrid"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,7 +147,6 @@ namespace WebUI
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -164,8 +165,8 @@ namespace WebUI
             app.UseMvc(routes =>
             {
                 routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                    "spa-fallback",
+                    new { controller = "Home", action = "Index" });
             });
 
             app.UseSwagger().UseSwaggerUI(c =>
