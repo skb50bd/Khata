@@ -245,7 +245,7 @@
 
                 <input type="number" value="@Html.ValueFor(model => model.Cart.Count)" id="items-added" name="items-added" disabled hidden />
                 <div id="cart" class="">
-                    @for (int i = 0; i < Model?.Cart?.Count; i++)
+                    @for (var i = 0; i < Model?.Cart?.Count; i++)
                     {
                         var cartItem = Model.Cart[i];
 

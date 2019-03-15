@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+
 using Brotal.Extensions;
-using DTOs;
+
 using Business.CRUD;
 using Business.PageFilterSort;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,8 +18,8 @@ namespace WebUI.Pages.Reporting
 {
     public class StockReportModel : PageModel
     {
-        private IProductService _products;
-        private IOutletService _outlets;
+        private readonly IProductService _products;
+        private readonly IOutletService _outlets;
         private readonly PfService _pfService;
 
         public StockReportModel(

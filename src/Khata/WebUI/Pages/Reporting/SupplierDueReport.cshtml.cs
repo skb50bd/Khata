@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DTOs;
 using Business.CRUD;
 using Business.PageFilterSort;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +17,7 @@ namespace WebUI.Pages.Reporting
 {
     public class SupplierDueReportModel : PageModel
     {
-        private ISupplierService _suppliers;
+        private readonly ISupplierService _suppliers;
         private readonly PfService _pfService;
 
         public SupplierDueReportModel(

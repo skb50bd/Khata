@@ -3,13 +3,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DTOs;
 using Business.CRUD;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using ViewModels;
 
 namespace WebUI.Pages.PurchaseReturns
 {
@@ -17,15 +19,12 @@ namespace WebUI.Pages.PurchaseReturns
     public class CreateModel : PageModel
     {
         private readonly IPurchaseReturnService _purchaseReturns;
-        private readonly IPurchaseService _purchases;
 
         public CreateModel(
-            IPurchaseReturnService purchaseReturns,
-            IPurchaseService purchases)
+            IPurchaseReturnService purchaseReturns)
         {
             PurchaseReturnVm = new PurchaseReturnViewModel();
             _purchaseReturns = purchaseReturns;
-            _purchases = purchases;
         }
 
         public IActionResult OnGet()

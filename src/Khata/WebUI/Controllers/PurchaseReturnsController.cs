@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.CRUD;
 using Business.PageFilterSort;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace WebUI.Controllers
 {
@@ -112,7 +113,7 @@ namespace WebUI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            IEnumerable<PurchaseLineItem> results =
+            var results =
                 (await _purchases.Get(purchaseId)).Cart
                     .Where(li => string.IsNullOrWhiteSpace(term)
                                 || li.Name.ToLowerInvariant()

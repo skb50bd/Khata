@@ -4,15 +4,19 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -60,8 +64,10 @@ namespace Business.CRUD
             var dm = _mapper.Map<Expense>(model);
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Expenses.Add(dm);
-            var withdrawal = new Withdrawal(dm as IWithdrawal);
-            withdrawal.Metadata = Metadata.CreatedNew(CurrentUser);
+            var withdrawal = new Withdrawal(dm)
+            {
+                Metadata = Metadata.CreatedNew(CurrentUser)
+            };
             _db.Withdrawals.Add(withdrawal);
 
             await _db.CompleteAsync();

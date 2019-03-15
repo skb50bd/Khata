@@ -1,8 +1,12 @@
 ﻿using System;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+
 using Serilog;
+
+using static Business.LoggerService;
 
 namespace WebUI
 {
@@ -10,7 +14,7 @@ namespace WebUI
     {
         public static void Main(string[] args)
         {
-            LoggerService.CreateLogger();
+            CreateLogger();
             try
             {
                 Log.Information("Starting Web Host");
@@ -33,12 +37,14 @@ namespace WebUI
                        (hostingContext, config) =>
                        {
                            var env = hostingContext.HostingEnvironment;
-                           config.AddJsonFile("appsettings.json",
-                                      true,
-                                      true)
-                                 .AddJsonFile(
-                                      $"appsettings.{env.EnvironmentName}.json",
-                                      true, true);
+                           config.AddJsonFile(
+                                  "appsettings.json",
+                                  true,
+                                  true)
+                             .AddJsonFile(
+                                  $"appsettings.{env.EnvironmentName}.json",
+                                  true,
+                                  true);
                            config.AddEnvironmentVariables();
                        })
                   .UseSerilog()

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Brotal.Extensions;
 namespace Domain
 {
@@ -32,12 +33,12 @@ namespace Domain
             ModificationTime = DateTimeOffset.Now;
         }
 
-        private Metadata(string creator, DateTimeOffset creationTime, string modifier)
-        {
-            Creator = creator;
-            CreationTime = creationTime;
-            Modifier = modifier;
-        }
+        //private Metadata(string creator, DateTimeOffset creationTime, string modifier)
+        //{
+        //    Creator = creator;
+        //    CreationTime = creationTime;
+        //    Modifier = modifier;
+        //}
 
         public static Metadata CreatedNew(string username) => new Metadata(username);
 

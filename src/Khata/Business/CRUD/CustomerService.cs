@@ -4,19 +4,22 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-using Brotal.Extensions;
-using System.Linq;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -88,13 +91,10 @@ namespace Business.CRUD
             var newCustomer = _mapper.Map<Customer>(vm);
             var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
 
-            var oldState = JsonConvert.SerializeObject(originalCustomer, Formatting.Indented);
-
             var meta = originalCustomer.Metadata.Modified(CurrentUser);
             originalCustomer.SetValuesFrom(newCustomer);
             originalCustomer.Metadata = meta;
 
-            var newState = JsonConvert.SerializeObject(originalCustomer, Formatting.Indented);
             await _db.CompleteAsync();
 
             return _mapper.Map<CustomerDto>(originalCustomer);

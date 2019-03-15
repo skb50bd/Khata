@@ -16,19 +16,16 @@ namespace WebUI.Areas.Identity.Pages.Account
     [Authorize(Policy = "AdminRights")]
     public partial class CreateNewUserModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CreateNewUserModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public CreateNewUserModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             ILogger<CreateNewUserModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
 
@@ -46,7 +43,7 @@ namespace WebUI.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            _ = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
@@ -72,10 +69,10 @@ namespace WebUI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    var roleRes = await _userManager.AddToRoleAsync(user, Input.Role.ToString());
+                    await _userManager.AddToRoleAsync(user, Input.Role.ToString());
                     if (Input.Role == Role.Admin)
                     {
-                        roleRes = await _userManager.AddToRoleAsync(user, Role.User.ToString());
+                        await _userManager.AddToRoleAsync(user, Role.User.ToString());
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

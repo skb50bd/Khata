@@ -3,25 +3,23 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Business
 {
     public static class LoggerService
     {
-        private readonly static IConfiguration _configuration
+        private static readonly IConfiguration Configuration
             = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json",
-                    optional: false,
-                    reloadOnChange: true)
+                    false,
+                    true)
                 .AddEnvironmentVariables()
                 .Build();
         public static void CreateLogger()
         {
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(_configuration)
+                .ReadFrom.Configuration(Configuration)
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .Enrich.FromLogContext()

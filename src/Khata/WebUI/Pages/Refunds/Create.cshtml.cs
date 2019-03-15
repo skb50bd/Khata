@@ -3,13 +3,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DTOs;
 using Business.CRUD;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using ViewModels;
 
 namespace WebUI.Pages.Refunds
 {
@@ -17,15 +19,11 @@ namespace WebUI.Pages.Refunds
     public class CreateModel : PageModel
     {
         private readonly IRefundService _refunds;
-        private readonly ISaleService _sales;
 
-        public CreateModel(
-            IRefundService refunds,
-            ISaleService sales)
+        public CreateModel(IRefundService refunds)
         {
             RefundVm = new RefundViewModel();
             _refunds = refunds;
-            _sales = sales;
         }
 
         public IActionResult OnGet()

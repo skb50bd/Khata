@@ -11,78 +11,72 @@ namespace WebUI
     public static class SeedUsers
     {
         public static async Task Seed(
-            RoleManager<IdentityRole> _roleManager, 
-            UserManager<ApplicationUser> _userManager)
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<ApplicationUser> userManager)
         {
             var user = new ApplicationUser();
-            bool x = await _roleManager.RoleExistsAsync(Admin.ToString());
+            var x = await roleManager.RoleExistsAsync(Admin.ToString());
             if (!x)
             {
-                var role = new IdentityRole();
-                role.Name = Admin.ToString();
-                await _roleManager.CreateAsync(role);
+                var role = new IdentityRole {Name = Admin.ToString()};
+                await roleManager.CreateAsync(role);
 
                 //Here we create a Admin super user who will maintain the website
-                user = new ApplicationUser();
-                user.UserName = "brotal";
-                user.Email = "skb50bd@gmail.com";
-                user.EmailConfirmed = true;
+                user = new ApplicationUser
+                {
+                    UserName       = "brotal",
+                    Email          = "skb50bd@gmail.com",
+                    EmailConfirmed = true
+                };
 
-                string userPWD = "Pwd+123";
+                const string userPwd = "Pwd+123";
 
-                IdentityResult chkUser = 
-                    await _userManager.CreateAsync(
+                var chkUser = 
+                    await userManager.CreateAsync(
                         user, 
-                        userPWD);
+                        userPwd);
 
                 //Add default User to Role Admin    
                 if (chkUser.Succeeded)
                 {
-                    var result1 = 
-                        await _userManager.AddToRoleAsync(
-                            user, 
-                            Admin.ToString());
+                    await userManager.AddToRoleAsync(
+                        user, 
+                        Admin.ToString());
                 }
             }
 
             // creating Creating Manager role     
-            x = await _roleManager.RoleExistsAsync(Manager.ToString());
+            x = await roleManager.RoleExistsAsync(Manager.ToString());
             if (!x)
             {
-                var role = new IdentityRole();
-                role.Name = Manager.ToString();
-                await _roleManager.CreateAsync(role);
-                var result3 = 
-                    await _userManager.AddToRoleAsync(
-                        user, 
-                        Manager.ToString());
+                var role = new IdentityRole {Name = Manager.ToString()};
+                await roleManager.CreateAsync(role);
+                await userManager.AddToRoleAsync(
+                    user, 
+                    Manager.ToString());
             }
 
             // creating Creating Employee role     
-            x = await _roleManager.RoleExistsAsync(
+            x = await roleManager.RoleExistsAsync(
                 Role.Employee.ToString());
             if (!x)
             {
-                var role = new IdentityRole();
-                role.Name = Role.Employee.ToString();
-                await _roleManager.CreateAsync(role);
-                var result5 = 
-                    await _userManager.AddToRoleAsync(
-                        user, 
-                        Role.Employee.ToString());
+                var role = new IdentityRole {Name = Role.Employee.ToString()};
+                await roleManager.CreateAsync(role);
+                await userManager.AddToRoleAsync(
+                    user, 
+                    Role.Employee.ToString());
             }
 
             // creating Creating User role     
-            x = await _roleManager.RoleExistsAsync(User.ToString());
+            x = await roleManager.RoleExistsAsync(User.ToString());
             if (!x)
             {
-                var role = new IdentityRole();
-                role.Name = User.ToString();
-                await _roleManager.CreateAsync(role);
-                var result2 = 
-                    await _userManager.AddToRoleAsync(
-                        user, 
-                        User.ToString());
+                var role = new IdentityRole {Name = User.ToString()};
+                await roleManager.CreateAsync(role);
+                await userManager.AddToRoleAsync(
+                    user, 
+                    User.ToString());
             }
         }
     }
