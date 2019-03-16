@@ -316,12 +316,14 @@ $(document).ready(function () {
                     customerLastName.value = data.lastName;
                 }
             }).then(() => {
-                fetch('/Customers/Details/Brief?customerId=' + ui.item.value)
-                    .then((response) => {
-                        return response.text();
-                    }).then((result) => {
-                        customerBriefInfo.innerHTML = result;
-                    });
+                $.ajax({
+                    url: '/Customers/Details/Brief?customerId=' + ui.item.value,
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function(response) {
+	                    customerBriefInfo.innerHTML = response;
+                    }
+                });
             });
             customerSelector.value = ui.item.label;
             customerId.value = ui.item.value;

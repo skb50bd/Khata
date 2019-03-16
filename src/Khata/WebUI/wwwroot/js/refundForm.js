@@ -238,18 +238,19 @@ $(document).ready(function () {
         minLength: 0,
         select: function (event, ui) {
             event.preventDefault();
-            fetch('/Sales/Details/Brief?id=' + ui.item.value)
-                .then((response) => {
-                    return response.text();
-                })
-                .then((result) => {
-                    document.getElementById('sale-briefing').innerHTML = result;
-                    saleSelector.value = ui.item.label;
-                    saleId.value = ui.item.value;
-                })
-                .then(function () {
-                    debtBefore.value = document.getElementById('current-due').valueAsNumber;
-                });
+            $.ajax({
+	            url: '/Sales/Details/Brief?id=' + ui.item.value,
+	            type: 'GET',
+	            dataType: 'html',
+	            success: function (response) {
+		            document.getElementById('sale-briefing').innerHTML = response;
+		            saleSelector.value = ui.item.label;
+		            saleId.value = ui.item.value;
+	            }
+            }).then(function () {
+	            debtBefore.value = document.getElementById('current-due').valueAsNumber;
+
+            });
         }
     });
 

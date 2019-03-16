@@ -139,17 +139,18 @@ $(document).ready(function () {
     });
 
     $(".ajax-tab").click((e) => {
-        fetch($(e.target).attr("data-partial-source"))
-            .then((response) => {
-                return response.text();
-            })
-            .then((result) => {
+        $.ajax({
+            url: $(e.target).attr("data-partial-source"),
+            type: 'GET',
+            dataType: 'html',
+            success: function (response) {
                 var id = $(e.target).attr("aria-controls");
                 var d = document.getElementById(id);
-                d.innerHTML = result;
-            }).then(() =>
-                $(".js-clickable-row")
-                    .click(attachClickableRow));
+                d.innerHTML = response;
+            }
+        }).then(() =>
+            $(".js-clickable-row")
+                .click(attachClickableRow));
     });
 
     $(function () {

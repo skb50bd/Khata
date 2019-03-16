@@ -294,12 +294,14 @@ $(document).ready(function () {
                     supplierLastName.value = data.lastName;
                 }
             }).then(() => {
-                fetch('/Suppliers/Details/Brief?supplierId=' + ui.item.value)
-                    .then((response) => {
-                        return response.text();
-                    }).then((result) => {
-                        supplierBriefInfo.innerHTML = result;
-                    });
+	            $.ajax({
+                    url: '/Suppliers/Details/Brief?supplierId=' + ui.item.value,
+		            type: 'GET',
+		            dataType: 'html',
+		            success: function (response) {
+			            supplierBriefInfo.innerHTML = response;
+		            }
+	            });
             });
             supplierSelector.value = ui.item.label;
             supplierId.value = ui.item.value;
