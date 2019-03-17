@@ -23,12 +23,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="log\**" />
     <Compile Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <Compile Remove="Pages\Outlets\Components\ProductsList\**" />
+    <Content Remove="log\**" />
     <Content Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <Content Remove="Pages\Outlets\Components\ProductsList\**" />
+    <EmbeddedResource Remove="log\**" />
     <EmbeddedResource Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <EmbeddedResource Remove="Pages\Outlets\Components\ProductsList\**" />
+    <None Remove="log\**" />
     <None Remove="Pages\DebtPayments\Components\ExpenseInfo\**" />
     <None Remove="Pages\Outlets\Components\ProductsList\**" />
   </ItemGroup>
@@ -254,6 +258,10 @@
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
 </Project>

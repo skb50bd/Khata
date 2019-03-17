@@ -1,12 +1,14 @@
 using System.Globalization;
 
-using Data.Persistence;
-using Domain;
 using Business.Auth;
 using Business.CRUD;
 using Business.Mapper;
 using Business.PageFilterSort;
 using Business.Reports;
+
+using Data.Persistence;
+
+using Domain;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -148,12 +150,12 @@ namespace WebUI
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
+                app.UseWebOptimizer();
+                app.UseHttpsRedirection();
+                app.UseCookiePolicy();
             }
 
-            app.UseWebOptimizer();
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             app.UseAuthentication();
 
