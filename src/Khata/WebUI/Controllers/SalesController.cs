@@ -2,14 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using DTOs;
+using Brotal.Extensions;
+
 using Business.CRUD;
 using Business.PageFilterSort;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace WebUI.Controllers
 {
@@ -87,7 +89,7 @@ namespace WebUI.Controllers
             IList<object> results = new List<object>();
             IEnumerable<ProductDto> products = await _products.Get(
                 outletId,
-                _pfService.CreateNewPf(term, 1, 20)
+                _pfService.CreateNewPf(term, 1, 100)
             );
 
             var emptyProducts = products.Where(p => p.InventoryTotalStock == 0);
@@ -96,7 +98,7 @@ namespace WebUI.Controllers
 
             var services = await _services.Get(
                 outletId,
-                _pfService.CreateNewPf(term, 1, 20)
+                _pfService.CreateNewPf(term, 1, 50)
             );
 
             products.ForEach(p => results.Add(new

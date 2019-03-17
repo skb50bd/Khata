@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using DTOs;
+using Brotal.Extensions;
+
 using Business.CRUD;
 using Business.PageFilterSort;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace WebUI.Controllers
 {
@@ -60,11 +62,15 @@ namespace WebUI.Controllers
                 return BadRequest(ModelState);
 
             IList<object> results = new List<object>();
-            var products = await _products.Get(0, _pfService.CreateNewPf(term, 1, 0));
+            var products = await _products.Get(
+                0, 
+                _pfService.CreateNewPf(
+                    term, 1, 100));
 
             products.ForEach(p => results.Add(new
             {
-                Name = p.Id.ToString().PadLeft(4, '0') + " - " + p.Name,
+                Name = p.Id.ToString()
+                        .PadLeft(4, '0') + " - " + p.Name,
                 Available = p.InventoryTotalStock,
                 UnitPurchasePrice = p.PricePurchase,
                 ItemId = p.Id,
