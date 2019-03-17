@@ -435,6 +435,7 @@ $(document).ready(function () {
     lineItemQuantity.addEventListener('change', calculateItemPrice);
     lineItemQuantity.addEventListener('focusout', calculateItemPrice);
     lineItemUnitPrice.addEventListener('focusout', calculateItemPrice);
+
     lineItemNetPrice.addEventListener('focusout', setUnitPriceFromNetPrice);
     lineItemAdd.addEventListener('click', addLineItem);
     lineItemClear.addEventListener('click', clearLineItem);

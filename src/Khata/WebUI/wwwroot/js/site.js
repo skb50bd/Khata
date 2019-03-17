@@ -181,5 +181,19 @@ $(document).ready(function () {
             $('#fromDate').datetimepicker('maxDate', e.date);
         });
     });
+
+    var inputs = $(':input').keypress(function (e) {
+        if (e.which === 13) {
+            var nextInput = inputs.get(inputs.index(this) + 1);
+            if (nextInput) {
+                if (nextInput.getAttribute('type') !== 'submit'
+                    && !$(e.target).is('textarea')
+                    && !$(nextInput).is('button')) {
+                    e.preventDefault();
+                    nextInput.focus();
+                }
+            }
+        }
+    });
 });
 
