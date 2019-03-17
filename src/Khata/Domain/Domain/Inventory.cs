@@ -17,9 +17,9 @@ namespace Domain
             get
             {
                 if (TotalStock >= 2 * AlertAt) return InStock;
-                if (TotalStock > AlertAt) return LimitedStock;
-                if (TotalStock > 0) return LowStock;
-                if (TotalStock == 0) return Empty;
+                if (TotalStock > AlertAt)      return LimitedStock;
+                if (TotalStock > 0)            return LowStock;
+                if (TotalStock == 0)           return Empty;
                 return Negative;
             }
         }
@@ -28,7 +28,7 @@ namespace Domain
         {
             if (Stock < quantity) return false;
 
-            Stock -= quantity;
+            Stock     -= quantity;
             Warehouse += quantity;
             return true;
         }
@@ -38,7 +38,7 @@ namespace Domain
             if (Warehouse < quantity) return false;
 
             Warehouse -= quantity;
-            Stock += quantity;
+            Stock     += quantity;
             return true;
         }
     }

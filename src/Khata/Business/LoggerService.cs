@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.IO;
+
+using Microsoft.Extensions.Configuration;
+
 using Serilog;
 using Serilog.Events;
-using System;
-using System.IO;
 
 namespace Business
 {
@@ -25,7 +27,7 @@ namespace Business
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.File(
-                    @"D:\Khata\log.txt",
+                    @"log\log.txt",
                     fileSizeLimitBytes: 5_000_000,
                     rollOnFileSizeLimit: true,
                     shared: true,

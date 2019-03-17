@@ -2,10 +2,10 @@
 {
     public enum StockStatus
     {
-        Negative = 0,
-        Empty = 1,
-        LimitedStock = 2,
-        LowStock = 3,
-        InStock = 4,
+        Negative     = 0,
+        Empty        = 1,
+        LowStock     = 2,
+        LimitedStock = 3,
+        InStock      = 4,
     }
 }
