@@ -23,19 +23,19 @@
             <tbody>
                 <tr>
                     <th>Company</th>
-                    <td>@Model.Customer.CompanyName</td>
+                    <td>@Html.DisplayFor(model => model.Customer.CompanyName)</td>
                 </tr>
                 <tr>
                     <th>Address</th>
-                    <td>@Model.Customer.Address</td>
+                    <td>@Html.DisplayFor(model => model.Customer.Address)</td>
                 </tr>
                 <tr>
                     <th>Phone</th>
-                    <td>@Model.Customer.Phone</td>
+                    <td>@Html.DisplayFor(model => model.Customer.Phone)</td>
                 </tr>
                 <tr>
                     <th>Email</th>
-                    <td>@Model.Customer.Email</td>
+                    <td>@Html.DisplayFor(model => model.Customer.Email)</td>
                 </tr>
             </tbody>
         </table>
@@ -94,7 +94,7 @@
             <table class="table table-sm table-borderless table-hover">
                 <tr>
                     <th>Description</th>
-                    <td>@Model.Description</td>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
                 </tr>
             </table>
         }

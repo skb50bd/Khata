@@ -12,17 +12,20 @@
             <th class="text-right">@Html.DisplayNameFor(model => model.PriceRetail)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.PriceBulk)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.PriceMargin)</th>
+            <th class="text-right">@Html.DisplayNameFor(model => model.PricePurchase)</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             string status;
-            if (item.InventoryStockStatus == LowStock) { status = "warning"; }
-            else if (item.InventoryStockStatus >= Empty) { status = "danger"; }
-            else { status = ""; }
+            if (item.InventoryStockStatus == InStock) { status = "success"; }
+            else if (item.InventoryStockStatus == LimitedStock) { status = "primary"; }
+            else if (item.InventoryStockStatus == LowStock) { status = "warning"; }
+            else { status = "danger"; }
 
-        <tr class="table-@status js-clickable-row" data-href="@Url.Page("./Details", new { id = item.Id })">
+        <tr class="table-@status js-clickable-row"
+            data-href="@Url.Page("./Details", new { id = item.Id })">
             <td>@Html.DisplayFor(modelItem => item.Id)</td>
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
             <td>@Html.DisplayFor(modelItem => item.Outlet.Title)</td>
@@ -31,6 +34,7 @@
             <td class="text-right">@Html.DisplayFor(modelItem => item.PriceRetail)</td>
             <td class="text-right">@Html.DisplayFor(modelItem => item.PriceBulk)</td>
             <td class="text-right">@Html.DisplayFor(modelItem => item.PriceMargin)</td>
+            <td class="text-right">@Html.DisplayFor(modelItem => item.PricePurchase)</td>
         </tr>
         }
     </tbody>

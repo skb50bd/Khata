@@ -18,23 +18,23 @@
         <table class="table table-sm table-hover mt-4">
             <tr>
                 <th>Payable Before</th>
-                <td>@Model.PayableBefore</td>
+                <td>@Html.DisplayFor(model => model.PayableBefore)</td>
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>@Model.Amount</td>
+                <td>@Html.DisplayFor(model => model.Amount)</td>
             </tr>
             <tr>
             <tr>
                 <th>Payable After</th>
-                <td>@Model.PayableAfter</td>
+                <td>@Html.DisplayFor(model => model.PayableAfter)</td>
             </tr>
             <tr>
                 <th>
                     Description
                 </th>
                 <td>
-                    @Model.Description
+                    @Html.DisplayFor(model => model.Description)
                 </td>
             </tr>
 
