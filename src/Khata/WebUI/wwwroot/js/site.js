@@ -187,6 +187,7 @@ $(document).ready(function () {
             var nextInput = inputs.get(inputs.index(this) + 1);
             if (nextInput) {
                 if (nextInput.getAttribute('type') !== 'submit'
+                    && e.target.getAttribute('type') !== 'submit'
                     && !$(e.target).is('textarea')
                     && !$(nextInput).is('button')) {
                     e.preventDefault();
