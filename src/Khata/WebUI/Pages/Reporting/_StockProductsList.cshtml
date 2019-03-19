@@ -10,7 +10,7 @@
             <th class="text-right">Stock</th>
             <th class="text-right">Purchase Price</th>
             <th class="text-right">Total Cost</th>
-            <th class="text-right">Marginal Price</th>
+            @*<th class="text-right">Marginal Price</th>*@
         </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
                 <td class="text-right">@Html.DisplayFor(modelItem => p.InventoryTotalStock)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => p.PricePurchase)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => p.TotalPurchaseCost)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => p.PriceMargin)</td>
+                <td class="text-right">@*@Html.DisplayFor(modelItem => p.PriceMargin)*@</td>
             </tr>
         }
     </tbody>

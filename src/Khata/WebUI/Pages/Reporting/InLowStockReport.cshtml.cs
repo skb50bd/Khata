@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Brotal.Extensions;
 
@@ -16,13 +16,13 @@ using static Domain.StockStatus;
 
 namespace WebUI.Pages.Reporting
 {
-    public class StockReportModel : PageModel
+    public class InLowStockReport : PageModel
     {
         private readonly IProductService _products;
         private readonly IOutletService _outlets;
         private readonly PfService _pfService;
 
-        public StockReportModel(
+        public InLowStockReport(
             IProductService products,
             IOutletService outlets,
             PfService pfService)
@@ -38,38 +38,13 @@ namespace WebUI.Pages.Reporting
         public IEnumerable<OutletDto> Outlets { get; set; } = new List<OutletDto>();
 
         public int TotalProducts => Products.Count();
-        //public int InStockCount
-        //    => Products.Count(p => p.InventoryStockStatus > Empty);
-        //public int InLimitedStockCount
-        //    => Products.Count(p => p.InventoryStockStatus == LimitedStock);
-        //public int InLowStockCount
-        //    => Products.Count(p => p.InventoryStockStatus == InLowStock);
-        //public int InEmptyStockCount
-        //    => Products.Count(p => p.InventoryStockStatus == Empty);
-        //public int InNegativeStockCount
-        //=> Products.Count(p => p.InventoryStockStatus == Negative);
-
-        public IEnumerable<ProductDto> InStock =>
-            Products.Where(p => p.InventoryStockStatus > Empty);
-
-        public int InStockCount => InStock.Count();
 
         public IEnumerable<ProductDto> InLowStock =>
             Products.Where(p => p.InventoryStockStatus == LowStock);
 
         public int LowStockCount => InLowStock.Count();
 
-        public IEnumerable<ProductDto> InEmptyOrNegativeStock =>
-            Products.Where(p => p.InventoryStockStatus <= Empty);
-
-        public int EmptyOrNegativeStockCount => InEmptyOrNegativeStock.Count();
-
-        [DataType(DataType.Currency)]
-        public decimal CostOfCurrentStock
-            => Products.Where(p => p.InventoryStockStatus > Empty)
-            .Sum(p => p.PricePurchase * p.InventoryTotalStock);
-
-        public async System.Threading.Tasks.Task OnGetAsync()
+        public async Task OnGetAsync()
         {
             Outlets = await _outlets.Get();
             Products = (await _products.Get(
@@ -79,7 +54,7 @@ namespace WebUI.Pages.Reporting
 
             foreach (var o in Outlets)
             {
-                o.Products = Products
+                o.Products = InLowStock
                     .Where(p => p.OutletId == o.Id)
                     .ToList();
             }

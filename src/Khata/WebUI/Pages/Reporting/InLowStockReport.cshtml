@@ -1,0 +1,56 @@
+﻿@page
+
+@using Brotal.Extensions;
+@model WebUI.Pages.Reporting.InLowStockReport
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Low Stock Report</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/invoice.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="page" class="container">
+        <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
+            <div class="col-md-8">
+                <div id="brand">
+                    <h1 class="display-4">Low Stock Report</h1>
+                    <p class="lead">
+                        For: @Html.ValueFor(model => model.ForDate)
+                    </p>
+                    <table class="table-hover">
+                        <tr>
+                            <td>Low Stock</td>
+                            <td>: @Html.DisplayFor(model => model.LowStockCount)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var o in Model.Outlets)
+        {
+            <div class="outlet-stock-summary bg-dark text-white">
+                <h4 class="display-4" style="font-size: 2rem;">
+                    @o.Title
+                </h4>
+                <table class="table-hover pt-2 pb-3">
+                    <tr>
+                        <td>Low Stock</td>
+                        <td>: @Html.DisplayFor(model => o.InLowStockCount)</td>
+                    </tr>
+                </table>
+            </div>
+            <partial name="_StockProductsList" for="@o.InLowStock" />
+            <hr />
+        }
+    </div>
+</body>
+</html>

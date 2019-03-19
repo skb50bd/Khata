@@ -1,8 +1,9 @@
-﻿using Domain;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+
+using Domain;
+
 using static Domain.StockStatus;
 
 namespace DTOs
@@ -25,21 +26,43 @@ namespace DTOs
 
         #region Products Stock Status
         public int TotalProducts => Products?.Count() ?? 0;
-        public int InStock
-            => Products?.Count(p => p.InventoryStockStatus > Empty) ?? 0;
-        public int InLimitedStock
-            => Products?.Count(p => p.InventoryStockStatus == LimitedStock) ?? 0;
-        public int InLowStock
-            => Products?.Count(p => p.InventoryStockStatus == LowStock) ?? 0;
-        public int InEmptyStock
-            => Products?.Count(p => p.InventoryStockStatus == Empty) ?? 0;
-        public int InNegativeStock
-            => Products?.Count(p => p.InventoryStockStatus == Negative) ?? 0;
+
+        public IEnumerable<ProductDto> InStock =>
+            Products.Where(p => p.InventoryStockStatus > Empty);
+        public int InStockCount => 
+            InStock.Count();
+
+        public IEnumerable<ProductDto> InLimitedStock =>
+            Products.Where(p => p.InventoryStockStatus == LimitedStock);
+        public int InLimitedStockCount
+            => InLimitedStock.Count();
+
+        public IEnumerable<ProductDto> InLowStock =>
+            Products.Where(p => p.InventoryStockStatus == LowStock);
+        public int InLowStockCount => 
+            InLowStock.Count();
+
+        public IEnumerable<ProductDto> InEmptyStock =>
+            Products.Where(p => p.InventoryStockStatus == Empty);
+        public int InEmptyStockCount => 
+            InEmptyStock.Count();
+
+        public IEnumerable<ProductDto> InNegativeStock =>
+            Products.Where(p => p.InventoryStockStatus == Negative);
+
+        public int InNegativeStockCount => 
+            InNegativeStock.Count();
 
         [DataType(DataType.Currency)]
-        public decimal CostOfCurrentStock
-            => Products?.Where(p => p.InventoryStockStatus > Empty)
-            .Sum(p => p.PricePurchase * p.InventoryTotalStock) ?? 0M;
+        public decimal CostOfCurrentStock => 
+            Products?.Where(p => p.InventoryStockStatus > Empty)
+                .Sum(p => p.PricePurchase * p.InventoryTotalStock) ?? 0M;
+
+        public IEnumerable<ProductDto> InEmptyOrNegativeStock =>
+            Products.Where(p => p.InventoryStockStatus <= Empty);
+
+        public int InEmptyOrNegativeStockCount =>
+            InEmptyOrNegativeStock.Count();
         #endregion
 
         #region Sales Summary
@@ -67,6 +90,7 @@ namespace DTOs
             ShortName = "Received Profit")]
         [DataType(DataType.Currency)]
         public decimal SalesProfitReceived => SalesProfit - SalesDue;
+
         #endregion
     }
 }

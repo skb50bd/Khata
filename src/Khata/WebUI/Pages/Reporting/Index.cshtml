@@ -20,11 +20,11 @@
                                    class="form-control datetimepicker-input"
                                    data-target="#fromDate"
                                    placeholder="From e.g. dd/mm/yyyy"
-                                   asp-for="FromText" 
+                                   asp-for="FromText"
                                    data-toggle="tooltip"
                                    title="Start Date"
                                    autocomplete="off"
-                                   required/>
+                                   required />
                             <div class="input-group-append"
                                  data-target="#fromDate"
                                  data-toggle="datetimepicker">
@@ -43,11 +43,11 @@
                                    class="form-control datetimepicker-input"
                                    data-target="#toDate"
                                    placeholder="To e.g. dd/mm/yyyy"
-                                   asp-for="ToText" 
+                                   asp-for="ToText"
                                    data-toggle="tooltip"
                                    title="End Date"
                                    autocomplete="off"
-                                   required/>
+                                   required />
                             <div class="input-group-append"
                                  data-target="#toDate"
                                  data-toggle="datetimepicker">
@@ -64,7 +64,31 @@
                 </form>
             </div>
             <div class="col-md-6 text-right">
-                <a asp-page="/Reporting/StockReport" class="btn btn-outline-secondary mb-2">Stock Report</a>
+                <div class="btn-group">
+                    <a asp-page="/Reporting/StockReport"
+                       class="btn btn-outline-primary mb-2">
+                        Stock Report
+                    </a>
+                    <button type="button"
+                            class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mb-2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a asp-page="/Reporting/InStockReport"
+                           class="dropdown-item">
+                            In Stock Items
+                        </a>
+                        <a asp-page="/Reporting/InLowStockReport"
+                           class="dropdown-item">
+                            Low Stock Items
+                        </a>
+                        <a asp-page="/Reporting/InEmptyOrNegativeStockReport"
+                           class="dropdown-item">
+                            Empty or Negative Stock Items
+                        </a>
+                    </div>
+                </div>
                 <a asp-page="/Reporting/DueReport" class="btn btn-outline-secondary mb-2">Customer Due Report</a>
                 <a asp-page="/Reporting/SupplierDueReport" class="btn btn-outline-secondary mb-2">Supplier Due Report</a>
             </div>
