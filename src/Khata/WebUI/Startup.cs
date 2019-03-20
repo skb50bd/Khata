@@ -51,7 +51,7 @@ namespace WebUI
             var dbProvider = Configuration.GetValue<string>("DbProvider");
             var connectionString = dbProvider == "SqlServer"
                 ? Configuration.GetConnectionString("SqlServerConnection")
-                : Configuration.GetConnectionString("SqliteConnection");
+                : Configuration.GetConnectionString("SQLiteConnection");
 
             services.ConfigureData(dbProvider, connectionString);
 

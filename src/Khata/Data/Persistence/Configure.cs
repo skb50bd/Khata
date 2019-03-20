@@ -24,7 +24,7 @@ namespace Data.Persistence
                     options.UseSqlServer(cnnString)
                 );
             }
-            else if(dbProvider == "Sqlite")
+            else if(dbProvider == "SQLite")
             {
                 services.AddDbContext<KhataContext>(options =>
                     options.UseSqlite(cnnString)

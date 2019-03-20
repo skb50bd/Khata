@@ -14,7 +14,7 @@
                     <a asp-page="../Sales/Details"
                        asp-route-id="@Model.Id"
                        target="_blank">
-                        @Html.DisplayFor(model => model.Id) - @Html.DisplayFor(model => model.SaleDate)
+                        @Html.DisplayFor(model => model.Id) - @Model.SaleDate.LocalDate()
                     </a>
                 </td>
             </tr>
