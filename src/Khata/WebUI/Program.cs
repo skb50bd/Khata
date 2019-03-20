@@ -18,8 +18,6 @@ namespace WebUI
 {
     public class Program {
         public static void Main (string[] args) {
-            CreateLogger ();
-
             var confBuilder =
                 new ConfigurationBuilder()
                    .AddJsonFile(
@@ -27,8 +25,10 @@ namespace WebUI
                         true,
                         true);
             var conf = confBuilder.Build();
+            CreateLogger(conf);
 
-            try {
+            try
+            {
                 var isService = 
                     !(Debugger.IsAttached 
                    || args.Contains ("--console") 
