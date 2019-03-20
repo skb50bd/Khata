@@ -1,7 +1,5 @@
 using System.Globalization;
 
-using Brotal.Extensions;
-
 using Business.Auth;
 using Business.CRUD;
 using Business.Mapper;
@@ -50,12 +48,12 @@ namespace WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connectionString =
-                Platform.IsWindows
-                    ? Configuration.GetConnectionString("DefaultConnection")
-                    : Configuration.GetConnectionString("SqliteConnection");
+            var dbProvider = Configuration.GetValue<string>("DbProvider");
+            var connectionString = dbProvider == "SqlServer"
+                ? Configuration.GetConnectionString("SqlServerConnection")
+                : Configuration.GetConnectionString("SqliteConnection");
 
-            services.ConfigureData(connectionString);
+            services.ConfigureData(dbProvider, connectionString);
 
             services.ConfigureSieve();
 
@@ -114,7 +112,7 @@ namespace WebUI
                         options.Conventions.AuthorizeFolder("/Withdrawals", "AdminRights");
                         options.Conventions.AuthorizeFolder("/Reporting", "AdminRights");
                     }
-                ); ;
+                );
 
             services.AddHttpContextAccessor();
 
@@ -131,9 +129,9 @@ namespace WebUI
 
             services.AddSignalR();
 
+            services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<OutletOptions>(
                 Configuration.GetSection("OutletOptions"));
-            services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(
                 Configuration.GetSection("SendGrid"));
         }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using Business.Auth;
+using Domain;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
@@ -12,12 +12,18 @@ namespace Business.Auth
 {
     public class EmailSender : IEmailSender
     {
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
+        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public OutletOptions OutletOpt { get; }
+
+
+        public EmailSender(
+            IOptions<AuthMessageSenderOptions> optionsAccessor, 
+            IOptions<OutletOptions> outletOpt)
         {
+            OutletOpt = outletOpt.Value;
             Options = optionsAccessor.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
@@ -29,7 +35,7 @@ namespace Business.Auth
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("skb50bd@gmail.com", "Khata"),
+                From = new EmailAddress(OutletOpt.Email, OutletOpt.Title),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

@@ -1,6 +1,4 @@
-﻿using Brotal.Extensions;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 
@@ -17,15 +15,16 @@ namespace Data.Persistence
     {
         public static IServiceCollection ConfigureData(
             this IServiceCollection services,
+            string dbProvider,
             string cnnString)
         {
-            if (Platform.IsWindows)
+            if (dbProvider == "SqlServer")
             {
                 services.AddDbContext<KhataContext>(options =>
                     options.UseSqlServer(cnnString)
                 );
             }
-            else
+            else if(dbProvider == "Sqlite")
             {
                 services.AddDbContext<KhataContext>(options =>
                     options.UseSqlite(cnnString)

@@ -19,8 +19,22 @@ namespace WebUI
     public class Program {
         public static void Main (string[] args) {
             CreateLogger ();
+
+            var confBuilder =
+                new ConfigurationBuilder()
+                   .AddJsonFile(
+                        "appsettings.json",
+                        true,
+                        true);
+            var conf = confBuilder.Build();
+
             try {
-                var isService = !(Debugger.IsAttached || args.Contains ("--console") || !Platform.IsWindows);
+                var isService = 
+                    !(Debugger.IsAttached 
+                   || args.Contains ("--console") 
+                   || !Platform.IsWindows
+                   || !conf.GetValue<bool>("IsService"));
+
                 if (isService) {
                     var pathToExe = Process.GetCurrentProcess ().MainModule.FileName;
                     var pathToContentRoot = Path.GetDirectoryName (pathToExe);
