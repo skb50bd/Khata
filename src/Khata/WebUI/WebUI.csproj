@@ -11,7 +11,7 @@
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
     <StartupObject>WebUI.Program</StartupObject>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     <PackageId>skb50bd.khata.razorpages</PackageId>
     <Authors>Shakib Haris</Authors>
     <Description>Khata is a ERP solution built by Shakib Haris.</Description>
@@ -188,7 +188,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Brotal.Extensions" Version="0.1.4" />
+    <PackageReference Include="Brotal.Extensions" Version="0.1.5" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />

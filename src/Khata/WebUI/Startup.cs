@@ -1,5 +1,7 @@
 using System.Globalization;
 
+using Brotal.Extensions;
+
 using Business.Auth;
 using Business.CRUD;
 using Business.Mapper;
@@ -48,8 +50,10 @@ namespace WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connectionString = Configuration
-                .GetConnectionString("DefaultConnection");
+            var connectionString =
+                Platform.IsWindows
+                    ? Configuration.GetConnectionString("DefaultConnection")
+                    : Configuration.GetConnectionString("SqliteConnection");
 
             services.ConfigureData(connectionString);
 
@@ -64,9 +68,9 @@ namespace WebUI
             services.AddAuthorization(options =>
             {
 
-                options.AddPolicy("AdminRights", 
+                options.AddPolicy("AdminRights",
                     policy => policy.RequireRole("Admin"));
-                options.AddPolicy("UserRights", 
+                options.AddPolicy("UserRights",
                     policy => policy.RequireRole("User"));
             });
 
@@ -135,9 +139,9 @@ namespace WebUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
-            UserManager<ApplicationUser> userManager, 
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             //app.UseResponseCompression();

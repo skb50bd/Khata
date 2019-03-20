@@ -23,16 +23,19 @@ namespace Business
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft",
+                     LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.File(
-                    @"log\log.txt",
-                    fileSizeLimitBytes: 5_000_000,
-                    rollOnFileSizeLimit: true,
-                    shared: true,
-                    flushToDiskInterval: TimeSpan.FromSeconds(1)
-                ).CreateLogger();
+                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs/.log"),
+                     fileSizeLimitBytes: 5_000_000,
+                     rollingInterval: RollingInterval.Day,
+                     rollOnFileSizeLimit: true,
+                     shared: true,
+                     flushToDiskInterval: TimeSpan.FromSeconds(1),
+                     outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+                 ).CreateLogger();
         }
     }
 }

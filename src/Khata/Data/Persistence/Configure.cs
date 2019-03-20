@@ -1,11 +1,15 @@
-﻿using Data.Core;
+﻿using Brotal.Extensions;
+
+using Data.Core;
+
 using Domain;
-using Queries;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
+using Queries;
 
 namespace Data.Persistence
 {
@@ -15,9 +19,18 @@ namespace Data.Persistence
             this IServiceCollection services,
             string cnnString)
         {
-            services.AddDbContext<KhataContext>(options =>
-                options.UseSqlServer(cnnString)
-            );
+            if (Platform.IsWindows)
+            {
+                services.AddDbContext<KhataContext>(options =>
+                    options.UseSqlServer(cnnString)
+                );
+            }
+            else
+            {
+                services.AddDbContext<KhataContext>(options =>
+                    options.UseSqlite(cnnString)
+                );
+            }
 
             services.AddDefaultIdentity<ApplicationUser>(config =>
             {
