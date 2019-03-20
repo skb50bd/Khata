@@ -1,8 +1,4 @@
-﻿const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-function toFixedIfNecessary(value, dp) {
+﻿function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
 

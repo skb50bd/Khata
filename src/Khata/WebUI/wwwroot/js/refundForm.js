@@ -1,29 +1,25 @@
-﻿const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-function toFixedIfNecessary(value, dp) {
+﻿function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
 }
 
-const saleId = document.getElementById('SaleId');
-const saleSelector = document.getElementById('sale-selector');
-const lineItemId = document.getElementById('lineitem-id');
-const lineItemType = document.getElementById('lineitem-type');
-const lineItemSelector = document.getElementById('lineitem-selector');
-const lineItemQuantity = document.getElementById('lineitem-quantity');
+const saleId            = document.getElementById('SaleId');
+const saleSelector      = document.getElementById('sale-selector');
+const lineItemId        = document.getElementById('lineitem-id');
+const lineItemType      = document.getElementById('lineitem-type');
+const lineItemSelector  = document.getElementById('lineitem-selector');
+const lineItemQuantity  = document.getElementById('lineitem-quantity');
 const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
-const lineItemNetPrice = document.getElementById('lineitem-netprice');
-const lineItemAdd = document.getElementById('lineitem-add-button');
-const lineItemClear = document.getElementById('lineitem-clear-button');
+const lineItemNetPrice  = document.getElementById('lineitem-netprice');
+const lineItemAdd       = document.getElementById('lineitem-add-button');
+const lineItemClear     = document.getElementById('lineitem-clear-button');
 const lineItemAvailable = document.getElementById('lineitem-available');
-const cart = document.getElementById('cart');
-const subtotal = document.getElementById('subtotal');
-const cashBack = document.getElementById('CashBack');
-const debtRollback = document.getElementById('DebtRollback');
-const debtBefore = document.getElementById('debt-before');
-const debtAfter = document.getElementById('debt-after');
-const description = document.getElementById('Description');
+const cart              = document.getElementById('cart');
+const subtotal          = document.getElementById('subtotal');
+const cashBack          = document.getElementById('CashBack');
+const debtRollback      = document.getElementById('DebtRollback');
+const debtBefore        = document.getElementById('debt-before');
+const debtAfter         = document.getElementById('debt-after');
+const description       = document.getElementById('Description');
 
 var itemsAdded = 0;
 

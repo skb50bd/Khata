@@ -194,6 +194,8 @@ $(document).ready(function () {
                     nextInput.focus();
                 }
             }
+            if (e.target === lineItemNetPrice)
+	            lineItemSelector.focus();
         }
     });
 });
