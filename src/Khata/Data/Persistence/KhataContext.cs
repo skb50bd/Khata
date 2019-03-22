@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,23 +14,22 @@ namespace Data.Persistence
         private readonly ILogger<KhataContext> _logger;
         public KhataContext(
             DbContextOptions<KhataContext> options,
-            ILogger<KhataContext> logger)
-                : base(options)
+            ILogger<KhataContext> logger) : base(options)
         {
             _logger = logger;
-            System.Collections.Generic.IEnumerable<string> pm = Database.GetPendingMigrations();
+            var pm = Database.GetPendingMigrations();
 
             try
             {
-                if (/*pm.Any()*/ true)
-                {
-                    Database.Migrate();
+                if (!pm.Any()) return;
 
-                    #region PerDayReportView
-                    Database.ExecuteSqlCommand(@"
+                Database.Migrate();
+
+                #region PerDayReportView
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS PerDayReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW PerDayReport AS
                             SELECT TOP(30) * FROM (
                                 SELECT  TOP(30) 
@@ -48,10 +48,10 @@ namespace Data.Persistence
                                 ORDER BY 'Date' DESC
                             ) SQ ORDER BY 'Date' ASC
                     ");
-                    #endregion
+                #endregion
 
-                    #region Periodical Income Reports
-                    Database.ExecuteSqlCommand(@"
+                #region Periodical Income Reports
+                Database.ExecuteSqlCommand(@"
                         CREATE OR ALTER FUNCTION dbo.incomeReport (
                                 @fromDate DATETIMEOFFSET(7),
                                 @toDate DATETIMEOFFSET(7))
@@ -87,33 +87,33 @@ namespace Data.Persistence
                             )
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS DailyIncomeReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW DailyIncomeReport AS
                             SELECT * FROM dbo.incomeReport(CAST(GETDATE() AS DATE), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS WeeklyIncomeReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyIncomeReport AS
                             SELECT * FROM dbo.incomeReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS MonthlyIncomeReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyIncomeReport AS
                             SELECT * FROM dbo.incomeReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
-                    #endregion
+                #endregion
 
-                    #region Periodical Expense Reports
-                    Database.ExecuteSqlCommand(@"
+                #region Periodical Expense Reports
+                Database.ExecuteSqlCommand(@"
                         CREATE OR ALTER FUNCTION dbo.expenseReport (
                                 @fromDate DATETIMEOFFSET(7), 
                                 @toDate DATETIMEOFFSET(7))
@@ -146,33 +146,33 @@ namespace Data.Persistence
                             )
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS DailyExpenseReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW DailyExpenseReport AS
                             SELECT * FROM dbo.expenseReport(CAST(GETDATE() AS DATE), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS WeeklyExpenseReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyExpenseReport AS
                             SELECT * FROM dbo.expenseReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS MonthlyExpenseReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyExpenseReport AS
                             SELECT * FROM dbo.expenseReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
-                    #endregion
+                #endregion
 
-                    #region Periodical Payable Reports
-                    Database.ExecuteSqlCommand(@"
+                #region Periodical Payable Reports
+                Database.ExecuteSqlCommand(@"
                         CREATE OR ALTER FUNCTION dbo.payableReport (
                                 @fromDate DATETIMEOFFSET(7), 
                                 @toDate DATETIMEOFFSET(7))
@@ -212,33 +212,33 @@ namespace Data.Persistence
                             )
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS DailyPayableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW DailyPayableReport AS
                             SELECT * FROM dbo.payableReport(CAST(GETDATE() AS DATE), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS WeeklyPayableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyPayableReport AS
                             SELECT * FROM dbo.payableReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS MonthlyPayableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyPayableReport AS
                             SELECT * FROM dbo.payableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
-                    #endregion
+                #endregion
 
-                    #region Periodical Receivable Reports
-                    Database.ExecuteSqlCommand(@"
+                #region Periodical Receivable Reports
+                Database.ExecuteSqlCommand(@"
                         CREATE OR ALTER FUNCTION dbo.receivableReport (
                                 @fromDate DATETIMEOFFSET(7), 
                                 @toDate DATETIMEOFFSET(7))
@@ -283,33 +283,33 @@ namespace Data.Persistence
                             )
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS DailyReceivableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW DailyReceivableReport AS
                             SELECT * FROM dbo.receivableReport(CAST(GETDATE() AS DATE), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS WeeklyReceivableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyReceivableReport AS
                             SELECT * FROM dbo.receivableReport(DATEADD(day, -7,CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS MonthlyReceivableReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyReceivableReport AS
                             SELECT * FROM dbo.receivableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
-                    #endregion
+                #endregion
 
-                    #region Periodical Outlet Sales Report
-                    Database.ExecuteSqlCommand(@"
+                #region Periodical Outlet Sales Report
+                Database.ExecuteSqlCommand(@"
                         CREATE OR ALTER FUNCTION dbo.outletSalesReport (
                                 @fromDate DATETIMEOFFSET(7), 
                                 @toDate DATETIMEOFFSET(7))
@@ -354,31 +354,30 @@ namespace Data.Persistence
                         )
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS DailyOutletSalesReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW DailyOutletSalesReport AS
                             SELECT * FROM dbo.outletSalesReport(CAST(GETDATE() AS DATE), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS WeeklyOutletSalesReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW WeeklyOutletSalesReport AS
                             SELECT * FROM dbo.outletSalesReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
 
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         DROP VIEW IF EXISTS MonthlyOutletSalesReport
                     ");
-                    Database.ExecuteSqlCommand(@"
+                Database.ExecuteSqlCommand(@"
                         CREATE VIEW MonthlyOutletSalesReport AS
                             SELECT * FROM dbo.outletSalesReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
                     ");
-                    #endregion
-                }
+                #endregion
             }
             catch (Exception e)
             {
