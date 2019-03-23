@@ -4,11 +4,13 @@ using System.Linq;
 
 using AutoMapper;
 
-using Domain;
-using DTOs;
-using ViewModels;
-
 using Brotal.Extensions;
+
+using Domain;
+
+using DTOs;
+
+using ViewModels;
 
 namespace Business.Mapper
 {
@@ -16,6 +18,9 @@ namespace Business.Mapper
     {
         public MappingProfile()
         {
+            CreateMap<string, string>()
+                .ConvertUsing(s => s ?? string.Empty);
+
             #region Cash Register Mapping
 
             CreateMap<CashRegisterViewModel, CashRegister>();
