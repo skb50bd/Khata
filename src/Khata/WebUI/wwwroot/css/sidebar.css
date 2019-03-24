@@ -98,7 +98,7 @@
             display: block;
             color: #555;
             font-weight: bold;
-            border-top:1px solid #ddd;
+            border-top: 1px solid #ddd;
         }
 
         .sidebar-nav li a:hover {
@@ -205,7 +205,7 @@
 
 
 #avatar {
-    align-self:center;
+    align-self: center;
     /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
     background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/67/User_Avatar.png');
     /* make a square container */
@@ -219,16 +219,9 @@
     border-radius: 50%;
 }
 
-.fa {
-    align-self:center;
-    width: 30px;
-    padding-right: 5px;
-}
-
-a {
-    align-content: center;
-}
 
 a > i {
-    vertical-align: middle !important;
+    vertical-align: middle;
+    width: 30px;
+    padding-right: 5px;
 }
