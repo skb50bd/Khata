@@ -80,7 +80,7 @@ var pdrcc = {
                 }
             }
         },
-        fill: false,
+        fill: true,
         responsive: true,
         title: {
             display: false,
