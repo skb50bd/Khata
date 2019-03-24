@@ -1,4 +1,5 @@
-﻿<div id="sidebar-wrapper">
+﻿
+<div id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="mt-2">
             <h2>
@@ -26,30 +27,42 @@
         </li>
 
         <li>
-            <a href="#incomingSubmenu" 
-               data-toggle="collapse" 
-               aria-expanded="false" 
+            <a href="#incomingSubmenu"
+               data-toggle="collapse"
+               aria-expanded="false"
                class="dropdown-toggle">
                 <i class="fa fa-arrow-right"></i>
                 Incoming
             </a>
-            <ul class="collapse list-unstyled" 
+            <ul class="collapse list-unstyled"
                 id="incomingSubmenu">
                 <li>
                     <a asp-area=""
-                       asp-page="/Sales/Index">Sales</a>
+                       asp-page="/Sales/Index">
+                        <i class="fas fa-shopping-cart"></i>
+                        Sales
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/DebtPayments/Index">Debt Payments</a>
+                       asp-page="/DebtPayments/Index">
+                        <i class="fas fa-money-bill"></i>
+                        Debt Payments
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Customers/Index">Customers</a>
+                       asp-page="/Customers/Index">
+                        <i class="fas fa-user-tag"></i>
+                        Customers
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/PurchaseReturns/Index">Purchase Returns</a>
+                       asp-page="/PurchaseReturns/Index">
+                        <i class="fas fa-cart-arrow-down"></i>
+                        Purchase Returns
+                    </a>
                 </li>
             </ul>
         </li>
@@ -63,65 +76,97 @@
 
                 <li>
                     <a asp-area=""
-                       asp-page="/Expenses/Index">Expenses</a>
+                       asp-page="/Expenses/Index">
+                        <i class="fas fa-receipt"></i>
+                        Expenses
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Refunds/Index">Refunds</a>
+                       asp-page="/Refunds/Index">
+                        <i class="fas fa-undo"></i>
+                        Refunds
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Purchases/Index">Purchases</a>
+                       asp-page="/Purchases/Index">
+                        <i class="fas fa-truck-loading"></i>
+                        Purchases
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/SupplierPayments/Index">Supplier Payments</a>
+                       asp-page="/SupplierPayments/Index">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Supplier Payments
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Suppliers/Index">Suppliers</a>
+                       asp-page="/Suppliers/Index">
+                        <i class="fas fa-user-tie"></i>
+                        Suppliers
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/SalaryIssues/Index">Salary Issues</a>
+                       asp-page="/SalaryIssues/Index">
+                        <i class="fas fa-file-signature"></i>
+                        Salary Issues
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/SalaryPayments/Index">Salary Payments</a>
+                       asp-page="/SalaryPayments/Index">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        Salary Payments
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Employees/Index">Employees</a>
+                       asp-page="/Employees/Index">
+                        <i class="fas fa-users"></i>
+                        Employees
+                    </a>
                 </li>
             </ul>
         </li>
 
         <li>
-            <a href="#inventorySubmenu" 
-               data-toggle="collapse" 
-               aria-expanded="false" 
+            <a href="#inventorySubmenu"
+               data-toggle="collapse"
+               aria-expanded="false"
                class="dropdown-toggle">
                 <i class="fa fa-boxes"></i>
                 Inventory
             </a>
-            <ul class="collapse list-unstyled" 
+            <ul class="collapse list-unstyled"
                 id="inventorySubmenu">
                 <li>
                     <a asp-area=""
-                       asp-page="/Products/Index">Products</a>
+                       asp-page="/Products/Index">
+                        <i class="fas fa-box"></i>
+                        Products
+                    </a>
                 </li>
                 <li>
                     <a asp-area=""
-                       asp-page="/Services/Index">Services</a>
+                       asp-page="/Services/Index">
+                        <i class="fas fa-concierge-bell"></i>
+                        Services
+                    </a>
                 </li>
             </ul>
         </li>
+
         <li>
             <a asp-page="/Reporting/Index">
                 <i class="fa fa-file-alt"></i>
                 Reporting
             </a>
         </li>
+
         <li>
             <a asp-page="/Outlets/Index">
                 <i class="fa fa-store"></i>

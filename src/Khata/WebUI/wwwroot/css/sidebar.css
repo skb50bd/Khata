@@ -1,12 +1,4 @@
-﻿/*!
- * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
-
-/* Toggle Styles */
-
-#wrapper {
+﻿#wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -52,9 +44,6 @@
     margin-right: -250px;
 }
 
-/* shawn - header styles */
-/* .custom-header see below */
-
 #custom-header-wrapper {
     width: 100%;
     position: fixed;
@@ -71,9 +60,6 @@
     margin-right: -250px;
 }
 
-
-/* Sidebar Styles */
-
 .sidebar-nav {
     position: absolute;
     top: 0;
@@ -82,54 +68,64 @@
     list-style: none;
 }
 
-    .sidebar-nav li {
-        text-indent: 10px;
-        line-height: 40px;
-        border-bottom: 1px solid #eee;
+.sidebar-nav li {
+    text-indent: 10px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
     }
 
-        .sidebar-nav li a {
-            display: block;
-            text-decoration: none;
-            color: #777;
-        }
+.sidebar-nav li a {
+    display: block;
+    color: black;
+    text-decoration: none;
+}
 
-        .sidebar-nav li .nav-section {
-            display: block;
-            color: #555;
-            font-weight: bold;
-            border-top: 1px solid #ddd;
-        }
+.sidebar-nav li .nav-section {
+    display: block;
+    color: #555;
+    font-weight: bold;
+    border-top: 1px solid #ddd;
+}
 
-        .sidebar-nav li a:hover {
-            text-decoration: none;
-            background: #eee;
-        }
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    background: #eee;
+}
 
-        .sidebar-nav li a:active,
-        .sidebar-nav li a:focus {
-            text-decoration: none;
-        }
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
 
-    .sidebar-nav > .sidebar-brand {
-        height: 65px;
-        font-size: 18px;
-        line-height: 60px;
-    }
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
 
-        .sidebar-nav > .sidebar-brand a:hover {
-            color: #fff;
-            background: none;
-        }
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+a > i {
+    vertical-align: middle;
+    width: 30px;
+    padding-right: 5px;
+}
+
+.list-unstyled {
+    background-color: lightgrey;
+}
 
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;
     }
 
-        #wrapper.toggled {
-            padding-left: 0;
-        }
+    #wrapper.toggled {
+        padding-left: 0;
+    }
 
     #sidebar-wrapper {
         width: 250px;
@@ -166,11 +162,8 @@
     }
 }
 
-
-/* gallery css */
-
 .btn {
-    border-radius: 2px
+    border-radius: 0px
 }
 
 .col-md-3 {
@@ -197,31 +190,4 @@
     background: #fff;
     border-top: 1px solid #e5e5e5;
     border-top: 0px;
-}
-
-.btn-circle {
-    border-radius: 20px;
-}
-
-
-#avatar {
-    align-self: center;
-    /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/67/User_Avatar.png');
-    /* make a square container */
-    width: 150px;
-    height: 150px;
-    /* fill the container, preserving aspect ratio, and cropping to fit */
-    background-size: cover;
-    /* center the image vertically and horizontally */
-    background-position: top center;
-    /* round the edges to a circle with border radius 1/2 container size */
-    border-radius: 50%;
-}
-
-
-a > i {
-    vertical-align: middle;
-    width: 30px;
-    padding-right: 5px;
 }
