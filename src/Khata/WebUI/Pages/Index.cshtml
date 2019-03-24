@@ -6,24 +6,33 @@
 
 <div class="text-center">
     <h1 class="display-4">@Model.Options.Title</h1>
-    <p class="h4 lead"><lead>@Model.Options.Slogan</lead></p>
-    <p><lead>@Model.Options.Address</lead></p>
-    <div class="row text-center">
-        <div class="col-lg-5 col-md-4 col-xs-3"></div>
-        <div class="col-lg-2 col-md-4 col-xs-6 text-center">
-            <a asp-page="/Sales/Create"
-               class="btn btn-outline-primary btn-block">
-                <i class="material-icons">add</i> Sale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </a>
-            <a asp-page="/Expenses/Create"
-               class="btn btn-outline-danger btn-block">
-                <i class="material-icons">add</i> Expense
-            </a>
-            <a asp-page="/Purchases/Create"
-               class="btn btn-outline-info btn-block">
-                <i class="material-icons">add</i> Purchase
-            </a>
-        </div>
-        <div class="col-lg-5 col-md-4 col-sm-2"></div>
-    </div>
+    <p class="h4 lead">
+        <lead>
+            @Model.Options.Slogan
+        </lead>
+    </p>
+    <p>
+        <lead>
+            @Model.Options.Address
+        </lead>
+    </p>
+    <a asp-page="/Sales/Create"
+       class="btn btn-outline-primary mb-2"
+       style="width:150px;">
+        <i class="fa fa-plus"></i>
+        Sale
+    </a>
+    <a asp-page="/Expenses/Create"
+       class="btn btn-outline-danger mb-2"
+       style="width:150px;">
+        <i class="fa fa-plus"></i>
+        Expense
+    </a>
+    <a asp-page="/Purchases/Create"
+       class="btn btn-outline-info mb-2"
+       style="width:150px;">
+        <i class="fa fa-plus"></i>
+        Purchase
+    </a>
+    </p>
 </div>

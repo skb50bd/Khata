@@ -12,9 +12,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <i class="material-icons">
-                face
-            </i>
+            <i class="fa fa-smile"></i>
             @User.Identity.Name
         </a>
         <ul class="collapse list-unstyled" id="accountSubmenu">

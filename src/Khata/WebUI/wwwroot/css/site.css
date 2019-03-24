@@ -48,3 +48,13 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+#perdayreport {
+    width: 100%;
+}
+
+@media(max-width:768px) {
+    #perdayreport {
+        min-height: 40%;
+    }
+} 

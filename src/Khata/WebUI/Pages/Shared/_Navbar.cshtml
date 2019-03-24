@@ -8,25 +8,6 @@
     var base64 = Convert.ToBase64String(user?.Avatar ?? new byte[0]);
     var avatarImage = string.Format($"data:image/jpeg;base64,{base64}");
 }
-@*<div id="custom-header-wrapper"
-     class="align-text-top">
-    <a href="#menu-toggle"
-       class="btn btn-link"
-       id="menu-toggle">
-        <i class="material-icons">
-            menu
-        </i>
-    </a>
-    @if (User.Identity.IsAuthenticated
-         && user?.Avatar.Length > 0)
-    {
-        <img src="@avatarImage"
-             class="rounded-circle"
-             alt="avatar"
-             width="35"
-             height="35">
-    }
-</div>*@
 
 <nav id="custom-header-wrapper"
      class="navbar navbar-expand-lg navbar-light bg-light border-bottom align-text-top">

@@ -219,7 +219,9 @@
     border-radius: 50%;
 }
 
-.material-icons {
+.fa {
+    align-self:center;
+    width: 30px;
     padding-right: 5px;
 }
 
