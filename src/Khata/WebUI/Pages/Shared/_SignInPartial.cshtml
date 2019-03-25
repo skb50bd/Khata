@@ -13,15 +13,25 @@
 <li>
     @if (SignInManager.IsSignedIn(User))
     {
-        <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            @*<i class="fa fa-smile"></i>*@
+        <a href="#accountSubmenu" 
+           data-toggle="collapse" 
+           aria-expanded="false" 
+           class="dropdown-toggle cust-dropdown">
+            @if (user?.Avatar?.Length > 0)
+            {
                 <img src="@avatarImage"
                      class="rounded-circle m-2"
                      alt="avatar"
                      width="30">
+            }
+            else
+            {
+                <i class="fas fa-smile"></i>
+            }
             @User.Identity.Name
         </a>
-        <ul class="collapse list-unstyled" id="accountSubmenu">
+        <ul class="collapse list-unstyled" 
+            id="accountSubmenu">
             <li>
                 <a asp-area="Identity"
                    asp-page="/Account/Manage/Index">

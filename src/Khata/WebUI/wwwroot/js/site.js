@@ -2,13 +2,16 @@
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 
-const formatter = new Intl.NumberFormat('en-BD', {
-    style: 'currency',
-    currency: 'BDT',
-    currencyDisplay: 'symbol',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-});
+const formatter = new Intl.NumberFormat(
+    'en-BD',
+    {
+        style: 'currency',
+        currency: 'BDT',
+        localeMatcher: 'lookup',
+        currencyDisplay: 'symbol',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 
 function toFixedIfNecessary(value, dp) {
     return parseFloat(value).toFixed(dp);
@@ -195,7 +198,7 @@ $(document).ready(function () {
                 }
             }
             if (e.target === lineItemNetPrice)
-	            lineItemSelector.focus();
+                lineItemSelector.focus();
         }
     });
 });

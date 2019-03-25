@@ -33,7 +33,8 @@ namespace WebUI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-BD");
+            CultureInfo.DefaultThreadCurrentCulture = 
+                Configuration.GetValue<CultureInfo>("OutletOptions:Culture");
         }
 
         public IConfiguration Configuration { get; }

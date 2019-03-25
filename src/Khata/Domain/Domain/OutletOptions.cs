@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using System.Globalization;
+
+namespace Domain
 {
     public class OutletOptions
     {
@@ -8,5 +10,6 @@
         public string Phone { get; set; }
         public string Email { get; set; }
         public int DefaultPageSize { get; set; }
+        public CultureInfo Culture { get; set; }
     }
 }

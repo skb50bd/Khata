@@ -10,7 +10,7 @@
 }
 
 @if (User.Identity.IsAuthenticated
-   && user?.Avatar.Length > 0)
+   && user?.Avatar?.Length > 0)
 {
     <div class="m-3 text-center">
         <img src="@avatarImage"
