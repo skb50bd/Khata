@@ -28,6 +28,13 @@
         </li>
 
         <li>
+            <a asp-page="/Reporting/Index">
+                <i class="fa fa-file-alt"></i>
+                Reporting
+            </a>
+        </li>
+
+        <li>
             <a href="#incomingSubmenu"
                data-toggle="collapse"
                aria-expanded="false"
@@ -43,6 +50,8 @@
                         <i class="fas fa-shopping-cart"></i>
                         Sales
                     </a>
+                    
+
                 </li>
                 <li>
                     <a asp-area=""
@@ -51,13 +60,7 @@
                         Debt Payments
                     </a>
                 </li>
-                <li>
-                    <a asp-area=""
-                       asp-page="/Customers/Index">
-                        <i class="fas fa-user-tag"></i>
-                        Customers
-                    </a>
-                </li>
+
                 <li>
                     <a asp-area=""
                        asp-page="/PurchaseReturns/Index">
@@ -69,14 +72,14 @@
         </li>
 
         <li>
-            <a href="#outgoingSubmenu" 
-               data-toggle="collapse" 
-               aria-expanded="false" 
+            <a href="#outgoingSubmenu"
+               data-toggle="collapse"
+               aria-expanded="false"
                class="dropdown-toggle cust-dropdown">
                 <i class="fa fa-arrow-left"></i>
                 Outgoing
             </a>
-            <ul class="collapse list-unstyled" 
+            <ul class="collapse list-unstyled"
                 id="outgoingSubmenu">
 
                 <li>
@@ -86,13 +89,7 @@
                         Expenses
                     </a>
                 </li>
-                <li>
-                    <a asp-area=""
-                       asp-page="/Refunds/Index">
-                        <i class="fas fa-undo"></i>
-                        Refunds
-                    </a>
-                </li>
+
                 <li>
                     <a asp-area=""
                        asp-page="/Purchases/Index">
@@ -100,6 +97,7 @@
                         Purchases
                     </a>
                 </li>
+
                 <li>
                     <a asp-area=""
                        asp-page="/SupplierPayments/Index">
@@ -107,11 +105,12 @@
                         Supplier Payments
                     </a>
                 </li>
+
                 <li>
                     <a asp-area=""
-                       asp-page="/Suppliers/Index">
-                        <i class="fas fa-user-tie"></i>
-                        Suppliers
+                       asp-page="/Refunds/Index">
+                        <i class="fas fa-undo"></i>
+                        Refunds
                     </a>
                 </li>
                 <li>
@@ -126,6 +125,35 @@
                        asp-page="/SalaryPayments/Index">
                         <i class="fas fa-hand-holding-usd"></i>
                         Salary Payments
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#peopleSubmenu"
+               data-toggle="collapse"
+               aria-expanded="false"
+               class="dropdown-toggle cust-dropdown">
+                <i class="fa fa-users"></i>
+                People
+            </a>
+            <ul class="collapse list-unstyled"
+                id="peopleSubmenu">
+
+                <li>
+                    <a asp-area=""
+                       asp-page="/Customers/Index">
+                        <i class="fas fa-user-tag"></i>
+                        Customers
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area=""
+                       asp-page="/Suppliers/Index">
+                        <i class="fas fa-user-tie"></i>
+                        Suppliers
                     </a>
                 </li>
                 <li>
@@ -163,13 +191,6 @@
                     </a>
                 </li>
             </ul>
-        </li>
-
-        <li>
-            <a asp-page="/Reporting/Index">
-                <i class="fa fa-file-alt"></i>
-                Reporting
-            </a>
         </li>
 
         <li>

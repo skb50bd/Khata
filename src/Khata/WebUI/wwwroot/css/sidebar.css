@@ -17,8 +17,8 @@
     width: 0;
     height: 100%;
     margin-left: -250px;
-    overflow-y: auto;
-    overflow-x:hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
     /*color: #212529;*/
     background: rgba(253,253,253,0.9);
     border-right: 1px solid #eee;

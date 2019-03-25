@@ -1,0 +1,12 @@
+﻿@{
+    try
+    {
+        if (!(Model.Message is null))
+        {
+            <div class="alert alert-@Model.MessageType" role="alert">
+                @Model.Message
+            </div>
+        }
+    }
+    catch { }
+}

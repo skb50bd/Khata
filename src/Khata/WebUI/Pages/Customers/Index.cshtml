@@ -22,13 +22,6 @@
     </div>
 </div>
 
-@if (!(Model.Message is null))
-{
-    <div class="alert alert-@Model.MessageType" role="alert">
-        @Model.Message
-    </div>
-}
-
 <div>
     @await Component.InvokeAsync(
         nameof(CustomersList),
