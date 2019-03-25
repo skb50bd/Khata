@@ -3,20 +3,21 @@
 @model WebUI.Pages.Expenses.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "New Expense";
 }
 
-<h1 class="display-4">Create an Expense</h1>
-<hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" class="immutable-submit" autocomplete="on">
+        <form method="post" class="immutable-submit" 
+              autocomplete="on">
             @await Component.InvokeAsync(
                 nameof(ExpenseForm),
                 new { expense = Model.ExpenseVm })
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+                <input type="submit" 
+                       value="Create" 
+                       class="btn btn-primary btn-lg" />
             </div>
         </form>
     </div>

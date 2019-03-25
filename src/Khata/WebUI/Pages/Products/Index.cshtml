@@ -5,15 +5,11 @@
 
 @{
     ViewData["Title"] = "Products";
-    var outlet = Model.Outlets.FirstOrDefault(o => o.Id == Model.CurrentOutletId)?.Title;
+    var outlet = 
+        Model.Outlets
+            .FirstOrDefault(o => o.Id == Model.CurrentOutletId)
+            ?.Title;
 }
-
-<h1 class="display-4 text-dark">Products</h1>
-@if (!(outlet is null))
-{
-    <p>@outlet</p>
-}
-<p></p>
 
 <div class="row">
     <div class="col-md-6">

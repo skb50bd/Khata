@@ -8,13 +8,6 @@
     var outlet = Model.Outlets.FirstOrDefault(o => o.Id == Model.CurrentOutletId)?.Title;
 }
 
-<h1 class="display-4 text-dark">Services</h1>
-@if (!(outlet is null))
-{
-    <p>@outlet</p>
-}
-<p></p>
-
 <div class="row">
     <div class="col-md-6">
         @await Component.InvokeAsync(nameof(Search), new { model = Model.Pf })

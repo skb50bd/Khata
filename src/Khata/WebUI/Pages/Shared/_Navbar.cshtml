@@ -4,21 +4,36 @@
 @inject UserManager<ApplicationUser> UserManager;
 
 @{
-    var user   = await UserManager.GetUserAsync(User);
+    var user = await UserManager.GetUserAsync(User);
     var base64 = Convert.ToBase64String(user?.Avatar ?? new byte[0]);
     var avatarImage = string.Format($"data:image/jpeg;base64,{base64}");
 }
 
 <nav id="custom-header-wrapper"
-     class="navbar navbar-expand-lg navbar-light bg-light border-bottom align-text-top">
+     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <button class="btn btn-link"
             id="menu-toggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <div class="collapse navbar-collapse" 
-         id="navbarSupportedContent">
-        <ul class="navbar-nav mt-2 mt-lg-0">
+    <button class="navbar-toggler float-right"
+            type="button"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand"
+       asp-area=""
+       asp-page="">
+        @ViewData["Title"]
+    </a>
+
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+        <ul class="navbar-nav flex-grow-1">
             @if (SignInManager.IsSignedIn(User))
             {
                 <li class="nav-item">
@@ -29,29 +44,32 @@
                         <img src="@avatarImage"
                              class="rounded-circle"
                              alt="avatar"
-                             width="30">
+                             width="20">
                         @User.Identity.Name
                     </a>
                 </li>
-                @*<li class="nav-item">
-                    <form class="form-inline" 
-                          asp-area="Identity" 
-                          asp-page="/Account/Logout" 
-                          asp-route-returnUrl="@Url.Page("/", new { area = "" })" 
+                <li class="nav-item">
+                    <form class="form-inline"
+                          asp-area="Identity"
+                          asp-page="/Account/Logout"
+                          asp-route-returnUrl="/Index"
                           method="post">
                         <button type="submit"
-                                class="nav-link btn btn-link text-dark">
+                                class="nav-link btn btn-link text-dark"
+                                style="font-size:1rem;">
                             Logout
                         </button>
                     </form>
-                </li>*@
+                </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" 
-                       asp-area="Identity" 
-                       asp-page="/Account/Login">Login</a>
+                    <a class="nav-link text-dark"
+                       asp-area="Identity"
+                       asp-page="/Account/Login">
+                        Login
+                    </a>
                 </li>
             }
         </ul>
