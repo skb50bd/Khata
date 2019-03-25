@@ -6,13 +6,19 @@
 
 @{
     var user = await UserManager.GetUserAsync(User);
+    var base64 = Convert.ToBase64String(user?.Avatar ?? new byte[0]);
+    var avatarImage = string.Format($"data:image/jpeg;base64,{base64}");
 }
 
 <li>
     @if (SignInManager.IsSignedIn(User))
     {
         <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <i class="fa fa-smile"></i>
+            @*<i class="fa fa-smile"></i>*@
+                <img src="@avatarImage"
+                     class="rounded-circle m-2"
+                     alt="avatar"
+                     width="30">
             @User.Identity.Name
         </a>
         <ul class="collapse list-unstyled" id="accountSubmenu">

@@ -47,8 +47,6 @@
 #custom-header-wrapper {
     width: 100%;
     position: fixed;
-    /*padding: 15px 15px 15px 5px;*/
-    /*border-bottom: 1px solid #ddd;*/
     z-index: 1000;
 }
 
@@ -145,7 +143,6 @@ a > i {
 
     #custom-header-wrapper {
         position: relative;
-        position: fixed;
         margin-right: 0px;
         padding-right: 265px;
         -webkit-transition: all 0.5s ease;
