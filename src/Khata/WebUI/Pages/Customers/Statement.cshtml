@@ -1,0 +1,104 @@
+﻿@page
+@model WebUI.Pages.Customers.StatementModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Customer Statement";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Customer Statement</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/invoice.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="page" class="container">
+        <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
+            <div class="col-md-8">
+                <div id="brand">
+                    <h1 class="display-4">#@Model.Customer.Id - @Model.Customer.FullName</h1>
+                    <p class="lead">
+                        Phone: @Model.Customer.Phone<br />
+                        Address: @Model.Customer.Address<br />
+                        Customer Statement<br />
+                    </p>
+                    <table class="table-hover">
+                        <tr>
+                            <td>From Date</td>
+                            <td>: @(Model.FromDate.LocalDate())</td>
+                        </tr>
+                        <tr>
+                            <td>To Date</td>
+                            <td>: @(Model.ToDate.LocalDate())</td>
+                        </tr>
+                        <tr>
+                            <td>Current Due</td>
+                            <td>: @Model.Customer.Debt.ToString("C2")</td>
+                        </tr>
+                        <tr>
+                            <td>Sales </td>
+                            <td>: @Model.Sales.Count()</td>
+                        </tr>
+                        <tr>
+                            <td>Sale Total</td>
+                            <td>: @(Model.Sales.Sum(s => s.PaymentTotal).ToString("C2"))</td>
+                        </tr>
+                        <tr>
+                            <td>Sale Due</td>
+                            <td>: @(Model.Sales.Sum(s => s.PaymentDue).ToString("C2"))</td>
+                        </tr>
+                        <tr>
+                            <td>Debt Payments</td>
+                            <td>: @Model.DebtPayments.Count()</td>
+                        </tr>
+                        <tr>
+                            <td>Debt Paid</td>
+                            <td>: @(Model.DebtPayments.Sum(s => s.Amount).ToString("C2"))</td>
+                        </tr>
+                        <tr>
+                            <td>Refunds</td>
+                            <td>: @Model.Refunds.Count()</td>
+                        </tr>
+                        <tr>
+                            <td>Refunds Total</td>
+                            <td>: @(Model.Refunds.Sum(s => s.TotalPrice).ToString("C2"))</td>
+                        </tr>
+                        <tr>
+                            <td>Refunds Back (Cash Back + Debt Roll Back)</td>
+                            <td>: @(Model.Refunds.Sum(s => s.DebtRollback + s.CashBack).ToString("C2"))</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <table class="table table-sm table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Due</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Elements)
+                {
+                <tr>
+                    <td>@item.DateTime.LocalDate()</td>
+                    <td>@item.Type</td>
+                    <td>@item.Total.ToString("C2")</td>
+                    <td>@item.Paid.ToString("C2")</td>
+                    <td>@item.Due.ToString("C2")</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

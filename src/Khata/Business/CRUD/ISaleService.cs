@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using DTOs;
-using Business.PageFilterSort;
-using ViewModels;
-
 using Brotal.Extensions;
+
+using Business.PageFilterSort;
+
+using DTOs;
+
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -16,7 +18,7 @@ namespace Business.CRUD
         Task<SaleDto> Delete(int id);
         Task<bool> Exists(int id);
         Task<SaleDto> Get(int id);
-        Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId);
+        Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId, DateTime? from = null, DateTime? to = null);
         Task<IPagedList<SaleDto>> Get(int outletId, PageFilter pf, DateTime? from = null, DateTime? to = null);
         Task<SaleDto> Remove(int id);
         Task<SaleDto> Update(SaleViewModel vm);

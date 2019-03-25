@@ -5,15 +5,19 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -131,13 +135,18 @@ namespace Business.CRUD
             return await _db.DebtPayments.Count(from, to);
         }
 
-        public async Task<IEnumerable<DebtPaymentDto>> GetCustomerDebtPayments(int customerId)
+        public async Task<IEnumerable<DebtPaymentDto>> GetCustomerDebtPayments(
+            int customerId,
+            DateTime? fromDate = null,
+            DateTime? toDate = null)
         {
             var res = await _db.DebtPayments.Get(
                 s => s.CustomerId == customerId,
                 p => p.Id,
                 1,
-                int.MaxValue);
+                int.MaxValue,
+                fromDate ?? DateTime.Today.AddYears(-1),
+                toDate ?? DateTime.Now);
             ;
             return res.CastList(c => _mapper.Map<DebtPaymentDto>(c));
         }

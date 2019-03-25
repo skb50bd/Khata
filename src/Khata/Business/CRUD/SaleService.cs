@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -66,15 +70,18 @@ namespace Business.CRUD
         public async Task<SaleDto> Get(int id) =>
             _mapper.Map<SaleDto>(await _db.Sales.GetById(id));
 
-        public async Task<IEnumerable<SaleDto>> GetCustomerSales(int customerId)
+        public async Task<IEnumerable<SaleDto>> GetCustomerSales(
+            int customerId, 
+            DateTime? fromDate = null, 
+            DateTime? toDate = null)
         {
             var res = await _db.Sales.Get(
                 s => s.CustomerId == customerId,
                 p => p.Id,
                 1,
                 int.MaxValue,
-                DateTime.Today.AddYears(-1),
-                DateTime.Now)
+                fromDate ?? DateTime.Today.AddYears(-1),
+                toDate ?? DateTime.Now)
             ;
             return res.CastList(c => _mapper.Map<SaleDto>(c));
         }

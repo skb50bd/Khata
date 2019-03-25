@@ -71,6 +71,18 @@
             Refunds
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           id="pills-statement-tab"
+           data-toggle="pill"
+           href="#pills-statement"
+           role="tab"
+           aria-controls="pills-statement"
+           aria-selected="false">
+            Statement
+        </a>
+    </li>
 </ul>
 
 <div class="tab-content" id="pills-tabContent">
@@ -80,6 +92,7 @@
          aria-labelledby="pills-overview-tab">
         <partial name="_CustomerOverview" for="Report" />
     </div>
+
     <div class="tab-pane fade"
          id="pills-profile"
          role="tabpanel"
@@ -89,22 +102,29 @@
         new { customer = Model.Customer }
         )
     </div>
+
     <div class="tab-pane fade"
          id="pills-sales"
          role="tabpanel"
          aria-labelledby="pills-sales-tab">
-
     </div>
+
     <div class="tab-pane fade"
          id="pills-debt-payments"
          role="tabpanel"
          aria-labelledby="pills-debt-payments-tab">
-
     </div>
+
     <div class="tab-pane fade"
          id="pills-refunds"
          role="tabpanel"
          aria-labelledby="pills-refunds-tab">
+    </div>
 
+    <div class="tab-pane fade show active"
+         id="pills-statement"
+         role="tabpanel"
+         aria-labelledby="pills-statement-tab">
+        <partial name="_StatementGeneratePartial" for="Customer"/>
     </div>
 </div>

@@ -19,6 +19,8 @@ namespace DTOs
 
         public ICollection<SaleLineItem> Cart { get; set; }
 
+        public decimal TotalPrice { get; set; }
+
         [DataType(DataType.Currency)]
         public decimal CashBack { get; set; }
 
