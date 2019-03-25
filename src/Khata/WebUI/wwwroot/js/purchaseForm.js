@@ -233,6 +233,7 @@ function addLineItem(event) {
     var it = createCartItem(newItem);
     //it.parentElement = cart;
     //it.fadein();
+    removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
 
@@ -240,6 +241,18 @@ function addLineItem(event) {
 
     clearLineItem(event);
     calculatePayment();
+}
+
+function removeCartItemIfExists(itemId) {
+    var items = document.getElementsByClassName('cart-item-itemid');
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.valueAsNumber === itemId) {
+            console.log('Found ' + itemId);
+            var row = item.parentElement.parentElement.parentElement;
+            row.parentElement.removeChild(row);
+        }
+    }
 }
 
 function removeCartItem(event) {
@@ -294,14 +307,14 @@ $(document).ready(function () {
                     supplierLastName.value = data.lastName;
                 }
             }).then(() => {
-	            $.ajax({
+                $.ajax({
                     url: '/Suppliers/Details/Brief?supplierId=' + ui.item.value,
-		            type: 'GET',
-		            dataType: 'html',
-		            success: function (response) {
-			            supplierBriefInfo.innerHTML = response;
-		            }
-	            });
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (response) {
+                        supplierBriefInfo.innerHTML = response;
+                    }
+                });
             });
             supplierSelector.value = ui.item.label;
             supplierId.value = ui.item.value;

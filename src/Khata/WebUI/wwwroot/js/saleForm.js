@@ -321,7 +321,7 @@ $(document).ready(function () {
                     type: 'GET',
                     dataType: 'html',
                     success: function(response) {
-	                    customerBriefInfo.innerHTML = response;
+                        customerBriefInfo.innerHTML = response;
                     }
                 });
             });
