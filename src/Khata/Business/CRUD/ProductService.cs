@@ -4,15 +4,19 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -95,9 +99,10 @@ namespace Business.CRUD
             if (!(await Exists(id))
              || await _db.Products.IsRemoved(id))
                 return null;
+            var product = await _db.Products.GetById(id);
             await _db.Products.Remove(id);
             await _db.CompleteAsync();
-            return _mapper.Map<ProductDto>(await _db.Products.GetById(id));
+            return _mapper.Map<ProductDto>(product);
         }
 
         public async Task<bool> Exists(int id) => await _db.Products.Exists(id);
