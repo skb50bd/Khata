@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using Business.CRUD;
-using Business.PageFilterSort;
 
 using DTOs;
 
@@ -14,30 +13,21 @@ namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class OutletsController : ControllerBase
     {
-        private readonly IProductService _products;
-        private readonly PfService _pfService;
+        private readonly IOutletService _outlets;
 
-        public ProductsController(IProductService products, PfService pfService)
+        public OutletsController(IOutletService outlets)
         {
-            _products = products;
-            _pfService = pfService;
+            _outlets = outlets;
         }
 
-        // GET: api/Products
+        // GET: api/Outlets
         [HttpGet]
-        public async Task<IEnumerable<ProductDto>> Get(
-            int? outletId,
-            string searchString = "",
-            int pageSize = 0,
-            int pageIndex = 1)
-            => await _products.Get(
-                outletId ?? 0,
-                _pfService.CreateNewPf(
-                    searchString, pageIndex, pageSize));
+        public async Task<IEnumerable<OutletDto>> Get()
+            => await _outlets.Get();
 
-        // GET: api/Products/5
+        // GET: api/Outlets/5
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute]int id)
@@ -48,17 +38,17 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            return Ok(await _products.Get(id));
+            return Ok(await _outlets.Get(id));
         }
 
-        // POST: api/Products
+        // POST: api/Outlets
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductViewModel model)
+        public async Task<IActionResult> Post([FromBody] OutletViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var dto = await _products.Add(model);
+            var dto = await _outlets.Add(model);
 
             if (dto == null)
                 return BadRequest();
@@ -68,9 +58,9 @@ namespace WebUI.Controllers
                 dto);
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Outlets/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]ProductViewModel vm)
+        public async Task<IActionResult> Put([FromRoute]int id, [FromBody]OutletViewModel vm)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -81,7 +71,7 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = await _products.Update(vm);
+            var dto = await _outlets.Update(vm);
 
             if (dto == null)
                 return BadRequest();
@@ -89,15 +79,14 @@ namespace WebUI.Controllers
             return Ok(dto);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Outlets/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ModelState); 
 
-            var dto = await _products.Remove(id);
-            dto.Outlet = null;
+            var dto = await _outlets.Remove(id);
 
             if (dto == null)
                 return BadRequest();
@@ -105,7 +94,7 @@ namespace WebUI.Controllers
             return Ok(dto);
         }
 
-        // DELETE: api/Products/Permanent/5
+        // DELETE: api/Outlets/Permanent/5
         [HttpDelete("Permanent/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -115,7 +104,7 @@ namespace WebUI.Controllers
             if (!(await Exists(id)))
                 return NotFound();
 
-            var dto = await _products.Delete(id);
+            var dto = await _outlets.Delete(id);
 
             if (dto == null)
                 return BadRequest();
@@ -124,6 +113,6 @@ namespace WebUI.Controllers
         }
 
         private async Task<bool> Exists(int id) =>
-            await _products.Exists(id);
+            await _outlets.Exists(id);
     }
 }
