@@ -209,7 +209,12 @@ namespace Business.CRUD
                 return null;
             await _db.Sales.Remove(id);
             await _db.CompleteAsync();
-            return _mapper.Map<SaleDto>(await _db.Sales.GetById(id));
+
+            var dto = _mapper.Map<SaleDto>(
+                await _db.Sales.GetById(id));
+            dto.Outlet = null;
+
+            return dto;
         }
 
         public async Task<bool> Exists(int id) => await _db.Sales.Exists(id);
@@ -222,7 +227,9 @@ namespace Business.CRUD
             var dto = _mapper.Map<SaleDto>(await _db.Sales.GetById(id));
             await _db.Sales.Delete(id);
             await _db.CompleteAsync();
-            return _mapper.Map<SaleDto>(dto);
+
+            dto.Outlet = null;
+            return dto;
         }
 
         private async Task<SaleLineItem> Sold(

@@ -4,15 +4,19 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Data.Core;
-using Domain;
-using DTOs;
+using Brotal.Extensions;
+
 using Business.PageFilterSort;
-using ViewModels;
+
+using Data.Core;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Http;
 
-using Brotal.Extensions;
+using ViewModels;
 
 namespace Business.CRUD
 {
@@ -102,7 +106,10 @@ namespace Business.CRUD
                 return null;
             await _db.Services.Remove(id);
             await _db.CompleteAsync();
-            return _mapper.Map<ServiceDto>(await _db.Services.GetById(id));
+
+            var dto = _mapper.Map<ServiceDto>(await _db.Services.GetById(id));
+            dto.Outlet = null;
+            return dto;
         }
 
         public async Task<bool> Exists(int id) => await _db.Services.Exists(id);
@@ -115,7 +122,8 @@ namespace Business.CRUD
             var dto = _mapper.Map<ServiceDto>(await _db.Services.GetById(id));
             await _db.Services.Delete(id);
             await _db.CompleteAsync();
-            return _mapper.Map<ServiceDto>(dto);
+            dto.Outlet = null;
+            return dto;
         }
 
         public async Task<int> Count(DateTime? from = null, DateTime? to = null)

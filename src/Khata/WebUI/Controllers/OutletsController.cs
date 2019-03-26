@@ -91,6 +91,10 @@ namespace WebUI.Controllers
             if (dto == null)
                 return BadRequest();
 
+            dto.Sales = null;
+            dto.Products = null;
+            dto.Services = null;
+
             return Ok(dto);
         }
 
@@ -108,6 +112,10 @@ namespace WebUI.Controllers
 
             if (dto == null)
                 return BadRequest();
+
+            dto.Sales = null;
+            dto.Products = null;
+            dto.Services = null;
 
             return Ok(dto);
         }

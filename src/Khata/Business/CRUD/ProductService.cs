@@ -102,7 +102,10 @@ namespace Business.CRUD
             var product = await _db.Products.GetById(id);
             await _db.Products.Remove(id);
             await _db.CompleteAsync();
-            return _mapper.Map<ProductDto>(product);
+            var dto = _mapper.Map<ProductDto>(product);
+            dto.Outlet = null;
+
+            return dto;
         }
 
         public async Task<bool> Exists(int id) => await _db.Products.Exists(id);
@@ -115,7 +118,9 @@ namespace Business.CRUD
             var dto = _mapper.Map<ProductDto>(await _db.Products.GetById(id));
             await _db.Products.Delete(id);
             await _db.CompleteAsync();
-            return _mapper.Map<ProductDto>(dto);
+            dto.Outlet = null;
+
+            return dto;
         }
 
         public async Task<int> Count(DateTime? from = null, DateTime? to = null)

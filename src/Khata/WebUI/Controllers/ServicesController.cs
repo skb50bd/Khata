@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using DTOs;
 using Business.CRUD;
 using Business.PageFilterSort;
-using ViewModels;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
+
+using ViewModels;
 
 namespace WebUI.Controllers
 {
@@ -62,6 +64,7 @@ namespace WebUI.Controllers
             if (dto == null)
                 return BadRequest();
 
+            dto.Outlet = null;
             return CreatedAtAction(nameof(Get),
                 new { id = dto.Id },
                 dto);
@@ -99,6 +102,7 @@ namespace WebUI.Controllers
 
             if (dto == null)
                 return BadRequest();
+            dto.Outlet = null;
 
             return Ok(dto);
         }
@@ -117,7 +121,7 @@ namespace WebUI.Controllers
 
             if (dto == null)
                 return BadRequest();
-
+            dto.Outlet = null;
             return Ok(dto);
         }
 

@@ -102,6 +102,8 @@ namespace WebUI.Controllers
             if (dto == null)
                 return BadRequest();
 
+            dto.Outlet = null;
+
             return Ok(dto);
         }
 
@@ -119,6 +121,8 @@ namespace WebUI.Controllers
 
             if (dto == null)
                 return BadRequest();
+
+            dto.Outlet = null;
 
             return Ok(dto);
         }

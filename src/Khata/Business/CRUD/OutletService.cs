@@ -73,7 +73,12 @@ namespace Business.CRUD
             var dto = _mapper.Map<OutletDto>(await _db.Outlets.GetById(id));
             await _db.Outlets.Delete(id);
             await _db.CompleteAsync();
-            return _mapper.Map<OutletDto>(dto);
+
+            dto.Sales = null;
+            dto.Products = null;
+            dto.Services = null;
+
+            return dto;
         }
 
         public async Task<bool> Exists(int id) 
@@ -124,8 +129,15 @@ namespace Business.CRUD
 
             await _db.Outlets.Remove(id);
             await _db.CompleteAsync();
-            return _mapper.Map<OutletDto>(
+
+            var dto = _mapper.Map<OutletDto>(
                 await _db.Outlets.GetById(id));
+
+            dto.Sales = null;
+            dto.Products = null;
+            dto.Services = null;
+
+            return dto ;
         }
 
         public async Task<OutletDto> Update(OutletViewModel vm)
