@@ -193,13 +193,27 @@ function addLineItem(event) {
     if (newItem === false)
         return;
     var it = createCartItem(newItem);
+    removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
-    document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
+    document.getElementById('remove-item-button' + itemsAdded)
+        .addEventListener('click', removeCartItem);
 
     itemsAdded++;
 
     clearLineItem(event);
     calculatePayment();
+}
+
+function removeCartItemIfExists(itemId) {
+    var items = document.getElementsByClassName('cart-item-itemid');
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.valueAsNumber === itemId) {
+            console.log('Found ' + itemId);
+            var row = item.parentElement.parentElement.parentElement;
+            row.parentElement.removeChild(row);
+        }
+    }
 }
 
 function removeCartItem(event) {
@@ -235,17 +249,17 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-	            url: '/Sales/Details/Brief?id=' + ui.item.value,
-	            type: 'GET',
-	            dataType: 'html',
-	            success: function (response) {
-		            document.getElementById('sale-briefing').innerHTML = response;
-		            saleSelector.value = ui.item.label;
-		            saleId.value = ui.item.value;
-	            }
+                url: '/Sales/Details/Brief?id=' + ui.item.value,
+                type: 'GET',
+                dataType: 'html',
+                success: function (response) {
+                    document.getElementById('sale-briefing').innerHTML = response;
+                    saleSelector.value = ui.item.label;
+                    saleId.value = ui.item.value;
+                }
             }).then(function () {
-	            debtBefore.value = document.getElementById('current-due').valueAsNumber;
-
+                debtBefore.value =
+                    document.getElementById('current-due').valueAsNumber;
             });
         }
     });

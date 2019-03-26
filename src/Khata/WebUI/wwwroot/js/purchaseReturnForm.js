@@ -193,6 +193,7 @@ function addLineItem(event) {
     if (newItem === false)
         return;
     var it = createCartItem(newItem);
+    removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
     document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
 
@@ -200,6 +201,18 @@ function addLineItem(event) {
 
     clearLineItem(event);
     calculatePayment();
+}
+
+function removeCartItemIfExists(itemId) {
+    var items = document.getElementsByClassName('cart-item-itemid');
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.valueAsNumber === itemId) {
+            console.log('Found ' + itemId);
+            var row = item.parentElement.parentElement.parentElement;
+            row.parentElement.removeChild(row);
+        }
+    }
 }
 
 function removeCartItem(event) {
@@ -235,16 +248,16 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-	            url: '/Purchases/Details/Brief?id=' + ui.item.value,
-	            type: 'GET',
-	            dataType: 'html',
-	            success: function(response) {
-		            document.getElementById('purchase-briefing').innerHTML = response;
-	            }
+                url: '/Purchases/Details/Brief?id=' + ui.item.value,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    document.getElementById('purchase-briefing').innerHTML = response;
+                }
             }).then(function() {
-	            purchaseSelector.value = ui.item.label;
-	            purchaseId.value = ui.item.value;
-	            debtBefore.value = document.getElementById('current-due').valueAsNumber;
+                purchaseSelector.value = ui.item.label;
+                purchaseId.value = ui.item.value;
+                debtBefore.value = document.getElementById('current-due').valueAsNumber;
 
             });
         }
