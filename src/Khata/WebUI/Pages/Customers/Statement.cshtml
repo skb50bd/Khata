@@ -21,84 +21,111 @@
         <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
             <div class="col-md-8">
                 <div id="brand">
-                    <h1 class="display-4">#@Model.Customer.Id - @Model.Customer.FullName</h1>
+                    <h1 class="display-4">@Model.Customer.FullName</h1>
                     <p class="lead">
-                        Phone: @Model.Customer.Phone<br />
-                        Address: @Model.Customer.Address<br />
-                        Customer Statement<br />
+                        <table class="table-hover">
+                            <tr>
+                                <th>Company &nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <td>@Model.Customer.CompanyName</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>@Model.Customer.Phone</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>@Model.Customer.Address</td>
+                            </tr>
+                        </table>
                     </p>
-                    <table class="table-hover">
-                        <tr>
-                            <td>From Date</td>
-                            <td>: @(Model.FromDate.LocalDate())</td>
-                        </tr>
-                        <tr>
-                            <td>To Date</td>
-                            <td>: @(Model.ToDate.LocalDate())</td>
-                        </tr>
-                        <tr>
-                            <td>Current Due</td>
-                            <td>: @Model.Customer.Debt.ToString("C2")</td>
-                        </tr>
-                        <tr>
-                            <td>Sales </td>
-                            <td>: @Model.Sales.Count()</td>
-                        </tr>
-                        <tr>
-                            <td>Sale Total</td>
-                            <td>: @(Model.Sales.Sum(s => s.PaymentTotal).ToString("C2"))</td>
-                        </tr>
-                        <tr>
-                            <td>Sale Due</td>
-                            <td>: @(Model.Sales.Sum(s => s.PaymentDue).ToString("C2"))</td>
-                        </tr>
-                        <tr>
-                            <td>Debt Payments</td>
-                            <td>: @Model.DebtPayments.Count()</td>
-                        </tr>
-                        <tr>
-                            <td>Debt Paid</td>
-                            <td>: @(Model.DebtPayments.Sum(s => s.Amount).ToString("C2"))</td>
-                        </tr>
-                        <tr>
-                            <td>Refunds</td>
-                            <td>: @Model.Refunds.Count()</td>
-                        </tr>
-                        <tr>
-                            <td>Refunds Total</td>
-                            <td>: @(Model.Refunds.Sum(s => s.TotalPrice).ToString("C2"))</td>
-                        </tr>
-                        <tr>
-                            <td>Refunds Back (Cash Back + Debt Roll Back)</td>
-                            <td>: @(Model.Refunds.Sum(s => s.DebtRollback + s.CashBack).ToString("C2"))</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
+            <div class="col-md-4 text-right text-muted" style="font-style:italic;">
+                <span>#@Model.Customer.Id - Customer Statement</span>
+            </div>
+            <table class="table table-sm table-hover" style="border-top: solid 1px black;">
+                <tr>
+                    <th>For</th>
+                    <td class="text-right">
+                        @(Model.FromDate.LocalDate()) - @(Model.ToDate.LocalDate())
+                    </td>
+                </tr>
+                <tr>
+                    <th>Current Due</th>
+                    <td class="text-right">
+                        @Model.Customer.Debt.ToString("C2")
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sale Total</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark">
+                            @Model.Sales.Count()
+                        </span>
+                        @(Model.Sales.Sum(s => s.PaymentTotal).ToString("C2"))
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sale Due</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark">
+                            @Model.Sales.Count(s => s.PaymentDue > 0)
+                        </span>
+                        @(Model.Sales.Sum(s => s.PaymentDue).ToString("C2"))
+                    </td>
+                </tr>
+                <tr>
+                    <th>Due Paid</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark">
+                            @Model.DebtPayments.Count()
+                        </span>
+                        @(Model.DebtPayments.Sum(s => s.Amount).ToString("C2"))
+                    </td>
+                </tr>
+                <tr>
+                    <th>Refunds Total</th>
+                    <td class="text-right">
+                        <span class="badge badge-dark">
+                            @Model.Refunds.Count()
+                        </span>
+                        @(Model.Refunds.Sum(s => s.TotalPrice).ToString("C2"))
+                    </td>
+                </tr>
+                <tr>
+                    <th title="Cash Back + Debt Roll Back">Refunds Back</th>
+                    <td class="text-right">
+                        @(Model.Refunds.Sum(s => s.DebtRollback + s.CashBack).ToString("C2"))
+                    </td>
+                </tr>
+            </table>
         </div>
         <table class="table table-sm table-hover table-striped">
             <thead>
                 <tr>
                     <th>Date</th>
                     <th>Type</th>
-                    <th>Total</th>
-                    <th>Paid</th>
-                    <th>Due</th>
+                    <th class="text-right">Total</th>
+                    <th class="text-right">Paid</th>
+                    <th class="text-right">Due</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Elements)
                 {
-                <tr>
-                    <td>@item.DateTime.LocalDate()</td>
-                    <td>@item.Type</td>
-                    <td>@item.Total.ToString("C2")</td>
-                    <td>@item.Paid.ToString("C2")</td>
-                    <td>@item.Due.ToString("C2")</td>
-                </tr>
+                    <tr>
+                        <td>@item.DateTime.LocalDate()</td>
+                        <td>@item.Type</td>
+                        <td class="text-right">@item.Total.ToString("C2")</td>
+                        <td class="text-right">@item.Paid.ToString("C2")</td>
+                        <td class="text-right">@item.Due.ToString("C2")</td>
+                    </tr>
                 }
             </tbody>
         </table>
+        <div class="text-right text-muted" style="font-style:italic;">
+            Generated on: @Model.ForDate.LocalDate()
+        </div>
     </div>
 </body>
 </html>
