@@ -14,7 +14,7 @@
     <tbody>
         @foreach (var debtPayment in Model)
         {
-            <tr class="js-clickable-row"
+            <tr class="js-clickable-row">
                 data-href="@Url.Page("/DebtPayments/Details", new { id = debtPayment.Id })">
                 <td>@Html.DisplayFor(modelItem => debtPayment.Id)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.CustomerFullName)</td>
@@ -24,7 +24,10 @@
                 <td class="text-right">
                     <a asp-page="../Invoices/Details"
                        asp-route-id="@Html.ValueFor(modelItem => debtPayment.InvoiceId)"
-                       class="card-link btn btn-sm btn-inline btn-success">Invoice</a>
+                       target="_blank"
+                       class="card-link btn btn-sm btn-inline btn-success">
+                        Invoice
+                    </a>
                 </td>
             </tr>
         }

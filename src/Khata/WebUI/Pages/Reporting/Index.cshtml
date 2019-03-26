@@ -67,6 +67,7 @@
             <div class="col-md-6 text-right">
                 <div class="btn-group">
                     <a asp-page="/Reporting/StockReport"
+                       target="_blank"
                        class="btn btn-outline-primary mb-2">
                         Stock Report
                     </a>
@@ -77,21 +78,32 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a asp-page="/Reporting/InStockReport"
-                           class="dropdown-item">
+                           class="dropdown-item"
+                           target="_blank">
                             In Stock Items
                         </a>
                         <a asp-page="/Reporting/InLowStockReport"
+                           target="_blank"
                            class="dropdown-item">
                             Low Stock Items
                         </a>
                         <a asp-page="/Reporting/InEmptyOrNegativeStockReport"
+                           target="_blank"
                            class="dropdown-item">
                             Empty or Negative Stock Items
                         </a>
                     </div>
                 </div>
-                <a asp-page="/Reporting/DueReport" class="btn btn-outline-secondary mb-2">Customer Due Report</a>
-                <a asp-page="/Reporting/SupplierDueReport" class="btn btn-outline-secondary mb-2">Supplier Due Report</a>
+                <a asp-page="/Reporting/DueReport"
+                   class="btn btn-outline-secondary mb-2"
+                   target="_blank">
+                    Customer Due Report
+                </a>
+                <a asp-page="/Reporting/SupplierDueReport"
+                   target="_blank"
+                   class="btn btn-outline-secondary mb-2">
+                    Supplier Due Report
+                </a>
             </div>
         </div>
     </div>
@@ -160,65 +172,65 @@
 
                 @foreach (var outlet in Model.Outlets)
                 {
-                    <div class="card">
-                        <div class="card-body"
-                             id="outlet-sales-summary-@outlet.Id">
-                            <table class="table table-sm table-hover">
-                                <thead>
-                                    <tr class="" style="font-size:1.2rem; font-weight:100">
-                                        <th class="text-uppercase text-primary">
-                                            @outlet.Title
-                                        </th>
-                                        <td class="text-right">
-                                            <span class="badge badge-dark text-right">
-                                                @Html.DisplayFor(model => outlet.SalesCount)
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.CostOfGoodsSold)</th>
-                                        <td class="text-right">
-                                            @Html.DisplayFor(model => outlet.CostOfGoodsSold)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.PriceOfGoodsSold)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.PriceOfGoodsSold)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfit)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfit)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesDue)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesDue)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfitReceived)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfitReceived)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#OutletSalesList-@outlet.Id"
-                               class="card-link"
-                               data-toggle="collapse"
-                               data-target="#outlet-sales-list-@outlet.Id"
-                               aria-expanded="true"
-                               aria-controls="outlet-sales-list-@outlet.Id">
-                                List
-                            </a>
-                        </div>
-                        <div id="outlet-sales-list-@outlet.Id"
-                             class="collapse"
-                             aria-labelledby="outlet-sales-summary-@outlet.Id"
-                             data-parent="#reports-accordion">
-                            <div class="card-body">
-                                <partial name="_SalesList" for="@outlet.Sales" />
-                            </div>
+                <div class="card">
+                    <div class="card-body"
+                         id="outlet-sales-summary-@outlet.Id">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr class="" style="font-size:1.2rem; font-weight:100">
+                                    <th class="text-uppercase text-primary">
+                                        @outlet.Title
+                                    </th>
+                                    <td class="text-right">
+                                        <span class="badge badge-dark text-right">
+                                            @Html.DisplayFor(model => outlet.SalesCount)
+                                        </span>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => outlet.CostOfGoodsSold)</th>
+                                    <td class="text-right">
+                                        @Html.DisplayFor(model => outlet.CostOfGoodsSold)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => outlet.PriceOfGoodsSold)</th>
+                                    <td class="text-right">@Html.DisplayFor(model => outlet.PriceOfGoodsSold)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => outlet.SalesProfit)</th>
+                                    <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfit)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => outlet.SalesDue)</th>
+                                    <td class="text-right">@Html.DisplayFor(model => outlet.SalesDue)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => outlet.SalesProfitReceived)</th>
+                                    <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfitReceived)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="#OutletSalesList-@outlet.Id"
+                           class="card-link"
+                           data-toggle="collapse"
+                           data-target="#outlet-sales-list-@outlet.Id"
+                           aria-expanded="true"
+                           aria-controls="outlet-sales-list-@outlet.Id">
+                            List
+                        </a>
+                    </div>
+                    <div id="outlet-sales-list-@outlet.Id"
+                         class="collapse"
+                         aria-labelledby="outlet-sales-summary-@outlet.Id"
+                         data-parent="#reports-accordion">
+                        <div class="card-body">
+                            <partial name="_SalesList" for="@outlet.Sales" />
                         </div>
                     </div>
+                </div>
                 }
 
                 <div class="card">
