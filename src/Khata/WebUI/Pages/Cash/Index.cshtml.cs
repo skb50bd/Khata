@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
 
-using Domain;
 using Business.CRUD;
-using ViewModels;
+
+using Domain;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
+
+using ViewModels;
 
 using WebUI.Hubs;
 
@@ -30,7 +31,7 @@ namespace WebUI.Pages.Cash
         {
             _cashRegister = cashRegister;
             _transactions = trasactions;
-            _reportsHub = reportsHub;
+            _reportsHub   = reportsHub;
         }
 
         #region Data Properties
@@ -65,22 +66,13 @@ namespace WebUI.Pages.Cash
                 .AddMinutes(23 * 60 + 59);
         #endregion
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(
+            string fromText, 
+            string toText)
         {
-            FromText = DateTime.Today.AddDays(-7).LocalDate();
-            ToText = DateTime.Today.LocalDate();
+            FromText = fromText ?? DateTime.Today.LocalDate();
+            ToText   = toText ?? FromText;
 
-            await Load();
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostWithDateRangeAsync()
-        {
-            if (string.IsNullOrWhiteSpace(FromText)
-                || string.IsNullOrWhiteSpace(ToText))
-            {
-                return Page();
-            }
             await Load();
             return Page();
         }

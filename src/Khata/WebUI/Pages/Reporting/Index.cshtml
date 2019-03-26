@@ -2,15 +2,14 @@
 @model WebUI.Pages.Reporting.IndexModel
 
 @{
-    ViewData["Title"] = "Reporting";
+    ViewData["Title"] = $"Reporting [{Model.FromText} - {Model.ToText}]";
 }
 
 <div class="row">
     <div class="col-12 mb-3">
         <div class="row">
             <div class="col-md-6">
-                <form method="post"
-                      asp-page-handler="WithDateRange"
+                <form method="get"
                       class="form-inline">
                     <div class="form-group mb-2 mr-sm-2 d-inline">
                         <div class="input-group date"
@@ -19,8 +18,9 @@
                             <input type="text"
                                    class="form-control datetimepicker-input"
                                    data-target="#fromDate"
-                                   placeholder="From e.g. dd/mm/yyyy"
-                                   asp-for="FromText"
+                                   placeholder="dd/mm/yyyy"
+                                   id="fromText"
+                                   name="fromText"
                                    data-toggle="tooltip"
                                    title="Start Date"
                                    autocomplete="off"
@@ -42,8 +42,9 @@
                             <input type="text"
                                    class="form-control datetimepicker-input"
                                    data-target="#toDate"
-                                   placeholder="To e.g. dd/mm/yyyy"
-                                   asp-for="ToText"
+                                   placeholder="dd/mm/yyyy"
+                                   id="toText"
+                                   name="toText"
                                    data-toggle="tooltip"
                                    title="End Date"
                                    autocomplete="off"

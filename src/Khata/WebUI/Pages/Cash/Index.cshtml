@@ -17,8 +17,7 @@
                 <div class="col-md-12 pt-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <form method="post"
-                                  asp-page-handler="WithDateRange"
+                            <form method="get"
                                   class="form-inline">
                                 <div class="form-group mb-2 mr-sm-2 d-inline">
                                     <div class="input-group date"
@@ -28,7 +27,8 @@
                                                class="form-control datetimepicker-input"
                                                data-target="#fromDate"
                                                placeholder="From e.g. dd/mm/yyyy"
-                                               asp-for="FromText" 
+                                               name="fromText" 
+                                               id="fromText" 
                                                data-toggle="tooltip"
                                                title="Start Date"
                                                autocomplete="off"
@@ -51,7 +51,8 @@
                                                class="form-control datetimepicker-input"
                                                data-target="#toDate"
                                                placeholder="To e.g. dd/mm/yyyy"
-                                               asp-for="ToText" 
+                                               name="toText" 
+                                               id="toText" 
                                                data-toggle="tooltip"
                                                title="End Date"
                                                autocomplete="off"

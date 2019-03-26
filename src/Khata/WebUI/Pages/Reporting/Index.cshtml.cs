@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 using Brotal.Extensions;
 
-using Domain;
-using DTOs;
 using Business.CRUD;
 using Business.PageFilterSort;
+
+using Domain;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -63,24 +65,11 @@ namespace WebUI.Pages.Reporting
             _refunds          = refunds;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string fromText, string toText)
         {
-            FromText = DateTime.Today.LocalDate();
-            ToText = FromText;
+            FromText = fromText ?? DateTime.Today.LocalDate();
+            ToText = toText ?? FromText;
             await Load();
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostWithDateRangeAsync()
-        {
-            if (string.IsNullOrWhiteSpace(FromText)
-                || string.IsNullOrWhiteSpace(ToText))
-            {
-                return Page();
-            }
-
-            await Load();
-
             return Page();
         }
 
