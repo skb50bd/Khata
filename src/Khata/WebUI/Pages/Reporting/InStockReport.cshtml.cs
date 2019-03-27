@@ -5,8 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
-
-using Business.CRUD;
+using Business.Abstractions;
 using Business.PageFilterSort;
 
 using DTOs;

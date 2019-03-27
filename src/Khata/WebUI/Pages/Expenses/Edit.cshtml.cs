@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using AutoMapper;
-
-using Business.CRUD;
+using Business.Abstractions;
 using ViewModels;
 
 using Microsoft.AspNetCore.Mvc;

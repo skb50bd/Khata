@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Business.Abstractions;
 using DTOs;
 using Queries;
-using Business.CRUD;
 using Business.Reports;
 
 using Microsoft.AspNetCore.Mvc;

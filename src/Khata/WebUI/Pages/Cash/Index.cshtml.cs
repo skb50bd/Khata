@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
-
-using Business.CRUD;
-
+using Business.Abstractions;
 using Domain;
 
 using Microsoft.AspNetCore.Mvc;

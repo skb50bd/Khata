@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using DTOs;
-using Business.CRUD;
 using Business.PageFilterSort;
 
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Brotal.Extensions;
 using System.Collections.Generic;
+using Business.Abstractions;
 
 namespace WebUI.Pages.Services
 {

@@ -334,3 +334,4 @@ ASALocalRun/
 
 .vscode/
 /src/Khata/WebUI/Khata.db
+*.DotSettings

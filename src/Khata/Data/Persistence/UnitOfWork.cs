@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Data.Core;
+
 using Domain;
 
 namespace Data.Persistence
@@ -57,27 +58,27 @@ namespace Data.Persistence
         #endregion
             )
         {
-            Context = context;
-            Outlets = outlets;
-            CashRegister = cashRegister;
-            Deposits = deposits;
-            Withdrawals = withdrawals;
-            Products = products;
-            Services = services;
-            Customers = customers;
-            DebtPayments = debtPayments;
-            Sales = sales;
-            Invoices = invoices;
-            Vouchars = vouchars;
-            Expenses = expenses;
-            Suppliers = suppliers;
+            Context          = context;
+            Outlets          = outlets;
+            CashRegister     = cashRegister;
+            Deposits         = deposits;
+            Withdrawals      = withdrawals;
+            Products         = products;
+            Services         = services;
+            Customers        = customers;
+            DebtPayments     = debtPayments;
+            Sales            = sales;
+            Invoices         = invoices;
+            Vouchars         = vouchars;
+            Expenses         = expenses;
+            Suppliers        = suppliers;
             SupplierPayments = supplierPayments;
-            Purchases = purchases;
-            Employees = employees;
-            SalaryIssues = salaryIssues;
-            SalaryPayments = salaryPayments;
-            Refunds = refunds;
-            PurchaseReturns = purchaseReturns;
+            Purchases        = purchases;
+            Employees        = employees;
+            SalaryIssues     = salaryIssues;
+            SalaryPayments   = salaryPayments;
+            Refunds          = refunds;
+            PurchaseReturns  = purchaseReturns;
         }
 
         public void Complete()

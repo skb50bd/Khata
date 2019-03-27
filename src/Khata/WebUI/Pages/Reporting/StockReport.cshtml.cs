@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Brotal.Extensions;
-
-using Business.CRUD;
+using Business.Abstractions;
 using Business.PageFilterSort;
 
 using DTOs;

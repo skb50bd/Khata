@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Business.Abstractions;
 using Domain;
-using Business.CRUD;
 using ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
