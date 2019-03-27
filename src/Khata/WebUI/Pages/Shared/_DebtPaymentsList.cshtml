@@ -14,7 +14,7 @@
     <tbody>
         @foreach (var debtPayment in Model)
         {
-            <tr class="js-clickable-row">
+            <tr class="js-clickable-row"
                 data-href="@Url.Page("/DebtPayments/Details", new { id = debtPayment.Id })">
                 <td>@Html.DisplayFor(modelItem => debtPayment.Id)</td>
                 <td>@Html.DisplayFor(modelItem => debtPayment.CustomerFullName)</td>
