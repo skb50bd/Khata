@@ -24,6 +24,8 @@ namespace WebUI
                 //Here we create a Admin super user who will maintain the website
                 user = new ApplicationUser
                 {
+                    FirstName      = "Admin",
+                    LastName       = "Brotal",
                     UserName       = "brotal",
                     Email          = "skb50bd@gmail.com",
                     EmailConfirmed = true

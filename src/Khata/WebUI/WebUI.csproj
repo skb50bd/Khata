@@ -16,7 +16,6 @@
     <Authors>Shakib Haris</Authors>
     <Description>Khata is a ERP solution built by Shakib Haris.</Description>
     <Copyright>Shakib Haris</Copyright>
-    <ApplicationIcon>Khata.ico</ApplicationIcon>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
