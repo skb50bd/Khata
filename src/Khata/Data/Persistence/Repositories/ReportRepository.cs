@@ -10,20 +10,20 @@ using Queries;
 
 namespace Data.Persistence.Repositories
 {
-    public class ReportRepository<TReport> : IReportRepository<TReport> where TReport : Report
+    public class ReportRepository<TReport> 
+        : IReportRepository<TReport> where TReport : Report
     {
-        protected readonly KhataContext _db;
-        public ReportRepository(KhataContext db)
-        {
-            _db = db;
-        }
+        protected readonly KhataContext Db;
+        public ReportRepository(KhataContext db) 
+            => Db = db;
+
         public async Task<int> Count()
-            => (await _db.Query<TReport>()
-            .ToListAsync()).Count();
+            => (await Db.Query<TReport>()
+                .ToListAsync()).Count();
 
         public async Task<IEnumerable<TReport>> Get()
-            => await _db.Query<TReport>()
-            .ToListAsync();
+            => await Db.Query<TReport>()
+                .ToListAsync();
 
     }
 
@@ -32,10 +32,12 @@ namespace Data.Persistence.Repositories
             IIndividualReportRepository<TReport>
                 where TReport : IndividaulReport
     {
-        public IndividualReportRepository(KhataContext db) : base(db) { }
+        public IndividualReportRepository(
+            KhataContext db) : base(db) { }
 
         public async Task<TReport> GetById(int id)
-            => await _db.Query<TReport>()
-            .FirstOrDefaultAsync(r => r.Id == id);
+            => await Db.Query<TReport>()
+                .FirstOrDefaultAsync(
+                    r => r.Id == id);
     }
 }

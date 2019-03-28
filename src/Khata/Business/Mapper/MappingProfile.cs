@@ -38,7 +38,28 @@ namespace Business.Mapper
             #endregion
 
             #region Product Mapping
-            CreateMap<ProductViewModel, Product>();
+            CreateMap<ProductViewModel, Product>()
+               .ForMember(
+                    dest => dest.Inventory,
+                    opt => opt.MapFrom(
+                        src => new Inventory
+                        {
+                            Stock = src.InventoryStock,
+                            Warehouse = src.InventoryWarehouse,
+                            AlertAt = src.InventoryAlertAt
+                        })
+                ).ForMember(
+                    dest => dest.Price,
+                    opt => opt.MapFrom(
+                        src => new Pricing
+                        {
+                            Retail = src.PriceRetail,
+                            Bulk = src.PriceBulk,
+                            Margin = src.PriceMargin,
+                            Purchase = src.PricePurchase
+                        }    
+                    )
+                );
 
             CreateMap<Product, ProductDto>()
                 .ForMember(
