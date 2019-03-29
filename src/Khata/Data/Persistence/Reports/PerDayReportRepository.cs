@@ -23,7 +23,7 @@ namespace Data.Persistence.Reports
 
         {
             const int days = 30;
-            var deposits = 
+            var deposits =
                 await _db.Deposits.Include(d => d.Metadata)
                      .Where(d =>
                           d.Metadata.CreationTime >=
@@ -37,7 +37,7 @@ namespace Data.Persistence.Reports
                               CashIn = d.Amount
                           }).ToListAsync();
 
-            var withdrawals = 
+            var withdrawals =
                 await _db.Withdrawals.Include(w => w.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
@@ -53,7 +53,7 @@ namespace Data.Persistence.Reports
                             CashOut = w.Amount
                         }).ToListAsync();
 
-            var sales = 
+            var sales =
                 await _db.Sales.Include(s => s.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
@@ -67,7 +67,7 @@ namespace Data.Persistence.Reports
                             NewReceivable = s.Payment.Due
                         }).ToListAsync();
 
-            var purchases = 
+            var purchases =
                 await _db.Purchases.Include(p => p.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
@@ -83,7 +83,7 @@ namespace Data.Persistence.Reports
                             NewPayable = p.Payment.Due
                         }).ToListAsync();
 
-            var salaryIssues = 
+            var salaryIssues =
                 await _db.SalaryIssues.Include(si => si.Metadata)
                      .Where(d =>
                           d.Metadata.CreationTime >=

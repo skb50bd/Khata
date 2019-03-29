@@ -384,6 +384,8 @@ namespace Data.Persistence
                 _logger.LogError("Could not apply Migrations" + JsonConvert.SerializeObject(pm));
                 _logger.LogError(e.Message);
             }
+
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

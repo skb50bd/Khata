@@ -16,21 +16,35 @@ namespace Data.Persistence
     {
         public static IServiceCollection ConfigureData(
             this IServiceCollection services,
-            string dbProvider,
+            DbProvider dbProvider,
             string cnnString)
         {
-            if (dbProvider == "SqlServer")
+            switch (dbProvider)
             {
-                services.AddDbContext<KhataContext>(options =>
-                    options.UseSqlServer(cnnString)
-                );
+                case DbProvider.SQLite:
+                    services.AddDbContext<KhataContext>(options =>
+                        options.UseSqlite(cnnString)
+                    );
+                    break;
+
+                case DbProvider.SQLServer:
+                    services.AddDbContext<KhataContext>(options =>
+                        options.UseSqlServer(cnnString)
+                    );
+                    break;
+
+                case DbProvider.PostgreSQL:
+                    services.AddEntityFrameworkNpgsql()
+                            .AddDbContext<KhataContext>()
+                            .BuildServiceProvider();
+                    break;
+
+                default:
+                    services.AddDbContext<KhataContext>(options =>
+                        options.UseSqlite(cnnString)
+                    );
+                    break;
             }
-            //else if(dbProvider == "SQLite")
-            //{
-            //    services.AddDbContext<KhataContext>(options =>
-            //        options.UseSqlite(cnnString)
-            //    );
-            //}
 
             services.AddDefaultIdentity<ApplicationUser>(config =>
             {
@@ -59,25 +73,25 @@ namespace Data.Persistence
             services.AddTransient<IRepository<Withdrawal>, WithdrawalRepository>();
             services.AddTransient<IRepository<Deposit>, DepositRepository>();
             services.AddTransient<ITrackingRepository<Refund>, RefundRepository>();
-            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>(); 
+            services.AddTransient<ITrackingRepository<PurchaseReturn>, PurchaseReturnRepository>();
             #endregion
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             #region Register Reporting Repositories
             services.AddTransient<
-                IIndividualReportRepository<CustomerReport>, 
+                IIndividualReportRepository<CustomerReport>,
                 CustomerReportRepository>();
 
             services.AddTransient<
-                IIndividualReportRepository<SupplierReport>, 
+                IIndividualReportRepository<SupplierReport>,
                 SupplierReportRepository>();
 
             services.AddTransient<
-                IReportRepository<Asset>, 
+                IReportRepository<Asset>,
                 AssetReportRepository>();
 
             services.AddTransient<
-                IReportRepository<Liability>, 
+                IReportRepository<Liability>,
                 LiabilityReportRepository>();
 
             services.AddTransient<IReportRepository<PeriodicalReport<Inflow>>,
@@ -92,8 +106,8 @@ namespace Data.Persistence
             services.AddTransient<IReportRepository<PeriodicalReport<Receivable>>,
                 ReceivableReportRepository>();
 
-            services.AddTransient<IListReportRepository<PerDayReport>, 
-                PerDayReportRepository>(); 
+            services.AddTransient<IListReportRepository<PerDayReport>,
+                PerDayReportRepository>();
             #endregion
 
 

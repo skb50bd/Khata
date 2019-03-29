@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -65,7 +66,10 @@ namespace WebUI.Pages.Dashboard
             Receivable    = await _receivableReport.Get();
             PerDayReports = await _perDayReports.Get();
             sw.Stop();
-            Debug.WriteLine($"Took Time {sw.ElapsedMilliseconds}");
+            var color = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Took Time {sw.ElapsedMilliseconds}");
+            Console.ForegroundColor = color;
         }
     }
     public struct IncomeReportWithSpan

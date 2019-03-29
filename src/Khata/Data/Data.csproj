@@ -12,8 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Persistence\Migrations\SQLServer\20190301051915_AddedOutletInfoToInvoice.cs" />
-    <Compile Remove="Persistence\Migrations\SQLServer\20190301051915_AddedOutletInfoToInvoice.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\**" />
+    <EmbeddedResource Remove="Persistence\Migrations\**" />
+    <None Remove="Persistence\Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Persistence\Migrations\SQLite\20190329173617_InitialSqlite.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\20190329173617_InitialSqlite.designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\KhataContextModelSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Brotal.Extensions" Version="0.1.9" />
@@ -21,12 +28,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

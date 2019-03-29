@@ -9,9 +9,11 @@ namespace Business
     {
         public static void CreateLogger(IConfiguration conf)
         {
-            Log.Logger = new LoggerConfiguration()
-                        .ReadFrom.Configuration(conf)
-                        .CreateLogger();
+            Log.Logger = 
+                new LoggerConfiguration()
+                   .WriteTo.Console()
+                    .ReadFrom.Configuration(conf)
+                    .CreateLogger();
         }
     }
 }

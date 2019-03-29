@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Data.Core;
+
 using Domain;
 
 using MongoDB.Bson;
@@ -213,8 +214,8 @@ namespace ImportData.Services
                         .OrderBy(p => p.Name))
                 {
                     db.Products.Add(p);
-                db.Complete();
                 }
+                db.Complete();
             }
             #endregion
 
