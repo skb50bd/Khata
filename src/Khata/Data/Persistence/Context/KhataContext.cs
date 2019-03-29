@@ -391,7 +391,6 @@ namespace Data.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.BuildEntities();
-            modelBuilder.BuildQueries(this);
         }
     }
 }

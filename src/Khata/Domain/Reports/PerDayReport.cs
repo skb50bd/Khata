@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Queries
+namespace Domain.Reports
 {
     public class PerDayReport : Report
     {

@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Queries;
+using Domain.Reports;
 
 namespace Business.Reports
 {
-    public interface IReportService<TReport> where TReport : Report
+    public interface IReportService<TReport> 
+        where TReport : Report
     {
-        Task<int> Count();
+        Task<TReport> Get();
+    }
+
+    public interface IListReportService<TReport> 
+        where TReport : Report
+    {
         Task<IEnumerable<TReport>> Get();
     }
 
-    public interface IIndividualReportService<TReport> : IReportService<TReport>
-        where TReport : IndividaulReport
+    public interface IIndividualReportService<TReport>
+        where TReport : IndividualReport
     {
         Task<TReport> Get(int id);
     }

@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using Business.Abstractions;
 using DTOs;
-using Queries;
 using Business.Reports;
-
+using Domain.Reports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;

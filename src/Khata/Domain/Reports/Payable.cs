@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public abstract class PayableBase : Report
+    public class Payable : Report
     {
         public int PurchaseDueCount { get; set; }
 
@@ -18,15 +18,5 @@ namespace Queries
 
         [DataType(DataType.Currency)]
         public decimal DebtOverPaymentAmount { get; set; }
-    }
-    public class DailyPayableReport : PayableBase { }
-    public class WeeklyPayableReport : PayableBase { }
-    public class MonthlyPayableReport : PayableBase { }
-
-    public class PayableReports
-    {
-        public DailyPayableReport Daily { get; set; }
-        public WeeklyPayableReport Weekly { get; set; }
-        public MonthlyPayableReport Monthly { get; set; }
     }
 }

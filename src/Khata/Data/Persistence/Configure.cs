@@ -1,14 +1,14 @@
 ﻿using Data.Core;
+using Data.Persistence.Reports;
 using Data.Persistence.Repositories;
 
 using Domain;
+using Domain.Reports;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using Queries;
 
 namespace Data.Persistence
 {
@@ -66,68 +66,34 @@ namespace Data.Persistence
             #region Register Reporting Repositories
             services.AddTransient<
                 IIndividualReportRepository<CustomerReport>, 
-                IndividualReportRepository<CustomerReport>>();
+                CustomerReportRepository>();
 
             services.AddTransient<
                 IIndividualReportRepository<SupplierReport>, 
-                IndividualReportRepository<SupplierReport>>();
+                SupplierReportRepository>();
 
             services.AddTransient<
-                IIndividualReportRepository<DailyOutletSalesReport>, 
-                IndividualReportRepository<DailyOutletSalesReport>>();
+                IReportRepository<Asset>, 
+                AssetReportRepository>();
 
             services.AddTransient<
-                IIndividualReportRepository<WeeklyOutletSalesReport>, 
-                IndividualReportRepository<WeeklyOutletSalesReport>>();
+                IReportRepository<Liability>, 
+                LiabilityReportRepository>();
 
-            services.AddTransient<
-                IIndividualReportRepository<MonthlyOutletSalesReport>, 
-                IndividualReportRepository<MonthlyOutletSalesReport>>();
+            services.AddTransient<IReportRepository<PeriodicalReport<Inflow>>,
+                InflowReportRepository>();
 
-            services.AddTransient<IReportRepository<AssetReport>, 
-                ReportRepository<AssetReport>>();
+            services.AddTransient<IReportRepository<PeriodicalReport<Outflow>>,
+                OutflowReportRepository>();
 
-            services.AddTransient<IReportRepository<LiabilityReport>, 
-                ReportRepository<LiabilityReport>>();
+            services.AddTransient<IReportRepository<PeriodicalReport<Payable>>,
+                PayableReportRepository>();
 
-            services.AddTransient<IReportRepository<DailyIncomeReport>, 
-                ReportRepository<DailyIncomeReport>>();
+            services.AddTransient<IReportRepository<PeriodicalReport<Receivable>>,
+                ReceivableReportRepository>();
 
-            services.AddTransient<IReportRepository<DailyExpenseReport>, 
-                ReportRepository<DailyExpenseReport>>();
-
-            services.AddTransient<IReportRepository<DailyPayableReport>, 
-                ReportRepository<DailyPayableReport>>();
-
-            services.AddTransient<IReportRepository<DailyReceivableReport>, 
-                ReportRepository<DailyReceivableReport>>();
-
-            services.AddTransient<IReportRepository<WeeklyIncomeReport>, 
-                ReportRepository<WeeklyIncomeReport>>();
-
-            services.AddTransient<IReportRepository<WeeklyExpenseReport>, 
-                ReportRepository<WeeklyExpenseReport>>();
-
-            services.AddTransient<IReportRepository<WeeklyPayableReport>, 
-                ReportRepository<WeeklyPayableReport>>();
-
-            services.AddTransient<IReportRepository<WeeklyReceivableReport>, 
-                ReportRepository<WeeklyReceivableReport>>();
-
-            services.AddTransient<IReportRepository<MonthlyIncomeReport>, 
-                ReportRepository<MonthlyIncomeReport>>();
-
-            services.AddTransient<IReportRepository<MonthlyExpenseReport>, 
-                ReportRepository<MonthlyExpenseReport>>();
-
-            services.AddTransient<IReportRepository<MonthlyPayableReport>, 
-                ReportRepository<MonthlyPayableReport>>();
-
-            services.AddTransient<IReportRepository<MonthlyReceivableReport>, 
-                ReportRepository<MonthlyReceivableReport>>();
-
-            services.AddTransient<IReportRepository<PerDayReport>, 
-                ReportRepository<PerDayReport>>(); 
+            services.AddTransient<IListReportRepository<PerDayReport>, 
+                PerDayReportRepository>(); 
             #endregion
 
 

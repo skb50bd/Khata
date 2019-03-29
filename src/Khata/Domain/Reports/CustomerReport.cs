@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public class CustomerReport : IndividaulReport
+    public class CustomerReport : IndividualReport
     {
         public string FullName { get; set; }
 

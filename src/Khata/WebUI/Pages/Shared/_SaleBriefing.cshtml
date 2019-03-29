@@ -86,7 +86,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var p in Model.Cart.Where(i => i.Type == Product))
+                @foreach (var p in Model.Cart.Where(i => i.Type == LineItemType.Product))
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => p.Name)</td>

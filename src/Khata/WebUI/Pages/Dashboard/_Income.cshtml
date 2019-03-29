@@ -8,9 +8,9 @@
         <canvas id="@Model.Span-income-chart" height="200"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-income-total">
-            @((Model.Income.DebtReceived
-                        + Model.Income.SaleReceived
-                        + Model.Income.DepositAmount
+            @((Model.Inflow.DebtReceived
+                        + Model.Inflow.SaleReceived
+                        + Model.Inflow.DepositAmount
                     ).ToString("C2"))
         </p>
         <table class="table table-sm table-hover table-borderless table-striped">
@@ -20,10 +20,10 @@
                     <td class="text-right">
                         <span class="badge badge-dark"
                               id="@Model.Span-sales">
-                            @Html.DisplayFor(model => Model.Income.SaleCount)
+                            @Html.DisplayFor(model => Model.Inflow.SaleCount)
                         </span>
                         <span id="@Model.Span-sale-receives">
-                            @Html.DisplayFor(model => Model.Income.SaleReceived)
+                            @Html.DisplayFor(model => Model.Inflow.SaleReceived)
                         </span>
                     </td>
                 </tr>
@@ -31,7 +31,7 @@
                     <th>Profit</th>
                     <td class="text-right">
                         <span id="@Model.Span-sale-profit">
-                            @Html.DisplayFor(model => Model.Income.SaleProfit)
+                            @Html.DisplayFor(model => Model.Inflow.SaleProfit)
                         </span>
                     </td>
                 </tr>
@@ -40,10 +40,10 @@
                     <td class="text-right">
                         <span class="badge badge-dark"
                               id="@Model.Span-debt-receive-count">
-                            @Html.DisplayFor(model => Model.Income.DebtPaymentCount)
+                            @Html.DisplayFor(model => Model.Inflow.DebtPaymentCount)
                         </span>
                         <span id="@Model.Span-debt-receive-amount">
-                            @Html.DisplayFor(model => Model.Income.DebtReceived)
+                            @Html.DisplayFor(model => Model.Inflow.DebtReceived)
                         </span>
                     </td>
                 </tr>
@@ -52,10 +52,10 @@
                     <td class="text-right">
                         <span class="badge badge-dark"
                               id="@Model.Span-purchase-returns-count">
-                            @Html.DisplayFor(model => Model.Income.PurchaseReturnsCount)
+                            @Html.DisplayFor(model => Model.Inflow.PurchaseReturnsCount)
                         </span>
                         <span id="@Model.Span-purchase-returns-amount">
-                            @Html.DisplayFor(model => Model.Income.PurchaseReturnsReceived)
+                            @Html.DisplayFor(model => Model.Inflow.PurchaseReturnsReceived)
                         </span>
                     </td>
                 </tr>
@@ -64,10 +64,10 @@
                     <td class="text-right">
                         <span class="badge badge-dark"
                               id="@Model.Span-deposits-count">
-                            @Html.DisplayFor(model => Model.Income.DepositsCount)
+                            @Html.DisplayFor(model => Model.Inflow.DepositsCount)
                         </span>
                         <span id="@Model.Span-deposits-amount">
-                            @Html.DisplayFor(model => Model.Income.DepositAmount)
+                            @Html.DisplayFor(model => Model.Inflow.DepositAmount)
                         </span>
                     </td>
                 </tr>

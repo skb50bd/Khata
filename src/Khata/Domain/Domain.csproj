@@ -16,12 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Brotal.Extensions" Version="0.1.7" />
+    <PackageReference Include="Brotal.Extensions" Version="0.1.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0"/>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0"/>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

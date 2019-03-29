@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public class AssetReport : Report
+    public class Asset : Report
     {
         [Display(Name = "Customers with Due")]
         public int DueCount { get; set; }
