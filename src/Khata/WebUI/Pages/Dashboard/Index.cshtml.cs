@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Queries;
 using Business.Reports;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using Queries;
 
 namespace WebUI.Pages.Dashboard
 {
@@ -80,14 +82,14 @@ namespace WebUI.Pages.Dashboard
             _dailyReceivableReports = dailyReceivableReports;
             _weeklyReceivableReports = weeklyReceivableReports;
             _monthlyReceivableReports = monthlyReceivableReports;
-            //_dailyOutletSalesReports = dailyOutletSalesReports;
-            //_weeklyOutletSalesReports = weeklyOutletSalesReports;
-            //_monthlyOutletSalesReports = monthlyOutletSalesReports;
             _perDayReports = perDayReports;
         }
 
         public async Task OnGetAsync()
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             AssetReport = (await _assetReports.Get()).FirstOrDefault();
             LiabilityReport = (await _liabilityReports.Get()).FirstOrDefault();
             IncomeReports = new IncomeReports
@@ -119,14 +121,10 @@ namespace WebUI.Pages.Dashboard
                 Monthly = (await _monthlyReceivableReports.Get()).FirstOrDefault()
             };
 
-            //OutletSales = new OutletSalesReport
-            //{
-            //    Daily = await _dailyOutletSalesReports.Get(),
-            //    Weekly = await _weeklyOutletSalesReports.Get(),
-            //    Monthly = await _monthlyOutletSalesReports.Get()
-            //};
-
             PerDayReports = await _perDayReports.Get();
+
+            sw.Stop();
+            Debug.WriteLine($"Took Time {sw.ElapsedMilliseconds}");
         }
     }
     public struct IncomeReportWithSpan
