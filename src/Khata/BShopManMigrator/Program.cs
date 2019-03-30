@@ -1,8 +1,10 @@
 using System.IO;
 
-using ImportData.Models;
-
 using Business.Mapper;
+
+using Data.Persistence.Repositories;
+
+using ImportData.Models;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ namespace ImportData
 
     using Data.Core;
     using Data.Persistence;
+
     using Domain;
 
     using Microsoft.EntityFrameworkCore;
@@ -72,10 +75,11 @@ namespace ImportData
 
     public static class Configure
     {
-        public static IServiceCollection ConfigureSqlData(this IServiceCollection services, string cnnString)
+        public static IServiceCollection ConfigureSqlData(
+            this IServiceCollection services, string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlServer(cnnString)
+                options.UseNpgsql(cnnString)
             );
 
             services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();

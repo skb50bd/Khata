@@ -110,9 +110,14 @@ namespace Data.Persistence
             });
 
             builder.Entity<Outlet>(entity => {
-                entity.HasMany(e => e.Sales).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
-                entity.HasMany(e => e.Products).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
-                entity.HasMany(e => e.Services).WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Sales)
+                      .WithOne(s => s.Outlet)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Products)
+                      .WithOne(s => s.Outlet)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Services)
+                      .WithOne(s => s.Outlet).OnDelete(DeleteBehavior.Restrict);
             });
 
             foreach (var property in builder.Model.GetEntityTypes()

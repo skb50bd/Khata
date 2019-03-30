@@ -73,8 +73,8 @@ namespace Business.Implementations
                 p => p.Id,
                 1,
                 int.MaxValue,
-                fromDate ?? DateTime.Today.AddYears(-1),
-                toDate ?? DateTime.Now)
+                fromDate ?? Clock.Today.AddYears(-1),
+                toDate ?? Clock.Now)
             ;
             return res.CastList(c => _mapper.Map<SaleDto>(c));
         }
@@ -109,7 +109,7 @@ namespace Business.Implementations
                                 : await Sold(li.ItemId, li.NetPrice)));
             }
 
-            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(DateTime.Now);
+            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(Clock.Now);
 
             dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
 
@@ -289,7 +289,7 @@ namespace Business.Implementations
                                 : await Added(li.ItemId, li.NetPrice)));
             }
 
-            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(DateTime.Now);
+            dm.SaleDate = (DateTime)model.SaleDate.TryParseDate(Clock.Now);
             dm.Payment.SubTotal = dm.Cart.Sum(li => li.NetPrice);
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 

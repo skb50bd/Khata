@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public abstract class IncomeBase : Report
+    public class Inflow : Report
     {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+
         [Display(Name = "Number of Sales")]
         public int SaleCount { get; set; }
 
@@ -19,8 +23,6 @@ namespace Queries
         [DataType(DataType.Currency)]
         public decimal DebtReceived { get; set; }
 
-
-
         public int PurchaseReturnsCount { get; set; }
 
         [DataType(DataType.Currency)]
@@ -31,18 +33,5 @@ namespace Queries
 
         [DataType(DataType.Currency)]
         public decimal DepositAmount { get; set; }
-
     }
-
-    public class DailyIncomeReport : IncomeBase { }
-    public class WeeklyIncomeReport : IncomeBase { }
-    public class MonthlyIncomeReport : IncomeBase { }
-
-    public class IncomeReports
-    {
-        public DailyIncomeReport Daily { get; set; }
-        public WeeklyIncomeReport Weekly { get; set; }
-        public MonthlyIncomeReport Monthly { get; set; }
-    }
-
 }

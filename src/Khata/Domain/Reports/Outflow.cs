@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public abstract class ExpenseBase : Report
+    public class Outflow : Report
     {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
         public int PurchaseCount { get; set; }
 
         [DataType(DataType.Currency)]
@@ -26,7 +29,7 @@ namespace Queries
 
         [DataType(DataType.Currency)]
         public decimal ExpenseAmount { get; set; }
-        
+
 
         public int RefundCount { get; set; }
 
@@ -37,16 +40,5 @@ namespace Queries
 
         [DataType(DataType.Currency)]
         public decimal WithdrawalAmount { get; set; }
-    }
-
-    public class DailyExpenseReport : ExpenseBase { }
-    public class WeeklyExpenseReport : ExpenseBase { }
-    public class MonthlyExpenseReport : ExpenseBase { }
-
-    public class ExpenseReports
-    {
-        public DailyExpenseReport Daily { get; set; }
-        public WeeklyExpenseReport Weekly { get; set; }
-        public MonthlyExpenseReport Monthly { get; set; }
     }
 }

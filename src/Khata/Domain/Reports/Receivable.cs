@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace Queries
+namespace Domain.Reports
 {
-    public abstract class ReceivableBase : Report
+    public class Receivable : Report
     {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+
         public int      SalesDueCount               { get; set; }
 
         [DataType(DataType.Currency)]
@@ -18,15 +22,5 @@ namespace Queries
 
         [DataType(DataType.Currency)]
         public decimal  SalaryOverPaymentAmount     { get; set; }
-    }
-    public class DailyReceivableReport : ReceivableBase { }
-    public class WeeklyReceivableReport : ReceivableBase { }
-    public class MonthlyReceivableReport : ReceivableBase { }
-
-    public class ReceivableReports
-    {
-        public DailyReceivableReport Daily { get; set; }
-        public WeeklyReceivableReport Weekly { get; set; }
-        public MonthlyReceivableReport Monthly { get; set; }
     }
 }

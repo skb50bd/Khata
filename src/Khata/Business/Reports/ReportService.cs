@@ -2,40 +2,45 @@
 using System.Threading.Tasks;
 
 using Data.Core;
-using Queries;
+
+using Domain.Reports;
 
 namespace Business.Reports
 {
-    public class ReportService<TReport>
-        : IReportService<TReport>
-            where TReport : Report
+    public class ReportService<TReport> 
+        : IReportService<TReport> where TReport: Report
     {
-        protected readonly IReportRepository<TReport> _reports;
-        public ReportService(IReportRepository<TReport> reports)
-        {
-            _reports = reports;
-        }
+        private readonly IReportRepository<TReport> _repo;
+        public ReportService(IReportRepository<TReport> repo) => 
+            _repo = repo;
 
-        public async Task<IEnumerable<TReport>> Get()
-            => await _reports.Get();
-
-
-        public async Task<int> Count()
-            => await _reports.Count();
+        public async Task<TReport> Get() => 
+            await _repo.Get();
     }
 
-    public class IndividualReportService<TReport> :
-        ReportService<TReport>, IIndividualReportService<TReport>
-            where TReport : IndividaulReport
+    public class ListReportService<TReport> 
+        : IListReportService<TReport> where TReport:Report
     {
-        protected readonly IIndividualReportRepository<TReport> _individualReports;
-        public IndividualReportService(IIndividualReportRepository<TReport> reports)
-            : base(reports as IReportRepository<TReport>)
-        {
-            _individualReports = reports;
-        }
+        private readonly IListReportRepository<TReport> _repo;
+        public ListReportService(
+            IListReportRepository<TReport> repo) =>
+            _repo = repo;
+
+        public async Task<IEnumerable<TReport>> Get() => 
+            await _repo.Get();
+
+    }
+
+    public class IndividualReportService<TReport> 
+        : IIndividualReportService<TReport>
+            where TReport : IndividualReport
+    {
+        private readonly IIndividualReportRepository<TReport> _repo;
+        public IndividualReportService(
+            IIndividualReportRepository<TReport> repo) =>
+            _repo = repo;
 
         public async Task<TReport> Get(int id)
-            => await _individualReports.GetById(id);
+            => await _repo.GetById(id);
     }
 }

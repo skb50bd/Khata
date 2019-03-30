@@ -33,7 +33,7 @@ namespace WebUI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            CultureInfo.DefaultThreadCurrentCulture = 
+            CultureInfo.DefaultThreadCurrentCulture =
                 Configuration.GetValue<CultureInfo>("OutletOptions:Culture");
         }
 
@@ -49,10 +49,28 @@ namespace WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var dbProvider = Configuration.GetValue<string>("DbProvider");
-            var connectionString = dbProvider == "SqlServer"
-                ? Configuration.GetConnectionString("SqlServerConnection")
-                : Configuration.GetConnectionString("SQLiteConnection");
+            var dbProvider = Configuration.GetValue<DbProvider>("Settings:DbProvider");
+            string connectionString;
+            switch (dbProvider)
+            {
+                case DbProvider.SQLServer:
+                    connectionString =
+                        Configuration.GetConnectionString("SQLServerConnection");
+                    break;
+                case DbProvider.PostgreSQL:
+                    connectionString =
+                        Configuration.GetConnectionString("PostgreSQLConnection");
+                    break;
+                case DbProvider.SQLite:
+                    connectionString =
+                        Configuration.GetConnectionString("SQLiteConnection");
+                    break;
+                default:
+                    connectionString =
+                        Configuration.GetConnectionString("SQLiteConnection");
+                    break;
+
+            }
 
             services.ConfigureData(dbProvider, connectionString);
 
@@ -66,7 +84,6 @@ namespace WebUI
 
             services.AddAuthorization(options =>
             {
-
                 options.AddPolicy("AdminRights",
                     policy => policy.RequireRole("Admin"));
                 options.AddPolicy("UserRights",
@@ -135,6 +152,8 @@ namespace WebUI
                 Configuration.GetSection("OutletOptions"));
             services.Configure<AuthMessageSenderOptions>(
                 Configuration.GetSection("SendGrid"));
+            services.Configure<KhataSettings>(
+                Configuration.GetSection("Settings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
