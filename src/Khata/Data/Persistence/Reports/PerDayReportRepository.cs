@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Data.Core;
 
+using Domain;
 using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 using static System.Decimal;
 
@@ -15,19 +16,30 @@ namespace Data.Persistence.Reports
 {
     public class PerDayReportRepository : IListReportRepository<PerDayReport>
     {
-        private readonly KhataContext _db;
-        public PerDayReportRepository(KhataContext db) =>
-            _db = db;
+        private readonly KhataContext  _db;
+        private readonly KhataSettings _settings;
+
+        public PerDayReportRepository(
+            KhataContext                   db,
+            IOptionsMonitor<KhataSettings> settings)
+        {
+            _db       = db;
+            _settings = settings.CurrentValue;
+        }
 
         public async Task<IEnumerable<PerDayReport>> Get()
 
         {
+            if (_settings.DbProvider == DbProvider.SQLServer)
+                return await _db.Query<PerDayReport>()
+                             .ToListAsync();
+
             const int days = 30;
             var deposits =
                 await _db.Deposits.Include(d => d.Metadata)
                      .Where(d =>
                           d.Metadata.CreationTime >=
-                          DateTime.Today.AddDays(-days + 1))
+                          Clock.Today.AddDays(-days + 1))
                      .Select(
                           d => new PerDayReport
                           {
@@ -41,7 +53,7 @@ namespace Data.Persistence.Reports
                 await _db.Withdrawals.Include(w => w.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
-                        DateTime.Today.AddDays(
+                        Clock.Today.AddDays(
                             -days + 1))
                    .Select(
                         w => new PerDayReport
@@ -57,7 +69,7 @@ namespace Data.Persistence.Reports
                 await _db.Sales.Include(s => s.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
-                        DateTime.Today.AddDays(-days + 1) &&
+                        Clock.Today.AddDays(-days + 1) &&
                         !d.IsRemoved)
                    .Select(
                         s => new PerDayReport
@@ -71,7 +83,7 @@ namespace Data.Persistence.Reports
                 await _db.Purchases.Include(p => p.Metadata)
                    .Where(d =>
                         d.Metadata.CreationTime >=
-                        DateTime.Today.AddDays(
+                        Clock.Today.AddDays(
                             -days + 1) &&
                         !d.IsRemoved)
                    .Select(
@@ -87,7 +99,7 @@ namespace Data.Persistence.Reports
                 await _db.SalaryIssues.Include(si => si.Metadata)
                      .Where(d =>
                           d.Metadata.CreationTime >=
-                          DateTime.Today.AddDays(
+                          Clock.Today.AddDays(
                               -days + 1) &&
                           !d.IsRemoved)
                      .Select(

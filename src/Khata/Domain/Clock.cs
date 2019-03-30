@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BShopManMigrator
+namespace Domain
 {
     public static class Clock
     {

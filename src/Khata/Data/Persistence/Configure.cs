@@ -34,9 +34,9 @@ namespace Data.Persistence
                     break;
 
                 case DbProvider.PostgreSQL:
-                    services.AddEntityFrameworkNpgsql()
-                            .AddDbContext<KhataContext>()
-                            .BuildServiceProvider();
+                    services.AddDbContext<KhataContext>(options => 
+                        options.UseNpgsql(cnnString)
+                    );
                     break;
 
                 default:

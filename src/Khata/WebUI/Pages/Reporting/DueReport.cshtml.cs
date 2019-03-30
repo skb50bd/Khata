@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
+
+using Domain;
 
 using DTOs;
 
@@ -35,7 +37,7 @@ namespace WebUI.Pages.Reporting
         [DataType(DataType.Currency)]
         public decimal AverageDue => Count == 0 ? 0M : TotalDue / Count;
 
-        public string ForDate => DateTime.Today.ToString("dd MMM yyy");
+        public string ForDate => Clock.Today.ToString("dd MMM yyy");
 
         public async Task<IActionResult> OnGetAsync()
         {

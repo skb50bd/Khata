@@ -6,54 +6,64 @@ using Brotal.Extensions;
 
 using Data.Core;
 
+using Domain;
 using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 using static System.Decimal;
 
 namespace Data.Persistence.Reports
 {
-    public class OutflowReportRepository : IReportRepository<PeriodicalReport<Outflow>>
+    public class OutflowReportRepository 
+        : IReportRepository<PeriodicalReport<Outflow>>
     {
-        protected readonly KhataContext Db;
-        public OutflowReportRepository(KhataContext db)
-            => Db = db;
+        private readonly KhataContext  _db;
+        private readonly KhataSettings _settings;
+
+        public OutflowReportRepository(
+            KhataContext                   db,
+            IOptionsMonitor<KhataSettings> settings)
+        {
+            _db       = db;
+            _settings = settings.CurrentValue;
+        }
 
         private async Task<Outflow> GetOutflow(DateTime fromDate)
         {
             var expenses =
-                await Db.Expenses.Include(e => e.Metadata)
+                await _db.Expenses.Include(e => e.Metadata)
                               .Where(e => e.Metadata.CreationTime > fromDate
                                        && !e.IsRemoved)
                               .ToListAsync();
 
             var purchases =
-                await Db.Purchases.Include(e => e.Metadata)
+                await _db.Purchases.Include(e => e.Metadata)
                                .Where(e => e.Metadata.CreationTime > fromDate
                                         && !e.IsRemoved)
                                .ToListAsync();
 
             var salaryPayments =
-                await Db.SalaryPayments.Include(e => e.Metadata)
+                await _db.SalaryPayments.Include(e => e.Metadata)
                                     .Where(e => e.Metadata.CreationTime > fromDate
                                              && !e.IsRemoved)
                                     .ToListAsync();
 
             var supplierPayments =
-                await Db.SupplierPayments.Include(e => e.Metadata)
+                await _db.SupplierPayments.Include(e => e.Metadata)
                                       .Where(e => e.Metadata.CreationTime > fromDate
                                                && !e.IsRemoved)
                                       .ToListAsync();
 
             var refunds =
-                await Db.Refunds.Include(e => e.Metadata)
+                await _db.Refunds.Include(e => e.Metadata)
                              .Where(e => e.Metadata.CreationTime > fromDate
                                       && !e.IsRemoved)
                              .ToListAsync();
 
             var withdrawals =
-                await Db.Withdrawals.Include(e => e.Metadata)
+                await _db.Withdrawals.Include(e => e.Metadata)
                                  .Where(e => e.Metadata.CreationTime > fromDate
                                           && e.TableName == nameof(Domain.Withdrawal))
                                  .ToListAsync();
@@ -77,7 +87,20 @@ namespace Data.Persistence.Reports
 
         public async Task<PeriodicalReport<Outflow>> Get()
         {
-            var today   = DateTime.Today;
+            if (_settings.DbProvider == DbProvider.SQLServer)
+            {
+                var outflows =
+                    await _db.Query<Outflow>()
+                             .ToListAsync();
+                return new PeriodicalReport<Outflow>
+                {
+                    Daily   = outflows[0],
+                    Weekly  = outflows[1],
+                    Monthly = outflows[2]
+                };
+            }
+
+            var today   = Clock.Today;
             var daily   = await GetOutflow(today);
             var weekly  = await GetOutflow(today.StartOfWeek(DayOfWeek.Saturday));
             var monthly = await GetOutflow(today.FirstDayOfMonth());

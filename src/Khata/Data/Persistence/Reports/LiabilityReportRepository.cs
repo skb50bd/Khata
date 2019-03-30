@@ -3,17 +3,26 @@ using System.Threading.Tasks;
 
 using Data.Core;
 
+using Domain;
 using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Data.Persistence.Reports
 {
     public class LiabilityReportRepository : IReportRepository<Liability>
     {
-        protected readonly KhataContext Db;
-        public LiabilityReportRepository(KhataContext db)
-            => Db = db;
+        private readonly KhataContext  _db;
+        private readonly KhataSettings _settings;
+
+        public LiabilityReportRepository(
+            KhataContext                   db,
+            IOptionsMonitor<KhataSettings> settings)
+        {
+            _db       = db;
+            _settings = settings.CurrentValue;
+        }
 
         //public async Task<Liability> Get() =>
         //    new Liability
@@ -36,14 +45,18 @@ namespace Data.Persistence.Reports
 
         public async Task<Liability> Get()
         {
-            var due = Db.Suppliers.Where(s => s.Payable > 0 && !s.IsRemoved)
+            if (_settings.DbProvider == DbProvider.SQLServer)
+                return await _db.Query<Liability>()
+                                .FirstOrDefaultAsync();
+
+            var due = _db.Suppliers.Where(s => s.Payable > 0 && !s.IsRemoved)
                         .Select(s => s.Payable);
             var unpaidEmployees =
-                Db.Employees.Where(e => e.Balance > 0 && !e.IsRemoved)
+                _db.Employees.Where(e => e.Balance > 0 && !e.IsRemoved)
                   .Select(e => e.Balance);
 
             var c =
-                await Db.CashRegister
+                await _db.CashRegister
                     .Select(
                         cr => new Liability
                         {

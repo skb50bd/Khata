@@ -194,7 +194,7 @@ namespace Business.Mapper
             )
             .ForMember(
                 dest => dest.Date,
-                opt => opt.MapFrom(src => DateTime.Now)
+                opt => opt.MapFrom(src => Clock.Now)
             )
             .ForMember(
                 dest => dest.DebtPayment,

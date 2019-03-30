@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
+
+using Domain;
 
 using DTOs;
 
@@ -71,8 +73,8 @@ namespace WebUI.Controllers
 
             purchases = await _purchases.Get(
                         _pfService.CreateNewPf(term, 1, int.MaxValue),
-                        DateTime.Today.AddYears(-1),
-                        DateTime.Now);
+                        Clock.Today.AddYears(-1),
+                        Clock.Now);
 
             string getLabel(int purchaseId,
                 int invoiceId,

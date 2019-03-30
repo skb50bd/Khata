@@ -75,10 +75,11 @@ namespace ImportData
 
     public static class Configure
     {
-        public static IServiceCollection ConfigureSqlData(this IServiceCollection services, string cnnString)
+        public static IServiceCollection ConfigureSqlData(
+            this IServiceCollection services, string cnnString)
         {
             services.AddDbContext<KhataContext>(options =>
-                options.UseSqlite(cnnString)
+                options.UseNpgsql(cnnString)
             );
 
             services.AddTransient<ITrackingRepository<Outlet>, TrackingRepository<Outlet>>();

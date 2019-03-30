@@ -27,8 +27,8 @@ namespace Data.Persistence.Repositories
         {
 
             predicate = predicate.And(i => !i.IsRemoved
-                    && i.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && i.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
+                    && i.Metadata.CreationTime >= (from ?? Clock.Min)
+                    && i.Metadata.CreationTime <= (to ?? Clock.Max));
             var res = new PagedList<SupplierPayment>()
             {
                 PageIndex = pageIndex,

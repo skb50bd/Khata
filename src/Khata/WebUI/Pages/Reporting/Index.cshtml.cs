@@ -66,7 +66,7 @@ namespace WebUI.Pages.Reporting
 
         public async Task<IActionResult> OnGetAsync(string fromText, string toText)
         {
-            FromText = fromText ?? DateTime.Today.LocalDate();
+            FromText = fromText ?? Clock.Today.LocalDate();
             ToText = toText ?? FromText;
             await Load();
             return Page();

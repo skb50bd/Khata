@@ -18,9 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Persistence\Migrations\PostgreSQL\20190330001900_InitialPostgres.cs" />
+    <Compile Include="Persistence\Migrations\PostgreSQL\20190330001900_InitialPostgres.Designer.cs" />
+    <Compile Include="Persistence\Migrations\PostgreSQL\KhataContextModelSnapshot.cs" />
     <Compile Include="Persistence\Migrations\SQLite\20190329173617_InitialSqlite.cs" />
-    <Compile Include="Persistence\Migrations\SQLite\20190329173617_InitialSqlite.designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\20190329173617_InitialSqlite.Designer.cs" />
     <Compile Include="Persistence\Migrations\SQLite\KhataContextModelSnapshot.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\KhataContextModelSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Brotal.Extensions" Version="0.1.9" />

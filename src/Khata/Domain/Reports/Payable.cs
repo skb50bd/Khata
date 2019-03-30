@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Reports
 {
     public class Payable : Report
     {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+
         public int PurchaseDueCount { get; set; }
 
         [DataType(DataType.Currency)]

@@ -526,7 +526,7 @@ namespace ImportData.Services
 
                 newItem.Invoice = new CustomerInvoice
                 {
-                    Date = DateTime.Now,
+                    Date = Clock.Now,
                     PreviousDue = newItem.Amount,
                     PaymentPaid = newItem.Amount,
                     DebtPayment = newItem,
@@ -564,7 +564,7 @@ namespace ImportData.Services
 
                 newItem.Vouchar = new Vouchar
                 {
-                    Date = DateTime.Now,
+                    Date = Clock.Now,
                     PreviousDue = newItem.Amount,
                     PaymentPaid = newItem.Amount,
                     SupplierPayment = newItem,
@@ -699,7 +699,7 @@ namespace ImportData.Services
 
                 var vouchar = new Vouchar
                 {
-                    Date = DateTime.Now,
+                    Date = Clock.Now,
                     PreviousDue = 0,
                     PaymentSubtotal = newItem.Payment.SubTotal,
                     PaymentPaid = newItem.Amount,
@@ -792,7 +792,7 @@ namespace ImportData.Services
 
                 var customerInvoice = new CustomerInvoice
                 {
-                    Date = DateTime.Now,
+                    Date = Clock.Now,
                     OutletId = Outlets[shopId].Id,
                     PreviousDue = 0,
                     PaymentSubtotal = newItem.Payment.SubTotal,

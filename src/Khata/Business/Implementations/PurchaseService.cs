@@ -218,8 +218,8 @@ namespace Business.Implementations
                 p => p.Id,
                 1,
                 int.MaxValue,
-                DateTime.Today.AddYears(-1),
-                DateTime.Now);
+                Clock.Today.AddYears(-1),
+                Clock.Now);
             return res.CastList(c => _mapper.Map<PurchaseDto>(c));
         }
     }

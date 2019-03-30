@@ -68,7 +68,7 @@ namespace WebUI.Pages.Cash
             string fromText, 
             string toText)
         {
-            FromText = fromText ?? DateTime.Today.LocalDate();
+            FromText = fromText ?? Clock.Today.LocalDate();
             ToText   = toText ?? FromText;
 
             await Load();

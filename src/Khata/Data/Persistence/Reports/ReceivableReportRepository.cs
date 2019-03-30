@@ -6,9 +6,11 @@ using Brotal.Extensions;
 
 using Data.Core;
 
+using Domain;
 using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 using static System.Decimal;
 
@@ -17,26 +19,32 @@ namespace Data.Persistence.Reports
     public class ReceivableReportRepository 
         : IReportRepository<PeriodicalReport<Receivable>>
     {
-        protected readonly KhataContext Db;
-        public ReceivableReportRepository(KhataContext db)
-            => Db = db;
+        private readonly KhataContext  _db;
+        private readonly KhataSettings _settings;
 
+        public ReceivableReportRepository(
+            KhataContext                   db,
+            IOptionsMonitor<KhataSettings> settings)
+        {
+            _db       = db;
+            _settings = settings.CurrentValue;
+        }
         private async Task<Receivable> GetReceivable(DateTime fromDate)
         {
             var sales = 
-                await Db.Sales.Include(e => e.Metadata)
+                await _db.Sales.Include(e => e.Metadata)
                     .Where(e => e.Payment.Due > 0M
                              && e.Metadata.CreationTime >= fromDate
                              && !e.IsRemoved).ToListAsync();
 
             var supplierPayments =
-                await Db.SupplierPayments.Include(e => e.Metadata)
+                await _db.SupplierPayments.Include(e => e.Metadata)
                         .Where(e => e.PayableAfter < 0M
                                  && e.Metadata.CreationTime >= fromDate
                                  && !e.IsRemoved).ToListAsync();
 
             var salaryPayments =
-                await Db.SalaryPayments.Include(e => e.Metadata)
+                await _db.SalaryPayments.Include(e => e.Metadata)
                         .Where(e => e.BalanceAfter < 0M
                                  && e.Metadata.CreationTime >= fromDate
                                  && !e.IsRemoved).ToListAsync();
@@ -60,7 +68,20 @@ namespace Data.Persistence.Reports
 
         public async Task<PeriodicalReport<Receivable>> Get()
         {
-            var today   = DateTime.Today;
+            if (_settings.DbProvider == DbProvider.SQLServer)
+            {
+                var receivables =
+                    await _db.Query<Receivable>()
+                             .ToListAsync();
+                return new PeriodicalReport<Receivable>
+                {
+                    Daily   = receivables[0],
+                    Weekly  = receivables[1],
+                    Monthly = receivables[2]
+                };
+            }
+
+            var today   = Clock.Today;
             var daily   = await GetReceivable(today);
             var weekly  = await GetReceivable(today.StartOfWeek(DayOfWeek.Saturday));
             var monthly = await GetReceivable(today.FirstDayOfMonth());

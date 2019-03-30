@@ -31,8 +31,8 @@ namespace Data.Persistence.Repositories
             DateTime? to = null)
         {
             predicate = predicate.And(
-                e => e.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue));
+                e => e.Metadata.CreationTime >= (from ?? Clock.Min)
+                    && e.Metadata.CreationTime <= (to ?? Clock.Max));
 
             var res = new PagedList<T>()
             {
@@ -81,8 +81,8 @@ namespace Data.Persistence.Repositories
             => await Context.Set<T>()
                 .AsNoTracking()
                 .Where(e =>
-                    e.Metadata.CreationTime >= (from ?? DateTime.MinValue)
-                    && e.Metadata.CreationTime <= (to ?? DateTime.MaxValue)
+                    e.Metadata.CreationTime >= (from ?? Clock.Min)
+                    && e.Metadata.CreationTime <= (to ?? Clock.Max)
                 ).CountAsync();
     }
 }

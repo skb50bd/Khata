@@ -4,7 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
+
 using Business.Abstractions;
+
+using Domain;
+
 using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +33,7 @@ namespace WebUI.Pages.Customers
             _refunds = refunds;
         }
 
-        public DateTime ForDate => DateTime.Today;
+        public DateTime ForDate => Clock.Today;
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public CustomerDto Customer { get; set; }

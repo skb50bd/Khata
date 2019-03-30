@@ -72,8 +72,8 @@ namespace WebUI.Controllers
 
             sales = await _sales.Get(0,
                         _pfService.CreateNewPf(term, 1, int.MaxValue),
-                        DateTime.Today.AddYears(-1),
-                        DateTime.Now);
+                        Clock.Today.AddYears(-1),
+                        Clock.Now);
 
             string getLabel(int saleId, int invoiceId, string customerName)
             {

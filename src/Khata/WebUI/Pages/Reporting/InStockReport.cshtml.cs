@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
+
+using Domain;
 
 using DTOs;
 
@@ -33,7 +35,7 @@ namespace WebUI.Pages.Reporting
 
         }
 
-        public string ForDate => DateTime.Now.LocalDateTime();
+        public string ForDate => Clock.Now.LocalDateTime();
         public IEnumerable<ProductDto> Products { get; set; } = new List<ProductDto>();
         public IEnumerable<OutletDto> Outlets { get; set; } = new List<OutletDto>();
 
