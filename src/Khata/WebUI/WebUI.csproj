@@ -176,7 +176,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Brotal.Extensions" Version="0.1.9" />
+    <PackageReference Include="Brotal.Extensions" Version="0.2.0" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
