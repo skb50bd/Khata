@@ -94,20 +94,30 @@ namespace Data.Persistence
                 IReportRepository<Liability>,
                 LiabilityReportRepository>();
 
-            services.AddTransient<IReportRepository<PeriodicalReport<Inflow>>,
+            services.AddTransient<
+                IReportRepository<PeriodicalReport<Inflow>>,
                 InflowReportRepository>();
 
-            services.AddTransient<IReportRepository<PeriodicalReport<Outflow>>,
+            services.AddTransient<
+                IReportRepository<PeriodicalReport<Outflow>>,
                 OutflowReportRepository>();
 
-            services.AddTransient<IReportRepository<PeriodicalReport<Payable>>,
+            services.AddTransient<
+                IReportRepository<PeriodicalReport<Payable>>,
                 PayableReportRepository>();
 
-            services.AddTransient<IReportRepository<PeriodicalReport<Receivable>>,
+            services.AddTransient<
+                IReportRepository<PeriodicalReport<Receivable>>,
                 ReceivableReportRepository>();
 
-            services.AddTransient<IListReportRepository<PerDayReport>,
+            services.AddTransient<
+                IListReportRepository<PerDayReport>,
                 PerDayReportRepository>();
+
+            services
+               .AddTransient<
+                    IBackupRestoreRepository, 
+                    BackupRestoreRepository>();
             #endregion
 
 

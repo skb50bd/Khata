@@ -1,0 +1,239 @@
+﻿using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Brotal.Extensions;
+
+using Data.Core;
+
+using Microsoft.EntityFrameworkCore;
+
+using Newtonsoft.Json;
+
+namespace Data.Persistence
+{
+    public class BackupRestoreRepository : IBackupRestoreRepository
+    {
+        private readonly KhataContext _ctx;
+
+        public BackupRestoreRepository(
+            KhataContext ctx)
+        {
+            _ctx = ctx;
+        }
+
+        public async Task<Stream> GetJsonDump()
+        {
+            #region Get the Data From Database
+
+            // Todo - Reverse All Collections
+
+            var outlets = await _ctx.Outlets.Reverse().ToListAsync();
+            var cashRegisters = await _ctx.CashRegister.ToListAsync();
+            var products = await _ctx.Products.ToListAsync();
+            var services = await _ctx.Services.ToListAsync();
+            var savedSales = await _ctx.SavedSales
+                                             .Include(ss => ss.Cart)
+                                             .ToListAsync();
+            var customers = await _ctx.Customers.ToListAsync();
+            var debtPayments = await _ctx.DebtPayments.ToListAsync();
+            var sales = await _ctx.Sales
+                                             .Include(s => s.Cart)
+                                             .ToListAsync();
+            var invoices = await _ctx.Invoices
+                                             .Include(i => i.Cart)
+                                             .ToListAsync();
+            var refunds = await _ctx.Refunds
+                                             .Include(r => r.Cart)
+                                             .ToListAsync();
+            var suppliers = await _ctx.Suppliers.ToListAsync();
+            var supplierPayments = await _ctx.SupplierPayments.ToListAsync();
+            var purchases = await _ctx.Purchases
+                                             .Include(p => p.Cart)
+                                             .ToListAsync();
+            var vouchars = await _ctx.Vouchars
+                                             .Include(v => v.Cart)
+                                             .ToListAsync();
+            var purchaseReturns = await _ctx.PurchaseReturns
+                                             .Include(pr => pr.Cart)
+                                             .ToListAsync();
+            var employees = await _ctx.Employees.ToListAsync();
+            var salaryIssues = await _ctx.SalaryIssues.ToListAsync();
+            var salaryPayments = await _ctx.SalaryPayments.ToListAsync();
+            var expenses = await _ctx.Expenses.ToListAsync();
+            var deposits = await _ctx.Deposits.ToListAsync();
+            var withdrawals = await _ctx.Withdrawals.ToListAsync();
+            #endregion
+
+            #region Nullify Navigation Properties (to Avoid Reference Looping)
+            outlets.ForEach(o =>
+                {
+                    o.Products = null;
+                    o.Services = null;
+                    o.Sales = null;
+                });
+
+            customers.ForEach(c =>
+            {
+                c.Purchases = null;
+                c.DebtPayments = null;
+                c.Refunds = null;
+            });
+
+            debtPayments.ForEach(dp =>
+            {
+                dp.Customer = null;
+                dp.Invoice = null;
+            });
+
+            sales.ForEach(s =>
+            {
+                s.Customer = null;
+                s.Invoice = null;
+                s.Outlet = null;
+            });
+
+            invoices.ForEach(i =>
+            {
+                i.Customer = null;
+                i.Outlet = null;
+                i.Sale = null;
+                i.DebtPayment = null;
+            });
+
+            refunds.ForEach(r =>
+            {
+                r.Customer = null;
+                r.Sale = null;
+            });
+
+            suppliers.ForEach(s =>
+            {
+                s.Purchases = null;
+                s.PurchaseReturns = null;
+                s.Payments = null;
+            });
+
+            supplierPayments.ForEach(sp =>
+            {
+                sp.Supplier = null;
+                sp.Vouchar = null;
+            });
+
+            purchases.ForEach(p =>
+            {
+                p.Supplier = null;
+                p.Vouchar = null;
+            });
+
+            vouchars.ForEach(v =>
+            {
+                v.Purchase = null;
+                v.Supplier = null;
+                v.SupplierPayment = null;
+            });
+
+            purchaseReturns.ForEach(pr =>
+            {
+                pr.Supplier = null;
+                pr.Purchase = null;
+            });
+
+            employees.ForEach(e =>
+            {
+                e.SalaryIssues = null;
+                e.SalaryPayments = null;
+            });
+
+            salaryIssues.ForEach(si =>
+            {
+                si.Employee = null;
+            });
+
+            salaryPayments.ForEach(sp =>
+            {
+                sp.Employee = null;
+            });
+
+            #endregion
+
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting            = Formatting.None
+            };
+
+            var items = new List<ZipItem>
+            {
+                new ZipItem(
+                    $"{nameof(outlets).Capitalize()}.json",
+                    JsonConvert.SerializeObject(outlets, settings),
+                    Encoding.Unicode
+                ),
+                new ZipItem(
+                    $"{nameof(products).Capitalize()}.json",
+                    JsonConvert.SerializeObject(products, settings),
+                    Encoding.Unicode
+                ),
+                new ZipItem(
+                    $"{nameof(services).Capitalize()}.json",
+                    JsonConvert.SerializeObject(services, settings),
+                    Encoding.Unicode
+                )
+            };
+
+            return Zipper.Zip(items);
+        }
+
+        public async Task<bool> RestoreFromJson(string dump)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class ZipItem
+    {
+        public string Name { get; set; }
+        public Stream Content { get; set; }
+
+        public ZipItem(string name, Stream content)
+        {
+            Name    = name;
+            Content = content;
+        }
+
+        public ZipItem(string name, string contentStr, Encoding encoding)
+        {
+            // convert string to stream
+            var byteArray    = encoding.GetBytes(contentStr);
+            var memoryStream = new MemoryStream(byteArray);
+            Name             = name;
+            Content          = memoryStream;
+        }
+    }
+
+    public static class Zipper
+    {
+        public static Stream Zip(List<ZipItem> zipItems)
+        {
+            var zipStream = new MemoryStream();
+
+            using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var zipItem in zipItems)
+                {
+                    var entry = zip.CreateEntry(zipItem.Name);
+                    using (var entryStream = entry.Open())
+                    {
+                        zipItem.Content.CopyTo(entryStream);
+                    }
+                }
+            }
+            zipStream.Position = 0;
+            return zipStream;
+        }
+    }
+}
