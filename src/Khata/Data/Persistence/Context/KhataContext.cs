@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace Data.Persistence
 {
-    public partial class KhataContext : IdentityDbContext
+    public sealed partial class KhataContext : IdentityDbContext
     {
         private readonly ILogger<KhataContext> _logger;
         private readonly KhataSettings _settings;
@@ -48,12 +48,13 @@ namespace Data.Persistence
             Database.EnsureCreated();
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(
+            ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.BuildEntities()
-                   .BuildQueries();
+                   .BuildQueries(this);
         }
     }
 }

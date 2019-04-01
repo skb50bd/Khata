@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence
 {
-    public partial class KhataContext
+    public sealed partial class KhataContext
     {
         public DbSet<Outlet> Outlets { get; set; }
         public DbSet<CashRegister> CashRegister { get; set; }

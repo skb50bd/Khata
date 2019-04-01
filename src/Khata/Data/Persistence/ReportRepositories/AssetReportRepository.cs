@@ -55,24 +55,26 @@ namespace Data.Persistence.Reports
         {
             if (_settings.DbProvider == DbProvider.SQLServer)
                 return await _db.Query<Asset>()
-                               .FirstOrDefaultAsync();
-
-            var debts = _db.Customers.Where(c => c.Debt > 0 && !c.IsRemoved)
-                          .Select(c => c.Debt);
+                                .FirstOrDefaultAsync();
+            var debts = 
+                _db.Customers
+                    .Where(c => c.Debt > 0 && !c.IsRemoved)
+                    .Select(c => c.Debt);
             var inventory =
-                _db.Products.Where(
-                       p => p.Inventory.Stock + p.Inventory.Warehouse > 0
-                         && !p.IsRemoved)
-                  .Select(p =>
-                       p.Price.Purchase *
-                       (p.Inventory.Stock + p.Inventory.Warehouse));
+                _db.Products
+                   .Where(
+                        p => p.Inventory.Stock + p.Inventory.Warehouse > 0
+                           && !p.IsRemoved)
+                  .Select(
+                      p => p.Price.Purchase * (p.Inventory.Stock + p.Inventory.Warehouse)
+                  );
 
             return await _db.CashRegister.Select(
                 c => new Asset
                 {
-                    Cash = c.Balance,
-                    DueCount = debts.Count(),
-                    TotalDue = debts.Sum(),
+                    Cash           = c.Balance,
+                    DueCount       = debts.Count(),
+                    TotalDue       = debts.Sum(),
                     InventoryCount = inventory.Count(),
                     InventoryWorth = inventory.Sum()
                 }).FirstOrDefaultAsync();
