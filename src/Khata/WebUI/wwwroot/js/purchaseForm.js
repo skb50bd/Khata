@@ -1,48 +1,48 @@
-﻿const purchaseDate = document.getElementById('PurchaseDate');
-const retail = document.getElementById('retail');
-const bulk = document.getElementById('bulk');
-const supplierId = document.getElementById('SupplierId');
-const supplierSelector = document.getElementById('supplier-selector');
-const registerNewSupplier = document.getElementById('RegisterNewSupplier');
-const supplierFirstName = document.getElementById('Supplier_FirstName');
-const supplierLastName = document.getElementById('Supplier_LastName');
-const supplierCompanyName = document.getElementById('Supplier_CompanyName');
-const supplierAddress = document.getElementById('Supplier_Address');
-const supplierPhone = document.getElementById('Supplier_Phone');
-const supplierEmail = document.getElementById('Supplier_Email');
-const supplierBriefInfo = document.getElementById('supplier-brief-info');
-const lineItemId = document.getElementById('lineitem-id');
-const lineItemType = document.getElementById('lineitem-type');
-const lineItemSelector = document.getElementById('lineitem-selector');
-const lineItemQuantity = document.getElementById('lineitem-quantity');
-const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
-const lineItemNetPrice = document.getElementById('lineitem-netprice');
-const lineItemAdd = document.getElementById('lineitem-add-button');
-const lineItemClear = document.getElementById('lineitem-clear-button');
-const lineItemAvailable = document.getElementById('lineitem-available');
-const cart = document.getElementById('cart');
-const subtotal = document.getElementById('subtotal');
-const discountCash = document.getElementById('Payment_DiscountCash');
-const discountPercentage = document.getElementById('Payment_DiscountPercentage');
-const payableBefore = document.getElementById('payable-before');
-const payable = document.getElementById('payable');
-const paid = document.getElementById('Payment_Paid');
-const payableAfter = document.getElementById('payable-after');
-const description = document.getElementById('Description');
+﻿const purchaseDate = document.getElementById("PurchaseDate");
+const retail = document.getElementById("retail");
+const bulk = document.getElementById("bulk");
+const supplierId = document.getElementById("SupplierId");
+const supplierSelector = document.getElementById("supplier-selector");
+const registerNewSupplier = document.getElementById("RegisterNewSupplier");
+const supplierFirstName = document.getElementById("Supplier_FirstName");
+const supplierLastName = document.getElementById("Supplier_LastName");
+const supplierCompanyName = document.getElementById("Supplier_CompanyName");
+const supplierAddress = document.getElementById("Supplier_Address");
+const supplierPhone = document.getElementById("Supplier_Phone");
+const supplierEmail = document.getElementById("Supplier_Email");
+const supplierBriefInfo = document.getElementById("supplier-brief-info");
+const lineItemId = document.getElementById("lineitem-id");
+const lineItemType = document.getElementById("lineitem-type");
+const lineItemSelector = document.getElementById("lineitem-selector");
+const lineItemQuantity = document.getElementById("lineitem-quantity");
+const lineItemUnitPrice = document.getElementById("lineitem-unitprice");
+const lineItemNetPrice = document.getElementById("lineitem-netprice");
+const lineItemAdd = document.getElementById("lineitem-add-button");
+const lineItemClear = document.getElementById("lineitem-clear-button");
+const lineItemAvailable = document.getElementById("lineitem-available");
+const cart = document.getElementById("cart");
+const subtotal = document.getElementById("subtotal");
+const discountCash = document.getElementById("Payment_DiscountCash");
+const discountPercentage = document.getElementById("Payment_DiscountPercentage");
+const payableBefore = document.getElementById("payable-before");
+const payable = document.getElementById("payable");
+const paid = document.getElementById("Payment_Paid");
+const payableAfter = document.getElementById("payable-after");
+const description = document.getElementById("Description");
 
 
 var itemsAdded = 0;
 
 function supplierInputsReadonly(value) {
-    var supplierInputs = document.getElementsByClassName('supplier-input');
+    var supplierInputs = document.getElementsByClassName("supplier-input");
     if (value === true) {
         for (var i = 0; i < supplierInputs.length; i++) {
-            supplierInputs[i].setAttribute('readonly', true);
+            supplierInputs[i].setAttribute("readonly", true);
         }
     }
     else {
         for (var j = 0; j < supplierInputs.length; j++) {
-            supplierInputs[j].removeAttribute('readonly');
+            supplierInputs[j].removeAttribute("readonly");
         }
     }
 }
@@ -50,7 +50,7 @@ function supplierInputsReadonly(value) {
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
+    var currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
     for (var i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
@@ -94,7 +94,7 @@ function calculateItemPrice(event) {
     if (isNaN(lineItemQuantity.valueAsNumber))
         lineItemQuantity.value = 1;
 
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
+    const minimumPrice = Number(lineItemUnitPrice.getAttribute("min"));
     if (isNaN(lineItemUnitPrice.valueAsNumber) || lineItemUnitPrice.valueAsNumber < minimumPrice)
         lineItemUnitPrice.value = minimumPrice;
 
@@ -110,7 +110,7 @@ function setUnitPriceFromNetPrice(event) {
     if (isNaN(lineItemQuantity.valueAsNumber))
         lineItemQuantity.value = 1;
 
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
+    const minimumPrice = Number(lineItemUnitPrice.getAttribute("min"));
     var minimumNetPrice = minimumPrice * lineItemQuantity.valueAsNumber;
 
     if (isNaN(lineItemNetPrice.valueAsNumber) || lineItemNetPrice.valueAsNumber < minimumNetPrice)
@@ -121,13 +121,13 @@ function setUnitPriceFromNetPrice(event) {
 
 function clearLineItem(event) {
     event.preventDefault();
-    lineItemId.value = '';
-    lineItemId.removeAttribute('min');
-    lineItemType.value = '';
-    lineItemSelector.value = '';
-    lineItemQuantity.value = '';
-    lineItemUnitPrice.value = '';
-    lineItemNetPrice.value = '';
+    lineItemId.value = "";
+    lineItemId.removeAttribute("min");
+    lineItemType.value = "";
+    lineItemSelector.value = "";
+    lineItemQuantity.value = "";
+    lineItemUnitPrice.value = "";
+    lineItemNetPrice.value = "";
 }
 
 function getLineItem() {
@@ -154,7 +154,7 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement('div');
+    var row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
         <div class="col-12">
@@ -235,7 +235,7 @@ function addLineItem(event) {
     //it.fadein();
     removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
-    document.getElementById('remove-item-button' + itemsAdded).addEventListener('click', removeCartItem);
+    document.getElementById("remove-item-button" + itemsAdded).addEventListener("click", removeCartItem);
 
     itemsAdded++;
 
@@ -244,11 +244,11 @@ function addLineItem(event) {
 }
 
 function removeCartItemIfExists(itemId) {
-    var items = document.getElementsByClassName('cart-item-itemid');
+    var items = document.getElementsByClassName("cart-item-itemid");
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         if (item.valueAsNumber === itemId) {
-            console.log('Found ' + itemId);
+            console.log("Found " + itemId);
             var row = item.parentElement.parentElement.parentElement;
             row.parentElement.removeChild(row);
         }
@@ -267,23 +267,23 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $('#purchase-date').datetimepicker({
-        format: 'DD/MM/YYYY',
+    $("#purchase-date").datetimepicker({
+        format: "DD/MM/YYYY",
         useCurrent: true
     });
-    if (purchaseDate.value === '')
+    if (purchaseDate.value === "")
         purchaseDate.value = getDate();
 
-    registerNewSupplier.removeAttribute('checked');
+    registerNewSupplier.removeAttribute("checked");
 
-    $('#supplier-selector').autocomplete({
+    $("#supplier-selector").autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: supplierSelector.getAttribute("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -298,9 +298,9 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: '/api/Suppliers/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
+                url: "/api/Suppliers/" + ui.item.value,
+                type: "GET",
+                dataType: "json",
                 success: function (data) {
                     payableBefore.value = data.payable;
                     supplierFirstName.value = data.firstName;
@@ -308,9 +308,9 @@ $(document).ready(function () {
                 }
             }).then(() => {
                 $.ajax({
-                    url: '/Suppliers/Details/Brief?supplierId=' + ui.item.value,
-                    type: 'GET',
-                    dataType: 'html',
+                    url: "/Suppliers/Details/Brief?supplierId=" + ui.item.value,
+                    type: "GET",
+                    dataType: "html",
                     success: function (response) {
                         supplierBriefInfo.innerHTML = response;
                     }
@@ -343,14 +343,14 @@ $(document).ready(function () {
         }
     });
 
-    $('#lineitem-selector').catcomplete({
+    $("#lineitem-selector").catcomplete({
         source: function (request, response) {
             $.ajax({
                 url: lineItemSelector.getAttribute("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -365,55 +365,55 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
-            if (lineitem.category === 'Product') {
+            if (lineitem.category === "Product") {
                 lineItemType.value = 1;
                 lineItemAvailable.innerHTML = lineitem.available;
-                lineItemAvailable.parentElement.removeAttribute('hidden');
+                lineItemAvailable.parentElement.removeAttribute("hidden");
             }
             else {
                 lineItemType.value = 2;
-                lineItemAvailable.parentElement.setAttribute('hidden');
+                lineItemAvailable.parentElement.setAttribute("hidden");
             }
             lineItemId.value = lineitem.itemId;
 
             lineItemUnitPrice.value = lineitem.unitPurchasePrice;
 
-            if (lineitem.category === 'Service') {
+            if (lineitem.category === "Service") {
                 lineItemQuantity.value = 1;
                 //calculateItemPrice(event);
             }
-            lineItemUnitPrice.setAttribute('min', lineitem.minimumPrice);
+            lineItemUnitPrice.setAttribute("min", lineitem.minimumPrice);
 
             lineItemSelector.value = lineitem.name;
         }
     });
 
-    registerNewSupplier.addEventListener('change', function () {
+    registerNewSupplier.addEventListener("change", function () {
         if (this.checked === true) {
-            supplierId.value = '0';
-            supplierSelector.value = '';
+            supplierId.value = "0";
+            supplierSelector.value = "";
             supplierInputsReadonly(false);
-            supplierBriefInfo.innerHTML = '';
+            supplierBriefInfo.innerHTML = "";
         }
         else {
             supplierInputsReadonly(true);
         }
     });
-    subtotal.addEventListener('change', calculatePayment);
-    discountCash.addEventListener('change', calculatePayment);
-    discountPercentage.addEventListener('focusout', function () {
+    subtotal.addEventListener("change", calculatePayment);
+    discountCash.addEventListener("change", calculatePayment);
+    discountPercentage.addEventListener("focusout", function () {
         if (isNaN(discountPercentage.valueAsNumber))
             discountPercentage.value = 0;
         discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
         discountCash.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber, 2);
         calculatePayment();
     });
-    payableBefore.addEventListener('change', calculatePayment);
-    paid.addEventListener('change', calculatePayment);
-    lineItemQuantity.addEventListener('change', calculateItemPrice);
-    lineItemQuantity.addEventListener('focusout', calculateItemPrice);
-    lineItemUnitPrice.addEventListener('focusout', calculateItemPrice);
-    lineItemNetPrice.addEventListener('focusout', setUnitPriceFromNetPrice);
-    lineItemAdd.addEventListener('click', addLineItem);
-    lineItemClear.addEventListener('click', clearLineItem);
+    payableBefore.addEventListener("change", calculatePayment);
+    paid.addEventListener("change", calculatePayment);
+    lineItemQuantity.addEventListener("change", calculateItemPrice);
+    lineItemQuantity.addEventListener("focusout", calculateItemPrice);
+    lineItemUnitPrice.addEventListener("focusout", calculateItemPrice);
+    lineItemNetPrice.addEventListener("focusout", setUnitPriceFromNetPrice);
+    lineItemAdd.addEventListener("click", addLineItem);
+    lineItemClear.addEventListener("click", clearLineItem);
 });

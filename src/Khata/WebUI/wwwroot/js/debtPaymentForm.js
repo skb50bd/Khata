@@ -1,20 +1,20 @@
 ﻿$(document).ready(function () {
     
     function updateDebt() {
-        var dbVal = Number($('#DebtBefore').val());
-        var aVal = Number($('#Amount').val());
+        var dbVal = Number($("#DebtBefore").val());
+        var aVal = Number($("#Amount").val());
         var result = dbVal - aVal;
-        $('#DebtAfter').val(result);
+        $("#DebtAfter").val(result);
     }
 
     $("#CustomerSelector").autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: $("#CustomerSelector").attr("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -28,17 +28,17 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: '/api/Customers/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
+                url: "/api/Customers/" + ui.item.value,
+                type: "GET",
+                dataType: "json",
                 success: function (data) {
-                    $('#DebtBefore').val(data.debt);
+                    $("#DebtBefore").val(data.debt);
                     updateDebt();
                 }
             });
 
-            $('#CustomerSelector').val(ui.item.label);
-            $('#CustomerId').val(ui.item.value);
+            $("#CustomerSelector").val(ui.item.label);
+            $("#CustomerId").val(ui.item.value);
 
             return false;
         }

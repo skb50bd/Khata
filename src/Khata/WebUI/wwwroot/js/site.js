@@ -3,12 +3,12 @@
 };
 
 const formatter = new Intl.NumberFormat(
-    'en-BD',
+    "en-BD",
     {
-        style: 'currency',
-        currency: 'BDT',
-        localeMatcher: 'lookup',
-        currencyDisplay: 'symbol',
+        style: "currency",
+        currency: "BDT",
+        localeMatcher: "lookup",
+        currencyDisplay: "symbol",
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
@@ -35,14 +35,14 @@ function getDate(elem = null) {
 
 
 const swalDelete = Swal.mixin({
-    confirmButtonClass: 'btn btn-danger',
-    cancelButtonClass: 'btn btn-secondary mr-4',
+    confirmButtonClass: "btn btn-danger",
+    cancelButtonClass: "btn btn-secondary mr-4",
     buttonsStyling: false
 });
 
 const swalSave = Swal.mixin({
-    confirmButtonClass: 'btn btn-success',
-    cancelButtonClass: 'btn btn-danger mr-4',
+    confirmButtonClass: "btn btn-success",
+    cancelButtonClass: "btn btn-danger mr-4",
     buttonsStyling: false
 });
 
@@ -56,12 +56,12 @@ $(document).ready(function () {
     $(".immutable-submit").submit(function (event) {
         event.preventDefault();
         swalSave.fire({
-            title: 'Are you sure?',
+            title: "Are you sure?",
             text: "Are you sure want to save thre record?",
-            type: 'info',
+            type: "info",
             showCancelButton: true,
-            confirmButtonText: 'Yes, save it!',
-            cancelButtonText: 'No, cancel!',
+            confirmButtonText: "Yes, save it!",
+            cancelButtonText: "No, cancel!",
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
@@ -69,16 +69,16 @@ $(document).ready(function () {
             }
             else {
                 swalSave.fire(
-                    'Cacelled',
-                    'Item not saved!',
-                    'info'
+                    "Cacelled",
+                    "Item not saved!",
+                    "info"
                 );
             }
         });
     });
 
-    $('.datepicker').datepicker();
-    $('.datepicker').datepicker("option", "dateFormat", "dd/mm/yy");
+    $(".datepicker").datepicker();
+    $(".datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
 
     $(".js-clickable-row").click(attachClickableRow);
 
@@ -88,21 +88,21 @@ $(document).ready(function () {
 
     $(".js-remove-item").click(function (e) {
         swalDelete.fire({
-            title: 'Are you sure?',
+            title: "Are you sure?",
             text: "The item will be removed from records!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
-            confirmButtonText: 'Yes, remove it!',
-            cancelButtonText: 'No, cancel!',
+            confirmButtonText: "Yes, remove it!",
+            cancelButtonText: "No, cancel!",
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
                 $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
                     .done(function () {
                         swalDelete.fire(
-                            'Removed!',
-                            'Your file has been removed.',
-                            'success'
+                            "Removed!",
+                            "Your file has been removed.",
+                            "success"
                         ).then((value) => {
                             if (value)
                                 window.location = $(e.target).attr("data-returnUrl");
@@ -110,9 +110,9 @@ $(document).ready(function () {
                     })
                     .fail(function () {
                         swalDelete.fire(
-                            'Failed',
-                            'Could not remove the item :(',
-                            'warning'
+                            "Failed",
+                            "Could not remove the item :(",
+                            "warning"
                         );
                     });
             } else if (
@@ -120,9 +120,9 @@ $(document).ready(function () {
                 result.dismiss === Swal.DismissReason.cancel
             ) {
                 swalDelete.fire(
-                    'Cancelled',
-                    'Your file is safe :)',
-                    'error'
+                    "Cancelled",
+                    "Your file is safe :)",
+                    "error"
                 );
             }
         });
@@ -133,8 +133,8 @@ $(document).ready(function () {
         $('[data-toggle="popover"]').popover();
     });
 
-    $('.popover-dismiss').popover({
-        trigger: 'hover'
+    $(".popover-dismiss").popover({
+        trigger: "hover"
     });
 
     $(function () {
@@ -144,8 +144,8 @@ $(document).ready(function () {
     $(".ajax-tab").click((e) => {
         $.ajax({
             url: $(e.target).attr("data-partial-source"),
-            type: 'GET',
-            dataType: 'html',
+            type: "GET",
+            dataType: "html",
             success: function (response) {
                 var id = $(e.target).attr("aria-controls");
                 var d = document.getElementById(id);
@@ -169,30 +169,30 @@ $(document).ready(function () {
     });
 
     $(function () {
-        $('#fromDate').datetimepicker({
-            format: 'DD/MM/YYYY',
+        $("#fromDate").datetimepicker({
+            format: "DD/MM/YYYY",
             useCurrent: true
         });
-        $('#toDate').datetimepicker({
-            format: 'DD/MM/YYYY',
+        $("#toDate").datetimepicker({
+            format: "DD/MM/YYYY",
             useCurrent: false
         });
         $("#fromDate").on("change.datetimepicker", function (e) {
-            $('#datetimepicker8').datetimepicker('minDate', e.date);
+            $("#datetimepicker8").datetimepicker("minDate", e.date);
         });
         $("#toDate").on("change.datetimepicker", function (e) {
-            $('#fromDate').datetimepicker('maxDate', e.date);
+            $("#fromDate").datetimepicker("maxDate", e.date);
         });
     });
 
-    var inputs = $(':input').keypress(function (e) {
+    var inputs = $(":input").keypress(function (e) {
         if (e.which === 13) {
             var nextInput = inputs.get(inputs.index(this) + 1);
             if (nextInput) {
-                if (nextInput.getAttribute('type') !== 'submit'
-                    && e.target.getAttribute('type') !== 'submit'
-                    && !$(e.target).is('textarea')
-                    && !$(nextInput).is('button')) {
+                if (nextInput.getAttribute("type") !== "submit"
+                    && e.target.getAttribute("type") !== "submit"
+                    && !$(e.target).is("textarea")
+                    && !$(nextInput).is("button")) {
                     e.preventDefault();
                     nextInput.focus();
                 }

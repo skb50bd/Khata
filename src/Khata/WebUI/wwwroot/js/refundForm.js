@@ -2,31 +2,31 @@
     return parseFloat(value).toFixed(dp);
 }
 
-const saleId            = document.getElementById('SaleId');
-const saleSelector      = document.getElementById('sale-selector');
-const lineItemId        = document.getElementById('lineitem-id');
-const lineItemType      = document.getElementById('lineitem-type');
-const lineItemSelector  = document.getElementById('lineitem-selector');
-const lineItemQuantity  = document.getElementById('lineitem-quantity');
-const lineItemUnitPrice = document.getElementById('lineitem-unitprice');
-const lineItemNetPrice  = document.getElementById('lineitem-netprice');
-const lineItemAdd       = document.getElementById('lineitem-add-button');
-const lineItemClear     = document.getElementById('lineitem-clear-button');
-const lineItemAvailable = document.getElementById('lineitem-available');
-const cart              = document.getElementById('cart');
-const subtotal          = document.getElementById('subtotal');
-const cashBack          = document.getElementById('CashBack');
-const debtRollback      = document.getElementById('DebtRollback');
-const debtBefore        = document.getElementById('debt-before');
-const debtAfter         = document.getElementById('debt-after');
-const description       = document.getElementById('Description');
+const saleId            = document.getElementById("SaleId");
+const saleSelector      = document.getElementById("sale-selector");
+const lineItemId        = document.getElementById("lineitem-id");
+const lineItemType      = document.getElementById("lineitem-type");
+const lineItemSelector  = document.getElementById("lineitem-selector");
+const lineItemQuantity  = document.getElementById("lineitem-quantity");
+const lineItemUnitPrice = document.getElementById("lineitem-unitprice");
+const lineItemNetPrice  = document.getElementById("lineitem-netprice");
+const lineItemAdd       = document.getElementById("lineitem-add-button");
+const lineItemClear     = document.getElementById("lineitem-clear-button");
+const lineItemAvailable = document.getElementById("lineitem-available");
+const cart              = document.getElementById("cart");
+const subtotal          = document.getElementById("subtotal");
+const cashBack          = document.getElementById("CashBack");
+const debtRollback      = document.getElementById("DebtRollback");
+const debtBefore        = document.getElementById("debt-before");
+const debtAfter         = document.getElementById("debt-after");
+const description       = document.getElementById("Description");
 
 var itemsAdded = 0;
 
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
+    var currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
     for (var i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
@@ -68,9 +68,9 @@ function calculateItemPrice(event) {
 
     var q = lineItemQuantity.valueAsNumber;
     if (isNaN(q) || q < 0)
-        lineItemQuantity.value = lineItemQuantity.getAttribute('min');
-    else if (q > Number(lineItemQuantity.getAttribute('max')))
-        lineItemQuantity.value = lineItemQuantity.getAttribute('max');
+        lineItemQuantity.value = lineItemQuantity.getAttribute("min");
+    else if (q > Number(lineItemQuantity.getAttribute("max")))
+        lineItemQuantity.value = lineItemQuantity.getAttribute("max");
 
     if (isNaN(lineItemUnitPrice.valueAsNumber))
         lineItemUnitPrice.value = minimumPrice;
@@ -82,13 +82,13 @@ function calculateItemPrice(event) {
 
 function clearLineItem(event) {
     event.preventDefault();
-    lineItemId.value = '';
-    lineItemId.removeAttribute('min');
-    lineItemType.value = '';
-    lineItemSelector.value = '';
-    lineItemQuantity.value = '';
-    lineItemUnitPrice.value = '';
-    lineItemNetPrice.value = '';
+    lineItemId.value = "";
+    lineItemId.removeAttribute("min");
+    lineItemType.value = "";
+    lineItemSelector.value = "";
+    lineItemQuantity.value = "";
+    lineItemUnitPrice.value = "";
+    lineItemNetPrice.value = "";
 }
 
 function getLineItem() {
@@ -115,7 +115,7 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement('div');
+    var row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
         <div class="col-12">
@@ -195,8 +195,8 @@ function addLineItem(event) {
     var it = createCartItem(newItem);
     removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
-    document.getElementById('remove-item-button' + itemsAdded)
-        .addEventListener('click', removeCartItem);
+    document.getElementById("remove-item-button" + itemsAdded)
+        .addEventListener("click", removeCartItem);
 
     itemsAdded++;
 
@@ -205,11 +205,11 @@ function addLineItem(event) {
 }
 
 function removeCartItemIfExists(itemId) {
-    var items = document.getElementsByClassName('cart-item-itemid');
+    var items = document.getElementsByClassName("cart-item-itemid");
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         if (item.valueAsNumber === itemId) {
-            console.log('Found ' + itemId);
+            console.log("Found " + itemId);
             var row = item.parentElement.parentElement.parentElement;
             row.parentElement.removeChild(row);
         }
@@ -227,14 +227,14 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $('#sale-selector').autocomplete({
+    $("#sale-selector").autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: saleSelector.getAttribute("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -249,29 +249,29 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: '/Sales/Details/Brief?id=' + ui.item.value,
-                type: 'GET',
-                dataType: 'html',
+                url: "/Sales/Details/Brief?id=" + ui.item.value,
+                type: "GET",
+                dataType: "html",
                 success: function (response) {
-                    document.getElementById('sale-briefing').innerHTML = response;
+                    document.getElementById("sale-briefing").innerHTML = response;
                     saleSelector.value = ui.item.label;
                     saleId.value = ui.item.value;
                 }
             }).then(function () {
                 debtBefore.value =
-                    document.getElementById('current-due').valueAsNumber;
+                    document.getElementById("current-due").valueAsNumber;
             });
         }
     });
 
-    $('#lineitem-selector').autocomplete({
+    $("#lineitem-selector").autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: "/api/Refunds/LineItems/" + saleId.valueAsNumber,
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -291,23 +291,23 @@ $(document).ready(function () {
             lineItemId.value = lineitem.itemId;
             lineItemUnitPrice.value = lineitem.unitPrice;
             lineItemNetPrice.value = lineitem.netPrice;
-            lineItemQuantity.setAttribute('max', lineitem.quantity);
+            lineItemQuantity.setAttribute("max", lineitem.quantity);
 
             lineItemSelector.value = lineitem.name;
         }
     });
 
-    subtotal.addEventListener('change', calculatePayment);
-    cashBack.addEventListener('change', calculatePayment);
-    debtRollback.addEventListener('focusout', function () {
+    subtotal.addEventListener("change", calculatePayment);
+    cashBack.addEventListener("change", calculatePayment);
+    debtRollback.addEventListener("focusout", function () {
         if (isNaN(debtRollback.valueAsNumber))
             debtRollback.value = 0;
         debtRollback.value = Math.min(subTotal.valueAsNumber, toFixedIfNecessary(debtRollback.valueAsNumber, 2));
         calculatePayment();
     });
-    debtBefore.addEventListener('change', calculatePayment);
-    lineItemQuantity.addEventListener('change', calculateItemPrice);
-    lineItemQuantity.addEventListener('focusout', calculateItemPrice);
-    lineItemAdd.addEventListener('click', addLineItem);
-    lineItemClear.addEventListener('click', clearLineItem);
+    debtBefore.addEventListener("change", calculatePayment);
+    lineItemQuantity.addEventListener("change", calculateItemPrice);
+    lineItemQuantity.addEventListener("focusout", calculateItemPrice);
+    lineItemAdd.addEventListener("click", addLineItem);
+    lineItemClear.addEventListener("click", clearLineItem);
 });

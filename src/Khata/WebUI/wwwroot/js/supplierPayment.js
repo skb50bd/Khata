@@ -3,10 +3,10 @@
         source: function (request, response) {
             $.ajax({
                 url: $("#SupplierSelector").attr("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -20,27 +20,27 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: '/api/Suppliers/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
+                url: "/api/Suppliers/" + ui.item.value,
+                type: "GET",
+                dataType: "json",
                 success: function (data) {
-                    $('#PayableBefore').val(data.payable);
+                    $("#PayableBefore").val(data.payable);
                     updatePayable();
                 }
             });
 
-            $('#SupplierSelector').val(ui.item.label);
-            $('#SupplierId').val(ui.item.value);
+            $("#SupplierSelector").val(ui.item.label);
+            $("#SupplierId").val(ui.item.value);
 
             return false;
         }
     });
 
     function updatePayable() {
-        var dbVal = Number($('#PayableBefore').val());
-        var aVal = Number($('#Amount').val());
+        var dbVal = Number($("#PayableBefore").val());
+        var aVal = Number($("#Amount").val());
         var result = dbVal - aVal;
-        $('#PayableAfter').val(result);
+        $("#PayableAfter").val(result);
     }
 
     $(document).on("change, keyup", "#PayableBefore", updatePayable);

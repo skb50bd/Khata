@@ -1,49 +1,49 @@
-﻿const saleDate            = document.getElementById('SaleDate');
-const saleType            = document.getElementById('Type');
-const retail              = document.getElementById('retail');
-const bulk                = document.getElementById('bulk');
-const customerId          = document.getElementById('CustomerId');
-const customerSelector    = document.getElementById('customer-selector');
-const registerNewCustomer = document.getElementById('RegisterNewCustomer');
-const customerFirstName   = document.getElementById('Customer_FirstName');
-const customerLastName    = document.getElementById('Customer_LastName');
-const customerCompanyName = document.getElementById('Customer_CompanyName');
-const customerAddress     = document.getElementById('Customer_Address');
-const customerPhone       = document.getElementById('Customer_Phone');
-const customerEmail       = document.getElementById('Customer_Email');
-const customerBriefInfo   = document.getElementById('customer-brief-info');
-const lineItemId          = document.getElementById('lineitem-id');
-const lineItemType        = document.getElementById('lineitem-type');
-const lineItemSelector    = document.getElementById('lineitem-selector');
-const lineItemQuantity    = document.getElementById('lineitem-quantity');
-const lineItemUnitPrice   = document.getElementById('lineitem-unitprice');
-const lineItemNetPrice    = document.getElementById('lineitem-netprice');
-const lineItemAdd         = document.getElementById('lineitem-add-button');
-const lineItemClear       = document.getElementById('lineitem-clear-button');
-const lineItemAvailable   = document.getElementById('lineitem-available');
-const cart                = document.getElementById('cart');
-const subtotal            = document.getElementById('subtotal');
-const discountCash        = document.getElementById('Payment_DiscountCash');
-const discountPercentage  = document.getElementById('Payment_DiscountPercentage');
-const debtBefore          = document.getElementById('debt-before');
-const payable             = document.getElementById('payable');
-const paid                = document.getElementById('Payment_Paid');
-const debtAfter           = document.getElementById('debt-after');
-const description         = document.getElementById('Description');
+﻿const saleDate            = document.getElementById("SaleDate");
+const saleType            = document.getElementById("Type");
+const retail              = document.getElementById("retail");
+const bulk                = document.getElementById("bulk");
+const customerId          = document.getElementById("CustomerId");
+const customerSelector    = document.getElementById("customer-selector");
+const registerNewCustomer = document.getElementById("RegisterNewCustomer");
+const customerFirstName   = document.getElementById("Customer_FirstName");
+const customerLastName    = document.getElementById("Customer_LastName");
+const customerCompanyName = document.getElementById("Customer_CompanyName");
+const customerAddress     = document.getElementById("Customer_Address");
+const customerPhone       = document.getElementById("Customer_Phone");
+const customerEmail       = document.getElementById("Customer_Email");
+const customerBriefInfo   = document.getElementById("customer-brief-info");
+const lineItemId          = document.getElementById("lineitem-id");
+const lineItemType        = document.getElementById("lineitem-type");
+const lineItemSelector    = document.getElementById("lineitem-selector");
+const lineItemQuantity    = document.getElementById("lineitem-quantity");
+const lineItemUnitPrice   = document.getElementById("lineitem-unitprice");
+const lineItemNetPrice    = document.getElementById("lineitem-netprice");
+const lineItemAdd         = document.getElementById("lineitem-add-button");
+const lineItemClear       = document.getElementById("lineitem-clear-button");
+const lineItemAvailable   = document.getElementById("lineitem-available");
+const cart                = document.getElementById("cart");
+const subtotal            = document.getElementById("subtotal");
+const discountCash        = document.getElementById("Payment_DiscountCash");
+const discountPercentage  = document.getElementById("Payment_DiscountPercentage");
+const debtBefore          = document.getElementById("debt-before");
+const payable             = document.getElementById("payable");
+const paid                = document.getElementById("Payment_Paid");
+const debtAfter           = document.getElementById("debt-after");
+const description         = document.getElementById("Description");
 
 const itemsAdded = document.getElementById("items-added");
 
 
 function customerInputsReadonly(value) {
-    var customerInputs = document.getElementsByClassName('customer-input');
+    var customerInputs = document.getElementsByClassName("customer-input");
     if (value === true) {
         for (var i = 0; i < customerInputs.length; i++) {
-            customerInputs[i].setAttribute('readonly', true);
+            customerInputs[i].setAttribute("readonly", true);
         }
     }
     else {
         for (var j = 0; j < customerInputs.length; j++) {
-            customerInputs[j].removeAttribute('readonly');
+            customerInputs[j].removeAttribute("readonly");
         }
     }
 }
@@ -51,7 +51,7 @@ function customerInputsReadonly(value) {
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    var currentCartItemsNetPrices = document.getElementsByClassName('cart-item-netprice');
+    var currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
     for (var i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
@@ -95,7 +95,7 @@ function calculateItemPrice(event) {
     if (isNaN(lineItemQuantity.valueAsNumber))
         lineItemQuantity.value = 1;
 
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
+    const minimumPrice = Number(lineItemUnitPrice.getAttribute("min"));
     if (isNaN(lineItemUnitPrice.valueAsNumber) || lineItemUnitPrice.valueAsNumber < minimumPrice)
         lineItemUnitPrice.value = minimumPrice;
 
@@ -111,7 +111,7 @@ function setUnitPriceFromNetPrice(event) {
     if (isNaN(lineItemQuantity.valueAsNumber))
         lineItemQuantity.value = 1;
 
-    const minimumPrice = Number(lineItemUnitPrice.getAttribute('min'));
+    const minimumPrice = Number(lineItemUnitPrice.getAttribute("min"));
     var minimumNetPrice = minimumPrice * lineItemQuantity.valueAsNumber;
 
     if (isNaN(lineItemNetPrice.valueAsNumber) || lineItemNetPrice.valueAsNumber < minimumNetPrice)
@@ -122,13 +122,13 @@ function setUnitPriceFromNetPrice(event) {
 
 function clearLineItem(event) {
     event.preventDefault();
-    lineItemId.value = '';
-    lineItemId.removeAttribute('min');
-    lineItemType.value      = '';
-    lineItemSelector.value  = '';
-    lineItemQuantity.value  = '';
-    lineItemUnitPrice.value = '';
-    lineItemNetPrice.value  = '';
+    lineItemId.value = "";
+    lineItemId.removeAttribute("min");
+    lineItemType.value      = "";
+    lineItemSelector.value  = "";
+    lineItemQuantity.value  = "";
+    lineItemUnitPrice.value = "";
+    lineItemNetPrice.value  = "";
 }
 
 function getLineItem() {
@@ -155,7 +155,7 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement('div');
+    var row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
         <div class="col-12">
@@ -237,8 +237,8 @@ function addLineItem(event) {
     //it.fadein();
     removeCartItemIfExists(newItem.itemId, newItem.type);
     cart.appendChild(it);
-    document.getElementById('remove-item-button-' + itemsAdded.valueAsNumber)
-        .addEventListener('click', removeCartItem);
+    document.getElementById("remove-item-button-" + itemsAdded.valueAsNumber)
+        .addEventListener("click", removeCartItem);
 
     itemsAdded.value = itemsAdded.valueAsNumber + 1;
 
@@ -247,12 +247,12 @@ function addLineItem(event) {
 }
 
 function removeCartItemIfExists(itemId, type) {
-    var items = document.getElementsByClassName('cart-item-itemid');
+    var items = document.getElementsByClassName("cart-item-itemid");
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         if (item.valueAsNumber === itemId
-            && item.parentElement.getElementsByClassName('cart-item-type')[0].valueAsNumber === type) {
-            console.log('Found ' + itemId);
+            && item.parentElement.getElementsByClassName("cart-item-type")[0].valueAsNumber === type) {
+            console.log("Found " + itemId);
             var row = item.parentElement.parentElement.parentElement;
             row.parentElement.removeChild(row);
         }
@@ -274,25 +274,25 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $('#sale-date').datetimepicker({
-        format: 'DD/MM/YYYY',
+    $("#sale-date").datetimepicker({
+        format: "DD/MM/YYYY",
         useCurrent: true
     });
-    if (saleDate.value === '') {
+    if (saleDate.value === "") {
         saleDate.value = getDate(new Date());
     }
 
     if (isNaN(itemsAdded.valueAsNumber))
         itemsAdded.value = 0;
 
-    $('#customer-selector').autocomplete({
+    $("#customer-selector").autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: customerSelector.getAttribute("data-path"),
-                type: 'GET',
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -307,9 +307,9 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: '/api/Customers/' + ui.item.value,
-                type: 'GET',
-                dataType: 'json',
+                url: "/api/Customers/" + ui.item.value,
+                type: "GET",
+                dataType: "json",
                 success: function (data) {
                     debtBefore.value = data.debt;
                     customerFirstName.value = data.firstName;
@@ -317,9 +317,9 @@ $(document).ready(function () {
                 }
             }).then(() => {
                 $.ajax({
-                    url: '/Customers/Details/Brief?customerId=' + ui.item.value,
-                    type: 'GET',
-                    dataType: 'html',
+                    url: "/Customers/Details/Brief?customerId=" + ui.item.value,
+                    type: "GET",
+                    dataType: "html",
                     success: function(response) {
                         customerBriefInfo.innerHTML = response;
                     }
@@ -352,14 +352,14 @@ $(document).ready(function () {
         }
     });
 
-    $('#lineitem-selector').catcomplete({
+    $("#lineitem-selector").catcomplete({
         source: function (request, response) {
             $.ajax({
-                url: lineItemSelector.getAttribute("data-path") + "?outletId=" + $('#OutletId').val(),
-                type: 'GET',
+                url: lineItemSelector.getAttribute("data-path") + "?outletId=" + $("#OutletId").val(),
+                type: "GET",
                 cache: true,
                 data: request,
-                dataType: 'json',
+                dataType: "json",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return {
@@ -375,14 +375,14 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             var lineitem = ui.item.value;
-            if (lineitem.category === 'Product') {
+            if (lineitem.category === "Product") {
                 lineItemType.value = 1;
                 lineItemAvailable.innerHTML = lineitem.available;
-                lineItemAvailable.parentElement.removeAttribute('hidden');
+                lineItemAvailable.parentElement.removeAttribute("hidden");
             }
             else {
                 lineItemType.value = 2;
-                lineItemAvailable.parentElement.setAttribute('hidden');
+                lineItemAvailable.parentElement.setAttribute("hidden");
             }
             lineItemId.value = lineitem.itemId;
 
@@ -393,50 +393,50 @@ $(document).ready(function () {
                 lineItemUnitPrice.value = lineitem.unitPriceBulk;
             }
 
-            if (lineitem.category === 'Service') {
+            if (lineitem.category === "Service") {
                 lineItemQuantity.value = 1;
                 //calculateItemPrice(event);
             }
-            lineItemUnitPrice.setAttribute('min', lineitem.minimumPrice);
+            lineItemUnitPrice.setAttribute("min", lineitem.minimumPrice);
 
             lineItemSelector.value = lineitem.name;
         }
     });
 
 
-    document.getElementById('sale-form')
-        .addEventListener('reset', function () {
+    document.getElementById("sale-form")
+        .addEventListener("reset", function () {
             customerBriefInfo.innerHTML = "";
             cart.innerHTML = "";
         });
 
-    registerNewCustomer.addEventListener('change', function () {
+    registerNewCustomer.addEventListener("change", function () {
         if (this.checked === true) {
-            customerId.value = '0';
-            customerSelector.value = '';
-            customerBriefInfo.innerHTML = '';
+            customerId.value = "0";
+            customerSelector.value = "";
+            customerBriefInfo.innerHTML = "";
             customerInputsReadonly(false);
         }
         else {
             customerInputsReadonly(true);
         }
     });
-    subtotal.addEventListener('change', calculatePayment);
-    discountCash.addEventListener('change', calculatePayment);
-    discountPercentage.addEventListener('focusout', function () {
+    subtotal.addEventListener("change", calculatePayment);
+    discountCash.addEventListener("change", calculatePayment);
+    discountPercentage.addEventListener("focusout", function () {
         if (isNaN(discountPercentage.valueAsNumber))
             discountPercentage.value = 0;
         discountPercentage.value = toFixedIfNecessary(discountPercentage.valueAsNumber, 2);
         discountCash.value = toFixedIfNecessary(subtotal.valueAsNumber / 100 * discountPercentage.valueAsNumber, 2);
         calculatePayment();
     });
-    debtBefore.addEventListener('change', calculatePayment);
-    paid.addEventListener('change', calculatePayment);
-    lineItemQuantity.addEventListener('change', calculateItemPrice);
-    lineItemQuantity.addEventListener('focusout', calculateItemPrice);
-    lineItemUnitPrice.addEventListener('focusout', calculateItemPrice);
+    debtBefore.addEventListener("change", calculatePayment);
+    paid.addEventListener("change", calculatePayment);
+    lineItemQuantity.addEventListener("change", calculateItemPrice);
+    lineItemQuantity.addEventListener("focusout", calculateItemPrice);
+    lineItemUnitPrice.addEventListener("focusout", calculateItemPrice);
 
-    lineItemNetPrice.addEventListener('focusout', setUnitPriceFromNetPrice);
-    lineItemAdd.addEventListener('click', addLineItem);
-    lineItemClear.addEventListener('click', clearLineItem);
+    lineItemNetPrice.addEventListener("focusout", setUnitPriceFromNetPrice);
+    lineItemAdd.addEventListener("click", addLineItem);
+    lineItemClear.addEventListener("click", clearLineItem);
 });
