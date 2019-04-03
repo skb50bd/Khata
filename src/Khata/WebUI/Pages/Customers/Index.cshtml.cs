@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
 
-using DTOs;
+using Brotal;
+
+using Business.Abstractions;
 using Business.PageFilterSort;
+
+using DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Brotal.Extensions;
-using Business.Abstractions;
 
 namespace WebUI.Pages.Customers
 {

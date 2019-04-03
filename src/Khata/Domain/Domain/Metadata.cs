@@ -1,6 +1,9 @@
 ﻿using System;
 
 using Brotal.Extensions;
+
+using Newtonsoft.Json;
+
 namespace Domain
 {
     public class Metadata : Entity
@@ -11,13 +14,19 @@ namespace Domain
         public string Modifier { get; set; }
         public DateTimeOffset ModificationTime { get; set; }
 
-
+        [JsonIgnore]
         public string Summary => "Updated " + ModificationTime.Natural()
                                     + " ago by " + Modifier;
+        [JsonIgnore]
         public string ModifiedAt => ModificationTime.ToString("dd/MM/yyyy HH:mm");
+
+        [JsonIgnore]
         public string CreatedAt => CreationTime.ToString("dd/MM/yyyy HH:mm");
 
+        [JsonIgnore]
         public string CreatedAgo => CreationTime.Natural();
+
+        [JsonIgnore]
         public string UpdatedAgo => ModificationTime.Natural();
 
         public Metadata()

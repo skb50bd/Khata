@@ -1,14 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Brotal;
+
+using Business.Abstractions;
+using Business.PageFilterSort;
 
 using DTOs;
-using Business.PageFilterSort;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Brotal.Extensions;
-using System.Collections.Generic;
-using Business.Abstractions;
 
 namespace WebUI.Pages.Services
 {

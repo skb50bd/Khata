@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using Brotal;
 using Brotal.Extensions;
 using Business.Abstractions;
 using Business.PageFilterSort;
@@ -12,6 +13,7 @@ using Domain;
 using DTOs;
 using Microsoft.AspNetCore.Http;
 using ViewModels;
+using Metadata = Domain.Metadata;
 
 namespace Business.Implementations
 {

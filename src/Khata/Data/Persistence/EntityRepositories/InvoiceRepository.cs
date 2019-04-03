@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using Brotal;
 using Brotal.Extensions;
 
 using Data.Core;

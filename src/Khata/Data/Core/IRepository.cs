@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Domain;
+using Brotal;
 
-using Brotal.Extensions;
+using Domain;
 
 namespace Data.Core
 {

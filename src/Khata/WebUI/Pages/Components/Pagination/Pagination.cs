@@ -1,7 +1,7 @@
 ﻿
-using Microsoft.AspNetCore.Mvc;
+using Brotal;
 
-using Brotal.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Pages.Components.Pagination
 {
