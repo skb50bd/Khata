@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <UserSecretsId>Khata.SendGrid.SecretId</UserSecretsId>
     <RootNamespace>Business</RootNamespace>
     <LangVersion>latest</LangVersion>
     <PackageId>skb50bd.khata.services</PackageId>

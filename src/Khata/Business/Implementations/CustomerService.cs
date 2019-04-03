@@ -72,11 +72,7 @@ namespace Business.Implementations
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
             _db.Customers.Add(dm);
             await _db.CompleteAsync();
-
-
-            _log.LogInformation("Added new customer: \n"
-                + JsonConvert.SerializeObject(dm, Formatting.Indented));
-
+            
             return _mapper.Map<CustomerDto>(dm);
         }
 

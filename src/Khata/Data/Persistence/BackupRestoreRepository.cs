@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Brotal;
 using Brotal.Extensions;
 
 using Data.Core;
@@ -20,10 +20,8 @@ namespace Data.Persistence
         private readonly KhataContext _ctx;
 
         public BackupRestoreRepository(
-            KhataContext ctx)
-        {
+            KhataContext ctx) =>
             _ctx = ctx;
-        }
 
         public async Task<Stream> GetJsonDump()
         {
@@ -303,52 +301,9 @@ namespace Data.Persistence
             return Zipper.Zip(items);
         }
 
-        public async Task<bool> RestoreFromJson(string dump)
+        public Task<bool> RestoreFromJson(string dump)
         {
             throw new System.NotImplementedException();
-        }
-    }
-
-    public class ZipItem
-    {
-        public string Name { get; set; }
-        public Stream Content { get; set; }
-
-        public ZipItem(string name, Stream content)
-        {
-            Name    = name;
-            Content = content;
-        }
-
-        public ZipItem(string name, string contentStr, Encoding encoding)
-        {
-            // convert string to stream
-            var byteArray    = encoding.GetBytes(contentStr);
-            var memoryStream = new MemoryStream(byteArray);
-            Name             = name;
-            Content          = memoryStream;
-        }
-    }
-
-    public static class Zipper
-    {
-        public static Stream Zip(List<ZipItem> zipItems)
-        {
-            var zipStream = new MemoryStream();
-
-            using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
-            {
-                foreach (var zipItem in zipItems)
-                {
-                    var entry = zip.CreateEntry(zipItem.Name);
-                    using (var entryStream = entry.Open())
-                    {
-                        zipItem.Content.CopyTo(entryStream);
-                    }
-                }
-            }
-            zipStream.Position = 0;
-            return zipStream;
         }
     }
 }
