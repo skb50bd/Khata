@@ -1,0 +1,140 @@
+﻿@page "{handler?}"
+@model Customers.DetailsModel
+
+@{
+    ViewData["Title"] = "Customer Details";
+    var salesSrc = Url.Page(
+        "/Customers/Details",
+        "Sales",
+        new { area = "People", Model.Customer.Id });
+
+    var debtPaymentsSrc = Url.Page(
+        "/Customers/Details",
+        "DebtPayments",
+        new { area = "People", Model.Customer.Id });
+
+    var refundsSrc = Url.Page(
+        "/Customers/Details",
+        "Refunds",
+        new { area = "People", Model.Customer.Id });
+}
+
+<ul class="nav nav-pills mb-3"
+    id="pills-tab"
+    role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active"
+           id="pills-overview-tab"
+           data-toggle="pill"
+           href="#pills-overview"
+           role="tab"
+           aria-controls="pills-overview"
+           aria-selected="true">
+            Overview
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           id="pills-profile-tab"
+           data-toggle="pill"
+           href="#pills-profile"
+           role="tab"
+           aria-controls="pills-profile"
+           aria-selected="false">
+            Profile
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link ajax-tab"
+           id="pills-sales-tab"
+           data-toggle="pill"
+           href="#pills-sales"
+           role="tab"
+           aria-controls="pills-sales"
+           aria-selected="false"
+           data-partial-source="@salesSrc">
+            Sales
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link ajax-tab"
+           id="pills-debt-payments-tab"
+           data-toggle="pill"
+           href="#pills-debt-payments"
+           role="tab"
+           aria-controls="pills-debt-payments"
+           aria-selected="false"
+           data-partial-source="@debtPaymentsSrc">
+            Debt Payments
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link ajax-tab"
+           id="pills-refunds-tab"
+           data-toggle="pill"
+           href="#pills-refunds"
+           role="tab"
+           aria-controls="pills-refunds"
+           aria-selected="false"
+           data-partial-source="@refundsSrc">
+            Refunds
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           id="pills-statement-tab"
+           data-toggle="pill"
+           href="#pills-statement"
+           role="tab"
+           aria-controls="pills-statement"
+           aria-selected="false">
+            Statement
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active"
+         id="pills-overview"
+         role="tabpanel"
+         aria-labelledby="pills-overview-tab">
+        <partial name="_CustomerOverview" for="Report" />
+    </div>
+
+    <div class="tab-pane fade"
+         id="pills-profile"
+         role="tabpanel"
+         aria-labelledby="pills-profile-tab">
+        <partial name="_CustomerInfo" for="Customer" />
+    </div>
+
+    <div class="tab-pane fade"
+         id="pills-sales"
+         role="tabpanel"
+         aria-labelledby="pills-sales-tab">
+    </div>
+
+    <div class="tab-pane fade"
+         id="pills-debt-payments"
+         role="tabpanel"
+         aria-labelledby="pills-debt-payments-tab">
+    </div>
+
+    <div class="tab-pane fade"
+         id="pills-refunds"
+         role="tabpanel"
+         aria-labelledby="pills-refunds-tab">
+    </div>
+
+    <div class="tab-pane fade"
+         id="pills-statement"
+         role="tabpanel"
+         aria-labelledby="pills-statement-tab">
+        <partial name="_StatementGeneratePartial" for="Customer" />
+    </div>
+</div>

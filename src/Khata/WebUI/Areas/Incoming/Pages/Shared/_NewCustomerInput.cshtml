@@ -1,0 +1,77 @@
+﻿@using ViewModels
+@model CustomerViewModel
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="FirstName"
+                       class="col-form-label"></label>
+                <input asp-for="FirstName"
+                       type="text"
+                       id="first-name"
+                       class="form-control form-control-sm customer-input" />
+                <span asp-validation-for="FirstName"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="LastName"
+                       class="col-form-label"></label>
+                <input asp-for="LastName"
+                       type="text"
+                       id="last-name"
+                       class="form-control form-control-sm customer-input" />
+                <span asp-validation-for="LastName"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="CompanyName"
+                       class="col-form-label"></label>
+                <input asp-for="CompanyName"
+                       type="text"
+                       id="company-name"
+                       class="form-control form-control-sm customer-input" />
+                <span asp-validation-for="CompanyName"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="Phone"
+                       class="col-form-label"></label>
+                <input asp-for="Phone" 
+                       type="text" 
+                       id="phone"
+                       class="form-control form-control-sm customer-input" />
+                <span asp-validation-for="Phone" 
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="Email" 
+                       class="col-form-label"></label>
+                <input asp-for="Email" 
+                       type="text" 
+                       id="email"
+                       class="form-control form-control-sm customer-input" />
+                <span asp-validation-for="Email" 
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+                <label asp-for="Address" 
+                       class="col-form-label"></label>
+                <textarea asp-for="Address" 
+                          id="address"
+                          class="form-control form-control-sm customer-input"></textarea>
+                <span asp-validation-for="Address" 
+                      class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+

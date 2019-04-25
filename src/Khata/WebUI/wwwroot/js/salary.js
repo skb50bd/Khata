@@ -1,8 +1,32 @@
-﻿$(document).ready(function () {
-    $("#EmployeeSelector").autocomplete({
+﻿const employeeSelector  = document.getElementById("employee-selector");
+const employeeSearchUrl = employeeSelector.getAttribute("data-path");
+const employeeInfoUrl   = "/api/Employees/"; // must concatenate the employee Id with it
+const balanceBefore     = document.getElementById("balance-before");
+const balanceAfter      = document.getElementById("balance-after");
+const issueAmount       = document.getElementById("issue-amount");
+const paidAmount        = document.getElementById("paid-amount");
+const employeeId        = document.getElementById("employee-id");
+
+function updateBalance() {
+    const balBefore = Number(balanceBefore.value);
+
+    var issue = 0;
+    if (issueAmount)
+        issue = Number(issueAmount.value);
+
+    var paid = 0;
+    if (paidAmount)
+        paid = Number(paidAmount.value);
+
+    const result = balBefore + issue - paid;
+    balanceAfter.value = result;
+}
+
+$(document).ready(function () {
+    $(employeeSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: $("#EmployeeSelector").attr("data-path"),
+                url: employeeSearchUrl,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -20,39 +44,26 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: "/api/Employees/" + ui.item.value,
+                url: employeeInfoUrl + ui.item.value,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    $("#BalanceBefore").val(data.balance);
+                    balanceBefore.value = data.balance;
                     updateBalance();
                 }
             });
-
-            $("#EmployeeSelector").val(ui.item.label);
-            $("#EmployeeId").val(ui.item.value);
-
+            employeeSelector.value = ui.item.label;
+            employeeId.value       = ui.item.value;
             return false;
         }
     });
 
-    function updateBalance() {
-        var bbVal = Number($("#BalanceBefore").val());
-        var aVal = Number($("#Amount").val());
-        if ($("#Amount").attr("data-type") === "issue")
-            aVal = -1 * aVal;
+    balanceBefore.onchange   = updateBalance;
+    issueAmount.onchange     = updateBalance;
+    issueAmount.onkeyup      = updateBalance;
+    paidAmount.onchange      = updateBalance;
+    paidAmount.onkeyup       = updateBalance;
 
-        var result = bbVal - aVal;
-        $("#BalanceAfter").val(result);
-    }
-
-    $(document).on("change, keyup", "#BalanceBefore", updateBalance);
-    $(document).on("change, keyup", "#Amount", updateBalance);
-
-    var buttons = document.getElementsByClassName("blank-link");
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function (event) {
-            e.preventDefault();
-        });
-    }
+    //$(document).on("change, keyup", "balance-before", updateBalance);
+    //$(document).on("change, keyup", "issue-amount", updateBalance);
 });

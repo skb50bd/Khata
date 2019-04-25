@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Withdrawal>
+
+<table class="table table-sm table-hover">
+    <thead>
+        <tr class="table-danger">
+            <th colspan="3">
+                WITHDRAWALS
+            </th>
+
+            <td class="text-right">
+                <span class="badge badge-danger">
+                    @(Model.Count())
+                </span>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th colspan="2">
+                Expenses
+            </th>
+
+            <td colspan="2"
+                class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(Expense)))
+                </span>
+                @(Model.Where(d => d.TableName == nameof(Expense))
+                       .Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="2">
+                Purchases
+            </th>
+
+            <td colspan="2"
+                class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(Purchase)))
+                </span>
+
+                @(Model.Where(d => d.TableName == nameof(Purchase))
+                       .Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Supplier Payments
+            </th>
+
+            <td colspan="2" class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(SupplierPayment)))
+                </span>
+
+                @(Model.Where(d => d.TableName == nameof(SupplierPayment))
+                       .Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Salary Payments
+            </th>
+
+            <td colspan="2"
+                class="text-right">
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(SalaryPayment)))
+                </span>
+
+                @(Model.Where(d => d.TableName == nameof(SalaryPayment))
+                       .Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Others
+            </th>
+
+            <td colspan="2"
+                class="text-right">
+
+                <span class="badge badge-dark">
+                    @(Model.Count(d => d.TableName == nameof(Withdrawal)))
+                </span>
+
+                @(Model.Where(d => d.TableName == nameof(Withdrawal))
+                       .Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+        <tr class="table-active">
+            <th colspan="2">
+                Total
+            </th>
+
+            <td colspan="2"
+                class="text-right">
+                @(Model.Sum(d => d.Amount).ToCurrency())
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using Brotal;
 using Brotal.Extensions;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
+
 using Data.Core;
+
 using Domain;
+
 using DTOs;
+
 using Microsoft.AspNetCore.Http;
+
 using ViewModels;
+
 using Metadata = Domain.Metadata;
 
 namespace Business.Implementations
@@ -62,7 +71,8 @@ namespace Business.Implementations
             return _mapper.Map<DebtPaymentDto>(await _db.DebtPayments.GetById(id));
         }
 
-        public async Task<DebtPaymentDto> Add(DebtPaymentViewModel model)
+        public async Task<DebtPaymentDto> Add(
+            DebtPaymentViewModel model)
         {
             var dm = _mapper.Map<DebtPayment>(model);
             dm.Customer = await _db.Customers.GetById(model.CustomerId);
@@ -74,7 +84,7 @@ namespace Business.Implementations
             dm.Invoice.DebtPayment = dm;
             dm.Metadata = Metadata.CreatedNew(CurrentUser);
 
-            var deposit = new Deposit(dm as IDeposit)
+            var deposit = new Deposit(dm)
             {
                 Metadata = Metadata.CreatedNew(CurrentUser)
             };
@@ -89,7 +99,8 @@ namespace Business.Implementations
             return _mapper.Map<DebtPaymentDto>(dm);
         }
 
-        public async Task<DebtPaymentDto> Update(DebtPaymentViewModel vm)
+        public async Task<DebtPaymentDto> Update(
+            DebtPaymentViewModel vm)
         {
             var newDebtPayment = _mapper.Map<DebtPayment>(vm);
             var originalDebtPayment = await _db.DebtPayments.GetById(newDebtPayment.Id);

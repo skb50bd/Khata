@@ -107,28 +107,93 @@ namespace WebUI
                 .AddRazorPagesOptions(
                     options =>
                     {
-                        options.Conventions.AuthorizeFolder("/Customers", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/DebtPayments", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Deposits", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Employees", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Cash", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Dashboard", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Expenses", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Invoices", "UserRights");
-                        options.Conventions.AuthorizeFolder("/Products", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Purchases", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Refunds", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/SalaryIssues", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/SalaryPayments", "AdminRights");
-                        options.Conventions.AuthorizePage("/Sales/Create", "UserRights");
-                        options.Conventions.AuthorizePage("/Sales/Index", "UserRights");
-                        options.Conventions.AuthorizePage("/Sales/Details", "UserRights");
-                        options.Conventions.AuthorizeFolder("/Services", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/SupplierPayments", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Suppliers", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Vouchars", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Withdrawals", "AdminRights");
-                        options.Conventions.AuthorizeFolder("/Reporting", "AdminRights");
+                        options.Conventions.AuthorizeFolder(
+                            "/Customers", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/DebtPayments", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Deposits", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Employees", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Cash", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Dashboard", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Expenses", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Invoices", 
+                            "UserRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Products", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Purchases",
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Refunds", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/SalaryIssues", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/SalaryPayments",
+                            "AdminRights");
+
+                        options.Conventions.AuthorizePage(
+                            "/Sales/Create",
+                            "UserRights");
+
+                        options.Conventions.AuthorizePage(
+                            "/Sales/Index",
+                            "UserRights");
+
+                        options.Conventions.AuthorizePage(
+                            "/Sales/Details", 
+                            "UserRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Services", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/SupplierPayments",
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Suppliers", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Vouchars", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Withdrawals", 
+                            "AdminRights");
+
+                        options.Conventions.AuthorizeFolder(
+                            "/Reporting", 
+                            "AdminRights");
                     }
                 );
 

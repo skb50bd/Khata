@@ -1,0 +1,20 @@
+﻿@page
+@model Customers.IndexModel
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <partial name="_Search" for="Pf"/>
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            <a asp-page="Create" class="btn btn-primary">Create new</a>
+        </p>
+    </div>
+</div>
+
+<partial name="_CustomersList" for="Customers"/>
+<partial name="_Pagination" for="Customers.EmitPagination"/>

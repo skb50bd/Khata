@@ -1,0 +1,27 @@
+﻿@page
+@model DebtPayments.IndexModel
+
+@{
+    ViewData["Title"] = "Debt Payments";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <partial name="_Search" 
+                 for="Pf"/>
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            <a asp-page="Create"
+               class="btn btn-primary">
+                Create new
+            </a>
+        </p>
+    </div>
+</div>
+<div>
+    <partial name="_DebtPaymentsList" 
+             for="DebtPayments"/>
+    <partial name="_Pagination" 
+             for="DebtPayments.EmitPagination"/>
+</div>

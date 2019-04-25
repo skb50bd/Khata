@@ -1,0 +1,49 @@
+﻿@page "{outletId:int?}"
+@model Sales.IndexModel
+
+@{
+    ViewData["Title"] = "Sales";
+    var outlet = Model.Outlets.FirstOrDefault(
+        o => o.Id == Model.CurrentOutletId)?.Title;
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <partial name="_Search" for="Pf" />
+    </div>
+    <div class="col-md-6 text-right mb-3">
+        <div class="dropdown text-right dropdown-menu-right">
+            <a class="btn btn-outline-secondary dropdown-toggle"
+               href="#"
+               role="button"
+               id="dropdownMenuLink"
+               data-display="static"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                Show Sales for
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right"
+                 aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item @(Model.CurrentOutletId == 0 ? "active": string.Empty)"
+                   asp-page=""
+                   asp-route-outletId="0">
+                    All
+                </a>
+                @foreach (var o in Model.Outlets)
+                {
+                    <a class="dropdown-item @(Model.CurrentOutletId == o.Id ? "active": string.Empty)"
+                       asp-route-outletId="@o.Id">
+                        @o.Title
+                    </a>
+                }
+            </div>
+            <a asp-page="Create" class="btn btn-primary">Create new</a>
+        </div>
+    </div>
+</div>
+
+<partial name="_SalesList" for="Sales" />
+<partial name="_Pagination" for="Sales.EmitPagination" />

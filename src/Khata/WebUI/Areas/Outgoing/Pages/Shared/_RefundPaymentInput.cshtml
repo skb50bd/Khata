@@ -1,0 +1,147 @@
+﻿@using ViewModels
+@model RefundViewModel
+
+@{
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <label class="h5 card-title">
+                    Payment Information
+                </label>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="subtotal"
+                           class="col-form-label">
+                        Subtotal
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input id="subtotal"
+                               type="number"
+                               class="form-control"
+                               disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="debt-before"
+                           class="col-form-label">
+                        Previous Due
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input id="debt-before"
+                               type="number"
+                               class="form-control"
+                               disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CashBack"
+                           class="col-form-label">
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input asp-for="CashBack"
+                               type="number"
+                               class="form-control" />
+                    </div>
+
+                    <span asp-validation-for="CashBack"
+                          class="text-danger">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="DebtRollback"
+                           class="col-form-label">
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input asp-for="DebtRollback"
+                               type="number"
+                               class="form-control" />
+                    </div>
+                    <span asp-validation-for="DebtRollback"
+                          class="text-danger">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="debt-after"
+                           class="col-form-label">
+                        New Due
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input id="debt-after"
+                               type="number"
+                               class="form-control"
+                               disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Description"
+                           class="col-form-label">
+                    </label>
+
+                    <textarea asp-for="Description"
+                              type="text"
+                              class="form-control form-control-sm">
+                            </textarea>
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

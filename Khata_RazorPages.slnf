@@ -1,0 +1,11 @@
+{
+  "solution": {
+    "path": "Khata.sln",
+    "projects": [
+      "src\\Khata\\Business\\Business.csproj",
+      "src\\Khata\\Data\\Data.csproj",
+      "src\\Khata\\Domain\\Domain.csproj",
+      "src\\Khata\\WebUI\\WebUI.csproj"
+    ]
+  }
+}

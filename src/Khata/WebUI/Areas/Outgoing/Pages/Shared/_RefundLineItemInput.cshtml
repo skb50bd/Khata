@@ -1,0 +1,112 @@
+﻿@using ViewModels
+@model RefundViewModel
+
+@{
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+<div class="card">
+    <div class="card-body">
+        <input id="lineitem-id"
+               hidden/>
+
+        <input id="lineitem-type"
+               hidden/>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label class="col-form-label"
+                           for="lineitem-selector">
+                        Item
+                    </label>
+
+                    <input id="lineitem-selector"
+                           class="form-control form-control-sm"
+                           type="text" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-form-label"
+                           for="lineitem-quantity">
+                        Qty.
+                    </label>
+
+                    <input id="lineitem-quantity"
+                           class="form-control form-control-sm"
+                           type="number" 
+                           min="0" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-form-label"
+                           for="lineitem-unitprice">
+                        Unit Price
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input id="lineitem-unitprice"
+                               class="form-control form-control-sm"
+                               type="number" 
+                               min="0" 
+                               readonly />
+                    </div>
+
+                    <span validation-for="lineitem-unitprice"
+                          class="text-danger">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-form-label"
+                           for="lineitem-netprice">
+                        Net Price
+                    </label>
+
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                @sym
+                            </span>
+                        </div>
+
+                        <input id="lineitem-netprice"
+                               class="form-control form-control-sm"
+                               type="number" 
+                               min="0" 
+                               readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-sm btn-outline-primary card-link"
+                    id="lineitem-add-button">
+                Add Item
+            </button>
+
+            <button class="btn btn-sm btn-outline-secondary card-link"
+                    id="lineitem-clear-button">
+                Clear Item
+            </button>
+        </div>
+
+        <div id="cart" 
+             class="pt-3">
+        </div>
+    </div>
+</div>

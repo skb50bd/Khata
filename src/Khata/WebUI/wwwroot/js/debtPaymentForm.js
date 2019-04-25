@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
     
     function updateDebt() {
-        var dbVal = Number($("#DebtBefore").val());
-        var aVal = Number($("#Amount").val());
-        var result = dbVal - aVal;
+        const dbVal = Number($("#DebtBefore").val());
+        const aVal = Number($("#Amount").val());
+        const result = dbVal - aVal;
         $("#DebtAfter").val(result);
     }
 
@@ -28,7 +28,7 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: "/api/Customers/" + ui.item.value,
+                url: `/api/Customers/${ui.item.value}`,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -38,7 +38,7 @@
             });
 
             $("#CustomerSelector").val(ui.item.label);
-            $("#CustomerId").val(ui.item.value);
+            $("#customer-id").val(ui.item.value);
 
             return false;
         }

@@ -1,0 +1,90 @@
+﻿@page
+@model StockReportModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Stock Report</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/invoice.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="page" class="container">
+        <div id="top" class="row jumbotron jumbotron-fluid pr-4 pl-4">
+            <div class="col-md-8">
+                <div id="brand">
+                    <h1 class="display-4">Stock Report</h1>
+                    <p class="lead">
+                        For: @Html.ValueFor(model => model.ForDate)
+                    </p>
+                    <table class="table-hover">
+                        <tr>
+                            <td>Total Products </td>
+                            <td>: @Html.DisplayFor(model => model.TotalProducts)</td>
+                        </tr>
+                        <tr>
+                            <td>In Stock</td>
+                            <td>: @Html.DisplayFor(model => model.InStockCount)</td>
+                        </tr>
+                        <tr>
+                            <td>Low Stock</td>
+                            <td>: @Html.DisplayFor(model => model.LowStockCount)</td>
+                        </tr>
+                        <tr>
+                            <td>Empty Stock</td>
+                            <td>: @Html.DisplayFor(model => model.EmptyOrNegativeStockCount)</td>
+                        </tr>
+                        <tr>
+                            <td>Cost of Goods</td>
+                            <td>: @Html.DisplayFor(model => model.CostOfCurrentStock)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var o in Model.Outlets)
+        {
+            <div class="outlet-stock-summary bg-dark text-white">
+                <h4 class="display-4" style="font-size: 2rem;">
+                    @o.Title
+                </h4>
+                <table class="table-hover pt-2 pb-3">
+                    <tr>
+                        <td>Total Products </td>
+                        <td>: @Html.DisplayFor(model => o.TotalProducts)</td>
+                    </tr>
+                    <tr>
+                        <td>In Stock</td>
+                        <td>: @Html.DisplayFor(model => o.InStockCount)</td>
+                    </tr>
+                    <tr>
+                        <td>Low Stock</td>
+                        <td>: @Html.DisplayFor(model => o.InLowStockCount)</td>
+                    </tr>
+                    <tr>
+                        <td>Empty Stock</td>
+                        <td>: @Html.DisplayFor(model => o.InEmptyStockCount)</td>
+                    </tr>
+                    <tr>
+                        <td>Negative Stock &nbsp;</td>
+                        <td>: @Html.DisplayFor(model => o.InNegativeStockCount)</td>
+                    </tr>
+                    <tr>
+                        <td>Cost of Goods</td>
+                        <td>: @Html.DisplayFor(model => o.CostOfCurrentStock)</td>
+                    </tr>
+                </table>
+            </div>
+            <partial name="_StockProductsList" for="@o.Products" />
+            <hr />
+        }
+    </div>
+</body>
+</html>

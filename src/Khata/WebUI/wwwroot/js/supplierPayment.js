@@ -1,8 +1,20 @@
-﻿$(document).ready(function () {
-    $("#SupplierSelector").autocomplete({
+﻿const supplierId        = document.getElementById("supplier-id");
+const supplierSelector  = document.getElementById("supplier-selector");
+const supplierSearchUrl = supplierSelector.getAttribute("data-path");
+const supplierInfoUrl   = "/api/Suppliers/"; // Must concatenate SUPPLIER Id to get the data
+const payableBefore     = document.getElementById("payable-before");
+const payableAfter      = document.getElementById("payable-after");
+const paidAmount        = document.getElementById("paid-amount");
+
+function updatePayable() {
+    payableAfter.value = Number(payableBefore.value) - Number(paidAmount.value);
+}
+
+$(document).ready(function () {
+    $(supplierSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: $("#SupplierSelector").attr("data-path"),
+                url: supplierSearchUrl,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -20,30 +32,24 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: "/api/Suppliers/" + ui.item.value,
+                url: supplierInfoUrl + ui.item.value,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    $("#PayableBefore").val(data.payable);
+                    payableBefore.value = data.payable;
                     updatePayable();
                 }
             });
 
-            $("#SupplierSelector").val(ui.item.label);
-            $("#SupplierId").val(ui.item.value);
+            supplierSelector.value = ui.item.label;
+            supplierId.value       = ui.item.value;
 
             return false;
         }
     });
 
-    function updatePayable() {
-        var dbVal = Number($("#PayableBefore").val());
-        var aVal = Number($("#Amount").val());
-        var result = dbVal - aVal;
-        $("#PayableAfter").val(result);
-    }
-
-    $(document).on("change, keyup", "#PayableBefore", updatePayable);
-    $(document).on("change, keyup", "#Amount", updatePayable);
-    
+    payableBefore.onchange = updatePayable;
+    payableBefore.onkeyup  = updatePayable;
+    paidAmount.onchange    = updatePayable;
+    paidAmount.onkeyup     = updatePayable;
 });
