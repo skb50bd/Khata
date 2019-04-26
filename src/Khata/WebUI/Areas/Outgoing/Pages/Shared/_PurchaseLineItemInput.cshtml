@@ -1,0 +1,125 @@
+﻿@using ViewModels
+@model PurchaseViewModel
+@{
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+    var purchaseLineItemsUrl = Url.Action(
+        "GetLineItems", 
+        "Purchases");
+}
+
+<div class="card">
+            <div class="card-body">
+                @*Cart*@
+                <label class="h5 card-title">
+                    Choose Items
+                </label>
+
+                <input class="form-control form-control-sm" 
+                       id="lineitem-id" 
+                       type="number" 
+                       hidden />
+
+                <input class="form-control form-control-sm" 
+                       id="lineitem-type" 
+                       type="number" 
+                       hidden />
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="lineitem-selector">
+                                Item
+                            </label>
+
+                            <input id="lineitem-selector"
+                                   class="form-control form-control-sm"
+                                   type="text"
+                                   data-path="@purchaseLineItemsUrl" />
+
+                            <small class="text-muted">
+                                Available: 
+                                <span id="lineitem-available"
+                                      class="text-info">
+                                </span>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="lineitem-quantity">
+                                Qty.
+                            </label>
+
+                            <input id="lineitem-quantity"
+                                   class="form-control form-control-sm"
+                                   type="number" 
+                                   min="0" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="lineitem-unitprice">
+                                Unit Price
+                            </label>
+
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        @sym
+                                    </span>
+                                </div>
+
+                                <input id="lineitem-unitprice"
+                                       class="form-control form-control-sm"
+                                       type="number" 
+                                       min="0" />
+                            </div>
+
+                            <span validation-for="lineitem-unitprice"
+                                  class="text-danger">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="lineitem-netprice">
+                                Net Price
+                            </label>
+
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        @sym
+                                    </span>
+                                </div>
+
+                                <input id="lineitem-netprice"
+                                       class="form-control form-control-sm"
+                                       type="number" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-sm btn-outline-primary card-link"
+                            id="lineitem-add-button">
+                        Add Item
+                    </button>
+
+                    <button class="btn btn-sm btn-outline-secondary card-link"
+                            id="lineitem-clear-button">
+                        Clear Item
+                    </button>
+                </div>
+
+                <div id="cart" class="pt-3"></div>
+            </div>
+        </div>

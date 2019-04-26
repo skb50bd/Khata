@@ -1,0 +1,168 @@
+﻿@model IndexModel
+
+<ul class="nav nav-pills mt-3"
+    id="income-tabs"
+    role="tablist">
+
+    <li class="nav-item">
+        <a class="nav-link active"
+           id="daily-tab"
+           data-toggle="tab"
+           href="#daily"
+           role="tab"
+           aria-controls="daily"
+           aria-selected="true">Daily</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           id="weekly-tab"
+           data-toggle="tab" href="#weekly"
+           role="tab"
+           aria-controls="weekly"
+           aria-selected="false">
+            Weekly
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           id="monthly-tab"
+           data-toggle="tab"
+           href="#monthly"
+           role="tab"
+           aria-controls="monthly"
+           aria-selected="false">
+            Monthly
+        </a>
+    </li>
+
+</ul>
+
+
+<div class="tab-content" id="tab-contents">
+    @{
+        var dailyIncome = new IncomeReportWithSpan
+        {
+            Span = "daily",
+            Inflow = Model.Inflow.Daily
+        };
+        var dailyExpense = new ExpenseReportWithSpan
+        {
+            Span = "daily",
+            Expense = Model.Outflow.Daily
+        };
+        var dailyPayable = new PayableWithSpan
+        {
+            Span = "daily",
+            Payable = Model.Payable.Daily
+        };
+        var dailyReceivable = new ReceivableWithSpan
+        {
+            Span = "daily",
+            Receivable = Model.Receivable.Daily
+        };
+        var weeklyIncome = new IncomeReportWithSpan
+        {
+            Span = "weekly",
+            Inflow = Model.Inflow.Weekly
+        };
+        var weeklyExpense = new ExpenseReportWithSpan
+        {
+            Span = "weekly",
+            Expense = Model.Outflow.Weekly
+        };
+        var weeklyPayable = new PayableWithSpan
+        {
+            Span = "weekly",
+            Payable = Model.Payable.Weekly
+        };
+        var weeklyReceivable = new ReceivableWithSpan
+        {
+            Span = "weekly",
+            Receivable = Model.Receivable.Weekly
+        };
+        var monthlyIncome = new IncomeReportWithSpan
+        {
+            Span = "monthly",
+            Inflow = Model.Inflow.Monthly
+        };
+        var monthlyExpense = new ExpenseReportWithSpan
+        {
+            Span = "monthly",
+            Expense = Model.Outflow.Monthly
+        };
+        var monthlyPayable = new PayableWithSpan
+        {
+            Span = "monthly",
+            Payable = Model.Payable.Monthly
+        };
+        var monthlyReceivable = new ReceivableWithSpan
+        {
+            Span = "monthly",
+            Receivable = Model.Receivable.Monthly
+        };
+    }
+
+    <div class="tab-pane fade show active"
+         id="daily"
+         role="tabpanel"
+         aria-labelledby="daily-tab">
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Income" for="@dailyIncome" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Expense" for="@dailyExpense" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Receivable" for="@dailyReceivable" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Payable" for="@dailyPayable" />
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade"
+         id="weekly"
+         role="tabpanel"
+         aria-labelledby="weekly-tab">
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Income" for="@weeklyIncome" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Expense" for="@weeklyExpense" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Receivable" for="@weeklyReceivable" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Payable" for="@weeklyPayable" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tab-pane fade"
+         id="monthly"
+         role="tabpanel"
+         aria-labelledby="monthly-tab">
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Income" for="@monthlyIncome" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Expense" for="@monthlyExpense" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Receivable" for="@monthlyReceivable" />
+            </div>
+            <div class="col-lg-3 col-md-6 widget">
+                <partial name="_Payable" for="@monthlyPayable" />
+            </div>
+        </div>
+    </div>
+
+</div>

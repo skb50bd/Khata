@@ -1,0 +1,25 @@
+﻿@page
+@model Purchases.CreateModel
+
+@{
+    ViewData["Title"] = "New Purchase";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" class="immutable-submit">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <partial name="_PurchaseForm" for="PurchaseVm"/>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/purchaseForm.js"></script>
+}

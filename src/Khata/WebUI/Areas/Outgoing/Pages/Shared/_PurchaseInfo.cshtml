@@ -1,0 +1,151 @@
+﻿@model DTOs.PurchaseDto
+
+<div class="card" style="width:40rem">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6">Purchase# @Model.Id</div>
+            <div class="col-6 text-right">
+                @if (Model.IsRemoved)
+                {
+                    <span class="badge badge-danger">Removed</span>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <a class="h3 card-title"
+           asp-area="People"
+           asp-page="/Suppliers/Details"
+           asp-route-id="@Model.SupplierId">@Model.Supplier.FullName</a>
+        <table class="table table-sm table-hover mt-4">
+            <tbody>
+                <tr>
+                    <th>Company</th>
+                    <td>@Html.DisplayFor(model => model.Supplier.CompanyName)</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>@Html.DisplayFor(model => model.Supplier.Address)</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>@Html.DisplayFor(model => model.Supplier.Phone)</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Html.DisplayFor(model => model.Supplier.Email)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        <h4 class="card-title">Payment Information</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <tbody>
+                <tr>
+                    <td>Cart Total</td>
+                    <td class="text-right">@Html.DisplayFor(model => model.PaymentSubTotal)</td>
+                </tr>
+
+                @{ var recordClass = ""; }
+                @if (Model.Supplier.Payable > 0)
+                {
+                    recordClass = "warning";
+                }
+                <tr class="table-@recordClass">
+
+                    <td>Previous Due</td>
+                    <td class="text-right">@Html.DisplayFor(model => model.Supplier.Payable)</td>
+                </tr>
+                <tr class="table-info">
+                    <th>Payable</th>
+                    <td class="text-right">@((Model.PaymentSubTotal + Model.Supplier.Payable).ToString("C2"))</td>
+                </tr>
+
+                <tr>
+                    <th>Paid</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.PaymentPaid)</td>
+                </tr>
+
+                <tr class="table-@( Model.PaymentDue + Model.Supplier.Payable> 0
+                                        ? "danger"
+                                        : "")
+                    ">
+                    <td>Due</td>
+                    <td class="text-right">@((Model.PaymentDue + Model.Supplier.Payable).ToString("C2"))</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        <h4 class="card-title">Cart</h4>
+        <table class="table table-sm table-borderless table-hover">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Net Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td class="text-right">@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td class="text-right">@Html.DisplayFor(modelItem => item.UnitPurchasePrice)</td>
+                        <td class="text-right">@Html.DisplayFor(modelItem => item.NetPurchasePrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <hr />
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <table class="table table-sm table-borderless table-hover">
+                <tr>
+                    <th>Description</th>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
+                </tr>
+            </table>
+        }
+        <div class="row">
+
+            <div class="col-md-6">
+                @if (!Model.IsRemoved)
+                {
+                    @*<a asp-page="./Edit"
+                        asp-route-id="@Model.Id"
+                        class="card-link btn btn-link btn-secondary text-white">Edit</a>*@
+
+                    <a asp-area="Outgoing"
+                       asp-page="/Vouchars/Details"
+                       asp-route-id="@Model.VoucharId"
+                       target="_blank"
+                       class="card-link btn btn-outline-success">Invoice</a>
+
+                    <a href="#"
+                       class="card-link btn btn-link btn-danger text-white js-remove-item"
+                       data-href="@Url.Action("Remove", "Purchases", new {id = Model.Id})"
+                       data-returnUrl="@Url.Page("./Index")">
+                        Remove
+                    </a>
+                }
+            </div>
+            <div class="col-md-6 text-right">
+                <a asp-area="Outgoing"
+                   asp-page="/Purchases/Index"
+                   class="card-link btn btn-primary">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <partial name="_UpdateSummary" for="Metadata" />
+    </div>
+</div>

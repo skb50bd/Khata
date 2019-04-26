@@ -1,0 +1,102 @@
+﻿@using ViewModels
+@model ProductViewModel
+
+@{
+    var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Name" class="col-form-label"></label>
+            <input asp-for="Name" class="form-control required" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="OutletId" class="col-form-label"></label>
+            <select asp-for="OutletId" class="form-control" asp-items="ViewBag.Outlets"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="col-form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Unit" class="col-form-label"></label>
+            <input asp-for="Unit" class="form-control" />
+            <span asp-validation-for="Unit" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="InventoryStock" class="col-form-label"></label>
+            <input asp-for="InventoryStock" class="form-control" />
+            <span asp-validation-for="InventoryStock" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="InventoryWarehouse" class="col-form-label"></label>
+            <input asp-for="InventoryWarehouse" class="form-control" />
+            <span asp-validation-for="InventoryWarehouse" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="InventoryAlertAt" class="col-form-label"></label>
+            <input asp-for="InventoryAlertAt" class="form-control" />
+            <span asp-validation-for="InventoryAlertAt" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="PriceRetail" class="col-form-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
+                </div>
+                <input asp-for="PriceRetail" class="form-control" />
+                <span asp-validation-for="PriceRetail" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PriceBulk" class="col-form-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
+                </div>
+                <input asp-for="PriceBulk" class="form-control" />
+                <span asp-validation-for="PriceBulk" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PriceMargin" class="col-form-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
+                </div>
+                <input asp-for="PriceMargin" class="form-control" />
+                <span asp-validation-for="PriceMargin" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PricePurchase" class="col-form-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
+                </div>
+                <input asp-for="PricePurchase" class="form-control" />
+                <span asp-validation-for="PricePurchase" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,20 @@
+﻿@page
+@model SalaryPayments.IndexModel
+
+@{
+    ViewData["Title"] = "Salary Payments";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <partial name="_Search" for="Pf"/>
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            <a asp-page="Create" class="btn btn-primary">Create new</a>
+        </p>
+    </div>
+</div>
+
+<partial name="_SalaryPaymentsList" for="SalaryPayments" />
+<partial name="_Pagination" for="SalaryPayments.EmitPagination"/>

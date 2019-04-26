@@ -1,0 +1,38 @@
+﻿@using ViewModels
+@model PurchaseReturnViewModel
+
+@{
+    var purchaseSearchApi = Url.Action(
+        "GetPurchases",
+        "PurchaseReturns");
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="col-form-label h5 card-title">
+                        Purchase
+                    </label>
+
+                    <input asp-for="PurchaseId"
+                           id="purchase-id"
+                           type="number"
+                           value="0"
+                           class="form-control"
+                           hidden />
+
+                    <input id="purchase-selector"
+                           class="form-control form-control-sm"
+                           type="text"
+                           data-path="@purchaseSearchApi" />
+                </div>
+            </div>
+
+            <div class="col-lg-12"
+                 id="purchase-briefing">
+            </div>
+        </div>
+    </div>
+</div>

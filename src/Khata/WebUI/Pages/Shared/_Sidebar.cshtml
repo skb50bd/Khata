@@ -3,7 +3,8 @@
     <ul class="sidebar-nav">
         <li class="mt-2">
             <h2>
-                <a asp-page="/Index"
+                <a asp-area="" 
+                   asp-page="/Index"
                    class="nav-link text-uppercase text-center">
                     Khata
                 </a>
@@ -13,22 +14,24 @@
         <partial name="_SignInPartial" />
 
         <li>
-            <a asp-page="/Dashboard/Index">
+            <a asp-area="Dashboard"
+                asp-page="/Index">
                 <i class="fa fa-chart-line"></i>
                 Dashboard
             </a>
         </li>
 
         <li>
-            <a asp-area=""
-               asp-page="/Cash/Index">
+            <a asp-area="Cash"
+               asp-page="/Index">
                 <i class="fa fa-cash-register"></i>
                 Cash
             </a>
         </li>
 
         <li>
-            <a asp-page="/Reporting/Index">
+            <a asp-area="Reporting"
+                asp-page="/Index">
                 <i class="fa fa-file-alt"></i>
                 Reporting
             </a>
@@ -45,7 +48,7 @@
             <ul class="collapse list-unstyled"
                 id="incomingSubmenu">
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Incoming"
                        asp-page="/Sales/Index">
                         <i class="fas fa-shopping-cart"></i>
                         Sales
@@ -54,7 +57,7 @@
 
                 </li>
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Incoming"
                        asp-page="/DebtPayments/Index">
                         <i class="fas fa-money-bill"></i>
                         Debt Payments
@@ -62,7 +65,7 @@
                 </li>
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Incoming"
                        asp-page="/PurchaseReturns/Index">
                         <i class="fas fa-cart-arrow-down"></i>
                         Purchase Returns
@@ -83,7 +86,7 @@
                 id="outgoingSubmenu">
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/Expenses/Index">
                         <i class="fas fa-receipt"></i>
                         Expenses
@@ -91,7 +94,7 @@
                 </li>
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/Purchases/Index">
                         <i class="fas fa-truck-loading"></i>
                         Purchases
@@ -99,7 +102,7 @@
                 </li>
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/SupplierPayments/Index">
                         <i class="fas fa-file-invoice-dollar"></i>
                         Supplier Payments
@@ -107,21 +110,21 @@
                 </li>
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/Refunds/Index">
                         <i class="fas fa-undo"></i>
                         Refunds
                     </a>
                 </li>
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/SalaryIssues/Index">
                         <i class="fas fa-file-signature"></i>
                         Salary Issues
                     </a>
                 </li>
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Outgoing"
                        asp-page="/SalaryPayments/Index">
                         <i class="fas fa-hand-holding-usd"></i>
                         Salary Payments
@@ -142,7 +145,7 @@
                 id="peopleSubmenu">
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="People"
                        asp-page="/Customers/Index">
                         <i class="fas fa-user-tag"></i>
                         Customers
@@ -150,14 +153,14 @@
                 </li>
 
                 <li>
-                    <a asp-area=""
+                    <a asp-area="People"
                        asp-page="/Suppliers/Index">
                         <i class="fas fa-user-tie"></i>
                         Suppliers
                     </a>
                 </li>
                 <li>
-                    <a asp-area=""
+                    <a asp-area="People"
                        asp-page="/Employees/Index">
                         <i class="fas fa-users"></i>
                         Employees
@@ -177,14 +180,14 @@
             <ul class="collapse list-unstyled"
                 id="inventorySubmenu">
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Inventory"
                        asp-page="/Products/Index">
                         <i class="fas fa-box"></i>
                         Products
                     </a>
                 </li>
                 <li>
-                    <a asp-area=""
+                    <a asp-area="Inventory"
                        asp-page="/Services/Index">
                         <i class="fas fa-concierge-bell"></i>
                         Services
@@ -194,7 +197,8 @@
         </li>
 
         <li>
-            <a asp-page="/Outlets/Index">
+            <a asp-area="Outlets" 
+               asp-page="/Index">
                 <i class="fa fa-store"></i>
                 Outlets
             </a>

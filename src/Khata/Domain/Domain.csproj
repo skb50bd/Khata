@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BrotalLib" Version="0.1.0" />
+    <PackageReference Include="BrotalLib" Version="0.1.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Outlets";
+}
+
+<div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            <a asp-page="Create" class="btn btn-primary">Create new</a>
+        </p>
+    </div>
+</div>
+
+<partial name="_OutletsList" for="Outlets" />

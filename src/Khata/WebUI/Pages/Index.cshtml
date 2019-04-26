@@ -16,19 +16,22 @@
             @Model.Options.Address
         </lead>
     </p>
-    <a asp-page="/Sales/Create"
+    <a asp-area="Incoming"
+        asp-page="/Sales/Create"
        class="btn btn-outline-primary mb-2"
        style="width:150px;">
         <i class="fa fa-plus"></i>
         Sale
     </a>
-    <a asp-page="/Expenses/Create"
+    <a asp-area="Outgoing"
+       asp-page="/Expenses/Create"
        class="btn btn-outline-danger mb-2"
        style="width:150px;">
         <i class="fa fa-plus"></i>
         Expense
     </a>
-    <a asp-page="/Purchases/Create"
+    <a asp-area="Outgoing"
+        asp-page="/Purchases/Create"
        class="btn btn-outline-info mb-2"
        style="width:150px;">
         <i class="fa fa-plus"></i>

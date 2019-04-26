@@ -1,33 +1,34 @@
-﻿function toFixedIfNecessary(value, dp) {
-    return parseFloat(value).toFixed(dp);
-}
-
-const purchaseId = document.getElementById("PurchaseId");
-const purchaseSelector = document.getElementById("purchase-selector");
-const lineItemId = document.getElementById("lineitem-id");
-const lineItemType = document.getElementById("lineitem-type");
-const lineItemSelector = document.getElementById("lineitem-selector");
-const lineItemQuantity = document.getElementById("lineitem-quantity");
-const lineItemUnitPrice = document.getElementById("lineitem-unitprice");
-const lineItemNetPrice = document.getElementById("lineitem-netprice");
-const lineItemAdd = document.getElementById("lineitem-add-button");
-const lineItemClear = document.getElementById("lineitem-clear-button");
-const lineItemAvailable = document.getElementById("lineitem-available");
-const cart = document.getElementById("cart");
-const subtotal = document.getElementById("subtotal");
-const cashBack = document.getElementById("CashBack");
-const debtRollback = document.getElementById("DebtRollback");
-const debtBefore = document.getElementById("debt-before");
-const debtAfter = document.getElementById("debt-after");
-const description = document.getElementById("Description");
+﻿const purchaseId        = gei("purchase-id");
+const purchaseSelector  = gei("purchase-selector");
+const purchaseSearchApi = purchaseSelector.getAttribute("data-path");
+const purchaseBriefUrl  = "/Purchases/Details/Brief?id="; // Must concatenate Purchase Id
+const lineItemId        = gei("lineitem-id");
+const lineItemType      = gei("lineitem-type");
+const lineItemSelector  = gei("lineitem-selector");
+const prItemSearchApi   = "/api/PurchaseReturns/LineItems/"; // Must concatenate Purchase Id
+const lineItemQuantity  = gei("lineitem-quantity");
+const lineItemUnitPrice = gei("lineitem-unitprice");
+const lineItemNetPrice  = gei("lineitem-netprice");
+const lineItemAdd       = gei("lineitem-add-button");
+const lineItemClear     = gei("lineitem-clear-button");
+const lineItemAvailable = gei("lineitem-available");
+const cart              = gei("cart");
+const subtotal          = gei("subtotal");
+const cashBack          = gei("cash-back");
+const debtRollback      = gei("debt-rollback");
+const debtBefore        = gei("debt-before");
+const debtAfter         = gei("debt-after");
+const description       = gei("Description");
+const purchaseBriefElem = gei("purchase-briefing");
+const currentDue        = gei("current-due");
 
 var itemsAdded = 0;
 
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    var currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
-    for (var i = 0; i < currentCartItemsNetPrices.length; i++)
+    const currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
+    for (let i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
     subtotal.value = toFixedIfNecessary(subTotalValue, 2);
@@ -38,7 +39,7 @@ function calculatePayment(event) {
 
     // Debt Rollback   
     if (isNaN(debtRollback.valueAsNumber))
-        debtRollback.value =subTotalValue !== 0
+        debtRollback.value = subTotalValue !== 0
             ? toFixedIfNecessary(
                 Math.min(
                     debtBefore.valueAsNumber,
@@ -54,9 +55,7 @@ function calculatePayment(event) {
         debtBefore - debtRollback.valueAsNumber,
         2);
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 function calculateItemPrice(event) {
@@ -66,11 +65,14 @@ function calculateItemPrice(event) {
         return;
     }
 
-    var q = lineItemQuantity.valueAsNumber;
+    const q = lineItemQuantity.valueAsNumber;
     if (isNaN(q) || q < 0)
-        lineItemQuantity.value = lineItemQuantity.getAttribute("min");
+        lineItemQuantity.value =
+            lineItemQuantity.getAttribute("min");
+
     else if (q > Number(lineItemQuantity.getAttribute("max")))
-        lineItemQuantity.value = lineItemQuantity.getAttribute("max");
+        lineItemQuantity.value =
+            lineItemQuantity.getAttribute("max");
 
     if (isNaN(lineItemUnitPrice.valueAsNumber))
         lineItemUnitPrice.value = minimumPrice;
@@ -92,13 +94,16 @@ function clearLineItem(event) {
 }
 
 function getLineItem() {
-    if (isNaN(lineItemId.valueAsNumber) || lineItemId.valueAsNumber === 0)
+    if (isNaN(lineItemId.valueAsNumber)
+        || lineItemId.valueAsNumber === 0)
         return false;
 
-    if (isNaN(lineItemQuantity.valueAsNumber) || lineItemQuantity.valueAsNumber === 0)
+    if (isNaN(lineItemQuantity.valueAsNumber)
+        || lineItemQuantity.valueAsNumber === 0)
         return false;
 
-    if (lineItemType.valueAsNumber !== 1 && lineItemType.valueAsNumber !== 2)
+    if (lineItemType.valueAsNumber !== 1
+        && lineItemType.valueAsNumber !== 2)
         return false;
 
     if (isNaN(lineItemNetPrice.valueAsNumber))
@@ -115,34 +120,34 @@ function getLineItem() {
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement("div");
+    const row = document.createElement("div");
     row.className = "row";
-    row.innerHTML = `
-        <div class="col-12">
+    row.innerHTML =
+        `<div class="col-12">
         <div class="col" hidden>
             <input type="number"
                 name="PurchaseReturnVm.Cart.Index"
-                value="`+ itemsAdded + `" />
+                value="${itemsAdded}" />
             <input type="number"
-                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].ItemId" 
+                name="PurchaseReturnVm.Cart[${itemsAdded}].ItemId" 
                 class="cart-item-itemid"
-                value="` + newItem.itemId + `" />
+                value="${newItem.itemId}" />
             <input type="number"
-                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].Type" 
+                name="PurchaseReturnVm.Cart[${itemsAdded}].Type" 
                     class="cart-item-type"
-                    value="` + newItem.type + `"/>
+                    value="${newItem.type}"/>
         </div>        
 
         <div class="input-group input-group-sm mb-0">
             <input type="text"
                 class="form-control cart-item-name cart-item"
                 data-toggle="tooltip" title="Name"
-                value="` + newItem.name + `" 
+                value="${newItem.name}" 
                 aria-label="Name" readonly/>
 
             <div class="input-group-append">
                 <button class="btn btn-outline-danger cart-item-removeitem"
-                    id="remove-item-button`+ itemsAdded + `"
+                    id="remove-item-button${itemsAdded}"
                     type="button">
                     Remove
                 </button>
@@ -156,31 +161,30 @@ function createCartItem(newItem) {
             <input type="number" readonly
                 class="text-right cart-item-unirprice cart-item form-control"
                 data-toggle="tooltip" title="Unit Price"
-                value="`+ newItem.unitPrice + `"/>
+                value="${newItem.unitPrice}"/>
 
             <div class="input-group-prepend">
                 <span class="input-group-text">X</span>
             </div>
 
             <input type="number" readonly
-                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].Quantity" 
+                name="PurchaseReturnVm.Cart[${itemsAdded}].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
                 data-toggle="tooltip" title="Quantity"
-                value="` + newItem.quantity + `"/>            
+                value="${newItem.quantity}"/>            
 
             <div class="input-group-prepend">
                 <span class="input-group-text">=</span>
             </div>
 
             <input type="number" readonly
-                name="PurchaseReturnVm.Cart[`+ itemsAdded + `].NetPrice" 
+                name="PurchaseReturnVm.Cart[${itemsAdded}].NetPrice" 
                 class="text-right cart-item-netprice cart-item form-control"
                 data-toggle="tooltip" title="Net Price"
-                value="` + newItem.netPrice + `"/>
+                value="${newItem.netPrice}"/>
 
         </div>
-     </div>
-    `;
+     </div>`;
 
     return row;
 }
@@ -189,13 +193,15 @@ function addLineItem(event) {
     event.preventDefault();
     calculateItemPrice();
 
-    var newItem = getLineItem();
+    const newItem = getLineItem();
     if (newItem === false)
         return;
-    var it = createCartItem(newItem);
+    const it = createCartItem(newItem);
     removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
-    document.getElementById("remove-item-button" + itemsAdded).addEventListener("click", removeCartItem);
+
+    const removeButton = gei("remove-item-button" + itemsAdded);
+    removeButton.onclick = removeCartItem;
 
     itemsAdded++;
 
@@ -204,12 +210,12 @@ function addLineItem(event) {
 }
 
 function removeCartItemIfExists(itemId) {
-    var items = document.getElementsByClassName("cart-item-itemid");
-    for (var i = 0; i < items.length; i++) {
-        var item = items[i];
+    const items = document.getElementsByClassName("cart-item-itemid");
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
         if (item.valueAsNumber === itemId) {
             console.log("Found " + itemId);
-            var row = item.parentElement.parentElement.parentElement;
+            const row = item.parentElement.parentElement.parentElement;
             row.parentElement.removeChild(row);
         }
     }
@@ -225,11 +231,26 @@ function removeCartItem(event) {
     });
 }
 
+function setDebtRollbackOnFocusout(event) {
+    if (isNaN(debtRollback.valueAsNumber))
+        debtRollback.value = 0;
+
+    debtRollback.value =
+        Math.min(
+            subTotal.valueAsNumber,
+            toFixedIfNecessary(
+                debtRollback.valueAsNumber,
+                2)
+        );
+
+    calculatePayment();
+}
+
 $(document).ready(function () {
-    $("#purchase-selector").autocomplete({
+    $(purchaseSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: purchaseSelector.getAttribute("data-path"),
+                url: purchaseSearchApi,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -248,25 +269,24 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: "/Purchases/Details/Brief?id=" + ui.item.value,
+                url: purchaseBriefUrl + ui.item.value,
                 type: "GET",
                 dataType: "html",
-                success: function(response) {
-                    document.getElementById("purchase-briefing").innerHTML = response;
+                success: function (response) {
+                    purchaseBriefElem.innerHTML = response;
                 }
-            }).then(function() {
+            }).then(function () {
                 purchaseSelector.value = ui.item.label;
                 purchaseId.value = ui.item.value;
-                debtBefore.value = document.getElementById("current-due").valueAsNumber;
-
+                debtBefore.value = currentDue.valueAsNumber;
             });
         }
     });
 
-    $("#lineitem-selector").autocomplete({
+    $(lineItemSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: "/api/PurchaseReturns/LineItems/" + purchaseId.valueAsNumber,
+                url: prItemSearchApi + purchaseId.value,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -284,29 +304,22 @@ $(document).ready(function () {
         minLength: 0,
         select: function (event, ui) {
             event.preventDefault();
-            var lineitem = ui.item.value;
-
-            lineItemType.value = 1;
-            lineItemId.value = lineitem.productId;
+            const lineitem          = ui.item.value;
+            lineItemType.value      = 1;
+            lineItemId.value        = lineitem.productId;
             lineItemUnitPrice.value = lineitem.unitPurchasePrice;
-            lineItemNetPrice.value = lineitem.netPurcahsePrice;
+            lineItemNetPrice.value  = lineitem.netPurchasePrice;
+            lineItemSelector.value  = lineitem.name;
             lineItemQuantity.setAttribute("max", lineitem.quantity);
-
-            lineItemSelector.value = lineitem.name;
         }
     });
 
-    subtotal.addEventListener("change", calculatePayment);
-    cashBack.addEventListener("change", calculatePayment);
-    debtRollback.addEventListener("focusout", function () {
-        if (isNaN(debtRollback.valueAsNumber))
-            debtRollback.value = 0;
-        debtRollback.value = Math.min(subTotal.valueAsNumber, toFixedIfNecessary(debtRollback.valueAsNumber, 2));
-        calculatePayment();
-    });
-    debtBefore.addEventListener("change", calculatePayment);
-    lineItemQuantity.addEventListener("change", calculateItemPrice);
-    lineItemQuantity.addEventListener("focusout", calculateItemPrice);
-    lineItemAdd.addEventListener("click", addLineItem);
-    lineItemClear.addEventListener("click", clearLineItem);
+    subtotal.onchange           = calculatePayment;
+    cashBack.onchange           = calculatePayment;
+    debtRollback.onfocusout     = setDebtRollbackOnFocusout;
+    debtBefore.onchange         = calculatePayment;
+    lineItemQuantity.onchange   = calculateItemPrice;
+    lineItemQuantity.onfocusout = calculateItemPrice;
+    lineItemAdd.onclick         = addLineItem;
+    lineItemClear.onclick       = clearLineItem;
 });

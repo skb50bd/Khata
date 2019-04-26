@@ -1,21 +1,12 @@
-﻿const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
-
-const formatter = new Intl.NumberFormat(
-    "en-BD",
-    {
-        style: "currency",
-        currency: "BDT",
-        localeMatcher: "lookup",
-        currencyDisplay: "symbol",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-
-function toFixedIfNecessary(value, dp) {
-    return parseFloat(value).toFixed(dp);
-}
+﻿const immutableSubmits      = gecn("immutable-submit");
+const fromDate              = gei("from-date");
+const toDate                = gei("to-date");
+const blankButtons          = gecn("blank-link-button");
+const inputs                = $(":input");
+const ajaxTabs              = gecn("ajax-tab");
+const clickableRows         = gecn("js-clickable-row");
+const clickableTransactions = gecn("js-clickable-transaction");
+const removableItems        = gecn("js-remove-item");
 
 function getDate(elem = null) {
     var date;
@@ -25,14 +16,13 @@ function getDate(elem = null) {
         date = new Date();
     }
 
-    var year = date.getFullYear(),
-        month = (date.getMonth() + 1).toString(),
-        formatedMonth = month.length === 1 ? "0" + month : month,
-        day = date.getDate().toString(),
-        formatedDay = day.length === 1 ? "0" + day : day;
-    return formatedDay + "/" + formatedMonth + "/" + year;
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString();
+    const formattedMonth = month.length === 1 ? `0${month}` : month;
+    const day = date.getDate().toString();
+    const formattedDay = day.length === 1 ? `0${day}` : day;
+    return formattedDay + "/" + formattedMonth + "/" + year;
 }
-
 
 const swalDelete = Swal.mixin({
     confirmButtonClass: "btn btn-danger",
@@ -46,160 +36,188 @@ const swalSave = Swal.mixin({
     buttonsStyling: false
 });
 
-function attachClickableRow() {
-    var ref = $(this).data("href");
+function viewRecord(event) {
+    const ref = $(event.target).data("href");
     window.location.href = ref;
 }
 
-$(document).ready(function () {
-    //$('.collapse').collapse();
-    $(".immutable-submit").submit(function (event) {
-        event.preventDefault();
-        swalSave.fire({
-            title: "Are you sure?",
-            text: "Are you sure want to save thre record?",
-            type: "info",
-            showCancelButton: true,
-            confirmButtonText: "Yes, save it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                this.submit(true);
-            }
-            else {
-                swalSave.fire(
-                    "Cacelled",
-                    "Item not saved!",
-                    "info"
-                );
-            }
-        });
+function viewTransaction(event) {
+    window.location =
+        `/${$(event.target).data("table")}/Details?id=${$(event.target).data("row")}`;
+}
+
+function confirmFormSubmit(event) {
+    event.preventDefault();
+    swalSave.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to save the record?",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonText: "Yes, save it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value) {
+            this.submit(true);
+        }
+        else {
+            swalSave.fire(
+                "Cancelled",
+                "Item not saved!",
+                "info"
+            );
+        }
     });
+}
+
+function confirmRemove(event) {
+    swalDelete.fire({
+        title: "Are you sure?",
+        text: "The item will be removed from records!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, remove it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({ url: $(event.target).attr("data-href"), method: "DELETE" })
+                .done(function () {
+                    swalDelete.fire(
+                        "Removed!",
+                        "Your file has been removed.",
+                        "success"
+                    ).then((value) => {
+                        if (value)
+                            window.location = $(event.target).attr("data-returnUrl");
+                    });
+                })
+                .fail(function () {
+                    swalDelete.fire(
+                        "Failed",
+                        "Could not remove the item :(",
+                        "warning"
+                    );
+                });
+        } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalDelete.fire(
+                "Cancelled",
+                "Your file is safe :)",
+                "error"
+            );
+        }
+    });
+}
+
+function loadAjaxTabContent(event) {
+    $.ajax({
+        url: $(event.target).attr("data-partial-source"),
+        type: "GET",
+        dataType: "html",
+        success: function (response) {
+            const id = $(event.target).attr("aria-controls");
+            const d = gei(id);
+            d.innerHTML = response;
+        }
+    }).then(() =>
+        $(".js-clickable-row")
+            .click(viewRecord));
+}
+
+function enterToTab(e) {
+    if (e.which === 13) {
+        const nextInput = getNextActiveInput(this);
+        if (nextInput) {
+            if (nextInput.getAttribute("type") !== "submit"
+                && e.target.getAttribute("type") !== "submit"
+                && !$(e.target).is("textarea")
+                && !$(nextInput).is("button")) {
+                e.preventDefault();
+                nextInput.focus();
+            }
+        }
+        if (typeof lineItemNetPrice !== "undefined") {
+            if (e.target === lineItemNetPrice)
+                lineItemSelector.focus();
+        }
+    }
+}
+
+$(document).ready(function () {
+    
+    immutableSubmits.onsubmit = confirmFormSubmit;
 
     $(".datepicker").datepicker();
     $(".datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
 
-    $(".js-clickable-row").click(attachClickableRow);
+    clickableRows.onclick = viewRecord;
+    clickableTransactions.onclick = viewTransaction;
+    removableItems.onclick = confirmRemove;
 
-    $(".js-clickable-transaction").click(function () {
-        window.location = "/" + $(this).data("table") + "/Details?id=" + $(this).data("row");
-    });
-
-    $(".js-remove-item").click(function (e) {
-        swalDelete.fire({
-            title: "Are you sure?",
-            text: "The item will be removed from records!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, remove it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({ url: $(e.target).attr("data-href"), method: "DELETE" })
-                    .done(function () {
-                        swalDelete.fire(
-                            "Removed!",
-                            "Your file has been removed.",
-                            "success"
-                        ).then((value) => {
-                            if (value)
-                                window.location = $(e.target).attr("data-returnUrl");
-                        });
-                    })
-                    .fail(function () {
-                        swalDelete.fire(
-                            "Failed",
-                            "Could not remove the item :(",
-                            "warning"
-                        );
-                    });
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalDelete.fire(
-                    "Cancelled",
-                    "Your file is safe :)",
-                    "error"
-                );
-            }
-        });
-    });
-
-
-    $(function () {
-        $('[data-toggle="popover"]').popover();
-    });
+    $('[data-toggle="popover"]').popover();
 
     $(".popover-dismiss").popover({
         trigger: "hover"
     });
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    $('[data-toggle="tooltip"]').tooltip();
 
-    $(".ajax-tab").click((e) => {
-        $.ajax({
-            url: $(e.target).attr("data-partial-source"),
-            type: "GET",
-            dataType: "html",
-            success: function (response) {
-                var id = $(e.target).attr("aria-controls");
-                var d = document.getElementById(id);
-                d.innerHTML = response;
-            }
-        }).then(() =>
-            $(".js-clickable-row")
-                .click(attachClickableRow));
-    });
+    ajaxTabs.onclick = loadAjaxTabContent;
 
-    $(function () {
-        from = $("#from")
-            .datepicker()
-            .on("change", function () {
-                to.datepicker("option", "minDate", getDate(this));
+
+    $(fromDate).datepicker()
+        .on(
+            "change",
+            function () {
+                to.datepicker(
+                    "option",
+                    "minDate",
+                    getDate(this));
             });
-        to = $("#to").datepicker()
-            .on("change", function () {
-                from.datepicker("option", "maxDate", getDate(this));
+
+    $(toDate).datepicker()
+        .on(
+            "change",
+            function () {
+                from.datepicker(
+                    "option",
+                    "maxDate",
+                    getDate(this));
             });
+
+    $(fromDate).datetimepicker({
+        format: "DD/MM/YYYY",
+        useCurrent: true
     });
 
-    $(function () {
-        $("#fromDate").datetimepicker({
-            format: "DD/MM/YYYY",
-            useCurrent: true
-        });
-        $("#toDate").datetimepicker({
-            format: "DD/MM/YYYY",
-            useCurrent: false
-        });
-        $("#fromDate").on("change.datetimepicker", function (e) {
-            $("#datetimepicker8").datetimepicker("minDate", e.date);
-        });
-        $("#toDate").on("change.datetimepicker", function (e) {
-            $("#fromDate").datetimepicker("maxDate", e.date);
-        });
+    $(toDate).datetimepicker({
+        format: "DD/MM/YYYY",
+        useCurrent: false
     });
 
-    var inputs = $(":input").keypress(function (e) {
-        if (e.which === 13) {
-            var nextInput = inputs.get(inputs.index(this) + 1);
-            if (nextInput) {
-                if (nextInput.getAttribute("type") !== "submit"
-                    && e.target.getAttribute("type") !== "submit"
-                    && !$(e.target).is("textarea")
-                    && !$(nextInput).is("button")) {
-                    e.preventDefault();
-                    nextInput.focus();
-                }
-            }
-            if (e.target === lineItemNetPrice)
-                lineItemSelector.focus();
-        }
+    $(fromDate).on(
+        "change.datetimepicker",
+        function (e) {
+            $(toDate).datetimepicker("minDate", e.date);
+        });
+
+    $(toDate).on(
+        "change.datetimepicker",
+        function (e) {
+            $(fromDate).datetimepicker("maxDate", e.date);
+        });
+
+    inputs.onkeypress = enterToTab;
+
+    inputs.focus(function () {
+        $(this).select();
+    });
+
+    $(blankButtons).click((e) => {
+        e.stopPropagation();
     });
 });
 
