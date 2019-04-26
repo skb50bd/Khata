@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Business.Abstractions;
-using DTOs;
 using Business.Reports;
+
 using Domain.Reports;
+
+using DTOs;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -95,6 +100,7 @@ namespace WebUI.Pages.Customers
                 ViewData = new ViewDataDictionary<IEnumerable<RefundDto>>(ViewData, refunds)
             };
         }
+
 
         public async Task<IActionResult> OnGetBriefAsync(int customerId)
         {

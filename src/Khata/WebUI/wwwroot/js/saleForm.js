@@ -317,7 +317,7 @@ $(document).ready(function () {
                 }
             }).then(() => {
                 $.ajax({
-                    url: "/Customers/Details/Brief?customerId=" + ui.item.value,
+                    url: "/Customers/BriefInfo/Brief?customerId=" + ui.item.value,
                     type: "GET",
                     dataType: "html",
                     success: function(response) {
