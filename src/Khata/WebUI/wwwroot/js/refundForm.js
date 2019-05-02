@@ -1,33 +1,31 @@
-﻿function toFixedIfNecessary(value, dp) {
-    return parseFloat(value).toFixed(dp);
-}
-
-const saleId            = document.getElementById("SaleId");
-const saleSelector      = document.getElementById("sale-selector");
-const lineItemId        = document.getElementById("lineitem-id");
-const lineItemType      = document.getElementById("lineitem-type");
-const lineItemSelector  = document.getElementById("lineitem-selector");
-const lineItemQuantity  = document.getElementById("lineitem-quantity");
-const lineItemUnitPrice = document.getElementById("lineitem-unitprice");
-const lineItemNetPrice  = document.getElementById("lineitem-netprice");
-const lineItemAdd       = document.getElementById("lineitem-add-button");
-const lineItemClear     = document.getElementById("lineitem-clear-button");
-const lineItemAvailable = document.getElementById("lineitem-available");
-const cart              = document.getElementById("cart");
-const subtotal          = document.getElementById("subtotal");
-const cashBack          = document.getElementById("CashBack");
-const debtRollback      = document.getElementById("DebtRollback");
-const debtBefore        = document.getElementById("debt-before");
-const debtAfter         = document.getElementById("debt-after");
-const description       = document.getElementById("Description");
+﻿const saleId             = gei("sale-id");
+const saleSelector       = gei("sale-selector");
+const lineItemId         = gei("lineitem-id");
+const lineItemType       = gei("lineitem-type");
+const lineItemSelector   = gei("lineitem-selector");
+const lineItemQuantity   = gei("lineitem-quantity");
+const lineItemUnitPrice  = gei("lineitem-unitprice");
+const lineItemNetPrice   = gei("lineitem-netprice");
+const lineItemAdd        = gei("lineitem-add-button");
+const lineItemClear      = gei("lineitem-clear-button");
+const lineItemAvailable  = gei("lineitem-available");
+const cart               = gei("cart");
+const subtotal           = gei("subtotal");
+const cashBack           = gei("cash-back");
+const debtRollback       = gei("debt-rollback");
+const debtBefore         = gei("debt-before");
+const debtAfter          = gei("debt-after");
+const description        = gei("Description");
+const saleBriefUrl       = "/Incoming/Sales/Details/Brief?id="; // Must concatenate SaleId
+const refundLineItemsUrl = "/api/Refunds/LineItems/"; // Must Concatenate with SaleId
 
 var itemsAdded = 0;
 
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    var currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
-    for (var i = 0; i < currentCartItemsNetPrices.length; i++)
+    const currentCartItemsNetPrices = gecn("cart-item-netprice");
+    for (let i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
     subtotal.value = toFixedIfNecessary(subTotalValue, 2);
@@ -38,7 +36,7 @@ function calculatePayment(event) {
 
     // Debt Rollback   
     if (isNaN(debtRollback.valueAsNumber))
-        debtRollback.value =subTotalValue !== 0
+        debtRollback.value = subTotalValue !== 0
             ? toFixedIfNecessary(
                 Math.min(
                     debtBefore.valueAsNumber,
@@ -51,22 +49,33 @@ function calculatePayment(event) {
 
     // Debt After
     debtAfter.value = toFixedIfNecessary(
-        debtBefore - debtRollback.valueAsNumber,
+        debtBefore.valueAsNumber - debtRollback.valueAsNumber,
         2);
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
+function calculatePaymentFromDebtRollback() {
+    if (isNaN(debtRollback.valueAsNumber))
+        debtRollback.value = 0;
+
+    debtRollback.value = Math.min(
+        subtotal.valueAsNumber,
+        toFixedIfNecessary(
+            debtRollback.valueAsNumber,
+            2)
+    );
+    calculatePayment();
 }
 
 function calculateItemPrice(event) {
-    if (isNaN(lineItemId.valueAsNumber)
-        || lineItemId.valueAsNumber === 0) {
+    const id = Number(lineItemId.value);
+    if (isNaN(id)|| id === 0) {
         clearLineItem(event);
         return;
     }
 
-    var q = lineItemQuantity.valueAsNumber;
+    const q = lineItemQuantity.valueAsNumber;
     if (isNaN(q) || q < 0)
         lineItemQuantity.value = lineItemQuantity.getAttribute("min");
     else if (q > Number(lineItemQuantity.getAttribute("max")))
@@ -92,57 +101,59 @@ function clearLineItem(event) {
 }
 
 function getLineItem() {
-    if (isNaN(lineItemId.valueAsNumber) || lineItemId.valueAsNumber === 0)
-        return false;
+    const id        = Number(lineItemId.value);
+    const quantity  = Number(lineItemQuantity.value);
+    const type      = Number(lineItemType.value);
+    const unitPrice = Number(lineItemUnitPrice.value);
+    const netPrice  = Number(lineItemNetPrice.value);
 
-    if (isNaN(lineItemQuantity.valueAsNumber) || lineItemQuantity.valueAsNumber === 0)
-        return false;
-
-    if (lineItemType.valueAsNumber !== 1 && lineItemType.valueAsNumber !== 2)
-        return false;
-
-    if (isNaN(lineItemNetPrice.valueAsNumber))
+    if (isNaN(id)
+        || id === 0
+        || isNaN(quantity)
+        || quantity === 0
+        || type !== 1 && type !== 2
+        || isNaN(netPrice))
         return false;
 
     return {
-        itemId: lineItemId.valueAsNumber,
-        type: lineItemType.valueAsNumber,
+        itemId: id,
+        type: type,
         name: lineItemSelector.value,
-        quantity: lineItemQuantity.valueAsNumber,
-        unitPrice: lineItemUnitPrice.valueAsNumber,
-        netPrice: lineItemNetPrice.valueAsNumber
+        quantity: quantity,
+        unitPrice: unitPrice,
+        netPrice: netPrice
     };
 }
 
 function createCartItem(newItem) {
-    var row = document.createElement("div");
+    const row = document.createElement("div");
     row.className = "row";
-    row.innerHTML = `
-        <div class="col-12">
+    row.innerHTML =
+        `<div class="col-12">
         <div class="col" hidden>
             <input type="number"
-                name="Cart.Index"
-                value="`+ itemsAdded + `" />
+                name="RefundVm.Cart.Index"
+                value="${itemsAdded}" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].ItemId" 
+                name="RefundVm.Cart[${itemsAdded}].ItemId" 
                 class="cart-item-itemid"
-                value="` + newItem.itemId + `" />
+                value="${newItem.itemId}" />
             <input type="number"
-                name="Cart[`+ itemsAdded + `].Type" 
+                name="RefundVm.Cart[${itemsAdded}].Type" 
                     class="cart-item-type"
-                    value="` + newItem.type + `"/>
+                    value="${newItem.type}"/>
         </div>        
 
         <div class="input-group input-group-sm mb-0">
             <input type="text"
                 class="form-control cart-item-name cart-item"
                 data-toggle="tooltip" title="Name"
-                value="` + newItem.name + `" 
+                value="${newItem.name}" 
                 aria-label="Name" readonly/>
 
             <div class="input-group-append">
                 <button class="btn btn-outline-danger cart-item-removeitem"
-                    id="remove-item-button`+ itemsAdded + `"
+                    id="remove-item-button${itemsAdded}"
                     type="button">
                     Remove
                 </button>
@@ -156,31 +167,30 @@ function createCartItem(newItem) {
             <input type="number" readonly
                 class="text-right cart-item-unirprice cart-item form-control"
                 data-toggle="tooltip" title="Unit Price"
-                value="`+ newItem.unitPrice + `"/>
+                value="${newItem.unitPrice}"/>
 
             <div class="input-group-prepend">
                 <span class="input-group-text">X</span>
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].Quantity" 
+                name="RefundVm.Cart[${itemsAdded}].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
                 data-toggle="tooltip" title="Quantity"
-                value="` + newItem.quantity + `"/>            
+                value="${newItem.quantity}"/>            
 
             <div class="input-group-prepend">
                 <span class="input-group-text">=</span>
             </div>
 
             <input type="number" readonly
-                name="Cart[`+ itemsAdded + `].NetPrice" 
+                name="RefundVm.Cart[${itemsAdded}].NetPrice" 
                 class="text-right cart-item-netprice cart-item form-control"
                 data-toggle="tooltip" title="Net Price"
-                value="` + newItem.netPrice + `"/>
+                value="${newItem.netPrice}"/>
 
         </div>
-     </div>
-    `;
+     </div>`;
 
     return row;
 }
@@ -189,13 +199,13 @@ function addLineItem(event) {
     event.preventDefault();
     calculateItemPrice();
 
-    var newItem = getLineItem();
+    const newItem = getLineItem();
     if (newItem === false)
         return;
-    var it = createCartItem(newItem);
+    const it = createCartItem(newItem);
     removeCartItemIfExists(newItem.itemId);
     cart.appendChild(it);
-    document.getElementById("remove-item-button" + itemsAdded)
+    gei("remove-item-button" + itemsAdded)
         .addEventListener("click", removeCartItem);
 
     itemsAdded++;
@@ -205,12 +215,12 @@ function addLineItem(event) {
 }
 
 function removeCartItemIfExists(itemId) {
-    var items = document.getElementsByClassName("cart-item-itemid");
-    for (var i = 0; i < items.length; i++) {
-        var item = items[i];
+    const items = gecn("cart-item-itemid");
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
         if (item.valueAsNumber === itemId) {
             console.log("Found " + itemId);
-            var row = item.parentElement.parentElement.parentElement;
+            const row = item.parentElement.parentElement.parentElement;
             row.parentElement.removeChild(row);
         }
     }
@@ -218,16 +228,22 @@ function removeCartItemIfExists(itemId) {
 
 function removeCartItem(event) {
     event.preventDefault();
-    var row = this.parentElement.parentElement.parentElement.parentElement;
+    var row =
+        this.parentElement
+            .parentElement
+            .parentElement
+            .parentElement;
+
     $(row).fadeOut();
     sleep(500).then(function () {
-        row.parentElement.removeChild(row);
+        row.parentElement
+            .removeChild(row);
         calculatePayment();
     });
 }
 
 $(document).ready(function () {
-    $("#sale-selector").autocomplete({
+    $(saleSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: saleSelector.getAttribute("data-path"),
@@ -249,25 +265,25 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: "/Sales/Details/Brief?id=" + ui.item.value,
+                url: saleBriefUrl + ui.item.value,
                 type: "GET",
                 dataType: "html",
                 success: function (response) {
-                    document.getElementById("sale-briefing").innerHTML = response;
+                    gei("sale-briefing").innerHTML = response;
                     saleSelector.value = ui.item.label;
                     saleId.value = ui.item.value;
                 }
             }).then(function () {
                 debtBefore.value =
-                    document.getElementById("current-due").valueAsNumber;
+                    gei("current-due").valueAsNumber;
             });
         }
     });
 
-    $("#lineitem-selector").autocomplete({
+    $(lineItemSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: "/api/Refunds/LineItems/" + saleId.valueAsNumber,
+                url: refundLineItemsUrl + saleId.valueAsNumber,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -285,7 +301,7 @@ $(document).ready(function () {
         minLength: 0,
         select: function (event, ui) {
             event.preventDefault();
-            var lineitem = ui.item.value;
+            const lineitem = ui.item.value;
 
             lineItemType.value = 1;
             lineItemId.value = lineitem.itemId;
@@ -297,17 +313,12 @@ $(document).ready(function () {
         }
     });
 
-    subtotal.addEventListener("change", calculatePayment);
-    cashBack.addEventListener("change", calculatePayment);
-    debtRollback.addEventListener("focusout", function () {
-        if (isNaN(debtRollback.valueAsNumber))
-            debtRollback.value = 0;
-        debtRollback.value = Math.min(subTotal.valueAsNumber, toFixedIfNecessary(debtRollback.valueAsNumber, 2));
-        calculatePayment();
-    });
-    debtBefore.addEventListener("change", calculatePayment);
-    lineItemQuantity.addEventListener("change", calculateItemPrice);
-    lineItemQuantity.addEventListener("focusout", calculateItemPrice);
-    lineItemAdd.addEventListener("click", addLineItem);
-    lineItemClear.addEventListener("click", clearLineItem);
+    subtotal.onchange           = calculatePayment;
+    cashBack.onchange           = calculatePayment;
+    debtRollback.onfocusout     = calculatePaymentFromDebtRollback;
+    debtBefore.onchange         = calculatePayment;
+    lineItemQuantity.onchange   = calculateItemPrice;
+    lineItemQuantity.onfocusout = calculateItemPrice;
+    lineItemAdd.onclick         = addLineItem;
+    lineItemClear.onclick       = clearLineItem;
 });

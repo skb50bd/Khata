@@ -1,0 +1,79 @@
+@model IndexModel
+
+<div class="card-header"
+     id="purchases-heading">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#purchases-collapse"
+                        aria-expanded="true"
+                        aria-controls="purchases-collapse">
+                    <i class="fa fa-plus"></i>
+                    Purchases
+                </button>
+            </h2>
+        </div>
+        <div class="col-sm-6 text-sm-right mb-0">
+            <span class="badge badge-dark text-right">
+                @Html.DisplayFor(model => model.PurchasesCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="purchases-collapse"
+     class="collapse"
+     aria-labelledby="purchases-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <table class="table table-sm table-hover mb-0">
+            <tbody>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.CostOfGoodsPurchased)</th>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.CostOfGoodsPurchased)
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PurchasesPaid)</th>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.PurchasesPaid)
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PurchasesDue)</th>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.PurchasesDue)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="accordion" id="purchases-list-accordion">
+            <div class="card-text" id="purchases-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#purchases-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="purchases-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="purchases-list-collapse"
+                 class="collapse"
+                 aria-labelledby="purchases-list-heading"
+                 data-parent="#purchases-list-accordion">
+
+                <partial name="_PurchasesList"
+                         for="Purchases" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+@model IndexModel
+
+<div class="card-header"
+     id="sales-heading">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#sales-collapse"
+                        aria-expanded="true"
+                        aria-controls="sales-collapse">
+                    <i class="fa fa-plus"></i>
+                    Sales
+                </button>
+            </h2>
+        </div>
+        <div class="col-sm-6 text-sm-right mb-0">
+            <span class="badge badge-dark text-right">
+                @Html.DisplayFor(model => model.SalesCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="sales-collapse"
+     class="collapse"
+     aria-labelledby="sales-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <table class="table table-sm table-hover">
+            <tbody>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.CostOfGoodsSold)</th>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.CostOfGoodsSold)
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PriceOfGoodsSold)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.PriceOfGoodsSold)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesProfit)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesProfit)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesDue)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesDue)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SalesProfitReceived)</th>
+                    <td class="text-right">@Html.DisplayFor(model => model.SalesProfitReceived)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="accordion" 
+             id="sales-list-accordion">
+            <div class="card-text" id="sales-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#sales-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="sales-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="sales-list-collapse"
+                 class="collapse"
+                 aria-labelledby="sales-list-heading"
+                 data-parent="#sales-list-accordion">
+
+                <partial name="_SalesList"
+                         for="Sales" />
+            </div>
+        </div>
+
+        @foreach (var outlet in Model.Outlets)
+        {
+            <partial name="_OutletSalesReport"
+                     for="@outlet" />
+        }
+    </div>
+</div>

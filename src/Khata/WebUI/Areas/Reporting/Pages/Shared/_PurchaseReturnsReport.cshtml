@@ -1,0 +1,70 @@
+@model IndexModel
+
+<div class="card-header"
+     id="purchase-returns-heading">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#purchase-returns-collapse"
+                        aria-expanded="true"
+                        aria-controls="purchase-returns-collapse">
+                    <i class="fa fa-plus"></i>
+                    Purchase Returns
+                </button>
+            </h2>
+        </div>
+        <div class="col-sm-6 text-sm-right mb-0">
+            <span class="badge badge-dark text-right">
+                @Html.DisplayFor(model => model.PurchaseReturnsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="purchase-returns-collapse"
+     class="collapse"
+     aria-labelledby="purchase-returns-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.PurchaseReturnAmount)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.PurchaseReturnAmount)
+            </div>
+        </div>
+
+        <div class="accordion" 
+             id="purchase-returns-list-accordion">
+            <div class="card-text" id="purchase-returns-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#purchase-returns-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="purchase-returns-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="purchase-returns-list-collapse"
+                 class="collapse"
+                 aria-labelledby="purchase-returns-list-heading"
+                 data-parent="#purchase-returns-list-accordion">
+
+                <partial name="_PurchaseReturnsList" 
+                         for="PurchaseReturns" />
+
+            </div>
+        </div>
+    </div>
+</div>

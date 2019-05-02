@@ -7,7 +7,7 @@ const customerId           = document.getElementById("customer-id");
 const customerSelector     = document.getElementById("customer-selector");
 const customerSearchApi    = customerSelector.getAttribute("data-path");
 const customerInfoApi      = "/api/Customers/"; // Must concatenate customer ID to fetch the info
-const customerBriefInfoUrl = "/People/Customers/Details/Brief?customerId=";
+const customerBriefInfoUrl = "/People/Customers/Brief?id=";
 const registerNewCustomer  = document.getElementById("register-new-customer");
 const customerFirstName    = document.getElementById("first-name");
 const customerLastName     = document.getElementById("last-name");
@@ -332,14 +332,10 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $(saleDate).datetimepicker({
-        format: "DD/MM/YYYY",
-        useCurrent: true
-    });
 
-    if (saleDate.value === "") {
-        saleDate.value = getDate(new Date());
-    }
+    //if (saleDate.value === "") {
+    //    saleDate.value = getDate(new Date());
+    //}
 
     if (isNaN(itemsAdded.valueAsNumber)) {
         itemsAdded.value = 0;
@@ -447,7 +443,7 @@ $(document).ready(function () {
             }
             else {
                 lineItemType.value = 2;
-                lineItemAvailable.parentElement.setAttribute("hidden");
+                lineItemAvailable.parentElement.setAttribute("hidden", true);
             }
             lineItemId.value = lineitem.itemId;
 

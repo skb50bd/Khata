@@ -1,54 +1,29 @@
 ﻿@model DTOs.CustomerDto
 
-<form method="get"
-      asp-page="./Statement"
-      target="_blank"
-      class="form-inline">
-    <input type="number" name="customerId" value="@Model.Id" hidden />
-    <div class="form-group mb-2 mr-sm-2 d-inline">
-        <div class="input-group date"
-             id="fromDate"
-             data-target-input="nearest">
-            <input type="text"
-                   name="fromDate"
-                   class="form-control datetimepicker-input"
-                   data-target="#fromDate"
-                   placeholder="dd/mm/yyyy"
-                   data-toggle="tooltip"
-                   title="Start Date"
-                   autocomplete="off"
-                   required />
-            <div class="input-group-append"
-                 data-target="#fromDate"
-                 data-toggle="datetimepicker">
-                <div class="input-group-text">
-                    <i class="fa fa-calendar"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+    <form method="get"
+          asp-page="./Statement"
+          target="_blank"
+          class="form-inline">
+        <input type="number" name="customerId" value="@Model.Id" hidden />
 
-    <div class="form-group mb-2 mr-sm-2 d-inline">
-        <div class="input-group date"
-             id="toDate"
-             data-target-input="nearest">
-            <input type="text"
-                   name="toDate"
-                   class="form-control datetimepicker-input"
-                   data-target="#toDate"
-                   placeholder="dd/mm/yyyy"
-                   data-toggle="tooltip"
-                   title="End Date"
-                   autocomplete="off"
-                   required />
-            <div class="input-group-append"
-                 data-target="#toDate"
-                 data-toggle="datetimepicker">
-                <div class="input-group-text">
-                    <i class="fa fa-calendar"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-outline-primary mb-2">Go</button>
-</form>
+        <input type="text"
+               class="form-control daterange mb-2 mr-2"
+               value="@Clock.Today.LocalDate() - @Clock.Now.LocalDate()" />
+
+        <input type="text"
+               name="fromDate"
+               id="from-text"
+               value="@Clock.Today.LocalDate()"
+               required hidden />
+
+        <input type="text"
+               name="toDate"
+               value="@Clock.Now.LocalDate()"
+               id="to-text"
+               required hidden />
+
+        <button type="submit"
+                class="btn btn-outline-primary mb-2 ml-2">
+            Go
+        </button>
+    </form>

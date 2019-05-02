@@ -1,101 +1,181 @@
 ﻿@model DTOs.ProductDto
 
-<div class="card" style="width:40rem">
-    <div class="card-header">
+<div class="card info-card mb-1">
+    <div class="card-body">
         <div class="row">
-            <div class="col-6">Product# @Model.Id</div>
-            <div class="col-6 text-right">
+            <div class="col-sm-6">
+                Product# @Model.Id
+            </div>
+            <div class="col-sm-6 text-left text-sm-right">
+                <strong>
+                    @Model.Outlet.Title
+                </strong>
+
                 @if (Model.IsRemoved)
                 {
-                    <span class="badge badge-danger">Removed</span>
+                    <span class="badge badge-danger">
+                        Removed
+                    </span>
                 }
             </div>
         </div>
+
     </div>
-    <div class="card-body">
-        <div class="row">
-            <h3 class="card-title col-md-6">@Model.Name</h3>
-            <h5 class="card-subtitle text-right text-muted col-md-6">
-                @Model.Outlet.Title
-            </h5>
+</div>
+
+<div class="accordion" id="accordionExample">
+    <div class="card info-card">
+        <div class="card-header"
+             id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseOne"
+                        aria-expanded="true"
+                        aria-controls="collapseOne">
+                    <i class="fa fa-plus"></i>
+                    @Model.Name
+                </button>
+            </h2>
         </div>
-        
-        <table class="table table-sm table-hover mt-5">
-            <tbody>
-                <tr>
-                    <th>Unit</th>
-                    <td>@Model.Unit</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>@Model.Description</td>
-                </tr>
-            </tbody>
-        </table>
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <h5 class="card-subtitle">
+
+        <div id="collapseOne"
+             class="collapse"
+             aria-labelledby="headingOne"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover mb-0">
+                    <tbody>
+                        <tr>
+                            <th>Unit</th>
+                            <td>@Model.Unit</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>@Model.Description</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card info-card">
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="collapseTwo">
+                    <i class="fa fa-plus"></i>
                     Inventory
-                </h5>
-                <table class="table table-sm table-hover mt-2">
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo"
+             class="collapse show"
+             aria-labelledby="headingTwo"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover mb-0">
                     <tr>
                         <th>Stock</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.InventoryStock)</td>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.InventoryStock)
+                        </td>
                     </tr>
                     <tr>
                         <th>Warehouse</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.InventoryWarehouse)</td>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.InventoryWarehouse)
+                        </td>
                     </tr>
                     <tr>
                         <th>Low Stock At</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.InventoryAlertAt)</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <h5 class="card-subtitle">
-                    Pricing
-                </h5>
-
-                <table class="table table-sm table-hover mt-2">
-                    <tr>
-                        <th>Retail Price</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.PriceRetail)</td>
-                    </tr>
-                    <tr>
-                        <th>Whole Sale Price</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.PriceBulk)</td>
-                    </tr>
-                    <tr>
-                        <th>Marginal Price</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.PriceMargin)</td>
-                    </tr>
-                    <tr>
-                        <th>Purchase Price</th>
-                        <td class="text-right">@Html.DisplayFor(model => model.PricePurchase)</td>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.InventoryAlertAt)
+                        </td>
                     </tr>
                 </table>
             </div>
         </div>
-        <hr />
+    </div>
+
+    <div class="card info-card">
+        <div class="card-header"
+             id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseThree"
+                        aria-expanded="false"
+                        aria-controls="collapseThree">
+                    <i class="fa fa-plus"></i>
+                    Pricing
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree"
+             class="collapse show"
+             aria-labelledby="headingThree"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover mb-0">
+                    <tr>
+                        <th>Retail Price</th>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.PriceRetail)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Whole Sale Price</th>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.PriceBulk)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Marginal Price</th>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.PriceMargin)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Purchase Price</th>
+                        <td class="text-right">
+                            @Html.DisplayFor(model => model.PricePurchase)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card info-card mt-1">
+    <div class="card-body">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {
                     <a asp-page="./Edit"
                        asp-route-id="@Model.Id"
-                       class="card-link text-white btn btn-link btn-secondary">Edit</a>
+                       class="card-link btn btn-secondary">
+                        Edit
+                    </a>
 
                     <a href="#"
-                       class="card-link text-white btn btn-link btn-danger js-remove-item"
+                       class="card-link btn btn-danger js-remove-item"
                        data-href="@Url.Action("Remove", "Products", new { id = Model.Id })"
                        data-returnUrl="@Url.Page("./Index")">
                         Remove
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-4 mt-2 mt-sm-0 text-sm-right">
                 <a asp-page="./Index"
                    class="card-link btn btn-primary">
                     Back to List
@@ -103,8 +183,8 @@
             </div>
         </div>
     </div>
-
     <div class="card-footer">
         <partial name="_UpdateSummary" for="Metadata" />
     </div>
 </div>
+

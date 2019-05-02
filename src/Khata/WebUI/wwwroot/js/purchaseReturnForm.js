@@ -1,7 +1,7 @@
 ﻿const purchaseId        = gei("purchase-id");
 const purchaseSelector  = gei("purchase-selector");
 const purchaseSearchApi = purchaseSelector.getAttribute("data-path");
-const purchaseBriefUrl  = "/Purchases/Details/Brief?id="; // Must concatenate Purchase Id
+const purchaseBriefUrl  = "/Outgoing/Purchases/Details/Brief?id="; // Must concatenate Purchase Id
 const lineItemId        = gei("lineitem-id");
 const lineItemType      = gei("lineitem-type");
 const lineItemSelector  = gei("lineitem-selector");
@@ -27,7 +27,7 @@ var itemsAdded = 0;
 function calculatePayment(event) {
     // Subtotal
     var subTotalValue = 0;
-    const currentCartItemsNetPrices = document.getElementsByClassName("cart-item-netprice");
+    const currentCartItemsNetPrices = gecn("cart-item-netprice");
     for (let i = 0; i < currentCartItemsNetPrices.length; i++)
         subTotalValue += currentCartItemsNetPrices[i].valueAsNumber;
 
@@ -52,10 +52,9 @@ function calculatePayment(event) {
 
     // Debt After
     debtAfter.value = toFixedIfNecessary(
-        debtBefore - debtRollback.valueAsNumber,
-        2);
-
-    $('[data-toggle="tooltip"]').tooltip();
+        debtBefore.valueAsNumber - debtRollback.valueAsNumber,
+        2
+    );
 }
 
 function calculateItemPrice(event) {
@@ -237,10 +236,8 @@ function setDebtRollbackOnFocusout(event) {
 
     debtRollback.value =
         Math.min(
-            subTotal.valueAsNumber,
-            toFixedIfNecessary(
-                debtRollback.valueAsNumber,
-                2)
+            subtotal.valueAsNumber,
+            toFixedIfNecessary(debtRollback.valueAsNumber, 2)
         );
 
     calculatePayment();
@@ -276,9 +273,10 @@ $(document).ready(function () {
                     purchaseBriefElem.innerHTML = response;
                 }
             }).then(function () {
+                const due = gei("current-due").value;
                 purchaseSelector.value = ui.item.label;
                 purchaseId.value = ui.item.value;
-                debtBefore.value = currentDue.valueAsNumber;
+                debtBefore.value = toFixedIfNecessary(due, 2);
             });
         }
     });
@@ -317,6 +315,7 @@ $(document).ready(function () {
     subtotal.onchange           = calculatePayment;
     cashBack.onchange           = calculatePayment;
     debtRollback.onfocusout     = setDebtRollbackOnFocusout;
+    debtRollback.onchange       = setDebtRollbackOnFocusout;
     debtBefore.onchange         = calculatePayment;
     lineItemQuantity.onchange   = calculateItemPrice;
     lineItemQuantity.onfocusout = calculateItemPrice;

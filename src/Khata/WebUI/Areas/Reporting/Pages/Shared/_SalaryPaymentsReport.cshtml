@@ -1,0 +1,70 @@
+@model IndexModel
+
+<div class="card-header"
+     id="salary-payments-heading">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#salary-payments-collapse"
+                        aria-expanded="true"
+                        aria-controls="salary-payments-collapse">
+                    <i class="fa fa-plus"></i>
+                    Salary Payments
+                </button>
+            </h2>
+        </div>
+        <div class="col-sm-6 text-sm-right mb-0">
+            <span class="badge badge-dark text-right">
+                @Html.DisplayFor(model => model.SalaryPaymentsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="salary-payments-collapse"
+     class="collapse"
+     aria-labelledby="salary-payments-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.SalaryPaid)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.SalaryPaid)
+            </div>
+        </div>
+
+        <div class="accordion" 
+             id="salary-payments-list-accordion">
+            <div class="card-text" id="salary-payments-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#salary-payments-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="salary-payments-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="salary-payments-list-collapse"
+                 class="collapse"
+                 aria-labelledby="salary-payments-list-heading"
+                 data-parent="#salary-payments-list-accordion">
+
+                <partial name="_SalaryPaymentsList"
+                         for="SalaryPayments" />
+
+            </div>
+        </div>
+    </div>
+</div>

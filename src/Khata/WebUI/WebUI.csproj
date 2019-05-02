@@ -124,6 +124,7 @@
     <Compile Include="Areas\Outgoing\Pages\Vouchars\Details.cshtml.cs" />
     <Compile Include="Areas\Outgoing\Pages\Withdrawals\Details.cshtml.cs" />
     <Compile Include="Areas\People\Pages\Customers\Create.cshtml.cs" />
+    <Compile Include="Areas\People\Pages\Customers\Brief.cshtml.cs" />
     <Compile Include="Areas\People\Pages\Customers\Details.cshtml.cs" />
     <Compile Include="Areas\People\Pages\Customers\Edit.cshtml.cs" />
     <Compile Include="Areas\People\Pages\Customers\Index.cshtml.cs" />
@@ -270,6 +271,7 @@
     <None Include="Areas\Outgoing\Pages\Shared\_SupplierPaymentsList.cshtml" />
     <None Include="Areas\Outgoing\Pages\Vouchars\Details.cshtml" />
     <None Include="Areas\Outgoing\Pages\Withdrawals\Details.cshtml" />
+    <None Include="Areas\People\Pages\Customers\Brief.cshtml" />
     <None Include="Areas\People\Pages\Shared\_EmployeeForm.cshtml" />
     <None Include="Areas\People\Pages\Shared\_EmployeeInfo.cshtml" />
     <None Include="Areas\People\Pages\Shared\_EmployeesList.cshtml" />

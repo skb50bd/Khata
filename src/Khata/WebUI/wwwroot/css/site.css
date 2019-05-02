@@ -96,3 +96,43 @@ a.navbar-brand {
         transition: all 0.2s;
         transform: scale(1);
     }
+
+.bootstrap-datetimepicker-widget {
+    z-index: 99999;
+}
+
+.daterange {
+    min-width: 14rem;
+    max-width: 20rem;
+}
+
+.info-card {
+    max-width: 40rem;
+    min-width: 15rem;
+}
+
+.accordion .fa {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+.btn {
+    vertical-align: middle;
+}
+
+.cart {
+    background-color: inherit;
+}
+
+.cart-item-name {
+    min-width: 10rem;
+}
+
+.cart-item {
+    font-weight: bold;
+}
+
+#card-banner {
+    background-color: rgba(255, 224, 130, 0.8);
+    font-size: 1.3rem;
+    padding-bottom: 0;
+}

@@ -3,11 +3,11 @@
 
 @{
     var supplierSearchApi = Url.Action(
-        "GetIds", 
+        "GetIds",
         "Suppliers");
 }
 
-<div class="card">
+<div class="card mb-1">
     <div class="card-body">
         <div class="row">
             <div class="col-lg-6">
@@ -16,26 +16,11 @@
                            class="col-form-label">
                     </label>
 
-                    <div class="input-group input-group-sm date"
-                         data-target-input="nearest">
-
-                        <input type="text"
-                               class="form-control datetimepicker-input"
-                               id="purchase-date"
-                               data-target="#purchase-date"
-                               placeholder="dd/mm/yyyy"
-                               asp-for="PurchaseDate"/>
-
-                        <div class="input-group-append"
-                             data-target="#purchase-date"
-                             data-toggle="datetimepicker">
-
-                            <div class="input-group-text">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-
-                        </div>
-                    </div>
+                    <input type="text"
+                           class="form-control form-control-sm dr-datepicker"
+                           id="purchase-date"
+                           placeholder="dd/mm/yyyy"
+                           asp-for="PurchaseDate" />
                     <span asp-validation-for="PurchaseDate"
                           class="text-danger">
                     </span>
@@ -48,11 +33,11 @@
                            class="col-form-label">
                     </label>
 
-                    <input asp-for="SupplierId" 
-                           type="number" 
-                           value="0" 
-                           class="form-control" 
-                           id="supplier-id"/>
+                    <input asp-for="SupplierId"
+                           type="number"
+                           value="0"
+                           class="form-control"
+                           id="supplier-id" />
 
                     <span asp-validation-for="SupplierId"
                           class="text-danger">
@@ -67,7 +52,8 @@
                     <input id="supplier-selector"
                            class="form-control form-control-sm"
                            type="text"
-                           data-path="@supplierSearchApi" />
+                           data-path="@supplierSearchApi"
+                           placeholder="Supplier Name/ID"/>
                 </div>
 
                 <div id="supplier-brief-info"></div>
@@ -81,6 +67,7 @@
                                data-toggle="collapse"
                                href="#supplier-input-collapse">
                         <label asp-for="RegisterNewSupplier"
+                               for="register-new-supplier"
                                class="form-check-label">
                         </label>
                     </div>
@@ -88,9 +75,9 @@
             </div>
         </div>
 
-        <div class="collapse" 
+        <div class="collapse"
              id="supplier-input-collapse">
-            <partial name="_PurchaseNewSupplierInput" 
+            <partial name="_PurchaseNewSupplierInput"
                      for="Supplier" />
         </div>
     </div>

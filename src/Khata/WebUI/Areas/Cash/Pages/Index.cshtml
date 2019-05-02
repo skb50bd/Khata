@@ -7,88 +7,49 @@
 
 <div class="row">
     <partial name="_BalanceCard" for="@Model" />
-    <div class="col-md-12 card mb-4">
+    <div class="col-md-12 card mb-2">
         <div class="card-body">
+            <form method="get"
+                  class="form-inline">
+                <input type="text"
+                       class="form-control daterange mb-2 mr-2" 
+                       value="@Clock.Today.LocalDate() - @Clock.Today.LocalDate()"/>
+
+                <input asp-for="FromText"
+                       type="text"
+                       name="fromText"
+                       id="from-text"
+                       value="@Clock.Today.LocalDate()"
+                       required hidden />
+
+                <input asp-for="ToText"
+                       type="text"
+                       name="toText"
+                       value="@Clock.Now.LocalDate()"
+                       id="to-text"
+                       required hidden />
+
+                <button type="submit"
+                        class="btn btn-outline-primary mb-2 ml-2">
+                    Go
+                </button>
+            </form>
+
+            <div class="card-title mt-3">
+                <h3 class="lead">
+                    Showing Results
+                    from: <strong>@Model.FromText</strong>,
+                    to: <strong>@Model.ToText</strong>
+                </h3>
+            </div>
+
             <div class="row">
-                <div class="col-md-12 pt-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <form method="get"
-                                  class="form-inline">
-                                <div class="form-group mr-2 mb-2 d-inline">
-                                    <div class="input-group date"
-                                         id="from-date"
-                                         data-target-input="nearest">
-                                        <input type="text"
-                                               class="form-control datetimepicker-input"
-                                               data-target="#from-date"
-                                               placeholder="dd/mm/yyyy"
-                                               name="from-text"
-                                               id="from-text"
-                                               data-toggle="tooltip"
-                                               title="Start Date"
-                                               autocomplete="off"
-                                               required />
-                                        <div class="input-group-append"
-                                             data-target="#from-date"
-                                             data-toggle="datetimepicker">
-                                            <div class="input-group-text">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mr-2 mb-2 d-inline">
-                                    <div class="input-group date"
-                                         id="to-date"
-                                         data-target-input="nearest">
-                                        <input type="text"
-                                               class="form-control datetimepicker-input"
-                                               data-target="#to-date"
-                                               placeholder="dd/mm/yyyy"
-                                               name="to-text"
-                                               id="to-text"
-                                               data-toggle="tooltip"
-                                               title="End Date"
-                                               autocomplete="off"
-                                               required />
-                                        <div class="input-group-append"
-                                             data-target="#to-date"
-                                             data-toggle="datetimepicker">
-                                            <div class="input-group-text">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit"
-                                        class="btn btn-outline-primary mb-2 ml-sm-2">
-                                    Go
-                                </button>
-                            </form>
-                        </div>
-
-                        <div class="col-md-6 lead text-right">
-                            <strong>
-                                From:
-                            </strong>
-                            @Model.FromText
-                            <br />
-                            <strong>
-                                To:
-                            </strong>
-                            @Model.ToText
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 pt-3">
-                    <partial name="_DepositsTable" 
+                <div class="col-md-6">
+                    <partial name="_DepositsTable"
                              for="Deposits" />
                 </div>
-                <div class="col-md-6 pt-3">
-                    <partial name="_WithdrawalsTable" 
+                <div class="col-md-6">
+                    <partial name="_WithdrawalsTable"
                              for="Withdrawals" />
                 </div>
             </div>
@@ -97,6 +58,8 @@
 </div>
 
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script>
         $(document).ready(function () {
             $("#from-text").val(@Model.FromText);

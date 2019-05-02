@@ -1,0 +1,52 @@
+﻿<div class="card">
+    <div class="card-body">
+        <div class="btn-group">
+            <a asp-area="Reporting"
+               asp-page="/StockReport"
+               target="_blank"
+               class="btn btn-outline-primary mb-1 mb-md-0">
+                Stock Report
+            </a>
+            <button type="button"
+                    class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mb-1 mb-md-0"
+                    data-display="static"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-left">
+                <a asp-area="Reporting"
+                   asp-page="/InStockReport"
+                   class="dropdown-item"
+                   target="_blank">
+                    In Stock Items
+                </a>
+                <a asp-area="Reporting"
+                   asp-page="/InLowStockReport"
+                   target="_blank"
+                   class="dropdown-item">
+                    Low Stock Items
+                </a>
+                <a asp-area="Reporting"
+                   asp-page="/InEmptyOrNegativeStockReport"
+                   target="_blank"
+                   class="dropdown-item">
+                    Empty or Negative Stock Items
+                </a>
+            </div>
+        </div>
+        <a asp-area="Reporting"
+           asp-page="/DueReport"
+           class="btn btn-outline-danger mb-1 mb-md-0"
+           target="_blank">
+            Customer Due Report
+        </a>
+        <a asp-area="Reporting"
+           asp-page="/SupplierDueReport"
+           target="_blank"
+           class="btn btn-outline-info mb-1 mb-md-0">
+            Supplier Due Report
+        </a>
+    </div>
+</div>

@@ -1,141 +1,238 @@
 ﻿@model DTOs.PurchaseDto
 
-<div class="card" style="width:40rem">
-    <div class="card-header">
+@{
+    var removeApi = Url.Action("Remove", "Purchases", new {id = Model.Id});
+    var removeReturnUrl = Url.Page("./Index");
+}
+
+<div class="card info-card mb-1">
+    <div class="card-body">
         <div class="row">
-            <div class="col-6">Purchase# @Model.Id</div>
-            <div class="col-6 text-right">
+            <div class="col-sm-6">
+                Purchase# @Model.Id
+            </div>
+            <div class="col-sm-6 text-left text-sm-right">
                 @if (Model.IsRemoved)
                 {
-                    <span class="badge badge-danger">Removed</span>
+                    <span class="badge badge-danger">
+                        Removed
+                    </span>
                 }
             </div>
         </div>
 
     </div>
-    <div class="card-body">
-        <a class="h3 card-title"
-           asp-area="People"
-           asp-page="/Suppliers/Details"
-           asp-route-id="@Model.SupplierId">@Model.Supplier.FullName</a>
-        <table class="table table-sm table-hover mt-4">
-            <tbody>
-                <tr>
-                    <th>Company</th>
-                    <td>@Html.DisplayFor(model => model.Supplier.CompanyName)</td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td>@Html.DisplayFor(model => model.Supplier.Address)</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>@Html.DisplayFor(model => model.Supplier.Phone)</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>@Html.DisplayFor(model => model.Supplier.Email)</td>
-                </tr>
-            </tbody>
-        </table>
+</div>
 
-        <hr />
-        <h4 class="card-title">Payment Information</h4>
-        <table class="table table-sm table-borderless table-hover">
-            <tbody>
-                <tr>
-                    <td>Cart Total</td>
-                    <td class="text-right">@Html.DisplayFor(model => model.PaymentSubTotal)</td>
-                </tr>
+<div class="accordion" id="accordionExample">
+    <div class="card info-card">
+        <div class="card-header"
+             id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseOne"
+                        aria-expanded="true"
+                        aria-controls="collapseOne">
+                    <i class="fa fa-plus"></i>
+                    @Model.Supplier.FullName
+                </button>
 
-                @{ var recordClass = ""; }
-                @if (Model.Supplier.Payable > 0)
-                {
-                    recordClass = "warning";
-                }
-                <tr class="table-@recordClass">
+                <a class="btn btn-link text-right"
+                   asp-area="People"
+                   asp-page="/Suppliers/Details"
+                   asp-route-id="@Model.SupplierId">
+                    <i class="fas fa-link"></i>
+                </a>
+            </h2>
+        </div>
 
-                    <td>Previous Due</td>
-                    <td class="text-right">@Html.DisplayFor(model => model.Supplier.Payable)</td>
-                </tr>
-                <tr class="table-info">
-                    <th>Payable</th>
-                    <td class="text-right">@((Model.PaymentSubTotal + Model.Supplier.Payable).ToString("C2"))</td>
-                </tr>
+        <div id="collapseOne"
+             class="collapse"
+             aria-labelledby="headingOne"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover mb-0">
+                    <tbody>
+                        <tr>
+                            <th>Company</th>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.CompanyName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Address)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Phone)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Email)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-                <tr>
-                    <th>Paid</th>
-                    <td class="text-right">@Html.DisplayFor(model => model.PaymentPaid)</td>
-                </tr>
+    <div class="card info-card">
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="collapseTwo">
+                    <i class="fa fa-plus"></i>
+                    Payment Information
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo"
+             class="collapse show"
+             aria-labelledby="headingTwo"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover mb-0">
+                    <tbody>
+                        <tr>
+                            <td>Cart Total</td>
+                            <td class="text-right">@Html.DisplayFor(model => model.PaymentSubTotal)</td>
+                        </tr>
 
-                <tr class="table-@( Model.PaymentDue + Model.Supplier.Payable> 0
-                                        ? "danger"
-                                        : "")
+                        @{ var recordClass = ""; }
+                        @if (Model.Supplier.Payable > 0)
+                        {
+                            recordClass = "warning";
+                        }
+                        <tr class="table-@recordClass">
+
+                            <td>Previous Due</td>
+                            <td class="text-right">@Html.DisplayFor(model => model.Supplier.Payable)</td>
+                        </tr>
+                        <tr class="table-info">
+                            <th>Payable</th>
+                            <td class="text-right">@((Model.PaymentSubTotal + Model.Supplier.Payable).ToCurrency())</td>
+                        </tr>
+
+                        <tr>
+                            <th>Paid</th>
+                            <td class="text-right">@Html.DisplayFor(model => model.PaymentPaid)</td>
+                        </tr>
+
+                        <tr class="table-@( Model.PaymentDue + Model.Supplier.Payable> 0
+                                            ? "danger"
+                                            : "")
                     ">
-                    <td>Due</td>
-                    <td class="text-right">@((Model.PaymentDue + Model.Supplier.Payable).ToString("C2"))</td>
-                </tr>
-            </tbody>
-        </table>
+                            <td>Due</td>
+                            <td class="text-right">@((Model.PaymentDue + Model.Supplier.Payable).ToString("C2"))</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-        <hr />
-        <h4 class="card-title">Cart</h4>
-        <table class="table table-sm table-borderless table-hover">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th class="text-right">Quantity</th>
-                    <th class="text-right">Unit Price</th>
-                    <th class="text-right">Net Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Cart)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                        <td class="text-right">@Html.DisplayFor(modelItem => item.Quantity)</td>
-                        <td class="text-right">@Html.DisplayFor(modelItem => item.UnitPurchasePrice)</td>
-                        <td class="text-right">@Html.DisplayFor(modelItem => item.NetPurchasePrice)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="card info-card">
+        <div class="card-header"
+             id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseThree"
+                        aria-expanded="false"
+                        aria-controls="collapseThree">
+                    <i class="fa fa-plus"></i>
+                    Cart
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree"
+             class="collapse show"
+             aria-labelledby="headingThree"
+             data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table table-sm table-hover table-responsive-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-right">
+                                Quantity
+                            </th>
+                            <th class="text-right">
+                                Unit Price
+                            </th>
+                            <th class="text-right">
+                                Net Price
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Cart)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td class="text-right">@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                <td class="text-right">@item.UnitPurchasePrice.ToCurrency()</td>
+                                <td class="text-right">@item.NetPurchasePrice.ToCurrency()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <hr />
+<div class="card info-card mt-1">
+    <div class="card-body">
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
             <table class="table table-sm table-borderless table-hover">
                 <tr>
-                    <th>Description</th>
-                    <td>@Html.DisplayFor(model => model.Description)</td>
+                    <th>
+                        Description
+                    </th>
+                    <td>
+                        @Model.Description
+                    </td>
                 </tr>
             </table>
         }
-        <div class="row">
 
-            <div class="col-md-6">
+        <div class="row">
+            <div class="col-sm-8">
+                <a asp-area="Outgoing"
+                   asp-page="/Vouchars/Details"
+                   asp-route-id="@Model.VoucharId"
+                   target="_blank"
+                   class="card-link btn btn-outline-success">
+                    Vouchar
+                </a>
+
                 @if (!Model.IsRemoved)
                 {
-                    @*<a asp-page="./Edit"
-                        asp-route-id="@Model.Id"
-                        class="card-link btn btn-link btn-secondary text-white">Edit</a>*@
-
-                    <a asp-area="Outgoing"
-                       asp-page="/Vouchars/Details"
-                       asp-route-id="@Model.VoucharId"
-                       target="_blank"
-                       class="card-link btn btn-outline-success">Invoice</a>
-
                     <a href="#"
-                       class="card-link btn btn-link btn-danger text-white js-remove-item"
-                       data-href="@Url.Action("Remove", "Purchases", new {id = Model.Id})"
-                       data-returnUrl="@Url.Page("./Index")">
+                       class="card-link btn btn-danger js-remove-item"
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-4 mt-2 mt-sm-0 text-sm-right">
                 <a asp-area="Outgoing"
                    asp-page="/Purchases/Index"
                    class="card-link btn btn-primary">
@@ -144,7 +241,6 @@
             </div>
         </div>
     </div>
-
     <div class="card-footer">
         <partial name="_UpdateSummary" for="Metadata" />
     </div>

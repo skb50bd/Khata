@@ -6,10 +6,10 @@ namespace ViewModels
     {
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(3)]
+        [Required(ErrorMessage = "Title is required")]
+        [MinLength(3, ErrorMessage = "Title must be of at least 3 characters")]
         [MaxLength(30)]
-        [Display(Name = "Title")]
+        [Display(Name = "Expense Title")]
         public string Name { get; set; }
 
         [DataType(DataType.Currency)]

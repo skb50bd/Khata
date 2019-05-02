@@ -1,0 +1,70 @@
+@model IndexModel
+
+<div class="card-header"
+     id="refunds-heading">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="mb-0">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#refunds-collapse"
+                        aria-expanded="true"
+                        aria-controls="refunds-collapse">
+                    <i class="fa fa-plus"></i>
+                    Refunds
+                </button>
+            </h2>
+        </div>
+        <div class="col-sm-6 text-sm-right mb-0">
+            <span class="badge badge-dark text-right">
+                @Html.DisplayFor(model => model.RefundsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="refunds-collapse"
+     class="collapse"
+     aria-labelledby="refunds-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.RefundsCashBack)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.RefundsCashBack)
+            </div>
+        </div>
+
+        <div class="accordion"
+             id="refunds-list-accordion">
+            <div class="card-text" id="refunds-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#refunds-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="refunds-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="refunds-list-collapse"
+                 class="collapse"
+                 aria-labelledby="refunds-list-heading"
+                 data-parent="#refunds-list-accordion">
+
+                <partial name="_RefundsList"
+                         for="Refunds" />
+
+            </div>
+        </div>
+    </div>
+</div>

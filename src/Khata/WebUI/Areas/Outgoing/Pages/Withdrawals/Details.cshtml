@@ -4,26 +4,36 @@
     ViewData["Title"] = "Withdrawal";
 }
 
-<div class="card" style="width:40rem">
+<div class="card info-card">
     <div class="card-header">
-        <div class="col-6">Withdrawal# @Model.Withdrawal.Id</div>
+        Withdrawal# @Model.Withdrawal.Id
     </div>
+
     <div class="card-body">
-        <h3 class="card-title">@Model.Withdrawal.TableName</h3>
-        <table class="table table-sm table-hover mt-5">
+        <h3 class="card-title">
+            @Model.Withdrawal.TableName
+        </h3>
+
+        <table class="table table-sm table-hover mb-0">
             <tbody>
                 <tr>
-                    <th>Amount</th>
-                    <td>@Html.DisplayFor(model => model.Withdrawal.Amount)</td>
+                    <th>
+                        Amount
+                    </th>
+                    <td class="text-right">
+                        @Model.Withdrawal.Amount.ToCurrency()
+                    </td>
                 </tr>
                 <tr>
-                    <th>Description</th>
-                    <td>@Html.DisplayFor(model => model.Withdrawal.Description)</td>
+                    <th>
+                        Description
+                    </th>
+                    <td class="text-right">
+                        @Html.DisplayFor(model => model.Withdrawal.Description)
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <hr />
-
     </div>
 
     <div class="card-footer">
