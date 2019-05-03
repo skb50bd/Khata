@@ -1,12 +1,21 @@
 ﻿@model DTOs.ProductDto
 
+@{
+    var removeApi = Url.Action(
+        "Remove", 
+        "Products", 
+        new {id = Model.Id});
+
+    var removeReturnUrl = Url.Page("./Index");
+}
+
 <div class="card info-card mb-1">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6">
                 Product# @Model.Id
             </div>
-            <div class="col-sm-6 text-left text-sm-right">
+            <div class="col-sm-6 text-sm-right">
                 <strong>
                     @Model.Outlet.Title
                 </strong>
@@ -49,11 +58,11 @@
                     <tbody>
                         <tr>
                             <th>Unit</th>
-                            <td>@Model.Unit</td>
+                            <td class="text-right">@Model.Unit</td>
                         </tr>
                         <tr>
                             <th>Description</th>
-                            <td>@Model.Description</td>
+                            <td class="text-right">@Model.Description</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,9 +177,9 @@
                     </a>
 
                     <a href="#"
-                       class="card-link btn btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Products", new { id = Model.Id })"
-                       data-returnUrl="@Url.Page("./Index")">
+                       class="card-link btn btn-danger ml-1 js-remove-item"
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }

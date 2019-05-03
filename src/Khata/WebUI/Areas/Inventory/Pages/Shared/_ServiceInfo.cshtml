@@ -1,53 +1,78 @@
 ﻿@model DTOs.ServiceDto
 
-<div class="card" style="width:40rem">
+@{
+    var removeApi = Url.Action("Remove", "Services", new {id = Model.Id});
+    var removeReturnUrl = Url.Page("./Index");
+}
+
+<div class="card info-card">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Service# @Model.Id</div>
-            <div class="col-6 text-right">
+            <div class="col-sm-6">
+                Service# @Model.Id
+            </div>
+
+            <div class="col-sm-6 text-sm-right">
+                <strong>
+                    @Model.Outlet.Title
+                </strong>
+
                 @if (Model.IsRemoved)
                 {
-                    <span class="badge badge-danger">Removed</span>
+                    <span class="badge badge-danger">
+                        Removed
+                    </span>
                 }
             </div>
         </div>
     </div>
     <div class="card-body">
-        <div class="row">
-            <h3 class="card-title col-md-6">@Model.Name</h3>
-            <h5 class="card-subtitle text-right text-muted col-md-6">
-                @Model.Outlet.Title
-            </h5>
-        </div>
-        <table class="table table-sm table-hover mt-5">
+        <h3 class="card-title">
+            @Model.Name
+        </h3>
+
+        <table class="table table-sm table-hover mb-0">
             <tbody>
-                <tr>
-                    <th>Price</th>
-                    <td>@Html.DisplayFor(model => model.Price)</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>@Html.DisplayFor(model => model.Description)</td>
-                </tr>
+            <tr>
+                <th>
+                    Price
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Price)
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Description
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
             </tbody>
         </table>
+
         <hr />
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {<a asp-page="./Edit"
                     asp-route-id="@Model.Id"
-                    class="card-link text-white btn btn-link btn-secondary">Edit</a>
+                    class="card-link text-white btn btn-link btn-secondary">
+                     Edit
+                 </a>
 
                     <a href="#"
-                       class="card-link text-white btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Services", new { id = Model.Id })"
-                       data-returnUrl="@Url.Page("./Index")">
+                       class="card-link text-white btn btn-link btn-danger ml-1 js-remove-item"
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+
+            <div class="col-sm-4 text-sm-right pt-2 pt-sm-0">
                 <a asp-page="./Index"
                    class="card-link btn btn-primary">
                     Back to List
