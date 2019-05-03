@@ -3,21 +3,19 @@
 <div class="card-header"
      id="sales-heading">
     <div class="row">
-        <div class="col-sm-6">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#sales-collapse"
-                        aria-expanded="true"
-                        aria-controls="sales-collapse">
-                    <i class="fa fa-plus"></i>
-                    Sales
-                </button>
-            </h2>
+        <div class="col-8">
+            <button class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#sales-collapse"
+                    aria-expanded="true"
+                    aria-controls="sales-collapse">
+                <i class="fa fa-plus"></i>
+                Sales
+            </button>
         </div>
-        <div class="col-sm-6 text-sm-right mb-0">
-            <span class="badge badge-dark text-right">
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
                 @Html.DisplayFor(model => model.SalesCount)
             </span>
         </div>
@@ -58,8 +56,8 @@
 
         <div class="accordion" 
              id="sales-list-accordion">
-            <div class="card-text" id="sales-list-heading">
-                <h2 class="mb-0">
+            <div class="card-text" 
+                 id="sales-list-heading">
                     <button class="btn btn-link"
                             type="button"
                             data-toggle="collapse"
@@ -69,7 +67,6 @@
                         <i class="fa fa-plus"></i>
                         List
                     </button>
-                </h2>
             </div>
 
             <div id="sales-list-collapse"

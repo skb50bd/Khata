@@ -3,21 +3,19 @@
 <div class="card-header"
      id="refunds-heading">
     <div class="row">
-        <div class="col-sm-6">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#refunds-collapse"
-                        aria-expanded="true"
-                        aria-controls="refunds-collapse">
-                    <i class="fa fa-plus"></i>
-                    Refunds
-                </button>
-            </h2>
+        <div class="col-8">
+            <button class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#refunds-collapse"
+                    aria-expanded="true"
+                    aria-controls="refunds-collapse">
+                <i class="fa fa-plus"></i>
+                Refunds
+            </button>
         </div>
-        <div class="col-sm-6 text-sm-right mb-0">
-            <span class="badge badge-dark text-right">
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
                 @Html.DisplayFor(model => model.RefundsCount)
             </span>
         </div>

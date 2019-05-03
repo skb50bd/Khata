@@ -3,21 +3,19 @@
 <div class="card-header"
      id="supplier-payments-heading">
     <div class="row">
-        <div class="col-sm-6">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#supplier-payments-collapse"
-                        aria-expanded="true"
-                        aria-controls="supplier-payments-collapse">
-                    <i class="fa fa-plus"></i>
-                    Supplier Payments
-                </button>
-            </h2>
+        <div class="col-8">
+            <button class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#supplier-payments-collapse"
+                    aria-expanded="true"
+                    aria-controls="supplier-payments-collapse">
+                <i class="fa fa-plus"></i>
+                Supplier Payments
+            </button>
         </div>
-        <div class="col-sm-6 text-sm-right mb-0">
-            <span class="badge badge-dark text-right">
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
                 @Html.DisplayFor(model => model.SupplierPaymentsCount)
             </span>
         </div>
