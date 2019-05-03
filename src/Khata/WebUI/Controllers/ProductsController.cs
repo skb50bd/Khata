@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
 
 using DTOs;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ViewModels;
@@ -26,6 +28,7 @@ namespace WebUI.Controllers
 
         // GET: api/Products
         [HttpGet]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IEnumerable<ProductDto>> Get(
             int? outletId,
             string searchString = "",
@@ -39,6 +42,7 @@ namespace WebUI.Controllers
         // GET: api/Products/5
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "UserRights")]
         public async Task<IActionResult> Get([FromRoute]int id)
         {
             if (!ModelState.IsValid)
@@ -52,6 +56,7 @@ namespace WebUI.Controllers
 
         // POST: api/Products
         [HttpPost]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Post([FromBody] ProductViewModel model)
         {
             if (!ModelState.IsValid)
@@ -69,6 +74,7 @@ namespace WebUI.Controllers
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Put([FromRoute]int id, [FromBody]ProductViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -90,6 +96,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Remove(int id)
         {
             if (!ModelState.IsValid)
@@ -108,6 +115,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Products/Permanent/5
         [HttpDelete("Permanent/{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)

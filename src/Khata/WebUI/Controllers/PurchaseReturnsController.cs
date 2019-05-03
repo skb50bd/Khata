@@ -12,12 +12,14 @@ using Domain;
 
 using DTOs;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ViewModels;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Policy = "AdminRights")]
     [Route("api/[controller]")]
     [ApiController]
     public class PurchaseReturnsController : ControllerBase

@@ -11,11 +11,14 @@ namespace DTOs
     public class OutletDto
     {
         public int Id { get; set; }
+
         public bool IsRemoved { get; set; }
 
-        [Display(Name = "Outlet Name")]
+        [Display(Name = "Outlet")]
         public string Title { get; set; }
+
         public string Slogan { get; set; }
+
         public string Address { get; set; }
 
         [DataType(DataType.PhoneNumber)]
@@ -23,10 +26,13 @@ namespace DTOs
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
         public Metadata Metadata { get; set; }
 
         public ICollection<ProductDto> Products { get; set; }
+
         public ICollection<ServiceDto> Services { get; set; }
+
         public ICollection<SaleDto> Sales { get; set; }
 
         #region Products Stock Status

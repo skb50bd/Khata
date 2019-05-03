@@ -3,67 +3,102 @@
 
 @{
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+    var createMode = ViewData["Title"].ToString().Contains("New");
 }
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<input type="hidden" asp-for="Id" />
+<div class="card">
+    <div class="card-body">
+        <form method="post">
 
-<div class="form-group">
-    <label asp-for="FirstName" class="col-form-label"></label>
-    <input asp-for="FirstName" class="form-control" />
-    <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="col-form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="col-form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Designation" class="col-form-label"></label>
+                <input asp-for="Designation" class="form-control" />
+                <span asp-validation-for="Designation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NIdNumber" class="col-form-label"></label>
+                <input asp-for="NIdNumber" class="form-control" />
+                <span asp-validation-for="NIdNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="col-form-label"></label>
+                <textarea asp-for="Address" class="form-control"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="col-form-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="col-form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Salary" class="col-form-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            @sym
+                        </span>
+                    </div>
+                    <input asp-for="Salary" class="form-control" />
+                </div>
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Balance" class="col-form-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            @sym
+                        </span>
+                    </div>
+                    <input asp-for="Balance" class="form-control" />
+                </div>
+                <span asp-validation-for="Balance" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Note" class="col-form-label"></label>
+                <textarea asp-for="Note" class="form-control"></textarea>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+
+            <input type="submit"
+                   value="@(createMode ? "Create" : "Save")"
+                   class="btn btn-primary" />
+
+            @if (createMode)
+            {
+                <input type="reset"
+                       value="Reset"
+                       class="btn btn-secondary" />
+            }
+
+        </form>
+    </div>
 </div>
 
-<div class="form-group">
-    <label asp-for="LastName" class="col-form-label"></label>
-    <input asp-for="LastName" class="form-control" />
-    <span asp-validation-for="LastName" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Designation" class="col-form-label"></label>
-    <input asp-for="Designation" class="form-control" />
-    <span asp-validation-for="Designation" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="NIdNumber" class="col-form-label"></label>
-    <input asp-for="NIdNumber" class="form-control" />
-    <span asp-validation-for="NIdNumber" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Address" class="col-form-label"></label>
-    <textarea asp-for="Address" class="form-control"></textarea>
-    <span asp-validation-for="Address" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Phone" class="col-form-label"></label>
-    <input asp-for="Phone" class="form-control" />
-    <span asp-validation-for="Phone" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Email" class="col-form-label"></label>
-    <input asp-for="Email" class="form-control" />
-    <span asp-validation-for="Email" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Salary" class="col-form-label"></label>
-    <input asp-for="Salary" class="form-control" />
-    <span asp-validation-for="Salary" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Balance" class="col-form-label"></label>
-    <input asp-for="Balance" class="form-control" />
-    <span asp-validation-for="Balance" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="Note" class="col-form-label"></label>
-    <textarea asp-for="Note" class="form-control"></textarea>
-    <span asp-validation-for="Note" class="text-danger"></span>
-</div>

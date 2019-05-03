@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Business.Abstractions;
-using DTOs;
-using Business.PageFilterSort;
-using ViewModels;
 
+using Business.Abstractions;
+using Business.PageFilterSort;
+
+using DTOs;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using ViewModels;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Policy = "AdminRights")]
     [Route("api/[controller]")]
     [ApiController]
     public class SalaryIssuesController : ControllerBase

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
 
@@ -12,12 +12,14 @@ using Domain;
 
 using DTOs;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ViewModels;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Policy = "AdminRights")]
     [Route("api/[controller]")]
     [ApiController]
     public class RefundsController : ControllerBase

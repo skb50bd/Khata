@@ -6,11 +6,12 @@ using Business;
 
 using Domain;
 
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Policy = "AdminRights")]
     [Route("api/[controller]")]
     public class BackupRestoreController : Controller
     {
@@ -27,11 +28,11 @@ namespace WebUI.Controllers
                 "application/octet-stream", 
                 $"backup-{Clock.Now.Timestamp()}.zip");
 
-        // POST api/BackupRestore
-        [HttpPost]
-        public void Post([FromBody]IFormFile backupFile)
-        {
+        //// POST api/BackupRestore
+        //[HttpPost]
+        //public void Post([FromBody]IFormFile backupFile)
+        //{
 
-        }
+        //}
     }
 }

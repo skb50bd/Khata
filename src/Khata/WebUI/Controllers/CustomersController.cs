@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Abstractions;
-using DTOs;
-using Business.PageFilterSort;
-using ViewModels;
 
+using Business.Abstractions;
+using Business.PageFilterSort;
+
+using DTOs;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using ViewModels;
 
 namespace WebUI.Controllers
 {
@@ -17,13 +21,16 @@ namespace WebUI.Controllers
         private readonly ICustomerService _customers;
         private readonly PfService _pfService;
 
-        public CustomersController(PfService pfService, ICustomerService customers)
+        public CustomersController(
+            PfService pfService, 
+            ICustomerService customers)
         {
             _pfService = pfService;
             _customers = customers;
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IEnumerable<CustomerDto>> Get(
             string searchString = "",
             int pageSize = 0,
@@ -32,8 +39,10 @@ namespace WebUI.Controllers
                 _pfService.CreateNewPf(
                     searchString, pageIndex, pageSize));
 
+        
         // GET: api/Customers/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "UserRights")]
         public async Task<IActionResult> Get([FromRoute]int id)
         {
             if (!ModelState.IsValid)
@@ -47,6 +56,7 @@ namespace WebUI.Controllers
 
         // GET: api/Customers/Ids
         [HttpGet("Ids/")]
+        [Authorize(Policy = "UserRights")]
         public async Task<IActionResult> GetIds([FromQuery]string term)
         {
             if (!ModelState.IsValid)
@@ -57,6 +67,7 @@ namespace WebUI.Controllers
 
         // POST: api/Customers
         [HttpPost]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Post([FromBody] CustomerViewModel model)
         {
             if (!ModelState.IsValid)
@@ -75,6 +86,7 @@ namespace WebUI.Controllers
         // PUT: api/Customers/5
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Put([FromRoute]int id, [FromBody]CustomerViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -96,6 +108,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Remove(int id)
         {
             if (!ModelState.IsValid)
@@ -111,6 +124,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Customers/Permanent/5
         [HttpDelete("Permanent/{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)

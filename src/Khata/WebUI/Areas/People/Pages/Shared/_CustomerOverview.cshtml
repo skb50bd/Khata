@@ -1,7 +1,7 @@
 ﻿@model CustomerReport
 
 
-<div class="card" style="width:40rem">
+<div class="card info-card">
 
     <div class="card-header">
         <div>Customer# @Model.Id</div>
@@ -12,55 +12,55 @@
         <table class="table table-sm table-hover mt-4">
             <tr>
                 <th>Address</th>
-                <td>@Html.DisplayFor(model => model.Address)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Address)</td>
             </tr>
             <tr>
                 <th>Phone</th>
-                <td>@Html.DisplayFor(model => model.Phone)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Phone)</td>
             </tr>
             <tr class="table-danger">
                 <th>Due</th>
-                <td>@Html.DisplayFor(model => model.Debt)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Debt)</td>
             </tr>
             <tr class="table-success">
                 <th>Number of Sales</th>
-                <td>@Html.DisplayFor(model => model.SalesCount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.SalesCount)</td>
             </tr>
             <tr class="table-success">
                 <th>Sales Worth</th>
-                <td>@Html.DisplayFor(model => model.SalesWorth)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.SalesWorth)</td>
             </tr>
             <tr class="table-success">
                 <th>Sale Paid</th>
-                <td>@Html.DisplayFor(model => model.SaleReceives)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.SaleReceives)</td>
             </tr>
             <tr class="table-success">
                 <th>Profit</th>
-                <td>@Html.DisplayFor(model => model.Profit)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Profit)</td>
             </tr>
             <tr class="table-info">
                 <th>Number of Debt Payments</th>
-                <td>@Html.DisplayFor(model => model.DebtPaymentsCount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.DebtPaymentsCount)</td>
             </tr>
             <tr class="table-info">
                 <th>Due Paid</th>
-                <td>@Html.DisplayFor(model => model.DebtPaymentReceives)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.DebtPaymentReceives)</td>
             </tr>
             <tr class="table-info">
                 <th>Delta (Profit - Debt)</th>
-                <td>@Html.DisplayFor(model => model.Delta)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Delta)</td>
             </tr>
             <tr class="table-warning">
                 <th>Number of Refunds</th>
-                <td>@Html.DisplayFor(model => model.RefundCount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.RefundCount)</td>
             </tr>
             <tr class="table-warning">
                 <th>Refund Loss</th>
-                <td>@Html.DisplayFor(model => model.RefundLoss)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.RefundLoss)</td>
             </tr>
             <tr class="table-warning">
                 <th>Refund Amount</th>
-                <td>@Html.DisplayFor(model => model.RefundAmount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.RefundAmount)</td>
             </tr>
         </table>
 
