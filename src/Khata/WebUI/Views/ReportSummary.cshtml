@@ -1,0 +1,221 @@
+﻿@using Domain
+@using Domain.Reports
+
+@model Summary
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Report</title>
+    <style>
+    .email-background {
+        /*background: #eee;*/
+        padding: 1rem;
+        max-width: 100rem;
+        margin: 0 auto;
+    }
+
+    .email-content {
+    }
+
+    .pre-header {
+        color: white;
+        font-size: 0.1rem;
+    }
+
+    .report-content {
+        width: 100%;
+        background: #FAFAFA;
+    }
+
+    tr {
+        height: 3rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid black;
+    }
+
+        tr:hover {
+            background: #E0E0E0;
+        }
+
+    .report-content > tbody > tr > th {
+        padding-left: 0.3rem;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .report-content > tbody > tr > td {
+        padding-right: 0.3rem;
+        text-align: right;
+    }
+
+    .report-header {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: lighter;
+        margin: 0.2rem auto;
+    }
+
+    .report-period {
+        text-align: right;
+        color: #424242;
+        text-decoration: underline;
+        padding-bottom: 0.2rem;
+        padding-top: 0.3rem;
+        font-style: oblique;
+    }
+
+    .report-footer {
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        background: #F5F5F5;
+        color: #424242;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="email-background">
+        <div class="pre-header">
+        </div>
+
+        <div class="email-content">
+            @*<div class="report-header">
+                @Model.GeneratedOn.ToString("M") Summary
+            </div>*@
+
+            <table class="report-content">
+                <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CashIn)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.CashIn)
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CashOut)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.CashOut)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NewReceivable)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.NewReceivable)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NewPayable)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.NewPayable)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SaleCount)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SaleCount)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SaleReceives)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SaleReceives)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SalesWithDueCount)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SalesWithDueCount)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SalesNewDue)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SalesNewDue)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SalesProfit)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SalesProfit)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReceivedDebt)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ReceivedDebt)
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalExpense)
+                    </th>
+
+                    <td>
+                        @Html.DisplayFor(model => model.TotalExpense)
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            
+            <hr/>
+
+            <div class="report-footer">
+                KHATA - &copy; Brotal Inc. @Clock.Today.Year
+
+                <div class="report-period">
+                    @Model.GeneratedOn.ToString("f")
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

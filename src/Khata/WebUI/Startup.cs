@@ -122,6 +122,12 @@ namespace WebUI
                 Configuration.GetSection("SendGrid"));
             services.Configure<KhataSettings>(
                 Configuration.GetSection("Settings"));
+
+            services
+               .AddTransient<
+                    IRazorViewToStringRenderer,
+                    RazorViewToStringRenderer>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -31,7 +31,6 @@ namespace Business
             services.AddTransient<IPurchaseReturnService, PurchaseReturnService>();
 
             services.AddTransient<BackupRestoreService>();
-
             return services;
         }
     }

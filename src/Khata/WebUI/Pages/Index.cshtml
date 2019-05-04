@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home";
+    var sendReportApi = Url.Action("Send", "Reports");
 }
 
 <div class="text-center">
@@ -31,10 +32,20 @@
         Expense
     </a>
     <a asp-area="Outgoing"
-        asp-page="/Purchases/Create"
+       asp-page="/Purchases/Create"
        class="btn btn-outline-info mb-2"
        style="width:150px;">
         <i class="fa fa-plus"></i>
         Purchase
+    </a>
+    
+    <br/>
+    
+    <a class="btn btn-success btn-circle mb-2 text-white"
+       id="send-report-button"
+       data-href="@sendReportApi"
+       style="width:150px;">
+        <i class="fa fa-paper-plane"></i>
+        Send Report
     </a>
 </div>

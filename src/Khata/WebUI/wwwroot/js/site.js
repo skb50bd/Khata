@@ -9,6 +9,7 @@ const ajaxTabs              = gecn("ajax-tab");
 const clickableRows         = gecn("js-clickable-row");
 const clickableTransactions = gecn("js-clickable-transaction");
 const removableItems        = gecn("js-remove-item");
+const sendReportButton      = gei("send-report-button");
 
 
 function attachLinksToTds() {
@@ -39,7 +40,13 @@ function getDate(elem = null) {
 
 const swalDelete = Swal.mixin({
     confirmButtonClass: "btn btn-danger",
-    cancelButtonClass: "btn btn-secondary mr-4",
+    cancelButtonClass: "btn btn-secondary mr-2",
+    buttonsStyling: false
+});
+
+const swalQuestion = Swal.mixin({
+    confirmButtonClass: "btn btn-primary",
+    cancelButtonClass: "btn btn-secondary mr-2",
     buttonsStyling: false
 });
 
@@ -131,6 +138,45 @@ function confirmRemove(event) {
     });
 }
 
+function sendEmailReport(event) {
+    swalQuestion.fire({
+        title: "Send the reports now?",
+        text: "The reports will be sent to the specified email addresses.",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, send now!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({ url: sendReportButton.getAttribute("data-href"), method: "POST" })
+                .done(function () {
+                    swalQuestion.fire(
+                        "Sent!",
+                        "Reports have been sent.",
+                        "success"
+                    );
+                })
+                .fail(function () {
+                    swalQuestion.fire(
+                        "Failed",
+                        "Could not send the reports.",
+                        "warning"
+                    );
+                });
+        } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalQuestion.fire(
+                "Cancelled",
+                "Nothing sent :)",
+                "error"
+            );
+        }
+    });
+}
+
 function loadAjaxTabContent(event) {
     $.ajax({
         url: $(event.target).attr("data-partial-source"),
@@ -172,6 +218,9 @@ $(document).ready(function () {
     $(clickableRows).click(viewRecord);
     $(clickableTransactions).click(viewTransaction);
     $(removableItems).click(confirmRemove);
+
+    if (sendReportButton)
+        sendReportButton.onclick = sendEmailReport;
 
     $('[data-toggle="popover"]').popover();
 
@@ -250,6 +299,9 @@ $(document).ready(function () {
     $(blankButtons).click((e) => {
         e.stopPropagation();
     });
+
+
+
 
     // Collapsible 
     // Add minus icon for collapse element which is open by default

@@ -22,11 +22,13 @@
 
 .widget {
     min-width: 25rem;
+    margin: 1rem;
 }
 
 .widget-tall {
     min-width: 20rem;
     max-width: 25rem;
+    margin: 1rem;
 }
 
 .report-section-header > th {

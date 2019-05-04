@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using Domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Mapper
@@ -8,10 +8,7 @@ namespace Business.Mapper
     {
         public static IServiceCollection ConfigureMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(m =>
-            {
-                m.AddProfile<MappingProfile>();
-            });
+            services.AddAutoMapper(typeof(Entity).Assembly);
             //AutoMapper.Mapper.Configuration.AssertConfigurationIsValid();
             return services;
         }

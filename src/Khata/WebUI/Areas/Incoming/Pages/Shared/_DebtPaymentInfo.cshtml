@@ -1,5 +1,20 @@
 ﻿@model DTOs.DebtPaymentDto
 
+@{
+    var removeApi = Url.Action(
+        "Remove", 
+        "DebtPayments", 
+        new {id = Model.Id});
+
+    var removeReturnUrl = Url.Page(
+        "/DebtPayments/Index", 
+        new
+        {
+            area = "Incoming" 
+
+        });
+}
+
 <div class="card info-card">
     <div class="card-header">
         <div class="row">
@@ -70,9 +85,9 @@
                 @if (!Model.IsRemoved)
                 {
                     <a href="#"
-                       class="card-link text-white btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "DebtPayments", new {id = Model.Id})"
-                       data-returnUrl="@Url.Page("/DebtPayments/Index", new{ area = "Incoming" })">
+                       class="card-link btn btn-danger ml-1 js-remove-item"
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
