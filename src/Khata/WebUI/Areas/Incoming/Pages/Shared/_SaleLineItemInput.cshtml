@@ -2,6 +2,7 @@
 @model SaleViewModel
 @{
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+    var lineItemsApi = Url.Action("GetLineItems", "Sales");
 }
 
 
@@ -33,7 +34,7 @@
                     <input id="lineitem-selector"
                            class="form-control form-control-sm"
                            type="text"
-                           data-path="@Url.Action("GetLineItems", "Sales")" 
+                           data-path="@lineItemsApi" 
                            placeholder="Product/Service Name/ID"/>
                     <small class="text-muted">
                         Available: 
@@ -97,19 +98,23 @@
 
         <div class="form-group pb-3">
             <button role="button"
-                    class="btn btn-sm btn-outline-primary card-link"
+                    class="btn btn-sm btn-outline-primary card-link mr-0"
                     id="lineitem-add-button">
                 Add Item
             </button>
             <button role="button" 
-                    class="btn btn-sm btn-outline-secondary card-link"
+                    class="btn btn-sm btn-outline-secondary card-link ml-0"
                     id="lineitem-clear-button">
                 Clear Item
             </button>
         </div>
 
         <input type="number" 
-               value="@Html.ValueFor(model => model.Cart.Count)" id="items-added" name="items-added" disabled hidden />
+               value="@Html.ValueFor(model => model.Cart.Count)" 
+               id="items-added" 
+               name="items-added" 
+               disabled hidden />
+
         <div id="cart" class="">
             @for (var i = 0; i < Model?.Cart?.Count; i++)
             {

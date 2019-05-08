@@ -12,9 +12,18 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6">
-                Refund# @Model.Id
+                <strong data-toggle="tooltip"
+                        title="Refund ID">
+                    Refund# @Model.Id
+                </strong>
             </div>
             <div class="col-sm-6 text-left text-sm-right">
+                <span class="text-muted"
+                      data-toggle="tooltip"
+                      title="Refund Date">
+                    @Model.Metadata.CreationTime.LocalDate()
+                </span>
+
                 @if (Model.IsRemoved)
                 {
                     <span class="badge badge-danger">
@@ -24,6 +33,14 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <span data-toggle="tooltip"
+                      title="Sale ID">
+                    Sale# @Model.SaleId
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -32,24 +49,32 @@
     <div class="card info-card">
         <div class="card-header"
              id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseOne"
-                        aria-expanded="true"
-                        aria-controls="collapseOne">
-                    <i class="fa fa-plus"></i>
-                    @Model.Customer.FullName
-                </button>
-
-                <a class="btn btn-link"
-                   asp-area="People"
-                   asp-page="/Customers/Details"
-                   asp-route-id="@Model.CustomerId">
-                    <i class="fas fa-link"></i>
-                </a>
-            </h2>
+            <div class="row">
+                <h2 class="mb-0 col-sm-6">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne">
+                        <span data-toggle="tooltip"
+                              title="Customer Information">
+                            <i class="fa fa-plus"></i>
+                            @Model.Customer.FullName
+                        </span>
+                    </button>
+                </h2>
+                <div class="col-sm-6 text-sm-right">
+                    <a class="btn btn-link pl-2 pl-sm-0 pr-0"
+                       asp-area="People"
+                       asp-page="/Customers/Details"
+                       asp-route-id="@Model.CustomerId"
+                       data-toggle="tooltip"
+                       title="View Customer Profile">
+                        <i class="fas fa-address-card"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="collapseOne"

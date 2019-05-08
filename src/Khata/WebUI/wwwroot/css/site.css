@@ -20,15 +20,31 @@
     font-size: 2rem;
 }
 
+.card, 
+.input-group, 
+.btn, 
+.form-control, 
+.input-group-append, 
+.nav-pills > .nav-item > .nav-link, 
+.dropdown-menu, 
+.popover, 
+.input-group-text {
+    border-radius: 0;
+}
+
+    .card:hover, .dropdown-menu {
+        box-shadow: 0 0 5px #E0E0E0;
+    }
+
 .widget {
     min-width: 25rem;
     margin: 1rem;
+    display: inline-block;
 }
 
+
 .widget-tall {
-    min-width: 20rem;
-    max-width: 25rem;
-    margin: 1rem;
+    min-width: 10rem;
 }
 
 .report-section-header > th {
@@ -52,11 +68,16 @@
     width: 100%;
 }
 
-@media(max-width:768px) {
-    #perdayreport {
-        min-height: 40%;
-    }
+#perdayreport-chart {
+    width: 100%;
 }
+
+#send-report-button {
+    padding-top: 0.5rem;
+    padding-bottom: 0.6rem;
+    padding-right: 0.9rem;
+}
+
 
 a.navbar-brand {
     white-space: normal;
@@ -117,6 +138,7 @@ a.navbar-brand {
     margin-right: 0.5rem;
     vertical-align: middle;
 }
+
 .btn {
     vertical-align: middle;
 }
@@ -137,4 +159,34 @@ a.navbar-brand {
     background-color: rgba(255, 224, 130, 0.8);
     font-size: 1.3rem;
     padding-bottom: 0;
+}
+
+
+@media (min-width: 576px) {
+    .card-columns {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .card-columns {
+        column-count: 4;
+    }
+}
+
+.pie-chart {
+    height: 150px;
 }

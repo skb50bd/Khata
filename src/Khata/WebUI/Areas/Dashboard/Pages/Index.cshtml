@@ -4,8 +4,8 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="row pt-3">
-    <div class="col-lg-8 col-md-12 mb-3">
+<div class="row pt-1">
+    <div class="col-xl-6 col-lg-8 col-md-12">
         <partial name="_PerDayReport" />
     </div>
 </div>
@@ -16,21 +16,12 @@
 
 <hr />
 
-<div class="row">
-    <div class="col-lg-4 col-md-6">
-        <div class="widget-tall">
-            <partial name="_Assets"
-                     for="Asset" />
+<div class="card-columns">
+    <partial name="_Assets"
+             for="Asset" />
 
-        </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6">
-        <div class="widget-tall">
-            <partial name="_Liabilities"
-                     for="Liability" />
-        </div>
-    </div>
+    <partial name="_Liabilities"
+             for="Liability" />
 </div>
 
 

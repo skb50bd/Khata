@@ -17,7 +17,7 @@ namespace WebUI
             var incoming = new[] {
                 "Sales",
                 "Debt Payments",
-                "Purchase Returns",
+                "Purchase-Returns",
                 "Deposits"
             };
             var outgoing = new[] {

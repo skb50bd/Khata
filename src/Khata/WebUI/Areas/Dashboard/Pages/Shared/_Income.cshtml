@@ -1,19 +1,19 @@
 ﻿@model IncomeReportWithSpan
 
-<div class="card widget-tall mb-3">
+<div class="card widget-tall">
     <div class="card-header">
         Income
     </div>
     <div class="card-body">
-        <canvas id="@Model.Span-income-chart" height="150"></canvas>
+        <canvas id="@Model.Span-income-chart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-income-total">
             @((Model.Inflow.DebtReceived
                         + Model.Inflow.SaleReceived
                         + Model.Inflow.DepositAmount
-                    ).ToString("C2"))
+                    ).ToCurrency())
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Sales</th>
@@ -71,7 +71,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>
     </div>

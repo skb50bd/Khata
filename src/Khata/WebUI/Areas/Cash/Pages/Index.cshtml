@@ -7,12 +7,12 @@
 
 <div class="row">
     <partial name="_BalanceCard" for="@Model" />
-    <div class="col-md-12 card mb-2">
+    <div class="col-md-12 card mb-1">
         <div class="card-body">
             <form method="get"
                   class="form-inline">
                 <input type="text"
-                       class="form-control daterange mb-2 mr-2" 
+                       class="form-control daterange mb-2" 
                        value="@Clock.Today.LocalDate() - @Clock.Today.LocalDate()"/>
 
                 <input asp-for="FromText"
@@ -30,17 +30,21 @@
                        required hidden />
 
                 <button type="submit"
-                        class="btn btn-outline-primary mb-2 ml-2">
+                        class="btn btn-outline-primary mb-2 ml-0 ml-sm-2">
                     Go
                 </button>
             </form>
-
-            <div class="card-title mt-3">
-                <h3 class="lead">
-                    Showing Results
-                    from: <strong>@Model.FromText</strong>,
-                    to: <strong>@Model.ToText</strong>
-                </h3>
+            
+            
+            <div class="card-title mt-3 bg-dark text-white pt-4 pb-2 pr-2 pl-2 mb-0">
+                <div class="row">
+                    <div class="col-md-6 h5">
+                        From : @Model.FromDate.ToString("dd MMM yyyy")
+                    </div>
+                    <div class="col-md-6 text-md-right h5">
+                        To : @Model.ToDate.ToString("dd MMM yyyy")
+                    </div>
+                </div>
             </div>
 
             <div class="row">

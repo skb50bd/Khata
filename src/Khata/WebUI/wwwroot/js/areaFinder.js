@@ -8,7 +8,7 @@
     let incoming = [
         "Sales",
         "Debt Payments",
-        "Purchase Returns",
+        "Purchase-Returns",
         "Deposits"
     ];
     let outgoing = [

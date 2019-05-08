@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Reports
 {
-    public class Summary
+    public class Summary: Report
     {
         public DateTimeOffset StartTime { get; set; }
 
@@ -45,7 +45,7 @@ namespace Domain.Reports
         public int SalesWithDueCount { get; set; }
 
         [DataType(DataType.Currency)]
-        [Display(Name = "New Payable from Sales")]
+        [Display(Name = "New Receivable from Sales")]
         public decimal SalesNewDue { get; set; }
 
         [DataType(DataType.Currency)]

@@ -13,9 +13,17 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6">
-                Purchase Return# @Model.Id
+                <strong data-toggle="tooltip"
+                        title="Purcahse-Return ID">
+                    Purchase-Return# @Model.Id
+                </strong>
             </div>
             <div class="col-sm-6 text-left text-sm-right">
+                <span class="text-muted"
+                      data-toggle="tooltip"
+                      title="Return Date">
+                    @Model.Metadata.CreationTime.LocalDate()
+                </span>
                 @if (Model.IsRemoved)
                 {
                     <span class="badge badge-danger">
@@ -24,7 +32,14 @@
                 }
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-sm-6">
+                <span data-toggle="tooltip"
+                      title="Purcahse ID">
+                    Purchase# @Model.PurchaseId
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -33,23 +48,32 @@
     <div class="card info-card">
         <div class="card-header"
              id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseOne"
-                        aria-expanded="true"
-                        aria-controls="collapseOne">
-                    <i class="fa fa-plus"></i>
-                    @Model.Supplier.FullName
-                </button>
-                <a class="btn btn-link"
-                   asp-area="People"
-                   asp-page="/Suppliers/Details"
-                   asp-route-id="@Model.SupplierId">
-                    <i class="fas fa-link"></i>
-                </a>
-            </h2>
+            <div class="row">
+                <h2 class="mb-0 col-sm-6">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne">
+                        <span data-toggle="tooltip"
+                              title="Supplier Information">
+                            <i class="fa fa-plus"></i>
+                            @Model.Supplier.FullName
+                        </span>
+                    </button>
+                </h2>
+                <div class="col-sm-6 text-sm-right">
+                    <a class="btn btn-link pl-2 pl-sm-0 pr-0"
+                       asp-area="People"
+                       asp-page="/Suppliers/Details"
+                       asp-route-id="@Model.SupplierId"
+                       data-toggle="tooltip"
+                       title="View Supplier Profile">
+                        <i class="fas fa-address-card"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="collapseOne"
@@ -61,19 +85,27 @@
                     <tbody>
                         <tr>
                             <th>Company</th>
-                            <td class="text-right">@Html.DisplayFor(model => model.Supplier.CompanyName)</td>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.CompanyName)
+                            </td>
                         </tr>
                         <tr>
                             <th>Address</th>
-                            <td class="text-right">@Html.DisplayFor(model => model.Supplier.Address)</td>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Address)
+                            </td>
                         </tr>
                         <tr>
                             <th>Phone</th>
-                            <td class="text-right">@Html.DisplayFor(model => model.Supplier.Phone)</td>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Phone)
+                            </td>
                         </tr>
                         <tr>
                             <th>Email</th>
-                            <td class="text-right">@Html.DisplayFor(model => model.Supplier.Email)</td>
+                            <td class="text-right">
+                                @Html.DisplayFor(model => model.Supplier.Email)
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -212,7 +244,7 @@
                 @if (!Model.IsRemoved)
                 {
                     <a href="#"
-                       class="card-link btn btn-link btn-danger text-white js-remove-item"
+                       class="card-link btn btn-link btn-danger text-white ml-1 js-remove-item"
                        data-href="@removeApi"
                        data-returnUrl="@removalReturnUrl">
                         Remove

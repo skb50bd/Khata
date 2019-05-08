@@ -115,7 +115,7 @@ namespace WebUI
 
             services.AddSignalR();
 
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<OutletOptions>(
                 Configuration.GetSection("OutletOptions"));
             services.Configure<AuthMessageSenderOptions>(
@@ -127,6 +127,10 @@ namespace WebUI
                .AddTransient<
                     IRazorViewToStringRenderer,
                     RazorViewToStringRenderer>();
+
+            services.Configure<SmtpEmailSettings>(
+                Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
         }
 

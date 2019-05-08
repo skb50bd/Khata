@@ -2,30 +2,13 @@
 @model PurchaseReturns.CreateModel
 
 @{
-    ViewData["Title"] = "New Purchase Return";
+    ViewData["Title"] = "New Purchase-Return";
 }
 
 <div class="row">
     <div class="col-md-8">
-        <form method="post"
-              class="immutable-submit">
-
-            <div class="text-danger"
-                 asp-validation-summary="ModelOnly">
-            </div>
-
             <partial name="_PurchaseReturnForm" 
                      for="PurchaseReturnVm"/>
-
-            <div class="form-group">
-                <button type="submit"
-                        class="btn btn-lg btn-primary">
-                    <strong>
-                        Create
-                    </strong>
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 

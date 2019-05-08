@@ -6,10 +6,13 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6">
-                Sale# @Model.Id
+                <span data-toggle="tooltip"
+                      title="Sale ID">
+                    Sale# @Model.Id
+                </span>
             </div>
             <div class="col-sm-6 text-left text-sm-right">
-                <strong>
+                <strong data-toggle="tooltip" title="Outlet Name">
                     @Model.Outlet.Title
                 </strong>
 
@@ -22,30 +25,49 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col text-sm-right text-muted">
+                <span data-toggle="tooltip"
+                      title="Sale Date">
+                    @Model.SaleDate.LocalDate()
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="accordion" id="reporting-accordion">
+<div class="accordion"
+     id="reporting-accordion">
+
     <div class="card info-card">
         <div class="card-header"
              id="sales-heading">
-            <h2 class="mb-0">
-                <button class="btn btn-link"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#sales-collapse"
-                        aria-expanded="true"
-                        aria-controls="sales-collapse">
-                    <i class="fa fa-plus"></i>
-                    @Model.Customer.FullName
-                </button>
-                <a class="btn btn-link text-right"
-                   asp-area="People"
-                   asp-page="/Customers/Details"
-                   asp-route-id="@Model.CustomerId">
-                    <i class="fas fa-link"></i>
-                </a>
-            </h2>
+            <div class="row">
+                <h2 class="mb-0 col-sm-6">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#sales-collapse"
+                            aria-expanded="true"
+                            aria-controls="sales-collapse">
+                        <span data-toggle="tooltip"
+                              title="Customer Information">
+                            <i class="fa fa-plus"></i>
+                            @Model.Customer.FullName
+                        </span>
+                    </button>
+                </h2>
+                <div class="col-sm-6 text-sm-right">
+                    <a class="btn btn-link pl-2 pl-sm-0 pr-0"
+                       asp-area="People"
+                       asp-page="/Customers/Details"
+                       asp-route-id="@Model.CustomerId"
+                       data-toggle="tooltip"
+                       title="View Customer Profile">
+                        <i class="fas fa-address-card"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="sales-collapse"
@@ -167,9 +189,9 @@
                             </td>
                         </tr>
 
-                        <tr class="table-@( Model.PaymentDue + Model.Customer.Debt> 0
-                                            ? "danger"
-                                            : "")
+                        <tr class="table-@(Model.PaymentDue + Model.Customer.Debt > 0
+                                       ? "danger"
+                                       : "")
                     ">
                             <td>
                                 Due
@@ -181,11 +203,11 @@
 
                         @if (Context.User.IsInRole("Admin"))
                         {
-                            <tr class="table-@( Model.Profit < 0
-                                                ? "danger"
-                                                : Model.Profit > Model.PaymentDue
-                                                    ? "success"
-                                                    : "primary")">
+                            <tr class="table-@(Model.Profit < 0
+                                           ? "danger"
+                                           : Model.Profit > Model.PaymentDue
+                                               ? "success"
+                                               : "primary")">
                                 <td>
                                     Profit
                                 </td>
@@ -288,8 +310,11 @@
                 @if (!Model.IsRemoved)
                 {
                     <a href="#"
-                       class="card-link btn btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Sales", new {id = Model.Id})"
+                       class="card-link btn btn-danger ml-1 js-remove-item"
+                       data-href="@Url.Action(
+                                      "Remove",
+                                      "Sales",
+                                      new {id = Model.Id})"
                        data-returnUrl="@Url.Page("./Index")">
                         Remove
                     </a>
@@ -305,6 +330,7 @@
         </div>
     </div>
     <div class="card-footer">
-        <partial name="_UpdateSummary" for="Metadata" />
+        <partial name="_UpdateSummary"
+                 for="Metadata" />
     </div>
 </div>

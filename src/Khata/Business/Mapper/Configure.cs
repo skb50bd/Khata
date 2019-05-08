@@ -8,7 +8,7 @@ namespace Business.Mapper
     {
         public static IServiceCollection ConfigureMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Entity).Assembly);
+            _ = services.AddAutoMapper();
             //AutoMapper.Mapper.Configuration.AssertConfigurationIsValid();
             return services;
         }

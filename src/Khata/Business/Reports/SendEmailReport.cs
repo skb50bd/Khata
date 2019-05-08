@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Domain.Reports;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,6 +15,7 @@ namespace Business.Reports
         private readonly OutletOptions _settings;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<SendEmailReport> _logger;
+        private readonly IReportService<Summary> _summaryService;
 
         public IEnumerable<string> RecepientAddresses =>
             _settings.Email.Split(',')
@@ -23,10 +24,12 @@ namespace Business.Reports
         public SendEmailReport(
             IOptionsMonitor<OutletOptions> optionsMonitor, 
             IEmailSender emailSender, 
-            ILogger<SendEmailReport> logger)
+            ILogger<SendEmailReport> logger, 
+            IReportService<Summary> summaryService)
         {
             _emailSender = emailSender;
             _logger = logger;
+            _summaryService = summaryService;
             _settings = optionsMonitor.CurrentValue;
         }
 
@@ -52,6 +55,11 @@ namespace Business.Reports
             }
 
             return true;
+        }
+
+        public async Task<Summary> GetReport()
+        {
+            return await _summaryService.Get();
         }
     }
 }

@@ -5,7 +5,7 @@
         Receivable
     </div>
     <div class="card-body">
-        <canvas id="@Model.Span-receivable-chart" height="200"></canvas>
+        <canvas id="@Model.Span-receivable-chart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-receivable-total">
             @((Model.Receivable.SalesDueAmount
@@ -13,7 +13,7 @@
                 + Model.Receivable.SalaryOverPaymentAmount
                     ).ToCurrency())
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Sales Due</th>
@@ -51,9 +51,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
-                <tr><th>&nbsp;</th><td></td></tr>
-                <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>
     </div>

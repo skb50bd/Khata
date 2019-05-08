@@ -31,12 +31,10 @@ namespace WebUI.Controllers
         [HttpPost("Send")]
         public async Task<IActionResult> Send()
         {
-            var report = new Summary
-            {
-                GeneratedOn = Clock.Now,
-                StartTime = Clock.Today,
-                EndTime = Clock.Now
-            };
+            var report =
+                await _sendEmailReport.GetReport();
+
+            //var report = new Summary();
 
             var email = new Email
             {
@@ -49,6 +47,7 @@ namespace WebUI.Controllers
 
             if (await _sendEmailReport.Send(email))
                 return Ok();
+
             return BadRequest();
         }
     }
