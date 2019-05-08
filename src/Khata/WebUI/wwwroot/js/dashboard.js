@@ -1,14 +1,23 @@
 ﻿// Assets
-const assetChartElem = document.getElementById("assetChart");
+const assetChartElem = gei("assetChart");
 window.assetData = null;
 window.assetChart = new Chart(assetChartElem, {
     type: "pie",
-    data: {}
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    }, data: {}
 });
 function getAssetChartData(assetReport) {
     return {
         datasets: [{
-            data: [assetReport.totalDue, assetReport.cash, assetReport.inventoryWorth],
+            data: [
+                toFixedIfNecessary(assetReport.totalDue),
+                toFixedIfNecessary(assetReport.cash),
+                toFixedIfNecessary(assetReport.inventoryWorth)
+            ],
             backgroundColor: ["#ef5350", "#66BB6A", "#7E57C2"]
         }],
 
@@ -21,20 +30,26 @@ function getAssetChartData(assetReport) {
 }
 function updateAssetData() {
     var data = window.assetData;
-    document.getElementById("asset-total").innerHTML =
+    gei("asset-total").innerHTML =
         formatter.format(data.cash + data.inventoryWorth + data.totalDue);
 
-    document.getElementById("customers-with-due").innerHTML = data.dueCount;
-    document.getElementById("due-amount").innerHTML = formatter.format(data.totalDue);
-    document.getElementById("cash-in-hand").innerHTML = formatter.format(data.cash);
-    document.getElementById("products-in-stock").innerHTML = data.inventoryCount;
-    document.getElementById("products-total-cost").innerHTML = formatter.format(data.inventoryWorth);
+    gei("customers-with-due").innerHTML = data.dueCount;
+    gei("due-amount").innerHTML = formatter.format(data.totalDue);
+    gei("cash-in-hand").innerHTML = formatter.format(data.cash);
+    gei("products-in-stock").innerHTML = data.inventoryCount;
+    gei("products-total-cost").innerHTML = formatter.format(data.inventoryWorth);
 }
 
 // Liabilities
-const liabilityChartElem = document.getElementById("liabilityChart");
+const liabilityChartElem = gei("liabilityChart");
 window.liabilityChart = new Chart(liabilityChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.liabilityData = null;
@@ -53,16 +68,18 @@ function getLiabilityChartData(liabilityReport) {
 }
 function updateLiabilityData() {
     var data = window.liabilityData;
-    document.getElementById("liability-total").innerHTML =
+    gei("liability-total").innerHTML =
         formatter.format(data.totalDue + data.unpaidAmount);
-    document.getElementById("suppliers-with-due").innerHTML = data.dueCount;
-    document.getElementById("total-supplier-due").innerHTML = formatter.format(data.totalDue);
-    document.getElementById("unpaid-employees").innerHTML = data.unpaidEmployees;
-    document.getElementById("unpaid-amount").innerHTML = formatter.format(data.unpaidAmount);
+    gei("suppliers-with-due").innerHTML = data.dueCount;
+    gei("total-supplier-due").innerHTML = formatter.format(data.totalDue);
+    gei("unpaid-employees").innerHTML = data.unpaidEmployees;
+    gei("unpaid-amount").innerHTML = formatter.format(data.unpaidAmount);
 }
 
 // Per Day Report
-const perDayReportChartElem = document.getElementById("perdayreport-chart");
+const perDayReportChartElem =
+    gei("perdayreport-chart");
+
 var pdrcc = {
     type: "line",
     data: {},
@@ -108,24 +125,40 @@ var pdrcc = {
                     tooltipFormat: "DD MMM YYYY"
                 },
                 scaleLabel: {
-                    display: true,
-                    labelString: "Date"
+                    display: false
                 }
             }],
             yAxes: [{
                 stacked: false,
                 scaleLabel: {
-                    display: true,
-                    labelString: "Amount"
+                    display: true
                 },
                 ticks: {
                     beginAtZero: true,
-                    callback: function (value, index, values) {
+                    callback: function (value) {
                         return formatter.format(value);
                     }
                 }
             }]
+        },
+        legend: {
+            display: true,
+            position: "bottom"
         }
+    },
+    onResize: function (perDayReportChart, size) {
+        const showTicks = size.height < 140 ? false : true;
+        perDayReportChart.options = {
+            scales: {
+                xAxes: [
+                    {
+                        ticks: {
+                            display: showTicks
+                        }
+                    }
+                ]
+            }
+        };
     }
 };
 window.perDayReportChart = new Chart(perDayReportChartElem, pdrcc);
@@ -161,18 +194,42 @@ function getPerDayChartData(perDayData) {
 }
 
 
-const dailyIncomeChartElem = document.getElementById("daily-income-chart");
-const dailyExpenseChartElem = document.getElementById("daily-expense-chart");
-const dailyPayableChartElem = document.getElementById("daily-payable-chart");
-const dailyReceivableChartElem = document.getElementById("daily-receivable-chart");
-const weeklyIncomeChartElem = document.getElementById("weekly-income-chart");
-const weeklyExpenseChartElem = document.getElementById("weekly-expense-chart");
-const weeklyPayableChartElem = document.getElementById("weekly-payable-chart");
-const weeklyReceivableChartElem = document.getElementById("weekly-receivable-chart");
-const monthlyIncomeChartElem = document.getElementById("monthly-income-chart");
-const monthlyExpenseChartElem = document.getElementById("monthly-expense-chart");
-const monthlyPayableChartElem = document.getElementById("monthly-payable-chart");
-const monthlyReceivableChartElem = document.getElementById("monthly-receivable-chart");
+const dailyIncomeChartElem =
+    gei("daily-income-chart");
+
+const dailyExpenseChartElem =
+    gei("daily-expense-chart");
+
+const dailyPayableChartElem =
+    gei("daily-payable-chart");
+
+const dailyReceivableChartElem =
+    gei("daily-receivable-chart");
+
+const weeklyIncomeChartElem =
+    gei("weekly-income-chart");
+
+const weeklyExpenseChartElem =
+    gei("weekly-expense-chart");
+
+const weeklyPayableChartElem =
+    gei("weekly-payable-chart");
+
+const weeklyReceivableChartElem =
+    gei("weekly-receivable-chart");
+
+const monthlyIncomeChartElem =
+    gei("monthly-income-chart");
+
+const monthlyExpenseChartElem =
+    gei("monthly-expense-chart");
+
+const monthlyPayableChartElem =
+    gei("monthly-payable-chart");
+
+const monthlyReceivableChartElem =
+    gei("monthly-receivable-chart");
+
 
 window.dailyIncomeData = null;
 window.dailyExpenseData = null;
@@ -189,64 +246,141 @@ window.monthlyReceivableData = null;
 
 window.dailyIncomeChart = new Chart(dailyIncomeChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.dailyExpenseChart = new Chart(dailyExpenseChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.dailyPayableChart = new Chart(dailyPayableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.dailyReceivableChart = new Chart(dailyReceivableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.weeklyIncomeChart = new Chart(weeklyIncomeChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.weeklyExpenseChart = new Chart(weeklyExpenseChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.weeklyPayableChart = new Chart(weeklyPayableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.weeklyReceivableChart = new Chart(weeklyReceivableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.monthlyIncomeChart = new Chart(monthlyIncomeChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.monthlyExpenseChart = new Chart(monthlyExpenseChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.monthlyPayableChart = new Chart(monthlyPayableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 window.monthlyReceivableChart = new Chart(monthlyReceivableChartElem, {
     type: "pie",
+    options: {
+        legend: {
+            display: false,
+            position: "bottom"
+        }
+    },
     data: {}
 });
 
 function getIncomeChartData(incomeReport) {
     return {
         datasets: [{
-            data: [incomeReport.debtReceived, incomeReport.saleReceived, incomeReport.purchaseReturnsReceived, incomeReport.depositAmount],
-            backgroundColor: ["#0093fd", "#4CAF50", "#9C27B0","#FF5722"]
+            data: [
+                toFixedIfNecessary(incomeReport.debtReceived),
+                toFixedIfNecessary(incomeReport.saleReceived),
+                toFixedIfNecessary(incomeReport.purchaseReturnsReceived),
+                toFixedIfNecessary(incomeReport.depositAmount)
+            ],
+            backgroundColor: ["#0093fd", "#4CAF50", "#9C27B0", "#FF5722"]
         }],
 
         labels: [
             "Debt",
             "Sale",
-            "Purchase Return",
+            "Purchase-Return",
             "Deposit"
         ]
     };
@@ -304,64 +438,64 @@ function getReceivableChartData(receivableReport) {
 }
 
 function setPeriodicalData(p, incomeData, expenseData, payableData, receivableData) {
-    document.getElementById(p + "-income-total").innerHTML
+    gei(p + "-income-total").innerHTML
         = formatter.format(incomeData.saleReceived
             + incomeData.debtReceived
             + incomeData.purchaseReturnsReceived
             + incomeData.depositAmount);
-    document.getElementById(p + "-sales").innerHTML = incomeData.saleCount;
-    document.getElementById(p + "-sale-receives").innerHTML = formatter.format(incomeData.saleReceived);
-    document.getElementById(p + "-sale-profit").innerHTML = formatter.format(incomeData.saleProfit);
-    document.getElementById(p + "-debt-receive-count").innerHTML = incomeData.debtPaymentCount;
-    document.getElementById(p + "-debt-receive-amount").innerHTML = formatter.format(incomeData.debtReceived);
-    document.getElementById(p + "-purchase-returns-count").innerHTML = incomeData.purchaseReturnsCount;
-    document.getElementById(p + "-purchase-returns-amount").innerHTML = formatter.format(incomeData.purchaseReturnsReceived);
-    document.getElementById(p + "-deposits-count").innerHTML = incomeData.depositsCount;
-    document.getElementById(p + "-deposits-amount").innerHTML = formatter.format(incomeData.depositAmount);
-    
-    document.getElementById(p + "-expense-total").innerHTML
+    gei(p + "-sales").innerHTML = incomeData.saleCount;
+    gei(p + "-sale-receives").innerHTML = formatter.format(incomeData.saleReceived);
+    gei(p + "-sale-profit").innerHTML = formatter.format(incomeData.saleProfit);
+    gei(p + "-debt-receive-count").innerHTML = incomeData.debtPaymentCount;
+    gei(p + "-debt-receive-amount").innerHTML = formatter.format(incomeData.debtReceived);
+    gei(p + "-purchase-returns-count").innerHTML = incomeData.purchaseReturnsCount;
+    gei(p + "-purchase-returns-amount").innerHTML = formatter.format(incomeData.purchaseReturnsReceived);
+    gei(p + "-deposits-count").innerHTML = incomeData.depositsCount;
+    gei(p + "-deposits-amount").innerHTML = formatter.format(incomeData.depositAmount);
+
+    gei(p + "-expense-total").innerHTML
         = formatter.format(expenseData.supplierPaymentAmount
             + expenseData.expenseAmount
             + expenseData.purchasePaid
             + expenseData.employeePaymentAmount
             + expenseData.refundAmount
             + expenseData.withdrawalAmount);
-    document.getElementById(p + "-expenses").innerHTML = expenseData.expenseCount;
-    document.getElementById(p + "-expense-amount").innerHTML = formatter.format(expenseData.expenseAmount);
-    document.getElementById(p + "-purchases").innerHTML = expenseData.purchaseCount;
-    document.getElementById(p + "-purchase-paid").innerHTML = formatter.format(expenseData.purchasePaid);
-    document.getElementById(p + "-supplier-payments").innerHTML = expenseData.supplierPaymentCount;
-    document.getElementById(p + "-supplier-paid").innerHTML = formatter.format(expenseData.supplierPaymentAmount);
-    document.getElementById(p + "-employee-payments").innerHTML = expenseData.employeePaymentCount;
-    document.getElementById(p + "-employee-paid").innerHTML = formatter.format(expenseData.employeePaymentAmount);
-    document.getElementById(p + "-refund-count").innerHTML = expenseData.refundCount;
-    document.getElementById(p + "-refund-amount").innerHTML = formatter.format(expenseData.refundAmount);
-    document.getElementById(p + "-withdrawals-count").innerHTML = expenseData.withdrawalCount;
-    document.getElementById(p + "-withdrawals-amount").innerHTML = formatter.format(expenseData.withdrawalAmount);
+    gei(p + "-expenses").innerHTML = expenseData.expenseCount;
+    gei(p + "-expense-amount").innerHTML = formatter.format(expenseData.expenseAmount);
+    gei(p + "-purchases").innerHTML = expenseData.purchaseCount;
+    gei(p + "-purchase-paid").innerHTML = formatter.format(expenseData.purchasePaid);
+    gei(p + "-supplier-payments").innerHTML = expenseData.supplierPaymentCount;
+    gei(p + "-supplier-paid").innerHTML = formatter.format(expenseData.supplierPaymentAmount);
+    gei(p + "-employee-payments").innerHTML = expenseData.employeePaymentCount;
+    gei(p + "-employee-paid").innerHTML = formatter.format(expenseData.employeePaymentAmount);
+    gei(p + "-refund-count").innerHTML = expenseData.refundCount;
+    gei(p + "-refund-amount").innerHTML = formatter.format(expenseData.refundAmount);
+    gei(p + "-withdrawals-count").innerHTML = expenseData.withdrawalCount;
+    gei(p + "-withdrawals-amount").innerHTML = formatter.format(expenseData.withdrawalAmount);
 
-    document.getElementById(p + "-payable-total").innerHTML
+    gei(p + "-payable-total").innerHTML
         = formatter.format(
             + payableData.purchaseDueAmount
             + payableData.salaryIssueAmount
             + payableData.debtOverPaymentAmount);
-    document.getElementById(p + "-purchases-due-count").innerHTML = payableData.purchaseDueCount;
-    document.getElementById(p + "-purchases-due-amount").innerHTML = formatter.format(payableData.purchaseDueAmount);
-    document.getElementById(p + "-salary-issue-count").innerHTML = payableData.salaryIssueCount;
-    document.getElementById(p + "-salary-issue-amount").innerHTML = formatter.format(payableData.salaryIssueAmount);
-    document.getElementById(p + "-debt-over-payment-count").innerHTML = payableData.debtOverPaymentCount;
-    document.getElementById(p + "-debt-over-payment-amount").innerHTML = formatter.format(payableData.debtOverPaymentAmount);
+    gei(p + "-purchases-due-count").innerHTML = payableData.purchaseDueCount;
+    gei(p + "-purchases-due-amount").innerHTML = formatter.format(payableData.purchaseDueAmount);
+    gei(p + "-salary-issue-count").innerHTML = payableData.salaryIssueCount;
+    gei(p + "-salary-issue-amount").innerHTML = formatter.format(payableData.salaryIssueAmount);
+    gei(p + "-debt-over-payment-count").innerHTML = payableData.debtOverPaymentCount;
+    gei(p + "-debt-over-payment-amount").innerHTML = formatter.format(payableData.debtOverPaymentAmount);
 
-    document.getElementById(p + "-receivable-total").innerHTML 
+    gei(p + "-receivable-total").innerHTML
         = formatter.format(expenseData.supplierPaymentAmount
             + receivableData.salesDueAmount
             + receivableData.supplierOverPaymentAmount
             + receivableData.salaryOverPaymentAmount);
-    document.getElementById(p + "-sales-due-count").innerHTML = receivableData.salesDueCount;
-    document.getElementById(p + "-sales-due-amount").innerHTML = formatter.format(receivableData.salesDueAmount);
-    document.getElementById(p + "-supplier-over-payment-count").innerHTML = receivableData.supplierOverPaymentCount;
-    document.getElementById(p + "-supplier-over-payment-amount").innerHTML = formatter.format(receivableData.supplierOverPaymentAmount);
-    document.getElementById(p + "-salary-over-payment-count").innerHTML = receivableData.salaryOverPaymentCount;
-    document.getElementById(p + "-salary-over-payment-amount").innerHTML = formatter.format(receivableData.salaryOverPaymentAmount);
+    gei(p + "-sales-due-count").innerHTML = receivableData.salesDueCount;
+    gei(p + "-sales-due-amount").innerHTML = formatter.format(receivableData.salesDueAmount);
+    gei(p + "-supplier-over-payment-count").innerHTML = receivableData.supplierOverPaymentCount;
+    gei(p + "-supplier-over-payment-amount").innerHTML = formatter.format(receivableData.supplierOverPaymentAmount);
+    gei(p + "-salary-over-payment-count").innerHTML = receivableData.salaryOverPaymentCount;
+    gei(p + "-salary-over-payment-amount").innerHTML = formatter.format(receivableData.salaryOverPaymentAmount);
 }
 function updatePeriodicalReport() {
     var p = ["daily", "weekly", "monthly"];
@@ -430,7 +564,11 @@ function updateChart(data) {
     updatePeriodicalReport();
 }
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/Reports").build();
+var connection =
+    new signalR.HubConnectionBuilder()
+        .withUrl("/Reports")
+        .build();
+
 $(document).ready(function () {
     connection.start().then(function () {
         connection.invoke("InitChartData");

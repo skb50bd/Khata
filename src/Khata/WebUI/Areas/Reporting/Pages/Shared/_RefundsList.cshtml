@@ -4,32 +4,35 @@
     <thead>
         <tr class="thead-dark">
             <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.Customer.FullName)</th>
-            <th class="text-right">@Html.DisplayNameFor(model => model.SaleId)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.CashBack)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.DebtRollback)</th>
-            <th class="text-right">Items</th>
             <th class="text-right">Created At</th>
-            <th class="text-right">Created by</th>
             <th class="text-right"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="js-clickable-row" data-href="@Url.Page("/Refunds/Details", new { id = item.Id })">
+            var href = Url.Page(
+                "/Refunds/Details",
+                new
+                {
+                    area = "Outgoing",
+                    id = item.Id
+                });
+
+            <tr class="js-clickable-row" data-href="@href">
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                <td>@Html.DisplayFor(modelItem => item.Customer.FullName)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.SaleId)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.CashBack)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.DebtRollback)</td>
-                <td class="text-right">@Html.ValueFor(modelItem => item.Cart.Count)</td>
                 <td class="text-right">@Html.ValueFor(modelItem => item.Metadata.CreatedAt)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.Creator)</td>
                 <td class="text-right">
-                    <a asp-page="../Sales/Details"
+                    <a asp-area="Incoming" 
+                       asp-page="/Sales/Details"
                        asp-route-id="@Html.ValueFor(modelItem => item.SaleId)"
-                       class="card-link btn btn-sm btn-inline btn-success blank-link">Sale</a>
+                       class="card-link btn btn-sm btn-success">
+                        Sale
+                    </a>
                 </td>
             </tr>
         }

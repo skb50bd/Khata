@@ -1,16 +1,26 @@
-﻿$(document).ready(function () {
-    
-    function updateDebt() {
-        const dbVal = Number($("#DebtBefore").val());
-        const aVal = Number($("#Amount").val());
-        const result = dbVal - aVal;
-        $("#DebtAfter").val(result);
-    }
+﻿const amount               = gei("amount");
+const debtBefore           = gei("debt-before");
+const debtAfter            = gei("debt-after");
+const customerId           = gei("customer-id");
+const customerSelector     = gei("customer-selector");
+const customerSearchApi    = customerSelector.getAttribute("data-path");
+const customerInfoApi      = "/api/Customers/"; // Must Concatenate CustomerId
+const customerBriefInfo    = gei("customer-brief-info");
+const customerBriefInfoUrl = "/People/Customers/Brief?id=";
 
-    $("#CustomerSelector").autocomplete({
+function updateDebt() {
+    const dbVal = Number(debtBefore.value);
+    const aVal = Number(amount.value);
+    const result = dbVal - aVal;
+    debtAfter.value = result;
+}
+
+
+$(document).ready(function () {
+    $(customerSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: $("#CustomerSelector").attr("data-path"),
+                url: customerSearchApi,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -28,22 +38,32 @@
         minLength: 1,
         select: function (event, ui) {
             $.ajax({
-                url: `/api/Customers/${ui.item.value}`,
+                url: customerInfoApi + ui.item.value,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    $("#DebtBefore").val(data.debt);
+                    debtBefore.value = data.debt;
                     updateDebt();
                 }
             });
 
-            $("#CustomerSelector").val(ui.item.label);
-            $("#customer-id").val(ui.item.value);
+            customerSelector.value = ui.item.label;
+            customerId.value = ui.item.value;
+            $.ajax({
+                url: customerBriefInfoUrl + ui.item.value,
+                type: "GET",
+                dataType: "html",
+                success: function (response) {
+                    customerBriefInfo.innerHTML = response;
+                }
+            });
 
             return false;
         }
     });
 
-    $(document).on("change, keyup", "#DebtBefore", updateDebt);
-    $(document).on("change, keyup", "#Amount", updateDebt);
+    debtBefore.onchange = updateDebt;
+    debtBefore.onkeyup = updateDebt;
+    amount.onchange = updateDebt;
+    amount.onkeyup = updateDebt;
 });

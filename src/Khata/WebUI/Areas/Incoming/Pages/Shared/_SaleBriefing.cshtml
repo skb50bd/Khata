@@ -6,12 +6,13 @@
 }
 
 <div class="row">
-    <div class="col-lg-6">
-        <table class="table table-sm table-borderless table-hover">
+    <div class="col-md-6">
+        <table class="table table-sm table-hover mb-0">
             <tr>
                 <th>Sale#</th>
                 <td>
-                    <a asp-page="../Sales/Details"
+                    <a asp-area="Incoming"
+                       asp-page="/Sales/Details"
                        asp-route-id="@Model.Id"
                        target="_blank">
                         @Html.DisplayFor(model => model.Id) - @Model.SaleDate.LocalDate()
@@ -21,7 +22,8 @@
             <tr>
                 <th>Invoice#</th>
                 <td>
-                    <a asp-page="../Invoices/Details"
+                    <a asp-area="Incoming"
+                       asp-page="/Invoices/Details"
                        asp-route-id="@Model.InvoiceId"
                        target="_blank">
                         @Html.DisplayFor(model => model.InvoiceId)
@@ -40,7 +42,8 @@
                                class="form-control"
                                hidden
                                disabled />
-                        @Html.DisplayFor(model => model.CustomerId) - @Html.DisplayFor(model => model.Customer.FullName)
+                        @Html.DisplayFor(model => model.CustomerId) 
+                        - @Html.DisplayFor(model => model.Customer.FullName)
                     </a>
                 </td>
             </tr>
@@ -72,9 +75,9 @@
                 <td>@Html.DisplayFor(model => model.PaymentDue)</td>
             </tr>
         </table>
+        <hr/>
     </div>
-
-    <div class="col-lg-6">
+    <div class="col-md-6">
         <h4>Cart</h4>
         <table class="table table-sm table-borderless table-hover">
             <thead>

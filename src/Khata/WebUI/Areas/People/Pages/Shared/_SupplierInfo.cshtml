@@ -1,6 +1,6 @@
 ﻿@model DTOs.SupplierDto
 
-<div class="card" style="width:40rem">
+<div class="card info-card">
     <div class="card-header">
         <div class="row">
             <div class="col-6">Supplier# @Model.Id</div>
@@ -21,35 +21,35 @@
         <table class="table table-sm table-hover mt-4">
             <tr>
                 <th>@Html.DisplayNameFor(model => model.CompanyName)</th>
-                <td>@Html.DisplayFor(model => model.CompanyName)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.CompanyName)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Address)</th>
-                <td>@Html.DisplayFor(model => model.Address)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Address)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Phone)</th>
-                <td>@Html.DisplayFor(model => model.Phone)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Phone)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Email)</th>
-                <td>@Html.DisplayFor(model => model.Email)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Email)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Payable)</th>
-                <td>@Html.DisplayFor(model => model.Payable)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Payable)</td>
             </tr>
 
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Note)</th>
-                <td>@Html.DisplayFor(model => model.Note)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Note)</td>
             </tr>
         </table>
 
         <hr />
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {
                     <a asp-page="./Edit"
@@ -64,7 +64,7 @@
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-4 text-sm-right mt-2 mt-sm-0">
                 <a asp-page="./Index"
                    class="card-link btn btn-primary">
                     Back to List

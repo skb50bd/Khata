@@ -1,7 +1,7 @@
 @model SupplierReport
 
 
-<div class="card" style="width:40rem">
+<div class="card info-card">
 
     <div class="card-header">
         <div>Supplier# @Model.Id</div>
@@ -12,43 +12,43 @@
         <table class="table table-sm table-hover mt-4">
             <tr>
                 <th>Address</th>
-                <td>@Html.DisplayFor(model => model.Address)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Address)</td>
             </tr>
             <tr>
                 <th>Phone</th>
-                <td>@Html.DisplayFor(model => model.Phone)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Phone)</td>
             </tr>
             <tr class="table-danger">
                 <th>Due</th>
-                <td>@Html.DisplayFor(model => model.Payable)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.Payable)</td>
             </tr>
             <tr class="table-success">
                 <th>Number of Purchases</th>
-                <td>@Html.DisplayFor(model => model.PurchasesCount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.PurchasesCount)</td>
             </tr>
             <tr class="table-success">
                 <th>Purchases Worth</th>
-                <td>@Html.DisplayFor(model => model.PurchasesWorth)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.PurchasesWorth)</td>
             </tr>
             <tr class="table-success">
                 <th>Purchase Paid</th>
-                <td>@Html.DisplayFor(model => model.PurchasePaid)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.PurchasePaid)</td>
             </tr>
             <tr class="table-info">
                 <th>Number of Payable Payments</th>
-                <td>@Html.DisplayFor(model => model.SupplierPaymentsCount)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.SupplierPaymentsCount)</td>
             </tr>
             <tr class="table-info">
                 <th>Due Paid</th>
-                <td>@Html.DisplayFor(model => model.SupplierPaymentPaid)</td>
+                <td class="text-right">@Html.DisplayFor(model => model.SupplierPaymentPaid)</td>
             </tr>
             <tr class="table-warning">
-                <th>Number of Purchase Returns</th>
-                <td>@Html.DisplayFor(model => model.PurchaseReturnCount)</td>
+                <th>Number of Purchase-Returns</th>
+                <td class="text-right">@Html.DisplayFor(model => model.PurchaseReturnCount)</td>
             </tr>
             <tr class="table-warning">
-                <th>Purchase Return Amount</th>
-                <td>@Html.DisplayFor(model => model.PurchaseReturnAmount)</td>
+                <th>Purchase-Return Amount</th>
+                <td class="text-right">@Html.DisplayFor(model => model.PurchaseReturnAmount)</td>
             </tr>
         </table>
 

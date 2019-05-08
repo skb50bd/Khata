@@ -1,6 +1,6 @@
 ﻿@model IndexModel
 
-<ul class="nav nav-pills mt-3"
+<ul class="nav nav-pills mt-2 mb-2"
     id="income-tabs"
     role="tablist">
 
@@ -108,19 +108,18 @@
          id="daily"
          role="tabpanel"
          aria-labelledby="daily-tab">
-        <div class="row mt-4">
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Income" for="@dailyIncome" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Expense" for="@dailyExpense" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Receivable" for="@dailyReceivable" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Payable" for="@dailyPayable" />
-            </div>
+        <div class="card-columns">
+            <partial name="_Income" 
+                     for="@dailyIncome" />
+
+            <partial name="_Expense" 
+                     for="@dailyExpense" />
+
+            <partial name="_Receivable" 
+                     for="@dailyReceivable" />
+
+            <partial name="_Payable" 
+                     for="@dailyPayable" />
         </div>
     </div>
 
@@ -128,19 +127,18 @@
          id="weekly"
          role="tabpanel"
          aria-labelledby="weekly-tab">
-        <div class="row mt-4">
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Income" for="@weeklyIncome" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Expense" for="@weeklyExpense" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Receivable" for="@weeklyReceivable" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Payable" for="@weeklyPayable" />
-            </div>
+        <div class="card-columns">
+            <partial name="_Income" 
+                     for="@weeklyIncome" />
+
+            <partial name="_Expense" 
+                     for="@weeklyExpense" />
+
+            <partial name="_Receivable" 
+                     for="@weeklyReceivable" />
+
+            <partial name="_Payable" 
+                     for="@weeklyPayable" />
         </div>
 
     </div>
@@ -149,19 +147,18 @@
          id="monthly"
          role="tabpanel"
          aria-labelledby="monthly-tab">
-        <div class="row mt-4">
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Income" for="@monthlyIncome" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Expense" for="@monthlyExpense" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Receivable" for="@monthlyReceivable" />
-            </div>
-            <div class="col-lg-3 col-md-6 widget">
-                <partial name="_Payable" for="@monthlyPayable" />
-            </div>
+        <div class="card-columns">
+            <partial name="_Income" 
+                     for="@monthlyIncome" />
+
+            <partial name="_Expense" 
+                     for="@monthlyExpense" />
+
+            <partial name="_Payable" 
+                     for="@monthlyPayable" />
+
+            <partial name="_Receivable" 
+                     for="@monthlyReceivable" />
         </div>
     </div>
 

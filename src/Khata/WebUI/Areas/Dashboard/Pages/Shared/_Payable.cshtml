@@ -5,7 +5,7 @@
         Payable
     </div>
     <div class="card-body">
-        <canvas id="@Model.Span-payable-chart" height="200"></canvas>
+        <canvas id="@Model.Span-payable-chart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-payable-total">
             @((Model.Payable.PurchaseDueAmount
@@ -13,7 +13,7 @@
                 + Model.Payable.DebtOverPaymentAmount
                     ).ToString("C2"))
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Purchases Due</th>
@@ -51,9 +51,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
-                <tr><th>&nbsp;</th><td></td></tr>
-                <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>
     </div>

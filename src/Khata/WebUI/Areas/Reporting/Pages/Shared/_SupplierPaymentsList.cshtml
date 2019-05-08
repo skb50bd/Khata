@@ -4,26 +4,37 @@
     <thead>
         <tr class="thead-dark">
             <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.SupplierFullName)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.Amount)</th>
             <th class="text-right">Created at</th>
-            <th class="text-right">Created by</th>
             <th class="text-right"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var supplierPayment in Model)
         {
+            var href = Url.Page(
+                "/SupplierPayments/Details",
+                new
+                {
+                    area = "Outgoing",
+                    id = supplierPayment.Id
+                });
+
             <tr class="js-clickable-row"
-                data-href="@Url.Page("/SupplierPayments/Details", new { id = supplierPayment.Id })">
-                <td>@Html.DisplayFor(modelItem => supplierPayment.Id)</td>
-                <td>@Html.DisplayFor(modelItem => supplierPayment.SupplierFullName)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Amount)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Metadata.CreatedAt)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => supplierPayment.Metadata.Creator)</td>
+                data-href="@href">
+                <td>
+                    @Html.DisplayFor(modelItem => supplierPayment.Id)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => supplierPayment.Amount)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => supplierPayment.Metadata.CreatedAt)
+                </td>
                 <td class="text-right">
                     <a class="btn btn-success btn-sm blank-link-button"
                        target="_blank"
+                       asp-area="Outgoing"
                        asp-page="/Vouchars/Details"
                        asp-route-id="@Html.ValueFor(modelItem => supplierPayment.VoucharId)">
                         Vouchar

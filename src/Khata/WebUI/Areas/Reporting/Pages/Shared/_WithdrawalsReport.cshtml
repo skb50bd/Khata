@@ -1,0 +1,68 @@
+@model IndexModel
+
+<div class="card-header"
+     id="withdrawals-heading">
+    <div class="row">
+        <div class="col-8">
+            <button class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#withdrawals-collapse"
+                    aria-expanded="true"
+                    aria-controls="withdrawals-collapse">
+                <i class="fa fa-plus"></i>
+                Withdrawals
+            </button>
+        </div>
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
+                @Html.DisplayFor(model => model.WithdrawalsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="withdrawals-collapse"
+     class="collapse"
+     aria-labelledby="withdrawals-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.WithdrawalsTotal)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.WithdrawalsTotal)
+            </div>
+        </div>
+
+        <div class="accordion"
+             id="withdrawals-list-accordion">
+            <div class="card-text" id="withdrawals-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#withdrawals-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="withdrawals-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="withdrawals-list-collapse"
+                 class="collapse"
+                 aria-labelledby="withdrawals-list-heading"
+                 data-parent="#withdrawals-list-accordion">
+
+                <partial name="_WithdrawalsList"
+                         for="Withdrawals" />
+
+            </div>
+        </div>
+    </div>
+</div>

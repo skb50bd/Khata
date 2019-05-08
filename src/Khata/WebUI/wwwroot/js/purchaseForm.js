@@ -1,34 +1,36 @@
-﻿const purchaseDate        = gei("purchase-date");
-const retail              = gei("retail");
-const bulk                = gei("bulk");
-const supplierId          = gei("supplier-id");
-const supplierSelector    = gei("supplier-selector");
-const registerNewSupplier = gei("register-new-supplier");
-const supplierFirstName   = gei("first-name");
-const supplierLastName    = gei("last-name");
-const companyName         = gei("company-name");
-const supplierAddress     = gei("address");
-const supplierPhone       = gei("phone");
-const supplierEmail       = gei("email");
-const supplierBriefInfo   = gei("supplier-brief-info");
-const lineItemId          = gei("lineitem-id");
-const lineItemType        = gei("lineitem-type");
-const lineItemSelector    = gei("lineitem-selector");
-const lineItemQuantity    = gei("lineitem-quantity");
-const lineItemUnitPrice   = gei("lineitem-unitprice");
-const lineItemNetPrice    = gei("lineitem-netprice");
-const lineItemAdd         = gei("lineitem-add-button");
-const lineItemClear       = gei("lineitem-clear-button");
-const lineItemAvailable   = gei("lineitem-available");
-const cart                = gei("cart");
-const subtotal            = gei("subtotal");
-const discountCash        = gei("discount-cash");
-const discountPercentage  = gei("discount-percentage");
-const payableBefore       = gei("payable-before");
-const payable             = gei("payable");
-const paid                = gei("paid-amount");
-const payableAfter        = gei("payable-after");
-
+﻿const purchaseDate         = gei("purchase-date");
+const retail               = gei("retail");
+const bulk                 = gei("bulk");
+const supplierId           = gei("supplier-id");
+const supplierSelector     = gei("supplier-selector");
+const supplierSearchApi    = supplierSelector.getAttribute("data-path");
+const registerNewSupplier  = gei("register-new-supplier");
+const supplierFirstName    = gei("first-name");
+const supplierLastName     = gei("last-name");
+const companyName          = gei("company-name");
+const supplierAddress      = gei("address");
+const supplierPhone        = gei("phone");
+const supplierEmail        = gei("email");
+const supplierBriefInfo    = gei("supplier-brief-info");
+const lineItemId           = gei("lineitem-id");
+const lineItemType         = gei("lineitem-type");
+const lineItemSelector     = gei("lineitem-selector");
+const lineItemQuantity     = gei("lineitem-quantity");
+const lineItemUnitPrice    = gei("lineitem-unitprice");
+const lineItemNetPrice     = gei("lineitem-netprice");
+const lineItemAdd          = gei("lineitem-add-button");
+const lineItemClear        = gei("lineitem-clear-button");
+const lineItemAvailable    = gei("lineitem-available");
+const cart                 = gei("cart");
+const subtotal             = gei("subtotal");
+const discountCash         = gei("discount-cash");
+const discountPercentage   = gei("discount-percentage");
+const payableBefore        = gei("payable-before");
+const payable              = gei("payable");
+const paid                 = gei("paid-amount");
+const payableAfter         = gei("payable-after");
+const supplierBriefInfoUrl = "/People/Suppliers/Details/Brief?supplierId="; // Must Concatenate Supplier ID
+const supplierInfoUrl      = "/api/Suppliers/"; // Must Concatenate Supplier ID
 
 var itemsAdded = 0;
 
@@ -161,14 +163,14 @@ function createCartItem(newItem) {
         `<div class="col-12">
         <div class="col" hidden>
             <input type="number"
-                name="Cart.Index"
+                name="PurchaseVm.Cart.Index"
                 value="${itemsAdded}" />
             <input type="number"
-                name="Cart[${itemsAdded}].ItemId" 
+                name="PurchaseVm.Cart[${itemsAdded}].ItemId" 
                 class="cart-item-itemid"
                 value="${newItem.itemId}" />
             <input type="number"
-                name="Cart[${itemsAdded}].Type" 
+                name="PurchaseVm.Cart[${itemsAdded}].Type" 
                     class="cart-item-type"
                     value="${newItem.type}"/>
         </div>        
@@ -203,7 +205,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[${itemsAdded}].Quantity" 
+                name="PurchaseVm.Cart[${itemsAdded}].Quantity" 
                 class="text-right cart-item-quantity cart-item form-control"
                 data-toggle="tooltip" title="Quantity"m
                 value="${newItem.quantity}"/>            
@@ -213,7 +215,7 @@ function createCartItem(newItem) {
             </div>
 
             <input type="number" readonly
-                name="Cart[${itemsAdded}].NetPrice" 
+                name="PurchaseVm.Cart[${itemsAdded}].NetPrice" 
                 class="text-right cart-item-netprice cart-item form-control"
                 data-toggle="tooltip" title="Net Price"
                 value="${newItem.netPrice}"/>
@@ -270,19 +272,14 @@ function removeCartItem(event) {
 }
 
 $(document).ready(function () {
-    $("#purchase-date").datetimepicker({
-        format: "DD/MM/YYYY",
-        useCurrent: true
-    });
     if (purchaseDate.value === "")
         purchaseDate.value = getDate();
-
     registerNewSupplier.removeAttribute("checked");
 
-    $("#supplier-selector").autocomplete({
+    $(supplierSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: supplierSelector.getAttribute("data-path"),
+                url: supplierSearchUrl,
                 type: "GET",
                 cache: true,
                 data: request,
@@ -301,7 +298,7 @@ $(document).ready(function () {
         select: function (event, ui) {
             event.preventDefault();
             $.ajax({
-                url: `/api/Suppliers/${ui.item.value}`,
+                url: supplierInfoUrl + ui.item.value,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -311,7 +308,7 @@ $(document).ready(function () {
                 }
             }).then(() => {
                 $.ajax({
-                    url: `/Suppliers/Details/Brief?supplierId=${ui.item.value}`,
+                    url: supplierBriefInfoUrl + ui.item.value,
                     type: "GET",
                     dataType: "html",
                     success: function (response) {
@@ -346,7 +343,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#lineitem-selector").catcomplete({
+    $(lineItemSelector).catcomplete({
         source: function (request, response) {
             $.ajax({
                 url: lineItemSelector.getAttribute("data-path"),

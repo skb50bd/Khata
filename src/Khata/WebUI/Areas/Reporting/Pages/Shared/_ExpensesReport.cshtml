@@ -1,0 +1,67 @@
+@model IndexModel
+
+<div class="card-header"
+     id="expenses-heading">
+    <div class="row">
+        <div class="col-8">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#expenses-collapse"
+                        aria-expanded="true"
+                        aria-controls="expenses-collapse">
+                    <i class="fa fa-plus"></i>
+                    Expenses
+                </button>
+        </div>
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
+                @Html.DisplayFor(model => model.ExpensesCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="expenses-collapse"
+     class="collapse"
+     aria-labelledby="expenses-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.ExpenseTotal)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.ExpenseTotal)
+            </div>
+        </div>
+
+        <div class="accordion" id="expenses-list-accordion">
+            <div class="card-text" id="expenses-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#expenses-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="expenses-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="expenses-list-collapse"
+                 class="collapse"
+                 aria-labelledby="expenses-list-heading"
+                 data-parent="#expenses-list-accordion">
+
+                <partial name="_ExpensesList" 
+                         for="Expenses" />
+
+            </div>
+        </div>
+    </div>
+</div>

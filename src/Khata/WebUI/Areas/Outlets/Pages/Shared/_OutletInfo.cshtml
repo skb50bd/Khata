@@ -1,6 +1,15 @@
 ﻿@model DTOs.OutletDto
 
-<div class="card" style="width:40rem">
+@{
+    var removeApi = Url.Action(
+        "Remove", 
+        "Outlets", 
+        new {id = Model.Id});
+
+    var removeReturnUrl = Url.Page("./Index");
+}
+
+<div class="card info-card">
     <div class="card-header">
         <div class="row">
             <div class="col-6">Outlet# @Model.Id</div>
@@ -13,45 +22,55 @@
         </div>
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.Title</h3>
-        <table class="table table-sm table-hover mt-5">
+        <h3 class="card-title">
+            @Model.Title
+        </h3>
+
+        <table class="table table-sm table-hover">
             <tbody>
-                <tr>
-                    <th>Slogan</th>
-                    <td>@Model.Slogan</td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td>@Model.Address</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>@Model.Phone</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>@Model.Email</td>
-                </tr>
+            <tr>
+                <th>Slogan</th>
+                <td class="text-right">@Model.Slogan</td>
+            </tr>
+
+            <tr>
+                <th>Address</th>
+                <td class="text-right">@Model.Address</td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td class="text-right">@Model.Phone</td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td class="text-right">@Model.Email</td>
+            </tr>
             </tbody>
         </table>
+
         <hr />
+
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {
                     <a asp-page="./Edit"
                        asp-route-id="@Model.Id"
-                       class="card-link text-white btn btn-link btn-secondary">Edit</a>
+                       class="card-link text-white btn btn-link btn-secondary">
+                        Edit
+                    </a>
 
                     <a href="#"
-                       class="card-link text-white btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Outlets", new { id = Model.Id })"
-                       data-returnUrl="@Url.Page("./Index")">
+                       class="card-link text-white btn btn-link btn-danger ml-1 js-remove-item"
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-4 text-sm-right pt-2 pt-sm-0">
                 <a asp-page="./Index"
                    class="card-link btn btn-primary">
                     Back to List

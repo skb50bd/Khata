@@ -5,15 +5,9 @@
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 }
 
-<div class="card">
+<div class="card mb-1">
     <div class="card-body">
         <div class="row">
-            <div class="col-12">
-                <label class="h5 card-title">
-                    Payment Information
-                </label>
-            </div>
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="subtotal"
@@ -73,7 +67,8 @@
 
                         <input asp-for="CashBack"
                                type="number"
-                               class="form-control" />
+                               class="form-control"
+                               id="cash-back"/>
                     </div>
 
                     <span asp-validation-for="CashBack"
@@ -97,7 +92,8 @@
 
                         <input asp-for="DebtRollback"
                                type="number"
-                               class="form-control" />
+                               class="form-control" 
+                               id="debt-rollback"/>
                     </div>
                     <span asp-validation-for="DebtRollback"
                           class="text-danger">

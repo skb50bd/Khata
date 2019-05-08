@@ -7,22 +7,26 @@
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.Name)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.Amount)</th>
-            <th class="text-right">Description</th>
             <th class="text-right">Created at</th>
-            <th class="text-right">Created by</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var expense in Model)
         {
+            var href = Url.Page(
+                "/Expenses/Details",
+                new
+                {
+                    area = "Outgoing",
+                    id = expense.Id
+                });
+
             <tr class="js-clickable-row"
-                data-href="@Url.Page("./Details", new { id = expense.Id })">
+                data-href="@href">
                 <td>@Html.DisplayFor(modelItem => expense.Id)</td>
                 <td>@Html.DisplayFor(modelItem => expense.Name)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => expense.Amount)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => expense.Description)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => expense.Metadata.CreatedAt)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => expense.Metadata.Creator)</td>
             </tr>
         }
     </tbody>

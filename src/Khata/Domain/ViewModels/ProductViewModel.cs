@@ -20,6 +20,7 @@ namespace ViewModels
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Unit Name")]
         public string Unit { get; set; } = "Piece";
 
         [Required]
@@ -29,7 +30,7 @@ namespace ViewModels
         [Display(Name = "Warehouse")]
         public decimal InventoryWarehouse { get; set; } = 0;
 
-        [Display(Name = "Minimum Total Stock Required")]
+        [Display(Name = "Alert At")]
         public decimal InventoryAlertAt { get; set; } = 0;
 
         [Display(Name = "Status")]

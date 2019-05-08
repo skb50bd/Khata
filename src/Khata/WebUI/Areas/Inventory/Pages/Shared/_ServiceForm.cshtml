@@ -3,37 +3,61 @@
 
 @{
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+    var createMode = ViewData["Title"].ToString().Contains("New");
+
 }
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<input type="hidden" asp-for="Id" />
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
 
+            <input type="hidden"
+                   asp-for="Id" />
 
-<div class="form-group">
-    <label asp-for="Name" class="col-form-label"></label>
-    <input asp-for="Name" class="form-control required" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-</div>
+            <div class="form-group">
+                <label asp-for="Name" class="col-form-label"></label>
+                <input asp-for="Name" class="form-control required" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
 
-<div class="form-group">
-    <label asp-for="OutletId" class="col-form-label"></label>
-    <select asp-for="OutletId" class="form-control" asp-items="ViewBag.Outlets"></select>
-</div>
+            <div class="form-group">
+                <label asp-for="OutletId" class="col-form-label"></label>
+                <select asp-for="OutletId" class="form-control" asp-items="ViewBag.Outlets"></select>
+            </div>
 
-<div class="form-group">
-    <label asp-for="Description" class="col-form-label"></label>
-    <textarea asp-for="Description" class="form-control"></textarea>
-    <span asp-validation-for="Description" class="text-danger"></span>
-</div>
+            <div class="form-group">
+                <label asp-for="Description" class="col-form-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
 
-<div class="form-group">
-    <label asp-for="Price" class="col-form-label"></label>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
-        </div>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Price" class="col-form-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend3">@sym</span>
+                    </div>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <input type="submit"
+                   value="@(createMode ? "Create" : "Save")"
+                   class="btn btn-primary" />
+
+            @if (createMode)
+            {
+                <input type="reset"
+                       value="Reset"
+                       class="btn btn-secondary" />
+            }
+        </form>
     </div>
-
 </div>
+
+

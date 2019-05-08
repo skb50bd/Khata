@@ -1,10 +1,12 @@
-﻿const supplierId        = document.getElementById("supplier-id");
-const supplierSelector  = document.getElementById("supplier-selector");
-const supplierSearchUrl = supplierSelector.getAttribute("data-path");
-const supplierInfoUrl   = "/api/Suppliers/"; // Must concatenate SUPPLIER Id to get the data
-const payableBefore     = document.getElementById("payable-before");
-const payableAfter      = document.getElementById("payable-after");
-const paidAmount        = document.getElementById("paid-amount");
+﻿const supplierId           = gei("supplier-id");
+const supplierSelector     = gei("supplier-selector");
+const supplierSearchUrl    = supplierSelector.getAttribute("data-path");
+const supplierInfoUrl      = "/api/Suppliers/"; // Must concatenate SUPPLIER Id to get the data
+const payableBefore        = gei("payable-before");
+const payableAfter         = gei("payable-after");
+const paidAmount           = gei("paid-amount");
+const supplierBriefInfo    = gei("supplier-brief-info");
+const supplierBriefInfoUrl = "/People/Suppliers/Details/Brief?supplierId="; // Must concatenate SUPPLIER Id to get the data
 
 function updatePayable() {
     payableAfter.value = Number(payableBefore.value) - Number(paidAmount.value);
@@ -43,6 +45,15 @@ $(document).ready(function () {
 
             supplierSelector.value = ui.item.label;
             supplierId.value       = ui.item.value;
+
+            $.ajax({
+                url: supplierBriefInfoUrl + ui.item.value,
+                type: "GET",
+                dataType: "html",
+                success: function (response) {
+                    supplierBriefInfo.innerHTML = response;
+                }
+            });
 
             return false;
         }

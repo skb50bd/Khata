@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Brotal.Extensions;
+
 using Business.Abstractions;
 using Business.PageFilterSort;
 
 using DTOs;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ViewModels;
@@ -36,6 +38,7 @@ namespace WebUI.Controllers
 
         // GET: api/Sales
         [HttpGet]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IEnumerable<SaleDto>> Get(
             int? outletId,
             string searchString = "",
@@ -48,6 +51,7 @@ namespace WebUI.Controllers
 
         // GET: api/Sales/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Get([FromRoute]int id)
         {
             if (!ModelState.IsValid)
@@ -62,6 +66,7 @@ namespace WebUI.Controllers
 
         // GET: api/Sales/Ids
         [HttpGet("Ids/")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> GetIds([FromQuery]string term)
         {
             if (!ModelState.IsValid)
@@ -78,6 +83,7 @@ namespace WebUI.Controllers
 
         // GET: api/Sales/LineItems
         [HttpGet("LineItems/")]
+        [Authorize(Policy = "UserRights")]
         public async Task<IActionResult> GetLineItems(
             [FromQuery]int outletId,
             [FromQuery]string term)
@@ -127,6 +133,7 @@ namespace WebUI.Controllers
 
         // POST: api/Sales
         [HttpPost]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Post(
             [FromBody] SaleViewModel model)
         {
@@ -145,6 +152,7 @@ namespace WebUI.Controllers
 
         // PUT: api/Sales/5
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Put(
             [FromRoute]int id,
             [FromBody]SaleViewModel vm)
@@ -168,6 +176,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Sales/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Remove(int id)
         {
             if (!ModelState.IsValid)
@@ -185,6 +194,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Sales/Permanent/5
         [HttpDelete("Permanent/{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)
@@ -208,6 +218,7 @@ namespace WebUI.Controllers
 
         // POST: api/Sales/Saved
         [HttpPost("Saved/")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> PostSaved(
                     [FromBody] SaleViewModel model)
         {
@@ -226,11 +237,13 @@ namespace WebUI.Controllers
 
         // GET: api/Sales/Saved
         [HttpGet("Saved/")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IEnumerable<SaleDto>> GetSaved()
             => await _sales.GetSaved();
 
         // GET: api/Sales/Saved/5
         [HttpGet("Saved/{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> GetSaved([FromRoute]int id)
         {
             if (!ModelState.IsValid)
@@ -244,6 +257,7 @@ namespace WebUI.Controllers
 
         // DELETE: api/Sales/Saved/5
         [HttpDelete("Saved/{id}")]
+        [Authorize(Policy = "AdminRights")]
         public async Task<IActionResult> DeleteSaved(int id)
         {
             if (!ModelState.IsValid)

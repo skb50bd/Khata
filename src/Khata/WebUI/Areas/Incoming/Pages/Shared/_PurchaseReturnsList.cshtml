@@ -5,7 +5,6 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Id)</th>
             <th>@Html.DisplayNameFor(model => model.Supplier.FullName)</th>
-            <th class="text-right">@Html.DisplayNameFor(model => model.PurchaseId)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.CashBack)</th>
             <th class="text-right">@Html.DisplayNameFor(model => model.DebtRollback)</th>
             <th class="text-right">Items</th>
@@ -17,17 +16,17 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="js-clickable-row" data-href="@Url.Page("PurchaseReturns/Details", new { id = item.Id })">
+            <tr class="js-clickable-row" data-href="@Url.Page("/PurchaseReturns/Details", new { area="Incoming", id = item.Id })">
                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.Supplier.FullName)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.PurchaseId)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.CashBack)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.DebtRollback)</td>
                 <td class="text-right">@Html.ValueFor(modelItem => item.Cart.Count)</td>
                 <td class="text-right">@Html.ValueFor(modelItem => item.Metadata.CreatedAt)</td>
                 <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.Creator)</td>
                 <td class="text-right">
-                    <a asp-page="../Purchases/Details"
+                    <a asp-page="/Purchases/Details"
+                       asp-area="Outgoing"
                        asp-route-id="@Html.ValueFor(modelItem => item.PurchaseId)"
                        class="card-link btn btn-sm btn-inline btn-success blank-link">Purchase</a>
                 </td>

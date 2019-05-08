@@ -31,6 +31,8 @@ function getNextActiveInput(inputElem) {
     var nextInput = inputs.get(inputs.index(inputElem) + 1);
     while (nextInput.disabled || nextInput === discountPercentage) {
         nextInput = inputs.get(inputs.index(nextInput) + 1);
+        if (nextInput === discountPercentage)
+            nextInput = inputs.get(inputs.index(nextInput) + 1);
     }
     return nextInput;
 }

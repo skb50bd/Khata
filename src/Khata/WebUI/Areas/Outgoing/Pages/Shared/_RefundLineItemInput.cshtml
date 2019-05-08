@@ -5,7 +5,7 @@
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 }
 
-<div class="card">
+<div class="card mb-1">
     <div class="card-body">
         <input id="lineitem-id"
                hidden/>
@@ -23,7 +23,8 @@
 
                     <input id="lineitem-selector"
                            class="form-control form-control-sm"
-                           type="text" />
+                           type="text" 
+                           placeholder="Product Name/Id"/>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -94,12 +95,12 @@
         </div>
 
         <div class="form-group">
-            <button class="btn btn-sm btn-outline-primary card-link"
+            <button class="btn btn-sm btn-outline-primary card-link mr-0"
                     id="lineitem-add-button">
                 Add Item
             </button>
 
-            <button class="btn btn-sm btn-outline-secondary card-link"
+            <button class="btn btn-sm btn-outline-secondary card-link ml-0"
                     id="lineitem-clear-button">
                 Clear Item
             </button>

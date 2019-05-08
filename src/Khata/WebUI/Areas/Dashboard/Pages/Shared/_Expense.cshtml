@@ -5,7 +5,7 @@
         Expense
     </div>
     <div class="card-body">
-        <canvas id="@Model.Span-expense-chart" height="200"></canvas>
+        <canvas id="@Model.Span-expense-chart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="@Model.Span-expense-total">
             @((Model.Expense.PurchasePaid
@@ -16,7 +16,7 @@
                     + Model.Expense.RefundAmount)
                 .ToString("C2"))
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Expenses</th>

@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Business.Abstractions;
-using DTOs;
 using Business.PageFilterSort;
 
+using DTOs;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Policy = "AdminRights")]
     [Route("api/[controller]")]
     [ApiController]
     public class InvoicesController : ControllerBase

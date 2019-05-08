@@ -20,9 +20,11 @@ namespace DTOs
         public ICollection<PurchaseLineItem> Cart { get; set; }
 
         [DataType(DataType.Currency)]
+        [Display(Name = "Cash Back")]
         public decimal CashBack { get; set; }
 
         [DataType(DataType.Currency)]
+        [Display(Name="Debt Rollback")]
         public decimal DebtRollback { get; set; }
 
         public string Description { get; set; }

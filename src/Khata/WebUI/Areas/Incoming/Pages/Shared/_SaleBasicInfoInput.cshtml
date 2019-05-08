@@ -2,7 +2,7 @@
 @using static Domain.SaleType
 @model SaleViewModel
 
-<div class="card">
+<div class="card mb-1">
     <div class="card-body">
         <div class="row">
             <div class="col-lg-6">
@@ -11,24 +11,16 @@
                         <div class="form-group">
                             <label asp-for="SaleDate"
                                    class="col-form-label"></label>
-                            <div class="input-group input-group-sm date"
-                                 data-target-input="nearest">
-                                <input type="text"
-                                       class="form-control datetimepicker-input"
-                                       data-target="#sale-date"
-                                       placeholder="dd/mm/yyyy"
-                                       asp-for="SaleDate"
-                                       id="sale-date" />
-                                <div class="input-group-append"
-                                     data-target="#sale-date"
-                                     data-toggle="datetimepicker">
-                                    <div class="input-group-text">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="text"
+                                   class="form-control form-control-sm dr-datepicker"
+                                   placeholder="dd/mm/yyyy"
+                                   asp-for="SaleDate"
+                                   id="sale-date" 
+                                   autocomplete="off"/>
+
                             <span asp-validation-for="SaleDate"
-                                  class="text-danger"></span>
+                                  class="text-danger">
+                            </span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -82,15 +74,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-form-label h5 card-title" asp-for="Customer"></label>
+                    <label class="col-form-label h5 card-title"
+                           asp-for="Customer">
+                    </label>
                     <input id="customer-selector"
                            class="form-control form-control-sm"
                            type="text"
-                           data-path="@Url.Action("GetIds", "Customers")" />
+                           data-path="@Url.Action("GetIds", "Customers")"
+                           placeholder="Customer Name/ID"/>
                 </div>
 
                 <div id="customer-brief-info">
-
                 </div>
 
                 <div class="form-group">

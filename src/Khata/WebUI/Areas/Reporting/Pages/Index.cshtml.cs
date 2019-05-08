@@ -168,15 +168,15 @@ namespace WebUI.Areas.Reporting.Pages
             => DebtPayments?.Sum(d => d.Amount) ?? 0M;
         #endregion
 
-        #region Purchase Returns
+        #region Purchase-Returns
         public IEnumerable<PurchaseReturnDto> PurchaseReturns { get; set; } 
             = new List<PurchaseReturnDto>();
 
-        [Display(Name = "Purchase Returns Count")]
+        [Display(Name = "Purchase-Returns Count")]
         public int PurchaseReturnsCount 
             => PurchaseReturns?.Count() ?? 0;
 
-        [Display(Name = "Purchase Returns Cash Back")]
+        [Display(Name = "Purchase-Returns Cash Back")]
         [DataType(DataType.Currency)]
         public decimal PurchaseReturnAmount 
             => PurchaseReturns?.Sum(pr => pr.CashBack) ?? 0M;

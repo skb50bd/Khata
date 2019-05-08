@@ -1,12 +1,26 @@
 ﻿const immutableSubmits      = gecn("immutable-submit");
 const fromDate              = gei("from-date");
 const toDate                = gei("to-date");
+const fromText              = gei("from-text");
+const toText                = gei("to-text");
 const blankButtons          = gecn("blank-link-button");
 const inputs                = $(":input");
 const ajaxTabs              = gecn("ajax-tab");
 const clickableRows         = gecn("js-clickable-row");
 const clickableTransactions = gecn("js-clickable-transaction");
 const removableItems        = gecn("js-remove-item");
+const sendReportButton      = gei("send-report-button");
+
+
+function attachLinksToTds() {
+    for (let i = 0; i < clickableRows.length; i++) {
+        const row = clickableRows[i];
+        for (let j = 0; j < row.children.length; j++) {
+            const column = row.children[j];
+            $(column).data("href", $(row).data("href"));
+        }
+    }
+}
 
 function getDate(elem = null) {
     var date;
@@ -26,7 +40,13 @@ function getDate(elem = null) {
 
 const swalDelete = Swal.mixin({
     confirmButtonClass: "btn btn-danger",
-    cancelButtonClass: "btn btn-secondary mr-4",
+    cancelButtonClass: "btn btn-secondary mr-2",
+    buttonsStyling: false
+});
+
+const swalQuestion = Swal.mixin({
+    confirmButtonClass: "btn btn-primary",
+    cancelButtonClass: "btn btn-secondary mr-2",
     buttonsStyling: false
 });
 
@@ -37,13 +57,19 @@ const swalSave = Swal.mixin({
 });
 
 function viewRecord(event) {
-    const ref = $(event.target).data("href");
+    var target = $(event.target);
+    if (target.tagName === "td")
+        target = target.closest("tr");
+
+    const ref = target.data("href");
     window.location.href = ref;
 }
 
 function viewTransaction(event) {
-    window.location =
-        `/${$(event.target).data("table")}/Details?id=${$(event.target).data("row")}`;
+    const tableName = $(event.target).data("table");
+    const areaName = findArea(tableName);
+    const rowId = $(event.target).data("row");
+    window.location = `/${areaName}/${tableName}/Details?id=${rowId}`;
 }
 
 function confirmFormSubmit(event) {
@@ -112,6 +138,45 @@ function confirmRemove(event) {
     });
 }
 
+function sendEmailReport(event) {
+    swalQuestion.fire({
+        title: "Send the reports now?",
+        text: "The reports will be sent to the specified email addresses.",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, send now!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({ url: sendReportButton.getAttribute("data-href"), method: "POST" })
+                .done(function () {
+                    swalQuestion.fire(
+                        "Sent!",
+                        "Reports have been sent.",
+                        "success"
+                    );
+                })
+                .fail(function () {
+                    swalQuestion.fire(
+                        "Failed",
+                        "Could not send the reports.",
+                        "warning"
+                    );
+                });
+        } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalQuestion.fire(
+                "Cancelled",
+                "Nothing sent :)",
+                "error"
+            );
+        }
+    });
+}
+
 function loadAjaxTabContent(event) {
     $.ajax({
         url: $(event.target).attr("data-partial-source"),
@@ -147,15 +212,15 @@ function enterToTab(e) {
 }
 
 $(document).ready(function () {
-    
-    immutableSubmits.onsubmit = confirmFormSubmit;
+    attachLinksToTds();
+    $(immutableSubmits).submit(confirmFormSubmit);
 
-    $(".datepicker").datepicker();
-    $(".datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
+    $(clickableRows).click(viewRecord);
+    $(clickableTransactions).click(viewTransaction);
+    $(removableItems).click(confirmRemove);
 
-    clickableRows.onclick = viewRecord;
-    clickableTransactions.onclick = viewTransaction;
-    removableItems.onclick = confirmRemove;
+    if (sendReportButton)
+        sendReportButton.onclick = sendEmailReport;
 
     $('[data-toggle="popover"]').popover();
 
@@ -165,59 +230,92 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    ajaxTabs.onclick = loadAjaxTabContent;
+    $(ajaxTabs).click(loadAjaxTabContent);
 
 
-    $(fromDate).datepicker()
-        .on(
-            "change",
-            function () {
-                to.datepicker(
-                    "option",
-                    "minDate",
-                    getDate(this));
-            });
-
-    $(toDate).datepicker()
-        .on(
-            "change",
-            function () {
-                from.datepicker(
-                    "option",
-                    "maxDate",
-                    getDate(this));
-            });
-
-    $(fromDate).datetimepicker({
-        format: "DD/MM/YYYY",
-        useCurrent: true
+    $(".daterange").daterangepicker({
+        opens: 'center',
+        autoApply: true,
+        locale: {
+            format: "DD/MM/YYYY",
+            separator: " - ",
+            applyLabel: "Apply",
+            cancelLabel: "Cancel",
+            fromLabel: "From",
+            toLabel: "To",
+            customRangeLabel: "Custom",
+            weekLabel: "W",
+            daysOfWeek: [
+                "Su",
+                "Mo",
+                "Tu",
+                "We",
+                "Th",
+                "Fr",
+                "Sa"
+            ],
+            monthNames: [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            firstDay: 6
+        }
+    }, function (start, end, label) {
+        fromText.value = start.format("DD/MM/YYYY");
+        toText.value = end.format("DD/MM/YYYY");
     });
 
-    $(toDate).datetimepicker({
-        format: "DD/MM/YYYY",
-        useCurrent: false
+    $(".dr-datepicker").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+            format: "DD/MM/YYYY"
+        },
+        minYear: 2010,
+        maxYear: parseInt(moment().format('YYYY'), 10) + 1
+    }, function (start, end, label) {
+
     });
 
-    $(fromDate).on(
-        "change.datetimepicker",
-        function (e) {
-            $(toDate).datetimepicker("minDate", e.date);
-        });
+    $(".dr-show").click(() => $(".dr-datepicker").show());
 
-    $(toDate).on(
-        "change.datetimepicker",
-        function (e) {
-            $(fromDate).datetimepicker("maxDate", e.date);
-        });
 
-    inputs.onkeypress = enterToTab;
+    $(inputs).keypress(enterToTab);
 
-    inputs.focus(function () {
+    $(inputs).focus(function () {
         $(this).select();
     });
 
     $(blankButtons).click((e) => {
         e.stopPropagation();
+    });
+
+
+
+
+    // Collapsible 
+    // Add minus icon for collapse element which is open by default
+
+    $(".collapse.show").each(function () {
+        $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+    });
+
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse").on('show.bs.collapse', function () {
+        $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+    }).on('hide.bs.collapse', function () {
+        $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
     });
 });
 

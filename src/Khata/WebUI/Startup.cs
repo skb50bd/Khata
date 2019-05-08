@@ -82,13 +82,7 @@ namespace WebUI
 
             services.ConfigureCrudServices();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminRights",
-                    policy => policy.RequireRole("Admin"));
-                options.AddPolicy("UserRights",
-                    policy => policy.RequireRole("User"));
-            });
+            services.AddPolicies();
 
             services.AddWebOptimizer();
             services.AddMvc()
@@ -104,98 +98,7 @@ namespace WebUI
                              NullValueHandling.Ignore;
                      })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddRazorPagesOptions(
-                    options =>
-                    {
-                        options.Conventions.AuthorizeFolder(
-                            "/Customers", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/DebtPayments", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Deposits", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Employees", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Cash", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Dashboard", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Expenses", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Invoices", 
-                            "UserRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Products", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Purchases",
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Refunds", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/SalaryIssues", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/SalaryPayments",
-                            "AdminRights");
-
-                        options.Conventions.AuthorizePage(
-                            "/Sales/Create",
-                            "UserRights");
-
-                        options.Conventions.AuthorizePage(
-                            "/Sales/Index",
-                            "UserRights");
-
-                        options.Conventions.AuthorizePage(
-                            "/Sales/Details", 
-                            "UserRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Services", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/SupplierPayments",
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Suppliers", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Vouchars", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Withdrawals", 
-                            "AdminRights");
-
-                        options.Conventions.AuthorizeFolder(
-                            "/Reporting", 
-                            "AdminRights");
-                    }
-                );
+                .AddAuthorizationDefinition();
 
             services.AddHttpContextAccessor();
 
@@ -212,13 +115,23 @@ namespace WebUI
 
             services.AddSignalR();
 
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<OutletOptions>(
                 Configuration.GetSection("OutletOptions"));
             services.Configure<AuthMessageSenderOptions>(
                 Configuration.GetSection("SendGrid"));
             services.Configure<KhataSettings>(
                 Configuration.GetSection("Settings"));
+
+            services
+               .AddTransient<
+                    IRazorViewToStringRenderer,
+                    RazorViewToStringRenderer>();
+
+            services.Configure<SmtpEmailSettings>(
+                Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, SmtpEmailSender>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

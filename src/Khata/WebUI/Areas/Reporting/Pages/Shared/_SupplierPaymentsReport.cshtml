@@ -1,0 +1,68 @@
+@model IndexModel
+
+<div class="card-header"
+     id="supplier-payments-heading">
+    <div class="row">
+        <div class="col-8">
+            <button class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#supplier-payments-collapse"
+                    aria-expanded="true"
+                    aria-controls="supplier-payments-collapse">
+                <i class="fa fa-plus"></i>
+                Supplier Payments
+            </button>
+        </div>
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
+                @Html.DisplayFor(model => model.SupplierPaymentsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="supplier-payments-collapse"
+     class="collapse"
+     aria-labelledby="supplier-payments-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.SupplierPaymentsAmount)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.SupplierPaymentsAmount)
+            </div>
+        </div>
+
+        <div class="accordion"
+             id="supplier-payments-list-accordion">
+            <div class="card-text" id="supplier-payments-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#supplier-payments-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="supplier-payments-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="supplier-payments-list-collapse"
+                 class="collapse"
+                 aria-labelledby="supplier-payments-list-heading"
+                 data-parent="#supplier-payments-list-accordion">
+
+                <partial name="_SupplierPaymentsList"
+                         for="SupplierPayments" />
+
+            </div>
+        </div>
+    </div>
+</div>

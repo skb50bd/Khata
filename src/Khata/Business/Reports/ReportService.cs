@@ -14,7 +14,7 @@ namespace Business.Reports
         public ReportService(IReportRepository<TReport> repo) => 
             _repo = repo;
 
-        public async Task<TReport> Get() => 
+        public virtual async Task<TReport> Get() => 
             await _repo.Get();
     }
 

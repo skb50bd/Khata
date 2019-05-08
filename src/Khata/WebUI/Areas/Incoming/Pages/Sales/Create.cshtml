@@ -6,29 +6,9 @@
 }
 
 <div class="row">
-    <div class="col-md-8">
-        <form method="post" class="immutable-submit" id="sale-form">
-            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            <partial name="_SaleForm" for="SaleVm"/>
-
-            <div class="form-inline">
-                <div class="form-group pl-2">
-                    <input type="submit"
-                           class="btn btn-lg btn-primary"
-                           value="Create" />
-                </div>
-                @*<div class="form-group pl-2">
-                    <input type="submit" asp-page-handler="Save"
-                           class="btn btn-lg btn-outline-success"
-                           value="Save" />
-                </div>*@
-                <div class="form-group pl-2">
-                    <input type="reset"
-                           class="btn btn-lg btn-secondary"
-                           value="Reset" />
-                </div>
-            </div>
-        </form>
+    <div class="col-md-12 col-lg-8 col-xl-6">
+        <partial name="_SaleForm" 
+                 for="SaleVm"/>
     </div>
 </div>
 

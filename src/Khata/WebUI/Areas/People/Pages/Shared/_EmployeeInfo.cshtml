@@ -1,9 +1,20 @@
 ﻿@model DTOs.EmployeeDto
 
-<div class="card" style="width:40rem">
+@{
+    var removeApi = Url.Action(
+        "Remove", 
+        "Employees", 
+        new {id = Model.Id});
+
+    var removeReturnUrl = Url.Page("./Index");
+}
+
+<div class="card info-card">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Employee# @Html.DisplayFor(model => model.Id)</div>
+            <div class="col-6">
+                Employee# @Html.DisplayFor(model => model.Id)
+            </div>
             <div class="col-6 text-right">
                 @if (Model.IsRemoved)
                 {
@@ -14,48 +25,81 @@
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Html.DisplayFor(model => model.FullName)</h3>
+        <h3 class="card-title">
+            @Html.DisplayFor(model => model.FullName)
+        </h3>
         <table class="table table-sm table-hover mt-4">
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Designation)</th>
-                <td>@Html.DisplayFor(model => model.Designation)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Designation)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Designation)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.NIdNumber)</th>
-                <td>@Html.DisplayFor(model => model.NIdNumber)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.NIdNumber)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.NIdNumber)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Address)</th>
-                <td>@Html.DisplayFor(model => model.Address)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Address)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Phone)</th>
-                <td>@Html.DisplayFor(model => model.Phone)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Phone)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Email)</th>
-                <td>@Html.DisplayFor(model => model.Email)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Email)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Salary)</th>
-                <td>@Html.DisplayFor(model => model.Salary)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Salary)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Salary)
+                </td>
             </tr>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Balance)</th>
-                <td>@Html.DisplayFor(model => model.Balance)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Balance)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Balance)
+                </td>
             </tr>
 
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Note)</th>
-                <td>@Html.DisplayFor(model => model.Note)</td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Note)
+                </td>
             </tr>
 
         </table>
 
         <hr />
         <div class="row">
-
-            <div class="col-md-6">
+            <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {
                     <a asp-page="./Edit"
@@ -64,13 +108,13 @@
 
                     <a href="#"
                        class="card-link text-white btn btn-link btn-danger js-remove-item"
-                       data-href="@Url.Action("Remove", "Employees", new {id = Model.Id})"
-                       data-returnUrl="@Url.Page("./Index")">
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-sm-4 text-sm-right mt-2 mt-sm-0">
                 <a asp-page="./Index"
                    class="card-link btn btn-primary">
                     Back to List

@@ -2,628 +2,92 @@
 @model IndexModel
 
 @{
-    ViewData["Title"] = $"Reporting [{Model.FromText} - {Model.ToText}]";
+    ViewData["Title"] = "Reporting";
 }
 
 <div class="row">
-    <div class="col-12 mb-3">
+    <div class="col-12 mb-1">
         <div class="row">
-            <div class="col-md-6">
-                <form method="get"
-                      class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2 d-inline">
-                        <div class="input-group date"
-                             id="fromDate"
-                             data-target-input="nearest">
-                            <input type="text"
-                                   class="form-control datetimepicker-input"
-                                   data-target="#fromDate"
-                                   placeholder="dd/mm/yyyy"
-                                   id="fromText"
-                                   name="fromText"
-                                   data-toggle="tooltip"
-                                   title="Start Date"
-                                   autocomplete="off"
-                                   required />
-                            <div class="input-group-append"
-                                 data-target="#fromDate"
-                                 data-toggle="datetimepicker">
-                                <div class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group mb-2 mr-sm-2 d-inline">
-                        <div class="input-group date"
-                             id="toDate"
-                             data-target-input="nearest">
-                            <input type="text"
-                                   class="form-control datetimepicker-input"
-                                   data-target="#toDate"
-                                   placeholder="dd/mm/yyyy"
-                                   id="toText"
-                                   name="toText"
-                                   data-toggle="tooltip"
-                                   title="End Date"
-                                   autocomplete="off"
-                                   required />
-                            <div class="input-group-append"
-                                 data-target="#toDate"
-                                 data-toggle="datetimepicker">
-                                <div class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="submit"
-                           class="btn btn-outline-primary mb-2"
-                           value="Go">
-
-                </form>
-            </div>
-            <div class="col-md-6 text-right">
-                <div class="btn-group">
-                    <a asp-area="Reporting"
-                        asp-page="/StockReport"
-                       target="_blank"
-                       class="btn btn-outline-primary mb-2">
-                        Stock Report
-                    </a>
-                    <button type="button"
-                            class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mb-2"
-                            data-display="static"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a asp-area="Reporting"
-                            asp-page="/InStockReport"
-                           class="dropdown-item"
-                           target="_blank">
-                            In Stock Items
-                        </a>
-                        <a asp-area="Reporting"
-                           asp-page="/InLowStockReport"
-                           target="_blank"
-                           class="dropdown-item">
-                            Low Stock Items
-                        </a>
-                        <a asp-area="Reporting"
-                           asp-page="/InEmptyOrNegativeStockReport"
-                           target="_blank"
-                           class="dropdown-item">
-                            Empty or Negative Stock Items
-                        </a>
-                    </div>
-                </div>
-                <a asp-area="Reporting"
-                   asp-page="/DueReport"
-                   class="btn btn-outline-secondary mb-2"
-                   target="_blank">
-                    Customer Due Report
-                </a>
-                <a asp-area="Reporting"
-                   asp-page="/SupplierDueReport"
-                   target="_blank"
-                   class="btn btn-outline-secondary mb-2">
-                    Supplier Due Report
-                </a>
+            <div class="col mb-2">
+                <partial name="_PrintableReportButtons" />
             </div>
         </div>
     </div>
+
     <div class="col-12">
+        @*New*@
+        <div class="card">
+            <div class="card-body">
+                <form method="get"
+                      class="form-inline">
+                    <input type="text"
+                           class="form-control daterange mb-2"
+                           value="@Clock.Today.LocalDate() - @Clock.Now.LocalDate()" />
 
-        <div class="accordion" id="reports-accordion">
-            <div class="card">
-                <div class="card-body"
-                     id="sales-summary">
-                    <table class="table table-sm table-hover">
-                        <thead>
-                            <tr class="report-section-header">
-                                <th class="text-uppercase">
-                                    Sales
-                                </th>
-                                <td class="text-right">
-                                    <span class="badge badge-dark text-right">
-                                        @Html.DisplayFor(model => model.SalesCount)
-                                    </span>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.CostOfGoodsSold)</th>
-                                <td class="text-right">
-                                    @Html.DisplayFor(model => model.CostOfGoodsSold)
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.PriceOfGoodsSold)</th>
-                                <td class="text-right">@Html.DisplayFor(model => model.PriceOfGoodsSold)</td>
-                            </tr>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.SalesProfit)</th>
-                                <td class="text-right">@Html.DisplayFor(model => model.SalesProfit)</td>
-                            </tr>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.SalesDue)</th>
-                                <td class="text-right">@Html.DisplayFor(model => model.SalesDue)</td>
-                            </tr>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.SalesProfitReceived)</th>
-                                <td class="text-right">@Html.DisplayFor(model => model.SalesProfitReceived)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a href="#SaleList"
-                       class="card-link"
-                       data-toggle="collapse"
-                       data-target="#sales-list"
-                       aria-expanded="true"
-                       aria-controls="sales-list">
-                        List
-                    </a>
-                </div>
+                    <input asp-for="FromText"
+                           type="text"
+                           name="fromText"
+                           id="from-text"
+                           required hidden />
 
-                <div id="sales-list"
-                     class="collapse"
-                     aria-labelledby="sales-summary"
-                     data-parent="#listReports-accordion">
-                    <div class="card-body">
-                        <partial name="_SalesList" for="Sales" />
-                    </div>
-                </div>
+                    <input asp-for="ToText"
+                           type="text"
+                           name="toText"
+                           id="to-text"
+                           required hidden />
 
-                @foreach (var outlet in Model.Outlets)
-                {
-                    <div class="card">
-                        <div class="card-body"
-                             id="outlet-sales-summary-@outlet.Id">
-                            <table class="table table-sm table-hover">
-                                <thead>
-                                    <tr class="" style="font-size:1.2rem; font-weight:100">
-                                        <th class="text-uppercase text-primary">
-                                            @outlet.Title
-                                        </th>
-                                        <td class="text-right">
-                                            <span class="badge badge-dark text-right">
-                                                @Html.DisplayFor(model => outlet.SalesCount)
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.CostOfGoodsSold)</th>
-                                        <td class="text-right">
-                                            @Html.DisplayFor(model => outlet.CostOfGoodsSold)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.PriceOfGoodsSold)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.PriceOfGoodsSold)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfit)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfit)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesDue)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesDue)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => outlet.SalesProfitReceived)</th>
-                                        <td class="text-right">@Html.DisplayFor(model => outlet.SalesProfitReceived)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#OutletSalesList-@outlet.Id"
-                               class="card-link"
-                               data-toggle="collapse"
-                               data-target="#outlet-sales-list-@outlet.Id"
-                               aria-expanded="true"
-                               aria-controls="outlet-sales-list-@outlet.Id">
-                                List
-                            </a>
-                        </div>
-                        <div id="outlet-sales-list-@outlet.Id"
-                             class="collapse"
-                             aria-labelledby="outlet-sales-summary-@outlet.Id"
-                             data-parent="#listReports-accordion">
-                            <div class="card-body">
-                                <partial name="_SalesList" for="@outlet.Sales" />
-                            </div>
-                        </div>
-                    </div>
-                }
+                    <button type="submit"
+                            class="btn btn-outline-primary mb-2 ml-sm-2">
+                        Go
+                    </button>
+                </form>
+            </div>
 
-                <div class="card">
-                    <div class="card-body"
-                         id="debt-payments-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Debt Payments
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.DebtPaymentsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.DebtReceivedAmount)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.DebtReceivedAmount)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#DebtPaymentsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#debt-payments-list"
-                           aria-expanded="true"
-                           aria-controls="debt-payments-list">
-                            List
-                        </a>
+            <div class="card-header"
+                 id="card-banner">
+                <div class="row">
+                    <div class="col-sm-6">
+                        From: <strong>@Model.FromText</strong>
                     </div>
-                    <div id="debt-payments-list"
-                         class="collapse"
-                         aria-labelledby="debt-payments-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_DebtPaymentsList" for="DebtPayments" />
-                        </div>
+                    <div class="col-sm-6 text-sm-right">
+                        To: <strong>@Model.ToText</strong>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body" id="purchase-return-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Purchase Returns
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.PurchaseReturnsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.PurchaseReturnAmount)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.PurchaseReturnAmount)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#PurchaseReturnsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#purchase-return-list"
-                           aria-expanded="true"
-                           aria-controls="purchase-return-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="purchase-return-list" class="collapse" aria-labelledby="purchase-return-summary" data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_PurchaseReturnsList" for="PurchaseReturns" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="deposits-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Deposits
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.DepositsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.DepositsTotal)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.DepositsTotal)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#DepositsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#deposits-list"
-                           aria-expanded="true"
-                           aria-controls="deposits-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="deposits-list" class="collapse" aria-labelledby="deposits-summary" data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_DepositsList" for="Deposits" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="expenses-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Expenses
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.ExpensesCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.ExpenseTotal)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.ExpenseTotal)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#ExpensesList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#expenses-list"
-                           aria-expanded="true"
-                           aria-controls="expenses-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="expenses-list" class="collapse" aria-labelledby="expenses-summary" data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_ExpensesList" for="Expenses" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="purchases-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Purchases
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.PurchasesCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.CostOfGoodsPurchased)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.CostOfGoodsPurchased)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.PurchasesPaid)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.PurchasesPaid)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.PurchasesDue)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.PurchasesDue)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#PurchasesList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#purchases-list"
-                           aria-expanded="true"
-                           aria-controls="purchases-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="purchases-list"
-                         class="collapse"
-                         aria-labelledby="purchases-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_PurchasesList" for="Purchases" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="supplier-payments-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Supplier Payments
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.SupplierPaymentsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.SupplierPaymentsAmount)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.SupplierPaymentsAmount)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#SupplierPaymentsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#supplier-payments-list"
-                           aria-expanded="true"
-                           aria-controls="supplier-payments-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="supplier-payments-list"
-                         class="collapse"
-                         aria-labelledby="supplier-payments-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_SupplierPaymentsList" for="SupplierPayments" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="salary-payments-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Salary Payments
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.SalaryPaymentsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.SalaryPaid)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.SalaryPaid)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#SalaryPaymentsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#salary-payments-list"
-                           aria-expanded="true"
-                           aria-controls="salary-payments-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="salary-payments-list"
-                         class="collapse"
-                         aria-labelledby="salary-payments-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_SalaryPaymentsList" for="SalaryPayments" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="refunds-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Refunds
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.RefundsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.RefundsCashBack)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.RefundsCashBack)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#RefundsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#refunds-list"
-                           aria-expanded="true"
-                           aria-controls="refunds-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="refunds-list"
-                         class="collapse"
-                         aria-labelledby="refunds-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_RefundsList" for="Refunds" />
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" id="withdrawals-summary">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr class="report-section-header">
-                                    <th class="text-uppercase">
-                                        Withdrawals
-                                    </th>
-                                    <td class="text-right">
-                                        <span class="badge badge-dark text-right">
-                                            @Html.DisplayFor(model => model.WithdrawalsCount)
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>@Html.DisplayNameFor(model => model.WithdrawalsTotal)</th>
-                                    <td class="text-right">
-                                        @Html.DisplayFor(model => model.WithdrawalsTotal)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#WithdrawalsList"
-                           class="card-link"
-                           data-toggle="collapse"
-                           data-target="#withdrawals-list"
-                           aria-expanded="true"
-                           aria-controls="withdrawals-list">
-                            List
-                        </a>
-                    </div>
-                    <div id="withdrawals-list"
-                         class="collapse"
-                         aria-labelledby="withdrawals-summary"
-                         data-parent="#listReports-accordion">
-                        <div class="card-body">
-                            <partial name="_WithdrawalsList" for="Withdrawals" />
-                        </div>
-                    </div>
-                </div>
+                <br/>
+            </div>
+
+            <div class="accordion"
+                 id="reports-accordion">
+
+                <partial name="_SalesReport"
+                         model="Model" />
+
+                <partial name="_DebtPaymentsReport"
+                         model="Model" />
+
+                <partial name="_PurchaseReturnsReport"
+                         model="Model" />
+
+                <partial name="_DepositsReport"
+                         model="Model" />
+
+                <partial name="_ExpensesReport"
+                         model="Model" />
+
+                <partial name="_PurchasesReport"
+                         model="Model" />
+
+                <partial name="_SupplierPaymentsReport"
+                         model="Model" />
+
+                <partial name="_SalaryPaymentsReport"
+                         model="Model" />
+
+                <partial name="_RefundsReport"
+                         model="Model" />
+
+                <partial name="_WithdrawalsReport"
+                         model="Model" />
             </div>
         </div>
     </div>

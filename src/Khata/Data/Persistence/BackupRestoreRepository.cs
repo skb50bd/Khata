@@ -15,7 +15,8 @@ using Newtonsoft.Json;
 
 namespace Data.Persistence
 {
-    public class BackupRestoreRepository : IBackupRestoreRepository
+    public class BackupRestoreRepository 
+        : IBackupRestoreRepository
     {
         private readonly KhataContext _ctx;
 

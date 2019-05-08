@@ -14,7 +14,7 @@ namespace Domain
         public virtual ICollection<SaleLineItem> Cart { get; set; }
         public PaymentInfo Payment { get; set; }
 
-        public decimal Profit => Cart?.Sum(li => li.Profit) ?? 0;
+        public decimal Profit => Payment.Total- (Cart?.Sum(li => li.NetPurchasePrice) ?? 0) ;
 
         public string Description { get; set; }
 

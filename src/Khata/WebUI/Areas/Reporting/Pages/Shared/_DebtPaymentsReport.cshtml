@@ -1,0 +1,66 @@
+@model IndexModel
+
+<div class="card-header"
+     id="debt-payments-heading">
+    <div class="row">
+        <div class="col-8">
+                <button class="btn btn-link"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#debt-payments-collapse"
+                        aria-expanded="true"
+                        aria-controls="debt-payments-collapse">
+                    <i class="fa fa-plus"></i>
+                    Debt Payments
+                </button>
+        </div>
+        <div class="col-4 text-right">
+            <span class="badge badge-dark">
+                @Html.DisplayFor(model => model.DebtPaymentsCount)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="debt-payments-collapse"
+     class="collapse"
+     aria-labelledby="debt-payments-heading"
+     data-parent="#reports-accordion">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <strong>
+                    @Html.DisplayNameFor(model => model.DebtReceivedAmount)
+                </strong>
+            </div>
+            <div class="col-6 text-right">
+                @Html.DisplayFor(model => model.DebtReceivedAmount)
+            </div>
+        </div>
+
+        <div class="accordion" id="debt-payments-list-accordion">
+            <div class="card-text" id="debt-payments-list-heading">
+                <h2 class="mb-0">
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#debt-payments-list-collapse"
+                            aria-expanded="true"
+                            aria-controls="debt-payments-list-collapse">
+                        <i class="fa fa-plus"></i>
+                        List
+                    </button>
+                </h2>
+            </div>
+
+            <div id="debt-payments-list-collapse"
+                 class="collapse"
+                 aria-labelledby="debt-payments-list-heading"
+                 data-parent="#debt-payments-list-accordion">
+
+                <partial name="_DebtPaymentsList" for="DebtPayments" />
+
+            </div>
+        </div>
+    </div>
+</div>

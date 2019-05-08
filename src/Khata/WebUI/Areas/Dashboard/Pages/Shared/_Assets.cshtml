@@ -3,12 +3,12 @@
 <div class="card widget-tall mb-3">
     <div class="card-header">Assets</div>
     <div class="card-body">
-        <canvas id="assetChart" class="" height="200"></canvas>
+        <canvas id="assetChart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="asset-total">
-            @((Model.Cash + Model.InventoryWorth + Model.TotalDue).ToString("C2"))
+            @((Model.Cash + Model.InventoryWorth + Model.TotalDue).ToCurrency())
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Cash</th>

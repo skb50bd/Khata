@@ -45,6 +45,14 @@ namespace Business.Reports
                 IListReportService<PerDayReport>, 
                 ListReportService<PerDayReport>>();
 
+            services.AddTransient<
+                IReportService<Summary>,
+                SummaryReportService>();
+
+            services.AddTransient<
+                ISendEmailReport,
+                SendEmailReport>();
+
             return services;
         }
     }

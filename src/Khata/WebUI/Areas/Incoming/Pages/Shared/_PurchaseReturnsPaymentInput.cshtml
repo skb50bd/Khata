@@ -5,15 +5,9 @@
     var sym = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 }
 
-    <div class="card">
+    <div class="card mb-1">
     <div class="card-body">
         <div class="row">
-            <div class="col-12">
-                <label class="h5 card-title">
-                    Payment Information
-                </label>
-            </div>
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="subtotal"
@@ -31,7 +25,7 @@
                         <input id="subtotal"
                                type="number"
                                class="form-control"
-                               disabled />
+                               disabled/>
                     </div>
                 </div>
             </div>
@@ -52,7 +46,7 @@
                         <input id="debt-before"
                                type="number"
                                class="form-control"
-                               disabled />
+                               disabled/>
                     </div>
                 </div>
             </div>
@@ -72,7 +66,7 @@
                         <input asp-for="CashBack"
                                id="cash-back"
                                type="number"
-                               class="form-control" />
+                               class="form-control"/>
                     </div>
                     <span asp-validation-for="CashBack"
                           class="text-danger">
@@ -96,7 +90,7 @@
                         <input asp-for="DebtRollback"
                                id="debt-rollback"
                                type="number"
-                               class="form-control" />
+                               class="form-control"/>
                     </div>
                     <span asp-validation-for="DebtRollback"
                           class="text-danger">
@@ -121,7 +115,7 @@
                         <input id="debt-after"
                                type="number"
                                class="form-control"
-                               disabled />
+                               disabled/>
                     </div>
                 </div>
             </div>

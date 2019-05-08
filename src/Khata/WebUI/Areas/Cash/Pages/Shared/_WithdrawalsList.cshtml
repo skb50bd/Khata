@@ -41,7 +41,9 @@
                       </tr>
                       </table>";
 
-            var recordUrl = "../" + d.TableName + "s/Details?id=" + (d.RowId ?? d.Id);
+            var table = d.TableName + "s";
+            var area = AreaHelper.FindArea(table);
+            var recordUrl = $"/{area}/{table}/Details?id={d.RowId ?? d.Id}";
 
             var title = d.TableName.FromPascalCase();
 

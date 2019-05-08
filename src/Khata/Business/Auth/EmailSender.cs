@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Domain;
 
@@ -13,14 +14,13 @@ namespace Business.Auth
     public class EmailSender : IEmailSender
     {
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
-        public OutletOptions OutletOpt { get; }
-
+        private readonly OutletOptions _settings;
 
         public EmailSender(
             IOptions<AuthMessageSenderOptions> optionsAccessor, 
             IOptions<OutletOptions> outletOpt)
         {
-            OutletOpt = outletOpt.Value;
+            _settings = outletOpt.Value;
             Options = optionsAccessor.Value;
         }
 
@@ -32,13 +32,18 @@ namespace Business.Auth
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
+            var fromAddr = _settings.Email
+                                    .Split(',')
+                                    .First()
+                                    .Trim();
+            var fromName = _settings.Title;
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress(OutletOpt.Email, OutletOpt.Title),
-                Subject = subject,
+                From             = new EmailAddress(fromAddr, fromName),
+                Subject          = subject,
                 PlainTextContent = message,
-                HtmlContent = message
+                HtmlContent      = message
             };
             msg.AddTo(new EmailAddress(email));
 

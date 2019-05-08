@@ -2,12 +2,12 @@
 <div class="card widget-tall mb-3">
     <div class="card-header">Liabilities</div>
     <div class="card-body">
-        <canvas id="liabilityChart" class="" height="200"></canvas>
+        <canvas id="liabilityChart" class="pie-chart"></canvas>
         <p class="card-title lead text-right chart-info-big"
            id="liability-total">
-            @((Model.UnpaidAmount + Model.TotalDue).ToString("C2"))
+            @((Model.UnpaidAmount + Model.TotalDue).ToCurrency())
         </p>
-        <table class="table table-sm table-hover table-borderless table-striped">
+        <table class="table table-sm table-hover table-borderless table-striped mb-0">
             <tbody>
                 <tr>
                     <th>Supplier Dues</th>
@@ -33,7 +33,6 @@
                         </span>
                     </td>
                 </tr>
-                <tr><th>&nbsp;</th><td></td></tr>
             </tbody>
         </table>
     </div>
