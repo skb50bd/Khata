@@ -3,10 +3,10 @@ using System;
 using Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Data.Persistence.Migrations.PostgreSQL
+namespace Data.Persistence.Migrations.SQLServer
 {
     [DbContext(typeof(KhataContext))]
     partial class KhataContextModelSnapshot : ModelSnapshot
@@ -15,14 +15,15 @@ namespace Data.Persistence.Migrations.PostgreSQL
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.CashRegister", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18, 6)");
@@ -39,7 +40,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
 
@@ -72,7 +74,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.DebtPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -90,6 +93,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.Property<int?>("MetadataId");
 
+                    b.Property<DateTimeOffset>("PaymentDate");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -105,7 +110,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Deposit", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -128,7 +134,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Employee", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
 
@@ -166,7 +173,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Expense", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -189,7 +197,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Invoice", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTimeOffset>("Date");
 
@@ -224,7 +233,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Metadata", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTimeOffset>("CreationTime");
 
@@ -242,7 +252,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Outlet", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
 
@@ -268,7 +279,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
@@ -294,7 +306,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Purchase", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
@@ -323,7 +336,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.PurchaseLineItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -353,7 +367,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.PurchaseReturn", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("CashBack")
                         .HasColumnType("decimal(18, 6)");
@@ -386,7 +401,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Refund", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("CashBack")
                         .HasColumnType("decimal(18, 6)");
@@ -419,7 +435,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.SalaryIssue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -447,7 +464,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.SalaryPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -463,6 +481,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.Property<int?>("MetadataId");
 
+                    b.Property<DateTimeOffset>("PaymentDate");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -475,7 +495,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Sale", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CustomerId");
 
@@ -510,7 +531,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.SaleLineItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ItemId");
 
@@ -547,7 +569,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.SavedSale", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CustomerId");
 
@@ -573,7 +596,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Service", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
@@ -600,7 +624,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Supplier", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
 
@@ -633,7 +658,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.SupplierPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -646,6 +672,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.Property<decimal>("PayableBefore")
                         .HasColumnType("decimal(18, 6)");
+
+                    b.Property<DateTimeOffset>("PaymentDate");
 
                     b.Property<int>("SupplierId");
 
@@ -666,7 +694,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Domain.Withdrawal", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -704,7 +733,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -712,7 +742,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -776,7 +807,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
 
@@ -786,7 +818,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -964,7 +997,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
                     b.OwnsMany("Domain.InvoiceLineItem", "Cart", b1 =>
                         {
                             b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<int>("InvoiceId");
 
@@ -1012,7 +1046,9 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.OwnsOne("Domain.Inventory", "Inventory", b1 =>
                         {
-                            b1.Property<int>("ProductId");
+                            b1.Property<int>("ProductId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("AlertAt")
                                 .HasColumnType("decimal(18, 6)");
@@ -1035,7 +1071,9 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.OwnsOne("Domain.Pricing", "Price", b1 =>
                         {
-                            b1.Property<int>("ProductId");
+                            b1.Property<int>("ProductId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("Bulk")
                                 .HasColumnType("decimal(18, 6)");
@@ -1078,7 +1116,9 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("PurchaseId");
+                            b1.Property<int>("PurchaseId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");
@@ -1197,7 +1237,9 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("SaleId");
+                            b1.Property<int>("SaleId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");
@@ -1242,7 +1284,9 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("SavedSaleId");
+                            b1.Property<int>("SavedSaleId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");

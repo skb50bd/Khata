@@ -1,10 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModels
 {
     public class DebtPaymentViewModel
     {
         public int Id { get; set; }
+
+        [Display(Name = "Date")]
+        [DataType(DataType.Date)]
+        public string PaymentDate { get; set; }
 
         public int CustomerId { get; set; }
         public int InvoiceId { get; set; }

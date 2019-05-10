@@ -1,7 +1,10 @@
-﻿namespace Domain
+﻿using System;
+
+namespace Domain
 {
     public class DebtPayment : TrackedDocument, IDeposit
     {
+        public DateTimeOffset PaymentDate { get; set; }
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }
 

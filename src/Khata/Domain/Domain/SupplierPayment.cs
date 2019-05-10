@@ -1,8 +1,13 @@
-﻿namespace Domain
+﻿using System;
+
+namespace Domain
 {
     public class SupplierPayment : TrackedDocument, IWithdrawal
     {
         public int SupplierId { get; set; }
+
+        public DateTimeOffset PaymentDate { get; set; }
+
         public virtual Supplier Supplier { get; set; }
         public int VoucharId { get; set; }
         public virtual Vouchar Vouchar { get; set; }

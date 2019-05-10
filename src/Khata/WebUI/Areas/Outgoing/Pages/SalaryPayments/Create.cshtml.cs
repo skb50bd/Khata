@@ -42,7 +42,7 @@ namespace WebUI.Areas.Outgoing.Pages.SalaryPayments
 
             var salaryPayment = await _salaryPayments.Add(SalaryPaymentVm);
 
-            Message = $"Debt Payment: {salaryPayment.Id} - {salaryPayment.EmployeeFullName} - {salaryPayment.Amount} created!";
+            Message = $"Debt-Payment: {salaryPayment.Id} - {salaryPayment.EmployeeFullName} - {salaryPayment.Amount} created!";
             MessageType = "success";
 
 

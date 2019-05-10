@@ -99,6 +99,7 @@ namespace Business.Implementations
             {
                 sp = new SupplierPayment
                 {
+                    PaymentDate = dm.PurchaseDate,
                     Supplier = dm.Supplier,
                     Vouchar = dm.Vouchar,
                     PayableBefore = dm.Supplier.Payable,

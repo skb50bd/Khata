@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 using Domain;
 
@@ -9,9 +10,12 @@ namespace DTOs
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
 
+        [Display(Name = "Date")]
+        public DateTimeOffset PaymentDate { get; set; }
+
         public int EmployeeId { get; set; }
 
-        [Display(Name = "Employee Name", ShortName = "Issuee")]
+        [Display(Name = "Employee Name")]
         public string EmployeeFullName { get; set; }
 
         [DataType(DataType.Currency)]

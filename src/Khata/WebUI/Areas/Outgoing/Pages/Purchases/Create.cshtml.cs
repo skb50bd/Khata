@@ -69,7 +69,7 @@ namespace WebUI.Areas.Outgoing.Pages.Purchases
             }
             else
             {
-                Message = $"Supplier Payment paid to {purchase.Supplier.FullName}!";
+                Message = $"Supplier-Payment paid to {purchase.Supplier.FullName}!";
                 return RedirectToPage("../SupplierPayments/Index");
             }
 

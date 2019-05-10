@@ -42,7 +42,7 @@ namespace WebUI.Areas.Outgoing.Pages.SupplierPayments
 
             var supplierPayment = await _supplierPayments.Add(SupplierPaymentVm);
 
-            Message = $"Supplier Payment: {supplierPayment.Id} - {supplierPayment.SupplierFullName} - {supplierPayment.Amount} created!";
+            Message = $"Supplier-Payment: {supplierPayment.Id} - {supplierPayment.SupplierFullName} - {supplierPayment.Amount} created!";
             MessageType = "success";
 
 

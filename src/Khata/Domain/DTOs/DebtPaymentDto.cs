@@ -10,6 +10,10 @@ namespace DTOs
         public int Id { get; set; }
         public bool IsRemoved { get; set; }
 
+        [Display(Name = "Date")]
+        [DataType(DataType.Date)]
+        public DateTimeOffset PaymentDate { get; set; }
+
         public int InvoiceId { get; set; }
         public virtual CustomerInvoice Invoice { get; set; }
 

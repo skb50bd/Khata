@@ -20,6 +20,8 @@
   <ItemGroup>
     <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.cs" />
     <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.designer.cs" />
     <Compile Include="Persistence\Migrations\SQLServer\KhataContextModelSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>

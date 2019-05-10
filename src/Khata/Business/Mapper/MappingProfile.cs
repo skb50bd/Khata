@@ -99,7 +99,13 @@ namespace Business.Mapper
 
             #region Debt Payment Mapping
 
-            CreateMap<DebtPaymentViewModel, DebtPayment>();
+            CreateMap<DebtPaymentViewModel, DebtPayment>()
+               .ForMember(
+                    dest => dest.PaymentDate,
+                    opt => opt.MapFrom(
+                        src => src.PaymentDate.ParseDate()
+                    )
+                );
             CreateMap<DebtPayment, DebtPaymentDto>();
             CreateMap<DebtPaymentDto, DebtPaymentViewModel>();
 
@@ -308,7 +314,13 @@ namespace Business.Mapper
 
             #region Supplier Payment Mapping
 
-            CreateMap<SupplierPaymentViewModel, SupplierPayment>();
+            CreateMap<SupplierPaymentViewModel, SupplierPayment>()
+               .ForMember(
+                    dest => dest.PaymentDate,
+                    opt => opt.MapFrom(
+                        src => src.PaymentDate.ParseDate()
+                    )
+                );
             CreateMap<SupplierPayment, SupplierPaymentDto>();
             CreateMap<SupplierPaymentDto, SupplierPaymentViewModel>();
 
@@ -328,7 +340,13 @@ namespace Business.Mapper
             CreateMap<SalaryIssue, SalaryIssueDto>();
             CreateMap<SalaryIssueDto, SalaryIssueViewModel>();
 
-            CreateMap<SalaryPaymentViewModel, SalaryPayment>();
+            CreateMap<SalaryPaymentViewModel, SalaryPayment>()
+               .ForMember(
+                    dest => dest.PaymentDate,
+                    opt => opt.MapFrom(
+                        src => src.PaymentDate.ParseDate()
+                    )
+                );
             CreateMap<SalaryPayment, SalaryPaymentDto>();
             CreateMap<SalaryPaymentDto, SalaryPaymentViewModel>();
 

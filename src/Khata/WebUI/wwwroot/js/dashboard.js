@@ -401,7 +401,7 @@ function getExpenseChartData(expenseReport) {
         labels: [
             "Expense",
             "Purchase",
-            "Supplier Payment",
+            "Supplier-Payment",
             "Employee Payment",
             "Refund",
             "Withdrawal"
@@ -417,7 +417,7 @@ function getPayableChartData(payableReport) {
 
         labels: [
             "Purchases Due",
-            "Salary Issues",
+            "Salary-Issues",
             "Customer Advance"
         ]
     };

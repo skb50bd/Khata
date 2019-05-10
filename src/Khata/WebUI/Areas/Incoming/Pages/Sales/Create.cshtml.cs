@@ -100,7 +100,7 @@ namespace WebUI.Areas.Incoming.Pages.Sales
             }
             if (true)
             {
-                Message = $"Debt Payment received from {sale.Customer.FullName}!";
+                Message = $"Debt-Payment received from {sale.Customer.FullName}!";
                 return RedirectToPage("../DebtPayments/Index");
             }
         }

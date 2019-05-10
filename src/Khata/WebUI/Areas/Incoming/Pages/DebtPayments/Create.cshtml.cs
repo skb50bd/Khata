@@ -42,7 +42,7 @@ namespace WebUI.Areas.Incoming.Pages.DebtPayments
 
             var debtPayment = await _debtPayments.Add(DebtPaymentVm);
 
-            Message = $"Debt Payment: {debtPayment.Id} - {debtPayment.CustomerFullName} - {debtPayment.Amount} created!";
+            Message = $"Debt-Payment: {debtPayment.Id} - {debtPayment.CustomerFullName} - {debtPayment.Amount} created!";
             MessageType = "success";
 
 

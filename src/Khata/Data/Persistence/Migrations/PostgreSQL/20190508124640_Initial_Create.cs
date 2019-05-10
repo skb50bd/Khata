@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Data.Persistence.Migrations.SQLite
+namespace Data.Persistence.Migrations.PostgreSQL
 {
-    public partial class InitialSqlite : Migration
+    public partial class Initial_Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +57,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Creator = table.Column<string>(nullable: true),
                     CreationTime = table.Column<DateTimeOffset>(nullable: false),
                     Modifier = table.Column<string>(nullable: true),
@@ -72,7 +73,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -93,7 +94,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -178,7 +179,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     Balance = table.Column<decimal>(type: "decimal(18, 6)", nullable: false)
                 },
@@ -198,7 +199,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
@@ -226,7 +227,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     TableName = table.Column<string>(nullable: true),
@@ -249,7 +250,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
@@ -279,7 +280,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -302,7 +303,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: true),
@@ -327,7 +328,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     OutletId = table.Column<int>(nullable: false),
@@ -355,7 +356,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
@@ -383,7 +384,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     TableName = table.Column<string>(nullable: true),
@@ -406,7 +407,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
@@ -436,10 +437,11 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
+                    PaymentDate = table.Column<DateTimeOffset>(nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     BalanceBefore = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     Description = table.Column<string>(nullable: true)
@@ -466,7 +468,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -503,7 +505,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -533,7 +535,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTimeOffset>(nullable: false),
@@ -585,9 +587,10 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
+                    PaymentDate = table.Column<DateTimeOffset>(nullable: false),
                     InvoiceId = table.Column<int>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     DebtBefore = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
@@ -622,7 +625,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
@@ -645,7 +648,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     SupplierId = table.Column<int>(nullable: false),
@@ -684,7 +687,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     OutletId = table.Column<int>(nullable: false),
@@ -731,10 +734,11 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     SupplierId = table.Column<int>(nullable: false),
+                    PaymentDate = table.Column<DateTimeOffset>(nullable: false),
                     VoucharId = table.Column<int>(nullable: false),
                     PayableBefore = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
@@ -768,7 +772,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     SupplierId = table.Column<int>(nullable: false),
@@ -805,7 +809,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     MetadataId = table.Column<int>(nullable: true),
                     IsRemoved = table.Column<bool>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
@@ -842,7 +846,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     UnitPurchasePrice = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
@@ -878,7 +882,7 @@ namespace Data.Persistence.Migrations.SQLite
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true),
                     Quantity = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),

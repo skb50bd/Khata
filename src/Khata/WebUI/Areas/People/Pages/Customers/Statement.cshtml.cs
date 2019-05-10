@@ -55,7 +55,7 @@ namespace WebUI.Areas.People.Pages.Customers
                     d => new StatementElement
                     {
                         DateTime = d.Metadata.CreationTime,
-                        Type = "Debt Payment",
+                        Type = "Debt-Payment",
                         Total = d.DebtBefore,
                         Paid = d.Amount,
                         Due = d.DebtAfter

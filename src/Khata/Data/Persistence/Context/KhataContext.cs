@@ -30,13 +30,12 @@ namespace Data.Persistence
             try
             {
                 if (!pm.Any()) return;
-
-                Database.Migrate();
-
                 if (_settings.DbProvider == DbProvider.SQLServer)
                 {
                     Database.CreateAllSQLServerViews();
                 }
+
+                Database.Migrate();
             }
             catch (Exception e)
             {

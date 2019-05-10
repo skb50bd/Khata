@@ -7,16 +7,16 @@
     ];
     let incoming = [
         "Sales",
-        "Debt Payments",
+        "Debt-Payments",
         "Purchase-Returns",
         "Deposits"
     ];
     let outgoing = [
         "Expenses",
         "Purchases",
-        "Supplier Payments",
-        "Salary Payments",
-        "Salary Issues",
+        "Supplier-Payments",
+        "Salary-Payments",
+        "Salary-Issues",
         "Refunds",
         "Withdrawals"
     ];

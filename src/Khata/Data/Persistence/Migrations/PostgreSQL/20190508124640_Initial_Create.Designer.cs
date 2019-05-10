@@ -10,15 +10,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Persistence.Migrations.PostgreSQL
 {
     [DbContext(typeof(KhataContext))]
-    [Migration("20190330001900_InitialPostgres")]
-    partial class InitialPostgres
+    [Migration("20190508124640_Initial_Create")]
+    partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Domain.CashRegister", b =>
@@ -91,6 +91,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
                     b.Property<bool>("IsRemoved");
 
                     b.Property<int?>("MetadataId");
+
+                    b.Property<DateTimeOffset>("PaymentDate");
 
                     b.HasKey("Id");
 
@@ -465,6 +467,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.Property<int?>("MetadataId");
 
+                    b.Property<DateTimeOffset>("PaymentDate");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -648,6 +652,8 @@ namespace Data.Persistence.Migrations.PostgreSQL
 
                     b.Property<decimal>("PayableBefore")
                         .HasColumnType("decimal(18, 6)");
+
+                    b.Property<DateTimeOffset>("PaymentDate");
 
                     b.Property<int>("SupplierId");
 

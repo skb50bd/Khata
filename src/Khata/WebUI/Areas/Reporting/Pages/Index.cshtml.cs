@@ -154,11 +154,11 @@ namespace WebUI.Areas.Reporting.Pages
             => SalesProfit - SalesDue;
         #endregion
 
-        #region Debt Payments
+        #region Debt-Payments
         public IEnumerable<DebtPaymentDto> DebtPayments { get; set; } 
             = new List<DebtPaymentDto>();
 
-        [Display(Name = "Debt Payments Count")]
+        [Display(Name = "Debt-Payments Count")]
         public int DebtPaymentsCount 
             => DebtPayments?.Count() ?? 0;
 
@@ -233,25 +233,25 @@ namespace WebUI.Areas.Reporting.Pages
             => Purchases?.Sum(p => p.PaymentPaid) ?? 0M;
         #endregion
 
-        #region Supplier Payments 
+        #region Supplier-Payments 
         public IEnumerable<SupplierPaymentDto> SupplierPayments { get; set; }
             = new List<SupplierPaymentDto>();
 
-        [Display(Name = "Supplier Payments Count")]
+        [Display(Name = "Supplier-Payments Count")]
         public int SupplierPaymentsCount 
             => SupplierPayments?.Count() ?? 0;
 
-        [Display(Name = "Supplier Payments Amount")]
+        [Display(Name = "Supplier-Payments Amount")]
         [DataType(DataType.Currency)]
         public decimal SupplierPaymentsAmount 
             => SupplierPayments?.Sum(s => s.Amount) ?? 0M;
         #endregion
 
-        #region Salary Payments
+        #region Salary-Payments
         public IEnumerable<SalaryPaymentDto> SalaryPayments { get; set; } 
             = new List<SalaryPaymentDto>();
 
-        [Display(Name = "Salary Payments Count")]
+        [Display(Name = "Salary-Payments Count")]
         public int SalaryPaymentsCount 
             => SalaryPayments?.Count() ?? 0;
 

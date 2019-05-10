@@ -123,6 +123,7 @@ namespace Business.Implementations
             {
                 dp = new DebtPayment
                 {
+                    PaymentDate = dm.SaleDate,
                     Customer = dm.Customer,
                     Invoice = dm.Invoice,
                     DebtBefore = dm.Customer.Debt,
