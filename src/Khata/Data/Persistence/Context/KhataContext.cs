@@ -24,7 +24,7 @@ namespace Data.Persistence
             IOptionsMonitor<KhataSettings> settings) : base(options)
         {
             _logger = logger;
-            _settings = settings.CurrentValue;
+            _settings = settings.CurrentValue; 
             var pm = Database.GetPendingMigrations();
 
             try
@@ -39,8 +39,9 @@ namespace Data.Persistence
             }
             catch (Exception e)
             {
-                _logger.LogError("Could not apply Migrations" 
-                               + JsonConvert.SerializeObject(pm));
+                _logger.LogError(
+                    "Could not apply Migrations"
+                  + JsonConvert.SerializeObject(pm));
                 _logger.LogError(e.Message);
             }
 

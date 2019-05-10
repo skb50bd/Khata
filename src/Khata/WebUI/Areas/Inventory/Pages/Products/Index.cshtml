@@ -3,50 +3,65 @@
 
 @{
     ViewData["Title"] = "Products";
-    var outlet = 
+    var outlet =
         Model.Outlets
             .FirstOrDefault(o => o.Id == Model.CurrentOutletId)
             ?.Title;
     ViewData["SearchPlaceholder"] = "Search for a Product";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <partial name="_Search" for="Pf"/>
-    </div>
-    <div class="col-md-6 text-right mb-3">
-        <div class="dropdown">
-            <a class="btn btn-outline-secondary dropdown-toggle"
-               role="button"
-               href="#"
-               id="dropdownMenuLink"
-               data-display="static"
-               data-toggle="dropdown"
-               aria-haspopup="true"
-               aria-expanded="false">
-                Show Products for
-            </a>
 
-            <div class="dropdown-menu dropdown-menu-right"
-                 aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item @(Model.CurrentOutletId == 0 ? "active": "")"
-                   asp-page=""
-                   asp-route-outletId="0">
-                    All
+@if (Model.Products.Any())
+{
+    <div class="row">
+        <div class="col-md-6">
+            <partial name="_Search" 
+                     for="Pf" />
+        </div>
+        <div class="col-md-6 text-right mb-3">
+            <div class="dropdown">
+                <a class="btn btn-outline-secondary dropdown-toggle"
+                   role="button"
+                   href="#"
+                   id="dropdownMenuLink"
+                   data-display="static"
+                   data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    Show Products for
                 </a>
-                @foreach (var o in Model.Outlets)
-                {
-                    <a class="dropdown-item @(Model.CurrentOutletId == o.Id ? "active": "")"
+
+                <div class="dropdown-menu dropdown-menu-right"
+                     aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item @(Model.CurrentOutletId == 0 ? "active": "")"
                        asp-page=""
-                       asp-route-outletId="@o.Id">
-                        @o.Title
+                       asp-route-outletId="0">
+                        All
                     </a>
-                }
+                    @foreach (var o in Model.Outlets)
+                    {
+                        <a class="dropdown-item @(Model.CurrentOutletId == o.Id ? "active": "")"
+                           asp-page=""
+                           asp-route-outletId="@o.Id">
+                            @o.Title
+                        </a>
+                    }
+                </div>
+                <a asp-page="Create"
+                   class="btn btn-primary">
+                    Create new
+                </a>
             </div>
-            <a asp-page="Create" class="btn btn-primary">Create new</a>
         </div>
     </div>
-</div>
 
-<partial name="_ProductsList" for="Products"/>
-<partial name="_Pagination" for="Products.EmitPagination"/>
+    <partial name="_ProductsList" 
+             for="Products" />
+
+    <partial name="_Pagination" 
+             for="Products.EmitPagination" />
+}
+else
+{
+    <partial name="_LonelyHere" />
+}

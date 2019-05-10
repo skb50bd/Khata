@@ -5,16 +5,32 @@
     ViewData["Title"] = "Supplier-Payments";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <partial name="_Search" for="Pf" />
-    </div>
-    <div class="col-md-6 text-right">
-        <p>
-            <a asp-page="Create" class="btn btn-primary">Create new</a>
-        </p>
-    </div>
-</div>
 
-<partial name="_SupplierPaymentsList" for="SupplierPayments"/>
-<partial name="_Pagination" for="SupplierPayments.EmitPagination"/>
+@if (Model.SupplierPayments.Any())
+{
+    <div class="row">
+        <div class="col-md-6">
+            <partial name="_Search" 
+                     for="Pf" />
+        </div>
+
+        <div class="col-md-6 text-right">
+            <p>
+                <a asp-page="Create" 
+                   class="btn btn-primary">
+                    Create new
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <partial name="_SupplierPaymentsList" 
+             for="SupplierPayments" />
+
+    <partial name="_Pagination" 
+             for="SupplierPayments.EmitPagination" />
+}
+else
+{
+    <partial name="_LonelyHere" />
+}

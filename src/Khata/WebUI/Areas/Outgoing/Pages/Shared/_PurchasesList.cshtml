@@ -3,14 +3,36 @@
 <table class="table table-sm table-borderless table-responsive-sm table-hover table-striped">
     <thead>
         <tr class="thead-dark">
-            <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.Supplier.FullName)</th>
-            <th class="text-right">@Html.DisplayNameFor(model => model.PaymentSubTotal)</th>
-            <th class="text-right">@Html.DisplayNameFor(model => model.PaymentDue)</th>
-            <th class="text-right">Items</th>
-            <th class="text-right">Created at</th>
-            <th class="text-right">Creator</th>
-            <th class="text-right"></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier.FullName)
+            </th>
+
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.PaymentSubTotal)
+            </th>
+
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.PaymentDue)
+            </th>
+
+            <th class="text-right">
+                Items
+            </th>
+
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.PurchaseDate)
+            </th>
+
+            <th class="text-right">
+                Creator
+            </th>
+
+            <th class="text-right">
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -20,14 +42,37 @@
                 "/Purchases/Details",
                 new { area = "Outgoing", id = item.Id });
 
-            <tr class="js-clickable-row" data-href="@url">
-                <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                <td>@Html.DisplayFor(modelItem => item.Supplier.FullName)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentSubTotal)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.PaymentDue)</td>
-                <td class="text-right">@Html.ValueFor(modelItem => item.Cart.Count)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.CreatedAt)</td>
-                <td class="text-right">@Html.DisplayFor(modelItem => item.Metadata.Creator)</td>
+            <tr class="js-clickable-row"
+                data-href="@url">
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.FullName)
+                </td>
+
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.PaymentSubTotal)
+                </td>
+
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.PaymentDue)
+                </td>
+
+                <td class="text-right">
+                    @Html.ValueFor(modelItem => item.Cart.Count)
+                </td>
+
+                <td class="text-right">
+                    @item.PurchaseDate.LocalDate()
+                </td>
+
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Metadata.Creator)
+                </td>
+
                 <td class="text-right">
                     <a asp-area="Outgoing"
                        asp-page="/Vouchars/Details"

@@ -1,63 +1,110 @@
 ﻿@model DTOs.CustomerDto
 
+@{
+    var removeApi =
+        Url.Action(
+            "Remove",
+            "Customers",
+            new
+            {
+                id = Model.Id
+            }
+    );
+
+    var removeReturnUrl = Url.Page("./Index");
+}
+
 <div class="card info-card">
     <div class="card-header">
         <div class="row">
-            <div class="col-6">Customer# @Model.Id</div>
+            <div class="col-6">
+                Customer# @Model.Id
+            </div>
             <div class="col-6 text-right">
                 @if (Model.IsRemoved)
                 {
-                    <span class="badge badge-danger">Removed</span>
+                    <span class="badge badge-danger">
+                        Removed
+                    </span>
                 }
             </div>
         </div>
 
     </div>
     <div class="card-body">
-        <h3 class="card-title">@Model.FullName</h3>
+        <h3 class="card-title">
+            @Model.FullName
+        </h3>
+
         <table class="table table-sm table-hover mt-4">
             <tr>
-                <th>Company</th>
-                <td class="text-right">@Model.CompanyName</td>
+                <th>
+                    Company
+                </th>
+                <td class="text-right">
+                    @Model.CompanyName
+                </td>
             </tr>
             <tr>
-                <th>Address</th>
-                <td class="text-right">@Model.Address</td>
+                <th>
+                    Address
+                </th>
+                <td class="text-right">
+                    @Model.Address
+                </td>
             </tr>
             <tr>
-                <th>Phone</th>
-                <td class="text-right">@Html.DisplayFor(model => model.Phone)</td>
+                <th>
+                    Phone
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Phone)
+                </td>
             </tr>
             <tr>
-                <th>Email</th>
-                <td class="text-right">@Html.DisplayFor(model => model.Email)</td>
+                <th>
+                    Email
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Email)
+                </td>
             </tr>
             <tr>
-                <th>Due</th>
-                <td class="text-right">@Html.DisplayFor(model => model.Debt)</td>
+                <th>
+                    Due
+                </th>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Debt)
+                </td>
             </tr>
 
             <tr>
-                <th>Note</th>
-                <td class="text-right">@Model.Note</td>
+                <th>
+                    Note
+                </th>
+                <td class="text-right">
+                    @Model.Note
+                </td>
             </tr>
 
         </table>
 
         <hr />
-        <div class="row">
 
+        <div class="row">
             <div class="col-sm-8">
                 @if (!Model.IsRemoved)
                 {
                     <a asp-page="./Edit"
                        asp-route-id="@Model.Id"
-                       class="card-link text-white btn btn-link btn-secondary mr-1">Edit</a>
+                       class="card-link text-white btn btn-link btn-secondary mr-1">
+                        Edit
+                    </a>
 
                     <a href="#"
                        class="card-link text-white btn btn-link btn-danger ml-1 js-remove-item"
-                       data-href="@Url.Action("Remove", "Customers", new {id = Model.Id})"
-                       data-returnUrl="@Url.Page("./Index")">
+                       data-href="@removeApi"
+                       data-returnUrl="@removeReturnUrl">
                         Remove
                     </a>
                 }
@@ -72,6 +119,7 @@
     </div>
 
     <div class="card-footer">
-        <partial name="_UpdateSummary" for="Metadata" />
+        <partial name="_UpdateSummary"
+                 for="Metadata" />
     </div>
 </div>

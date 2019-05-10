@@ -29,6 +29,23 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="PaymentDate"
+                       class="col-form-label">
+                </label>
+
+                <input type="text"
+                       class="form-control dr-datepicker"
+                       placeholder="dd/mm/yyyy"
+                       asp-for="PaymentDate"
+                       id="payment-date"
+                       autocomplete="off" />
+
+                <span asp-validation-for="PaymentDate"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="form-group">
                 <label class="col-form-label">
                     Supplier
                 </label>
@@ -37,9 +54,9 @@
                        class="form-control"
                        type="text"
                        data-path="@supplierSearchApi"
-                       placeholder="Supplier Name/ID"/>
+                       placeholder="Supplier Name/ID" />
             </div>
-            
+
             <div id="supplier-brief-info">
             </div>
 

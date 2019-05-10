@@ -2,42 +2,38 @@
 @using static Domain.SaleType
 @model SaleViewModel
 
+@{
+    var customerSearchApi = Url.Action(
+        "GetIds", 
+        "Customers");
+}
+
 <div class="card mb-1">
     <div class="card-body">
         <div class="row">
             <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="SaleDate"
-                                   class="col-form-label"></label>
-                            <input type="text"
-                                   class="form-control form-control-sm dr-datepicker"
-                                   placeholder="dd/mm/yyyy"
-                                   asp-for="SaleDate"
-                                   id="sale-date" 
-                                   autocomplete="off"/>
+                <div class="form-group">
+                    <label asp-for="SaleDate"
+                           class="col-form-label">
+                    </label>
 
-                            <span asp-validation-for="SaleDate"
-                                  class="text-danger">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="OutletId" class="col-form-label"></label>
-                            <select asp-for="OutletId"
-                                    id="outlet-id"
-                                    class="form-control form-control-sm"
-                                    asp-items="ViewBag.Outlets">
-                            </select>
-                        </div>
-                    </div>
+                    <input type="text"
+                           class="form-control form-control-sm dr-datepicker"
+                           placeholder="dd/mm/yyyy"
+                           asp-for="SaleDate"
+                           id="sale-date"
+                           autocomplete="off" />
+
+                    <span asp-validation-for="SaleDate"
+                          class="text-danger">
+                    </span>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="Type" class="col-form-label"></label>
+                    <label asp-for="Type"
+                           class="col-form-label">
+                    </label>
                     <br />
                     <div class="form-check form-check-inline">
                         <input asp-for="Type"
@@ -45,7 +41,8 @@
                                type="radio"
                                id="retail"
                                value="@Retail" checked>
-                        <label class="form-check-label" for="retail">
+                        <label class="form-check-label"
+                               for="retail">
                             Retail
                         </label>
                     </div>
@@ -58,30 +55,28 @@
                             Whole Sale
                         </label>
                     </div>
-                    <span asp-validation-for="Type" 
+                    <span asp-validation-for="Type"
                           class="text-danger"></span>
                 </div>
             </div>
+
             <div class="col-lg-6">
-                <div class="form-group" hidden>
-                    <label asp-for="CustomerId" class="col-form-label"></label>
+                <div class="form-group">
+                    <label class="col-form-label"
+                           asp-for="Customer">
+                    </label>
+                    
                     <input asp-for="CustomerId"
                            id="customer-id"
                            type="number"
                            value="0"
-                           class="form-control" />
-                    <span asp-validation-for="CustomerId" class="text-danger"></span>
-                </div>
+                           class="form-control" hidden />
 
-                <div class="form-group">
-                    <label class="col-form-label h5 card-title"
-                           asp-for="Customer">
-                    </label>
                     <input id="customer-selector"
                            class="form-control form-control-sm"
                            type="text"
-                           data-path="@Url.Action("GetIds", "Customers")"
-                           placeholder="Customer Name/ID"/>
+                           data-path="@customerSearchApi"
+                           placeholder="Customer Name/ID" />
                 </div>
 
                 <div id="customer-brief-info">
@@ -101,11 +96,27 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="OutletId"
+                           class="col-form-label">
+                    </label>
+
+                    <select asp-for="OutletId"
+                            id="outlet-id"
+                            class="form-control form-control-sm"
+                            asp-items="ViewBag.Outlets"></select>
+                </div>
+            </div>
         </div>
 
         @*Customer*@
-        <div class="collapse" id="customerInputCollapse">
-            <partial name="_NewCustomerInput" for="Customer" />
+        <div class="collapse"
+             id="customerInputCollapse">
+
+            <partial name="_NewCustomerInput"
+                     for="Customer" />
         </div>
     </div>
 </div>

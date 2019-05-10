@@ -51,6 +51,7 @@
 
 .widget-tall {
     min-width: 10rem;
+    max-width: 25rem;
 }
 
 .report-section-header > th {

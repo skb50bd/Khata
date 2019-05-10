@@ -6,16 +6,31 @@
     ViewData["Title"] = "Purchase-Returns";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <partial name="_Search" for="Pf" />
-    </div>
-    <div class="col-md-6 text-right">
-        <p>
-            <a asp-page="Create" class="btn btn-primary">Create new</a>
-        </p>
-    </div>
-</div>
+@if (Model.PurchaseReturns.Any())
+{
+    <div class="row">
+        <div class="col-md-6">
+            <partial name="_Search" 
+                     for="Pf" />
+        </div>
 
-<partial name="_PurchaseReturnsList" for="PurchaseReturns" />
-<partial name="_Pagination" for="PurchaseReturns.EmitPagination" />
+        <div class="col-md-6 text-right">
+            <p>
+                <a asp-page="Create"
+                   class="btn btn-primary">
+                    Create new
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <partial name="_PurchaseReturnsList" 
+             for="PurchaseReturns" />
+
+    <partial name="_Pagination" 
+             for="PurchaseReturns.EmitPagination" />
+}
+else
+{
+    <partial name="_LonelyHere" />
+}
