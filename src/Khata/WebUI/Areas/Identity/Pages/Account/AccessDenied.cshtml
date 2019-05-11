@@ -4,6 +4,23 @@
     ViewData["Title"] = "Access denied";
 }
 
-<body class="bg-danger text-white">
-    <p class="lead">You do not have access to this resource.</p>
-</body>
+<div class="row text-center mb-4">
+    <div class="col-12">
+        <h1 class="display-4 text-danger" style="font-size: 2.5rem;">
+            Access Denied
+        </h1>
+    </div>
+
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4"
+         style="margin: auto;">
+        <img src="~/images/access-denied.png"
+             class="img-fluid m-5"/>
+    </div>
+
+    <div class="col-12">
+        <a class="btn btn-outline-primary"
+           asp-page="/Index">
+            Go Home
+        </a>
+    </div>
+</div>

@@ -24,21 +24,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
     <Compile Remove="Areas\Incoming\**" />
     <Compile Remove="Areas\Inventory\**" />
     <Compile Remove="Areas\Outgoing\**" />
     <Compile Remove="Areas\People\**" />
     <Compile Remove="log\**" />
+    <Content Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
     <Content Remove="Areas\Incoming\**" />
     <Content Remove="Areas\Inventory\**" />
     <Content Remove="Areas\Outgoing\**" />
     <Content Remove="Areas\People\**" />
     <Content Remove="log\**" />
+    <EmbeddedResource Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
     <EmbeddedResource Remove="Areas\Incoming\**" />
     <EmbeddedResource Remove="Areas\Inventory\**" />
     <EmbeddedResource Remove="Areas\Outgoing\**" />
     <EmbeddedResource Remove="Areas\People\**" />
     <EmbeddedResource Remove="log\**" />
+    <None Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
     <None Remove="Areas\Incoming\**" />
     <None Remove="Areas\Inventory\**" />
     <None Remove="Areas\Outgoing\**" />

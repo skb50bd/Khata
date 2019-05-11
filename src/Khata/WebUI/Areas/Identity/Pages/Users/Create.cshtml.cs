@@ -10,19 +10,21 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using WebUI.Areas.Identity.Pages.Account;
 
-namespace WebUI.Areas.Identity.Pages.Account
+
+namespace WebUI.Areas.Identity.Pages.Users
 {
     [Authorize(Policy = "AdminRights")]
-    public partial class CreateNewUserModel : PageModel
+    public class CreateModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<CreateNewUserModel> _logger;
+        private readonly ILogger<CreateModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public CreateNewUserModel(
+        public CreateModel(
             UserManager<ApplicationUser> userManager,
-            ILogger<CreateNewUserModel> logger,
+            ILogger<CreateModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -83,12 +85,15 @@ namespace WebUI.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(
+                        Input.Email, 
+                        "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect("/Index");
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
