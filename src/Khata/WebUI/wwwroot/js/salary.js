@@ -1,11 +1,11 @@
-﻿const employeeSelector  = document.getElementById("employee-selector");
+﻿const employeeSelector  = gei("employee-selector");
 const employeeSearchUrl = employeeSelector.getAttribute("data-path");
 const employeeInfoUrl   = "/api/Employees/"; // must concatenate the employee Id with it
-const balanceBefore     = document.getElementById("balance-before");
-const balanceAfter      = document.getElementById("balance-after");
-const issueAmount       = document.getElementById("issue-amount");
-const paidAmount        = document.getElementById("paid-amount");
-const employeeId        = document.getElementById("employee-id");
+const balanceBefore     = gei("balance-before");
+const balanceAfter      = gei("balance-after");
+const issueAmount       = gei("issue-amount");
+const paidAmount        = gei("paid-amount");
+const employeeId        = gei("employee-id");
 
 function updateBalance() {
     const balBefore = Number(balanceBefore.value);
@@ -58,9 +58,13 @@ $(document).ready(function () {
         }
     });
 
-    balanceBefore.onchange   = updateBalance;
-    issueAmount.onchange     = updateBalance;
-    issueAmount.onkeyup      = updateBalance;
+    balanceBefore.onchange = updateBalance;
+
+    if (issueAmount) {
+        issueAmount.onchange = updateBalance;
+        issueAmount.onkeyup = updateBalance;
+    }
+
     paidAmount.onchange      = updateBalance;
     paidAmount.onkeyup       = updateBalance;
 

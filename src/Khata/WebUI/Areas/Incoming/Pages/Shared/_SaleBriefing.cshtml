@@ -9,8 +9,11 @@
     <div class="col-md-6">
         <table class="table table-sm table-hover mb-0">
             <tr>
-                <th>Sale#</th>
-                <td>
+                <th>
+                    Sale#
+                </th>
+
+                <td class="text-right">
                     <a asp-area="Incoming"
                        asp-page="/Sales/Details"
                        asp-route-id="@Model.Id"
@@ -19,9 +22,13 @@
                     </a>
                 </td>
             </tr>
+
             <tr>
-                <th>Invoice#</th>
-                <td>
+                <th>
+                    Invoice#
+                </th>
+
+                <td class="text-right">
                     <a asp-area="Incoming"
                        asp-page="/Invoices/Details"
                        asp-route-id="@Model.InvoiceId"
@@ -30,9 +37,13 @@
                     </a>
                 </td>
             </tr>
+
             <tr>
-                <th>Customer</th>
-                <td>
+                <th>
+                    Customer
+                </th>
+
+                <td class="text-right">
                     <a asp-page="../Customers/Details"
                        asp-route-id="@Model.CustomerId"
                        target="_blank">
@@ -47,13 +58,23 @@
                     </a>
                 </td>
             </tr>
+
             <tr>
-                <th>Phone</th>
-                <td>@Html.DisplayFor(model => model.Customer.Phone)</td>
+                <th>
+                    Phone
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Customer.Phone)
+                </td>
             </tr>
+
             <tr>
-                <th>Current Due</th>
-                <td>
+                <th>
+                    Current Due
+                </th>
+
+                <td class="text-right">
                     @Html.DisplayFor(model => model.Customer.Debt)
                     <input id="current-due"
                            type="number"
@@ -62,40 +83,80 @@
                            disabled />
                 </td>
             </tr>
+
             <tr>
-                <th>Total</th>
-                <td>@Html.DisplayFor(model => model.PaymentTotal)</td>
+                <th>
+                    Total
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.PaymentTotal)
+                </td>
             </tr>
+
             <tr>
-                <th>Paid</th>
-                <td>@Html.DisplayFor(model => model.PaymentPaid)</td>
+                <th>
+                    Paid
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.PaymentPaid)
+                </td>
             </tr>
+
             <tr>
-                <th>Sale Due</th>
-                <td>@Html.DisplayFor(model => model.PaymentDue)</td>
+                <th>
+                    Sale Due
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.PaymentDue)
+                </td>
             </tr>
         </table>
         <hr/>
     </div>
     <div class="col-md-6">
-        <h4>Cart</h4>
+        <h5>Cart</h5>
         <table class="table table-sm table-borderless table-hover">
-            <thead>
+            <thead class="table-secondary">
                 <tr>
-                    <th>Name</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Net Price</th>
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Unit Price
+                    </th>
+
+                    <th class="text-right">
+                        Quantity
+                    </th>
+
+                    <th class="text-right">
+                        Net Price
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var p in Model.Cart.Where(i => i.Type == LineItemType.Product))
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => p.Name)</td>
-                        <td>@Html.DisplayFor(model => p.UnitPrice)</td>
-                        <td>@Html.DisplayFor(model => p.Quantity)</td>
-                        <td>@Html.DisplayFor(model => p.NetPrice)</td>
+                        <td>
+                            @Html.DisplayFor(model => p.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(model => p.UnitPrice)
+                        </td>
+
+                        <td class="text-right">
+                            @Html.DisplayFor(model => p.Quantity)
+                        </td>
+
+                        <td class="text-right">
+                            @Html.DisplayFor(model => p.NetPrice)
+                        </td>
                     </tr>
                 }
             </tbody>

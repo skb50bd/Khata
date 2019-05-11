@@ -7,79 +7,79 @@
         "Suppliers");
 }
 
-<div class="card mb-1">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="PurchaseDate"
-                           class="col-form-label">
-                    </label>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="PurchaseDate"
+                   class="col-form-label">
+            </label>
 
-                    <input type="text"
-                           class="form-control form-control-sm dr-datepicker"
-                           id="purchase-date"
-                           placeholder="dd/mm/yyyy"
-                           asp-for="PurchaseDate" />
-                    <span asp-validation-for="PurchaseDate"
-                          class="text-danger">
-                    </span>
-                </div>
-            </div>
+            <input type="text"
+                   class="form-control form-control-sm dr-datepicker"
+                   id="purchase-date"
+                   placeholder="dd/mm/yyyy"
+                   asp-for="PurchaseDate" />
+            <span asp-validation-for="PurchaseDate"
+                  class="text-danger">
+            </span>
+        </div>
+    </div>
 
-            <div class="col-lg-6">
-                <div class="form-group" hidden>
-                    <label asp-for="SupplierId"
-                           class="col-form-label">
-                    </label>
+    <div class="col-md-6">
+        <div class="form-group" hidden>
+            <label asp-for="SupplierId"
+                   class="col-form-label">
+            </label>
 
-                    <input asp-for="SupplierId"
-                           type="number"
-                           value="0"
-                           class="form-control"
-                           id="supplier-id" />
+            <input asp-for="SupplierId"
+                   type="number"
+                   value="0"
+                   class="form-control"
+                   id="supplier-id" />
 
-                    <span asp-validation-for="SupplierId"
-                          class="text-danger">
-                    </span>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-form-label"
-                           asp-for="Supplier">
-                    </label>
-
-                    <input id="supplier-selector"
-                           class="form-control form-control-sm"
-                           type="text"
-                           data-path="@supplierSearchApi"
-                           placeholder="Supplier Name/ID"/>
-                </div>
-
-                <div id="supplier-brief-info"></div>
-
-                <div class="form-group">
-                    <div class="form-check">
-                        <input asp-for="RegisterNewSupplier"
-                               class="form-check-input"
-                               id="register-new-supplier"
-                               type="checkbox"
-                               data-toggle="collapse"
-                               href="#supplier-input-collapse">
-                        <label asp-for="RegisterNewSupplier"
-                               for="register-new-supplier"
-                               class="form-check-label">
-                        </label>
-                    </div>
-                </div>
-            </div>
+            <span asp-validation-for="SupplierId"
+                  class="text-danger">
+            </span>
         </div>
 
-        <div class="collapse"
-             id="supplier-input-collapse">
-            <partial name="_PurchaseNewSupplierInput"
-                     for="Supplier" />
+        <div class="form-group">
+            <label class="col-form-label"
+                   asp-for="Supplier">
+            </label>
+
+            <input id="supplier-selector"
+                   class="form-control form-control-sm"
+                   type="text"
+                   data-path="@supplierSearchApi"
+                   placeholder="Supplier Name/ID" />
+        </div>
+
+        <div class="form-group">
+            <div class="form-check">
+                <input asp-for="RegisterNewSupplier"
+                       class="form-check-input"
+                       id="register-new-supplier"
+                       type="checkbox"
+                       data-toggle="collapse"
+                       href="#supplier-input-collapse">
+                <label asp-for="RegisterNewSupplier"
+                       for="register-new-supplier"
+                       class="form-check-label">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div id="supplier-brief-info">
         </div>
     </div>
 </div>
 
+<div class="collapse"
+     id="supplier-input-collapse">
+    <partial name="_PurchaseNewSupplierInput"
+             for="Supplier" />
+</div>
+
+<hr/>

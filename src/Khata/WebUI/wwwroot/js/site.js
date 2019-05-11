@@ -1,15 +1,15 @@
-﻿const immutableSubmits      = gecn("immutable-submit");
-const fromDate              = gei("from-date");
-const toDate                = gei("to-date");
-const fromText              = gei("from-text");
-const toText                = gei("to-text");
-const blankButtons          = gecn("blank-link-button");
-const inputs                = $(":input");
-const ajaxTabs              = gecn("ajax-tab");
-const clickableRows         = gecn("js-clickable-row");
+﻿const immutableSubmits = gecn("immutable-submit");
+const fromDate = gei("from-date");
+const toDate = gei("to-date");
+const fromText = gei("from-text");
+const toText = gei("to-text");
+const blankButtons = gecn("blank-link-button");
+const inputs = $(":input");
+const ajaxTabs = gecn("ajax-tab");
+const clickableRows = gecn("js-clickable-row");
 const clickableTransactions = gecn("js-clickable-transaction");
-const removableItems        = gecn("js-remove-item");
-const sendReportButton      = gei("send-report-button");
+const removableItems = gecn("js-remove-item");
+const sendReportButton = gei("send-report-button");
 
 
 function attachLinksToTds() {
@@ -107,24 +107,27 @@ function confirmRemove(event) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $.ajax({ url: $(event.target).attr("data-href"), method: "DELETE" })
-                .done(function () {
-                    swalDelete.fire(
-                        "Removed!",
-                        "Your file has been removed.",
-                        "success"
-                    ).then((value) => {
-                        if (value)
-                            window.location = $(event.target).attr("data-returnUrl");
-                    });
-                })
-                .fail(function () {
-                    swalDelete.fire(
-                        "Failed",
-                        "Could not remove the item :(",
-                        "warning"
-                    );
+            $.ajax(
+                {
+                    url: $(event.target).attr("data-href"),
+                    method: "DELETE"
+                }
+            ).done(function () {
+                swalDelete.fire(
+                    "Removed!",
+                    "Your file has been removed.",
+                    "success"
+                ).then((value) => {
+                    if (value)
+                        window.location = $(event.target).attr("data-returnUrl");
                 });
+            }).fail(function () {
+                swalDelete.fire(
+                    "Failed",
+                    "Could not remove the item :(",
+                    "warning"
+                );
+            });
         } else if (
             // Read more about handling dismissals
             result.dismiss === Swal.DismissReason.cancel
@@ -198,7 +201,7 @@ function enterToTab(e) {
         if (nextInput) {
             if (nextInput.getAttribute("type") !== "submit"
                 && e.target.getAttribute("type") !== "submit"
-                && !$(e.target).is("textarea")
+                && !($(e.target).is("textarea") && $(e.target).val() !== "")
                 && !$(nextInput).is("button")) {
                 e.preventDefault();
                 nextInput.focus();

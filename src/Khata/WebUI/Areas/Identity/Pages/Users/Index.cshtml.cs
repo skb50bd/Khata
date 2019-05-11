@@ -20,11 +20,17 @@ namespace WebUI.Areas.Identity.Pages.Users
             _userManager = userManager;
         }
 
-        public IEnumerable<ApplicationUser> AppUsers;
+        public IList<ApplicationUser> AppUsers;
 
         public async Task<IActionResult> OnGetAsync()
         {
             AppUsers = await _userManager.Users.ToListAsync();
+
+            var defaultAdmin =
+                AppUsers.FirstOrDefault(
+                    u => u.UserName == "brotal");
+
+            AppUsers.Remove(defaultAdmin);
 
             return Page();
         }

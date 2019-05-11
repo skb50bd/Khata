@@ -7,191 +7,183 @@
         "Purchases");
 }
 
-<div class="card mb-1">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12">
-                <label class="h5 card-title">
-                    Payment Information
-                </label>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="subtotal"
-                           class="col-form-label">
-                        Subtotal
-                    </label>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="subtotal"
+                   class="col-form-label">
+                Subtotal
+            </label>
 
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-
-                        <input id="subtotal"
-                               type="number"
-                               class="form-control"
-                               disabled />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="payable-before"
-                           class="col-form-label">
-                        Previous Due
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-
-                        <input id="payable-before"
-                               type="number"
-                               class="form-control"
-                               disabled />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Payment.DiscountCash"
-                           class="col-form-label">
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-
-                        <input asp-for="Payment.DiscountCash"
-                               type="number"
-                               class="form-control"
-                               id="discount-cash" />
-                    </div>
-
-                    <span asp-validation-for="Payment.DiscountCash"
-                          class="text-danger">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
                     </span>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Payment.DiscountPercentage"
-                           class="col-form-label">
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <input asp-for="Payment.DiscountPercentage"
-                               type="number"
-                               class="form-control"
-                               id="discount-percentage"
-                               min="0"
-                               max="80" />
-
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                %
-                            </span>
-                        </div>
-                    </div>
-
-                    <span asp-validation-for="Payment.DiscountPercentage"
-                          class="text-danger">
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="payable"
-                           class="col-form-label">
-                        Payable
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-                        <input id="payable"
-                               type="number"
-                               class="form-control"
-                               disabled />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Payment.Paid"
-                           class="col-form-label">
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-
-                        <input asp-for="Payment.Paid"
-                               type="number"
-                               class="form-control"
-                               id="paid-amount" />
-                    </div>
-
-                    <span asp-validation-for="Payment.Paid"
-                          class="text-danger">
-                    </span>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="payable-after"
-                           class="col-form-label">
-                        New Due
-                    </label>
-
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                @sym
-                            </span>
-                        </div>
-                        <input id="payable-after"
-                               type="number"
-                               class="form-control"
-                               disabled />
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Description"
-                           class="col-form-label">
-                    </label>
-
-                    <textarea asp-for="Description"
-                              type="text"
-                              class="form-control form-control-sm">
-                            </textarea>
-
-                    <span asp-validation-for="Description"
-                          class="text-danger">
-                    </span>
-                </div>
+                <input id="subtotal"
+                       type="number"
+                       class="form-control"
+                       disabled />
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="payable-before"
+                   class="col-form-label">
+                Previous Due
+            </label>
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
+                    </span>
+                </div>
+
+                <input id="payable-before"
+                       type="number"
+                       class="form-control"
+                       disabled />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Payment.DiscountCash"
+                   class="col-form-label">
+            </label>
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
+                    </span>
+                </div>
+
+                <input asp-for="Payment.DiscountCash"
+                       type="number"
+                       class="form-control"
+                       id="discount-cash" />
+            </div>
+
+            <span asp-validation-for="Payment.DiscountCash"
+                  class="text-danger">
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Payment.DiscountPercentage"
+                   class="col-form-label">
+            </label>
+
+            <div class="input-group input-group-sm">
+                <input asp-for="Payment.DiscountPercentage"
+                       type="number"
+                       class="form-control"
+                       id="discount-percentage"
+                       min="0"
+                       max="80" />
+
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        %
+                    </span>
+                </div>
+            </div>
+
+            <span asp-validation-for="Payment.DiscountPercentage"
+                  class="text-danger">
+            </span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="payable"
+                   class="col-form-label">
+                Payable
+            </label>
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
+                    </span>
+                </div>
+                <input id="payable"
+                       type="number"
+                       class="form-control"
+                       disabled />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Payment.Paid"
+                   class="col-form-label">
+            </label>
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
+                    </span>
+                </div>
+
+                <input asp-for="Payment.Paid"
+                       type="number"
+                       class="form-control"
+                       id="paid-amount" />
+            </div>
+
+            <span asp-validation-for="Payment.Paid"
+                  class="text-danger">
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="payable-after"
+                   class="col-form-label">
+                New Due
+            </label>
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @sym
+                    </span>
+                </div>
+                <input id="payable-after"
+                       type="number"
+                       class="form-control"
+                       disabled />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Description"
+                   class="col-form-label">
+            </label>
+
+            <textarea asp-for="Description"
+                      type="text"
+                      class="form-control form-control-sm">
+                            </textarea>
+
+            <span asp-validation-for="Description"
+                  class="text-danger">
+            </span>
+        </div>
+    </div>
 </div>
+<hr/>

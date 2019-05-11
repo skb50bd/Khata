@@ -1,41 +1,41 @@
-﻿const saleForm = document.getElementById("sale-form");
-const saleDate = document.getElementById("sale-date");
-const retail = document.getElementById("retail");
-const bulk = document.getElementById("bulk");
-const outletId = document.getElementById("outlet-id");
-const customerId = document.getElementById("customer-id");
-const customerSelector = document.getElementById("customer-selector");
+﻿const saleForm = gei("sale-form");
+const saleDate = gei("sale-date");
+const retail = gei("retail");
+const bulk = gei("bulk");
+const outletId = gei("outlet-id");
+const customerId = gei("customer-id");
+const customerSelector = gei("customer-selector");
 const customerSearchApi = customerSelector.getAttribute("data-path");
 const customerInfoApi = "/api/Customers/"; // Must concatenate customer ID to fetch the info
 const customerBriefInfoUrl = "/People/Customers/Brief?id=";
-const registerNewCustomer = document.getElementById("register-new-customer");
-const customerFirstName = document.getElementById("first-name");
-const customerLastName = document.getElementById("last-name");
-const customerCompanyName = document.getElementById("company-name");
-const customerAddress = document.getElementById("address");
-const customerPhone = document.getElementById("phone");
-const customerEmail = document.getElementById("email");
-const customerBriefInfo = document.getElementById("customer-brief-info");
-const lineItemId = document.getElementById("lineitem-id");
-const lineItemType = document.getElementById("lineitem-type");
-const lineItemSelector = document.getElementById("lineitem-selector");
+const registerNewCustomer = gei("register-new-customer");
+const customerFirstName = gei("first-name");
+const customerLastName = gei("last-name");
+const customerCompanyName = gei("company-name");
+const customerAddress = gei("address");
+const customerPhone = gei("phone");
+const customerEmail = gei("email");
+const customerBriefInfo = gei("customer-brief-info");
+const lineItemId = gei("lineitem-id");
+const lineItemType = gei("lineitem-type");
+const lineItemSelector = gei("lineitem-selector");
 const lineItemSearchApi = lineItemSelector.getAttribute("data-path") + "?outletId="; // must concatenate outletId to call the api
-const lineItemQuantity = document.getElementById("lineitem-quantity");
-const lineItemUnitPrice = document.getElementById("lineitem-unitprice");
-const lineItemNetPrice = document.getElementById("lineitem-netprice");
-const lineItemAdd = document.getElementById("lineitem-add-button");
-const lineItemClear = document.getElementById("lineitem-clear-button");
-const lineItemAvailable = document.getElementById("lineitem-available");
-const cart = document.getElementById("cart");
-const subtotal = document.getElementById("subtotal");
-const discountCash = document.getElementById("discount-cash");
-const discountPercentage = document.getElementById("discount-percentage");
-const debtBefore = document.getElementById("debt-before");
-const payable = document.getElementById("payable");
-const paid = document.getElementById("paid");
-const debtAfter = document.getElementById("debt-after");
-const itemsAdded = document.getElementById("items-added");
-const customerInputs = document.getElementsByClassName("customer-input");
+const lineItemQuantity = gei("lineitem-quantity");
+const lineItemUnitPrice = gei("lineitem-unitprice");
+const lineItemNetPrice = gei("lineitem-netprice");
+const lineItemAdd = gei("lineitem-add-button");
+const lineItemClear = gei("lineitem-clear-button");
+const lineItemAvailable = gei("lineitem-available");
+const cart = gei("cart");
+const subtotal = gei("subtotal");
+const discountCash = gei("discount-cash");
+const discountPercentage = gei("discount-percentage");
+const debtBefore = gei("debt-before");
+const payable = gei("payable");
+const paid = gei("paid");
+const debtAfter = gei("debt-after");
+const itemsAdded = gei("items-added");
+const customerInputs = gecn("customer-input");
 
 function toggleCustomerInputs(value) {
     if (value === true) {
@@ -291,7 +291,7 @@ function addLineItem(event) {
 
     cart.appendChild(it);
 
-    document.getElementById(
+    gei(
         `remove-item-button-${itemsAdded.valueAsNumber}`)
         .addEventListener("click", removeCartItem);
 

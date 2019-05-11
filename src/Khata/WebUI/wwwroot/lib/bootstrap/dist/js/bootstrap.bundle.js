@@ -133,7 +133,7 @@
       do {
         // eslint-disable-next-line no-bitwise
         prefix += ~~(Math.random() * MAX_UID); // "~~" acts like a faster Math.floor() here
-      } while (document.getElementById(prefix));
+      } while (gei(prefix));
 
       return prefix;
     },

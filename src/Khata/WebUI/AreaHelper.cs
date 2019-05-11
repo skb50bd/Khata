@@ -16,24 +16,24 @@ namespace WebUI
             };
             var incoming = new[] {
                 "Sales",
-                "Debt-Payments",
-                "Purchase-Returns",
+                "DebtPayments",
+                "PurchaseReturns",
                 "Deposits"
             };
             var outgoing = new[] {
                 "Expenses",
                 "Purchases",
-                "Supplier-Payments",
-                "Salary-Payments",
-                "Salary-Issues",
+                "SupplierPayments",
+                "SalaryPayments",
+                "SalaryIssues",
                 "Refunds",
                 "Withdrawals"
             };
             var outlets = new[] { "Outlets" };
             var people = new[]{
-            "Customers",
-            "Suppliers",
-            "Employees"
+                "Customers",
+                "Suppliers",
+                "Employees"
             };
             var reporting = new[] { "Reporting" };
 

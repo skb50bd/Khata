@@ -7,10 +7,13 @@
 
 <div class="row">
     <div class="col-lg-6 mb-0">
-        <table class="table table-sm table-borderless table-hover">
+        <table class="table table-sm table-hover">
             <tr>
-                <th>Purchase#</th>
-                <td>
+                <th>
+                    Purchase#
+                </th>
+
+                <td class="text-right">
                     <a asp-page="../Purchases/Details"
                        asp-route-id="@Model.Id"
                        target="_blank">
@@ -19,8 +22,11 @@
                 </td>
             </tr>
             <tr>
-                <th>Vouchar#</th>
-                <td>
+                <th>
+                    Vouchar#
+                </th>
+
+                <td class="text-right">
                     <a asp-page="../Vouchars/Details"
                        asp-route-id="@Model.VoucharId"
                        target="_blank">
@@ -29,8 +35,11 @@
                 </td>
             </tr>
             <tr>
-                <th>Supplier</th>
-                <td>
+                <th>
+                    Supplier
+                </th>
+
+                <td class="text-right">
                     <a asp-page="../Suppliers/Details"
                        asp-route-id="@Model.SupplierId"
                        target="_blank">
@@ -45,12 +54,20 @@
                 </td>
             </tr>
             <tr>
-                <th>Phone</th>
-                <td>@Html.DisplayFor(model => model.Supplier.Phone)</td>
+                <th>
+                    Phone
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Supplier.Phone)
+                </td>
             </tr>
             <tr>
-                <th>Current Due</th>
-                <td>
+                <th>
+                    Current Due
+                </th>
+
+                <td class="text-right">
                     @Html.DisplayFor(model => model.Supplier.Payable)
                     <input id="current-due"
                            type="number"
@@ -60,42 +77,78 @@
                 </td>
             </tr>
             <tr>
-                <th>Total</th>
-                <td>@Html.DisplayFor(model => model.PaymentTotal)</td>
+                <th>
+                    Total
+                </th>
+
+                <td class="text-right">@Html.DisplayFor(model => model.PaymentTotal)</td>
             </tr>
             <tr>
-                <th>Paid</th>
-                <td>@Html.DisplayFor(model => model.PaymentPaid)</td>
+                <th>
+                    Paid
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.PaymentPaid)
+                </td>
             </tr>
             <tr>
-                <th>Purchase Due</th>
-                <td>@Html.DisplayFor(model => model.PaymentDue)</td>
+                <th>
+                    Purchase Due
+                </th>
+
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.PaymentDue)
+                </td>
             </tr>
         </table>
     </div>
+
     <div class="col-lg-6">
         <table class="table table-sm table-borderless table-hover mb-0">
             <thead>
                 <tr>
-                    <th class="thead-dark">
-                        <h4>Cart</h4>
+                    <th>
+                        <h5>Cart</h5>
                     </th>
                 </tr>
-                <tr>
-                    <th>Name</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Net Price</th>
+                <tr class="table-secondary">
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Unit Price
+                    </th>
+
+                    <th class="text-right">
+                        Quantity
+                    </th>
+
+                    <th class="text-right">
+                        Net Price
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var p in Model.Cart)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => p.Name)</td>
-                        <td>@p.UnitPurchasePrice.ToCurrency()</td>
-                        <td>@Html.DisplayFor(model => p.Quantity)</td>
-                        <td>@p.NetPurchasePrice.ToCurrency()</td>
+                        <td>
+                            @Html.DisplayFor(model => p.Name)
+                        </td>
+
+                        <td>
+                            @p.UnitPurchasePrice.ToCurrency()
+                        </td>
+
+                        <td class="text-right">
+                            @Html.DisplayFor(model => p.Quantity)
+                        </td>
+
+                        <td class="text-right">
+                            @p.NetPurchasePrice.ToCurrency()
+                        </td>
                     </tr>
                 }
             </tbody>

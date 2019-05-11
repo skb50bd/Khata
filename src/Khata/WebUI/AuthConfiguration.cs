@@ -24,6 +24,11 @@ namespace WebUI
             mvc.AddRazorPagesOptions(
                 options =>
                 {
+                    options.Conventions.AuthorizeAreaFolder(
+                        "Identity", 
+                        "/Users",
+                        "AdminRights");
+
                     #region People
                     options.Conventions.AuthorizeAreaFolder(
                                     "People",

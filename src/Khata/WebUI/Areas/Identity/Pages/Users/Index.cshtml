@@ -29,17 +29,19 @@
                     Email
                 </th>
                 
-                <th>
+                <th class="text-right">
                     Email Confirmed
                 </th>
 
-                <th>
+                <th class="text-right">
                     Username
                 </th>
 
-                <th>
+                <th class="text-right">
                     Role
                 </th>
+                
+                <th class="text-right"></th>
             </tr>
         </thead>
 
@@ -59,16 +61,29 @@
                         @user.Email
                     </td>
                     
-                    <td>
+                    <td class="text-right">
                         @user.EmailConfirmed
                     </td>
 
-                    <td>
+                    <td class="text-right">
                         @user.UserName
                     </td>
 
-                    <td>
+                    <td class="text-right">
                         @user.Role
+                    </td>
+                    
+                    <td class="text-right">
+                        <a class="btn btn-sm btn-danger text-white js-remove-item"
+                           data-href="@Url.Action(
+                                          "Delete", 
+                                          "Users", 
+                                          new { user.Id })"
+                           data-returnUrl="@Url.Page(
+                                               "/Users/Index", 
+                                               new {area = "Identity"})">
+                            Delete
+                        </a>
                     </td>
                 </tr>
             }

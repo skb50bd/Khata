@@ -2967,7 +2967,7 @@ var rootjQuery,
 
 				// HANDLE: $(#id)
 				} else {
-					elem = document.getElementById( match[ 2 ] );
+					elem = gei( match[ 2 ] );
 
 					if ( elem ) {
 

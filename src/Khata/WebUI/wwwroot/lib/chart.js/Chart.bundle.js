@@ -15402,7 +15402,7 @@ module.exports = {
 
 	acquireContext: function(item, config) {
 		if (typeof item === "string") {
-			item = document.getElementById(item);
+			item = gei(item);
 		} else if (item.length) {
 			// Support for array based queries (such as jQuery)
 			item = item[0];

@@ -279,7 +279,7 @@ $(document).ready(function () {
     $(supplierSelector).autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: supplierSearchUrl,
+                url: supplierSearchApi,
                 type: "GET",
                 cache: true,
                 data: request,
