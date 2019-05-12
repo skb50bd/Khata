@@ -21,6 +21,14 @@
     <Compile Include="Persistence\Migrations\PostgreSQL\20190508124640_Initial_Create.cs" />
     <Compile Include="Persistence\Migrations\PostgreSQL\20190508124640_Initial_Create.Designer.cs" />
     <Compile Include="Persistence\Migrations\PostgreSQL\KhataContextModelSnapshot.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\20190512092209_Initial_Create.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\20190512092209_Initial_Create.designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLite\KhataContextModelSnapshot.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\KhataContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
