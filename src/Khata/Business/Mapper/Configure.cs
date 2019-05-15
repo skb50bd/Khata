@@ -6,7 +6,8 @@ namespace Business.Mapper
 {
     public static class Configure
     {
-        public static IServiceCollection ConfigureMapper(this IServiceCollection services)
+        public static IServiceCollection ConfigureMapper(
+            this IServiceCollection services)
         {
             _ = services.AddAutoMapper();
             //AutoMapper.Mapper.Configuration.AssertConfigurationIsValid();

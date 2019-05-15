@@ -30,6 +30,7 @@ namespace Data.Persistence
             try
             {
                 if (!pm.Any()) return;
+
                 if (_settings.DbProvider == DbProvider.SQLServer)
                 {
                     Database.CreateAllSQLServerViews();
@@ -47,6 +48,10 @@ namespace Data.Persistence
 
             Database.EnsureCreated();
         }
+
+        public KhataContext(
+            DbContextOptions<KhataContext> options)
+            : base(options) {}
 
         protected override void OnModelCreating(
             ModelBuilder builder)
