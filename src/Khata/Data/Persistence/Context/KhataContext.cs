@@ -49,9 +49,9 @@ namespace Data.Persistence
             Database.EnsureCreated();
         }
 
-        public KhataContext(
-            DbContextOptions<KhataContext> options)
-            : base(options) {}
+        //public KhataContext(
+        //    DbContextOptions<KhataContext> options)
+        //    : base(options) {}
 
         protected override void OnModelCreating(
             ModelBuilder builder)
