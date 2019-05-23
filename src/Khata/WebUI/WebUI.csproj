@@ -24,306 +24,36 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
-    <Compile Remove="Areas\Incoming\**" />
-    <Compile Remove="Areas\Inventory\**" />
-    <Compile Remove="Areas\Outgoing\**" />
-    <Compile Remove="Areas\People\**" />
+    <PackageReference Include="BrotalLib" Version="0.1.2" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="log\**" />
-    <Content Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
-    <Content Remove="Areas\Incoming\**" />
-    <Content Remove="Areas\Inventory\**" />
-    <Content Remove="Areas\Outgoing\**" />
-    <Content Remove="Areas\People\**" />
     <Content Remove="log\**" />
-    <EmbeddedResource Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
-    <EmbeddedResource Remove="Areas\Incoming\**" />
-    <EmbeddedResource Remove="Areas\Inventory\**" />
-    <EmbeddedResource Remove="Areas\Outgoing\**" />
-    <EmbeddedResource Remove="Areas\People\**" />
     <EmbeddedResource Remove="log\**" />
-    <None Remove="Areas\Identity\Pages\Account\Manage\Users\**" />
-    <None Remove="Areas\Incoming\**" />
-    <None Remove="Areas\Inventory\**" />
-    <None Remove="Areas\Outgoing\**" />
-    <None Remove="Areas\People\**" />
     <None Remove="log\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Outlets\Create.cshtml.cs" />
-    <Compile Remove="Areas\Outlets\Details.cshtml.cs" />
-    <Compile Remove="Areas\Outlets\Edit.cshtml.cs" />
-    <Compile Remove="Areas\Outlets\Index.cshtml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Areas\Dashboard\Pages\_Assets.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_Expense.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_Income.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_Liabilities.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_Payable.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_PerDayReport.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_PeriodicalReport.cshtml" />
-    <Content Remove="Areas\Dashboard\Pages\_Receivable.cshtml" />
-    <Content Remove="Areas\Outlets\Create.cshtml" />
-    <Content Remove="Areas\Outlets\Details.cshtml" />
-    <Content Remove="Areas\Outlets\Edit.cshtml" />
-    <Content Remove="Areas\Outlets\Index.cshtml" />
-    <Content Remove="Areas\Outlets\Pages\_OutletForm.cshtml" />
-    <Content Remove="Areas\Outlets\Pages\_OutletInfo.cshtml" />
-    <Content Remove="Areas\Outlets\Pages\_OutletsList.cshtml" />
-    <Content Remove="Areas\Outlets\_OutletForm.cshtml" />
-    <Content Remove="Areas\Outlets\_OutletInfo.cshtml" />
-    <Content Remove="Areas\Outlets\_OutletsList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_ExpensesList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_PurchaseReturnsList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_PurchasesList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_RefundsList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_SalaryPaymentsList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_SalesList.cshtml" />
-    <Content Remove="Areas\Reporting\Pages\Shared\_SupplierPaymentsList.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Areas\Incoming\Pages\DebtPayments\Create.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\DebtPayments\Details.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\DebtPayments\Index.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Deposits\Details.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Invoices\Details.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\PurchaseReturns\Create.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\PurchaseReturns\Details.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\PurchaseReturns\Index.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Sales\Create.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Sales\Details.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Sales\Index.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Sales\Saved.cshtml.cs" />
-    <Compile Include="Areas\Incoming\Pages\Sales\SavedDetails.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Products\Create.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Products\Details.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Products\Edit.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Products\Index.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Services\Create.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Services\Details.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Services\Edit.cshtml.cs" />
-    <Compile Include="Areas\Inventory\Pages\Services\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Expenses\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Expenses\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Expenses\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Purchases\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Purchases\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Purchases\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Refunds\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Refunds\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Refunds\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryIssues\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryIssues\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryIssues\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryPayments\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryPayments\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SalaryPayments\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SupplierPayments\Create.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SupplierPayments\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\SupplierPayments\Index.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Vouchars\Details.cshtml.cs" />
-    <Compile Include="Areas\Outgoing\Pages\Withdrawals\Details.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Create.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Brief.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Details.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Edit.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Index.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Customers\Statement.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Employees\Create.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Employees\Details.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Employees\Edit.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Employees\Index.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Suppliers\Create.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Suppliers\Details.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Suppliers\Edit.cshtml.cs" />
-    <Compile Include="Areas\People\Pages\Suppliers\Index.cshtml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Areas\Incoming\Pages\Shared\_PurchaseReturnsLineItemInput.cshtml" />
-    <Content Include="Areas\Incoming\Pages\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\_ViewStart.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Inventory\Pages\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Inventory\Pages\_ViewStart.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Outgoing\Pages\Shared\_RefundLineItemInput.cshtml" />
-    <Content Include="Areas\Outgoing\Pages\Shared\_PurchaseBasicDataInput.cshtml" />
-    <Content Include="Areas\Outgoing\Pages\Shared\_PurchaseLineItemInput.cshtml" />
-    <Content Include="Areas\Outgoing\Pages\Shared\_PurchaseNewSupplierInput.cshtml" />
-    <Content Include="Areas\Outgoing\Pages\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Outgoing\Pages\_ViewStart.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Areas\Incoming\Pages\Shared\_DebtPaymentForm.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\Shared\_DebtPaymentInfo.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\DebtPayments\Create.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\DebtPayments\Details.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\DebtPayments\Index.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\Incoming\Pages\Shared\_DebtPaymentsList.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\People\Pages\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Areas\People\Pages\_ViewStart.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <None Include="Areas\Incoming\Pages\Deposits\Details.cshtml" />
-    <None Include="Areas\Incoming\Pages\Invoices\Details.cshtml" />
-    <None Include="Areas\Incoming\Pages\PurchaseReturns\Create.cshtml" />
-    <None Include="Areas\Incoming\Pages\PurchaseReturns\Details.cshtml" />
-    <None Include="Areas\Incoming\Pages\PurchaseReturns\Index.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_PurchaseReturnsPaymentInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_PurchaseReturnBasicInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SalePaymentInfoInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SaleLineItemInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SaleBasicInfoInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_NewCustomerInput.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SaleForm.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SaleInfo.cshtml" />
-    <None Include="Areas\Incoming\Pages\Sales\Create.cshtml" />
-    <None Include="Areas\Incoming\Pages\Sales\Details.cshtml" />
-    <None Include="Areas\Incoming\Pages\Sales\Index.cshtml" />
-    <None Include="Areas\Incoming\Pages\Sales\Saved.cshtml" />
-    <None Include="Areas\Incoming\Pages\Sales\SavedDetails.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SaleBriefing.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SalesList.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SavedInfo.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_SavedSaleList.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_PurchaseReturnForm.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_PurchaseReturnInfo.cshtml" />
-    <None Include="Areas\Incoming\Pages\Shared\_PurchaseReturnsList.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ServiceForm.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ServiceInfo.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ServicesList.cshtml" />
-    <None Include="Areas\Inventory\Pages\Services\Create.cshtml" />
-    <None Include="Areas\Inventory\Pages\Services\Details.cshtml" />
-    <None Include="Areas\Inventory\Pages\Services\Edit.cshtml" />
-    <None Include="Areas\Inventory\Pages\Services\Index.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ProductForm.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ProductInfo.cshtml" />
-    <None Include="Areas\Inventory\Pages\Shared\_ProductsList.cshtml" />
-    <None Include="Areas\Inventory\Pages\Products\Create.cshtml" />
-    <None Include="Areas\Inventory\Pages\Products\Details.cshtml" />
-    <None Include="Areas\Inventory\Pages\Products\Edit.cshtml" />
-    <None Include="Areas\Inventory\Pages\Products\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_PurchasePaymentInput.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_RefundBasicInput.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_RefundPaymentInput.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryPaymentForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryPaymentInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryPayments\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryPayments\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryPayments\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryPaymentsList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryIssueForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryIssueInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SalaryIssuesList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryIssues\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryIssues\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SalaryIssues\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_RefundForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Refunds\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Refunds\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Refunds\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_RefundInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_RefundsList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_PurchaseForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_PurchaseInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Purchases\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Purchases\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Purchases\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_PurchaseBriefing.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_PurchasesList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_ExpenseForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_ExpenseInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Expenses\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Expenses\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Expenses\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_ExpensesList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SupplierPaymentForm.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SupplierPaymentInfo.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SupplierPayments\Create.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SupplierPayments\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\SupplierPayments\Index.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Shared\_SupplierPaymentsList.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Vouchars\Details.cshtml" />
-    <None Include="Areas\Outgoing\Pages\Withdrawals\Details.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Brief.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_EmployeeForm.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_EmployeeInfo.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_EmployeesList.cshtml" />
-    <None Include="Areas\People\Pages\Employees\Create.cshtml" />
-    <None Include="Areas\People\Pages\Employees\Details.cshtml" />
-    <None Include="Areas\People\Pages\Employees\Edit.cshtml" />
-    <None Include="Areas\People\Pages\Employees\Index.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_CustomerForm.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_CustomerInfo.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_CustomersList.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Create.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Details.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Edit.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Index.cshtml" />
-    <None Include="Areas\People\Pages\Customers\Statement.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_CustomerBriefInfo.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_CustomerOverview.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_StatementGeneratePartial.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_SupplierForm.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_SupplierInfo.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_SuppliersList.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_SupplierBriefInfo.cshtml" />
-    <None Include="Areas\People\Pages\Shared\_SupplierOverview.cshtml" />
-    <None Include="Areas\People\Pages\Suppliers\Create.cshtml" />
-    <None Include="Areas\People\Pages\Suppliers\Details.cshtml" />
-    <None Include="Areas\People\Pages\Suppliers\Edit.cshtml" />
-    <None Include="Areas\People\Pages\Suppliers\Index.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_ExpensesList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_PurchaseReturnsList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_PurchasesList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_RefundsList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_SalaryPaymentsList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_SalesList.cshtml" />
-    <None Include="Areas\Reporting\Pages\Shared\_SupplierPaymentsList.cshtml" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
-    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
-    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
-    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
-    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
     <None Include="wwwroot\lib\chart.js\Chart.bundle.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\external\jquery\jquery.js" />
     <None Include="wwwroot\lib\jquery-ui-1.12.1.custom\jquery-ui.js" />
@@ -445,25 +175,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BrotalLib" Version="0.1.2" />
-    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="4.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Business\Business.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="wwwroot\lib\signalr\dist\esm\AbortController.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\signalr\dist\esm\browser-index.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\signalr\dist\esm\DefaultHttpClient.d.ts" />
@@ -498,11 +209,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Dashboard\Pages\Shared\" />
-    <Folder Include="Areas\Outlets\Pages\Shared\" />
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
@@ -522,5 +228,4 @@
   <PropertyGroup>
     <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
-
 </Project>
