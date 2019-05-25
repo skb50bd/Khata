@@ -66,7 +66,7 @@ namespace WebUI.Pages.Customers
 
             return new PartialViewResult
             {
-                ViewName = "_SalesList",
+                ViewName = "~/Areas/Incoming/Pages/Shared/_SalesList.cshtml",
                 ViewData = new ViewDataDictionary<IEnumerable<SaleDto>>(ViewData, sales)
             };
         }
@@ -81,7 +81,7 @@ namespace WebUI.Pages.Customers
 
             return new PartialViewResult
             {
-                ViewName = "_DebtPaymentsList",
+                ViewName = "~/Areas/Incoming/Pages/Shared/_DebtPaymentsList.cshtml",
                 ViewData = new ViewDataDictionary<IEnumerable<DebtPaymentDto>>(ViewData, debtPayments)
             };
         }
@@ -96,7 +96,7 @@ namespace WebUI.Pages.Customers
 
             return new PartialViewResult
             {
-                ViewName = "_RefundsList",
+                ViewName = "~/Areas/Outgoing/Pages/Shared/_RefundsList.cshtml",
                 ViewData = new ViewDataDictionary<IEnumerable<RefundDto>>(ViewData, refunds)
             };
         }

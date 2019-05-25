@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Business;
-using Business.Reports;
-using Domain;
-using Domain.Reports;
+﻿using Business.Reports;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
@@ -21,7 +14,7 @@ namespace WebUI.Controllers
         private readonly IRazorViewToStringRenderer _renderer;
 
         public ReportsController(
-            ISendEmailReport sendEmailReport, 
+            ISendEmailReport sendEmailReport,
             IRazorViewToStringRenderer renderer)
         {
             _sendEmailReport = sendEmailReport;
@@ -34,18 +27,10 @@ namespace WebUI.Controllers
             var report =
                 await _sendEmailReport.GetReport();
 
-            //var report = new Summary();
+            var subject = $"{report.Type} Report: {report.GeneratedOn:M}";
+            var body = await _renderer.RenderViewToStringAsync("ReportSummary", report);
 
-            var email = new Email
-            {
-                Subject = $"{report.Type} Report: {report.GeneratedOn:M}",
-                Message =
-                    await _renderer.RenderViewToStringAsync(
-                        "ReportSummary", 
-                        report)
-            };
-
-            if (await _sendEmailReport.Send(email))
+            if (await _sendEmailReport.Send(subject, body))
                 return Ok();
 
             return BadRequest();

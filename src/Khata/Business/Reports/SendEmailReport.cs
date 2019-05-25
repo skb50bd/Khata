@@ -22,9 +22,9 @@ namespace Business.Reports
                      .Select(e => e.Trim());
 
         public SendEmailReport(
-            IOptionsMonitor<OutletOptions> optionsMonitor, 
-            IEmailSender emailSender, 
-            ILogger<SendEmailReport> logger, 
+            IOptionsMonitor<OutletOptions> optionsMonitor,
+            IEmailSender emailSender,
+            ILogger<SendEmailReport> logger,
             IReportService<Summary> summaryService)
         {
             _emailSender = emailSender;
@@ -33,23 +33,20 @@ namespace Business.Reports
             _settings = optionsMonitor.CurrentValue;
         }
 
-        public async Task<bool> Send(Email email)
+        public async Task<bool> Send(string subject, string body)
         {
             try
             {
                 foreach (var address in RecepientAddresses)
                 {
                     _logger.LogInformation($"Sending Email Report to {address}");
-                    await _emailSender.SendEmailAsync(
-                        address,
-                        email.Subject,
-                        email.Message);
+                    await _emailSender.SendEmailAsync(address, subject, body);
                 }
             }
             catch (Exception e)
             {
                 _logger.LogError(
-                    $"Error Sending Email Record: {e.Message}", 
+                    $"Error Sending Email Record: {e.Message}",
                     e);
                 return false;
             }
