@@ -5,7 +5,7 @@ namespace Business.Reports
 {
     public interface ISendEmailReport
     {
-        Task<bool> Send(Email email);
+        Task<bool> Send(string subject, string body);
         Task<Summary> GetReport();
     }
 }

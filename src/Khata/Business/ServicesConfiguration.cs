@@ -1,6 +1,7 @@
 ﻿using Business.Abstractions;
+using Business.Email;
 using Business.Implementations;
-
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business
@@ -31,6 +32,8 @@ namespace Business
             services.AddTransient<IPurchaseReturnService, PurchaseReturnService>();
 
             services.AddTransient<BackupRestoreService>();
+
+            services.AddTransient<IEmailSender, Sender>();
             return services;
         }
     }

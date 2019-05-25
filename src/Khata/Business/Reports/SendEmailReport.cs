@@ -33,7 +33,7 @@ namespace Business.Reports
             _settings = optionsMonitor.CurrentValue;
         }
 
-        public async Task<bool> Send(Email email)
+        public async Task<bool> Send(string subject, string body)
         {
             try
             {
@@ -42,8 +42,8 @@ namespace Business.Reports
                     _logger.LogInformation($"Sending Email Report to {address}");
                     await _emailSender.SendEmailAsync(
                         address,
-                        email.Subject,
-                        email.Message);
+                        subject,
+                        body);
                 }
             }
             catch (Exception e)

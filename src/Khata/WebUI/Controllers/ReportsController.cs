@@ -21,7 +21,7 @@ namespace WebUI.Controllers
         private readonly IRazorViewToStringRenderer _renderer;
 
         public ReportsController(
-            ISendEmailReport sendEmailReport, 
+            ISendEmailReport sendEmailReport,
             IRazorViewToStringRenderer renderer)
         {
             _sendEmailReport = sendEmailReport;
@@ -36,16 +36,13 @@ namespace WebUI.Controllers
 
             //var report = new Summary();
 
-            var email = new Email
-            {
-                Subject = $"{report.Type} Report: {report.GeneratedOn:M}",
-                Message =
-                    await _renderer.RenderViewToStringAsync(
-                        "ReportSummary", 
-                        report)
-            };
+            var subject = $"{report.Type} Report: {report.GeneratedOn:M}";
+            var body = 
+                await _renderer.RenderViewToStringAsync(
+                    "ReportSummary",
+                    report);
 
-            if (await _sendEmailReport.Send(email))
+            if (await _sendEmailReport.Send(subject, body))
                 return Ok();
 
             return BadRequest();

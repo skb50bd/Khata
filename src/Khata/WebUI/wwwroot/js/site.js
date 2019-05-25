@@ -3,10 +3,10 @@ const fromDate = gei("from-date");
 const toDate = gei("to-date");
 const fromText = gei("from-text");
 const toText = gei("to-text");
-const blankButtons = gecn("blank-link-button");
+var blankButtons = gecn("blank-link-button");
 const inputs = $(":input");
 const ajaxTabs = gecn("ajax-tab");
-const clickableRows = gecn("js-clickable-row");
+var clickableRows = gecn("js-clickable-row");
 const clickableTransactions = gecn("js-clickable-transaction");
 const removableItems = gecn("js-remove-item");
 const sendReportButton = gei("send-report-button");
@@ -190,9 +190,16 @@ function loadAjaxTabContent(event) {
             const d = gei(id);
             d.innerHTML = response;
         }
-    }).then(() =>
-        $(".js-clickable-row")
-            .click(viewRecord));
+    }).then(() => {
+        blankButtons = gecn("blank-link-button");
+        clickableRows = gecn("js-clickable-row");
+        $(clickableRows).click(viewRecord);
+        attachLinksToTds();
+        $(clickableRows).click(viewRecord);
+        $(blankButtons).click((e) => {
+            e.stopPropagation();
+        });
+    });
 }
 
 function enterToTab(e) {
@@ -278,17 +285,18 @@ $(document).ready(function () {
         toText.value = end.format("DD/MM/YYYY");
     });
 
-    $(".dr-datepicker").daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        locale: {
-            format: "DD/MM/YYYY"
-        },
-        minYear: 2010,
-        maxYear: parseInt(moment().format('YYYY'), 10) + 1
-    }, function (start, end, label) {
+    $(".dr-datepicker")
+        .daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: "DD/MM/YYYY"
+            },
+            minYear: 2010,
+            maxYear: parseInt(moment().format('YYYY'), 10) + 1
+        }, function (start, end, label) {
 
-    });
+        });
 
     $(".dr-show").click(() => $(".dr-datepicker").show());
 
@@ -304,8 +312,6 @@ $(document).ready(function () {
     });
 
 
-
-
     // Collapsible 
     // Add minus icon for collapse element which is open by default
 
@@ -313,12 +319,21 @@ $(document).ready(function () {
         $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
     });
 
-
     // Toggle plus minus icon on show hide of collapse element
-    $(".collapse").on('show.bs.collapse', function () {
-        $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
-    }).on('hide.bs.collapse', function () {
-        $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
-    });
+    $(".collapse")
+        .on('show.bs.collapse',
+            function () {
+                $(this).prev(".card-header")
+                    .find(".fa")
+                    .removeClass("fa-plus")
+                    .addClass("fa-minus");
+            })
+        .on('hide.bs.collapse',
+            function () {
+                $(this).prev(".card-header")
+                    .find(".fa")
+                    .removeClass("fa-minus")
+                    .addClass("fa-plus");
+            });
 });
 

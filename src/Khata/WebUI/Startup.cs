@@ -1,7 +1,7 @@
 using System.Globalization;
 
 using Business;
-using Business.Auth;
+using Business.Email;
 using Business.Mapper;
 using Business.PageFilterSort;
 using Business.Reports;
@@ -39,35 +39,45 @@ namespace WebUI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var dbProvider = Configuration.GetValue<DbProvider>("Settings:DbProvider");
+            var dbProvider = 
+                Configuration
+                   .GetValue<DbProvider>(
+                        "Settings:DbProvider");
+
             string connectionString;
             switch (dbProvider)
             {
                 case DbProvider.SQLServer:
                     connectionString =
-                        Configuration.GetConnectionString("SQLServerConnection");
+                        Configuration
+                           .GetConnectionString(
+                                "SQLServerConnection");
                     break;
                 case DbProvider.PostgreSQL:
                     connectionString =
-                        Configuration.GetConnectionString("PostgreSQLConnection");
+                        Configuration
+                           .GetConnectionString(
+                                "PostgreSQLConnection");
                     break;
                 case DbProvider.SQLite:
                     connectionString =
-                        Configuration.GetConnectionString("SQLiteConnection");
+                        Configuration
+                           .GetConnectionString(
+                                "SQLiteConnection");
                     break;
                 default:
                     connectionString =
-                        Configuration.GetConnectionString("SQLiteConnection");
+                        Configuration
+                           .GetConnectionString(
+                                "SQLiteConnection");
                     break;
 
             }
@@ -90,10 +100,13 @@ namespace WebUI
                      {
                          options.SerializerSettings.ContractResolver =
                             new CamelCasePropertyNamesContractResolver();
+
                          options.SerializerSettings.DefaultValueHandling =
                             DefaultValueHandling.Include;
+
                          options.SerializerSettings.ReferenceLoopHandling =
                              ReferenceLoopHandling.Serialize;
+
                          options.SerializerSettings.NullValueHandling =
                              NullValueHandling.Ignore;
                      })
@@ -115,11 +128,9 @@ namespace WebUI
 
             services.AddSignalR();
 
-            //services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<OutletOptions>(
                 Configuration.GetSection("OutletOptions"));
-            services.Configure<AuthMessageSenderOptions>(
-                Configuration.GetSection("SendGrid"));
+
             services.Configure<KhataSettings>(
                 Configuration.GetSection("Settings"));
 
@@ -128,19 +139,15 @@ namespace WebUI
                     IRazorViewToStringRenderer,
                     RazorViewToStringRenderer>();
 
-            services.Configure<SmtpEmailSettings>(
+            services.Configure<Settings>(
                 Configuration.GetSection("EmailSettings"));
-            services.AddSingleton<IEmailSender, SmtpEmailSender>();
-
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            //app.UseResponseCompression();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -168,7 +175,11 @@ namespace WebUI
             {
                 routes.MapSpaFallbackRoute(
                     "spa-fallback",
-                    new { controller = "Home", action = "Index" });
+                    new
+                    {
+                        controller = "Home",
+                        action = "Index"
+                    });
             });
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -177,7 +188,8 @@ namespace WebUI
                     "Khata_API");
             });
 
-            SeedUsers.Seed(roleManager, userManager).Wait();
+            SeedUsers.Seed(roleManager, userManager)
+                     .Wait();
         }
     }
 }
