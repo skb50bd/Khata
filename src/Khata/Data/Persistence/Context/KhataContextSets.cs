@@ -10,7 +10,7 @@ namespace Data.Persistence
         public DbSet<CashRegister> CashRegister { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
         public DbSet<Withdrawal> Withdrawals { get; set; }
-        public DbSet<ApplicationUser> AppUsers { get; set; }
+        public DbSet<User> AppUsers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Customer> Customers { get; set; }

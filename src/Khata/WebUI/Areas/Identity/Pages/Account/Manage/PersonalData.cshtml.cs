@@ -10,10 +10,10 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
         public PersonalDataModel(
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
         }

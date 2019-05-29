@@ -1,6 +1,7 @@
 using System.Globalization;
 
 using Business;
+using Business.Abstractions;
 using Business.Email;
 using Business.Mapper;
 using Business.PageFilterSort;
@@ -145,8 +146,9 @@ namespace WebUI
 
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IFileService fileService)
         {
             if (env.IsDevelopment())
             {
@@ -188,8 +190,9 @@ namespace WebUI
                     "Khata_API");
             });
 
-            SeedUsers.Seed(roleManager, userManager)
+            Seeder.SeedUsers(roleManager, userManager)
                      .Wait();
+            Seeder.SeedImages(fileService);
         }
     }
 }

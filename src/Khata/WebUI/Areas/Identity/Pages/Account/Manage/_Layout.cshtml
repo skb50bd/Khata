@@ -1,8 +1,13 @@
-﻿@{
+﻿@using Domain
+@inject UserManager<User> _UserManager
+
+@{
     Layout = "/Pages/Shared/_Layout.cshtml";
+    var user = await _UserManager.GetUserAsync(User);
+    var userFullName = user.FullName;
 }
 
-<h1>Manage your account</h1>
+<h1>@userFullName</h1>
 
 <div>
     <h4>Change your account settings</h4>

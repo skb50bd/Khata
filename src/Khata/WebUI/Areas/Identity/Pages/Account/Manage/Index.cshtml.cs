@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-
+using Business.Abstractions;
 using Domain;
 
 using Microsoft.AspNetCore.Http;
@@ -16,18 +16,24 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IFileService _fs;
+        private readonly IImageProcessor _ip;
 
         public IndexModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IEmailSender emailSender,
+            IFileService fs, 
+            IImageProcessor ip)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _fs = fs;
+            _ip = ip;
         }
 
         public bool IsEmailConfirmed { get; set; }
@@ -107,7 +113,20 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
                 using (var memoryStream = new MemoryStream())
                 {
                     await Input.Avatar.CopyToAsync(memoryStream);
-                    user.Avatar = memoryStream.ToArray();
+                    var ext      = Path.GetExtension(Input.Avatar.FileName);
+                    var fileName = Guid.NewGuid() + ext;
+
+                    var resizedImage =
+                        _ip.Resize(
+                            memoryStream,
+                            300,
+                            300);
+
+                    if (user.Avatar != "user.png")
+                        _fs.Delete(user.Avatar);
+
+                    _fs.Save(fileName, resizedImage);
+                    user.Avatar = fileName;
                     await _userManager.UpdateAsync(user);
                 }
             }

@@ -1,12 +1,14 @@
-﻿@using Domain
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager;
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager;
 
 @{
-    var user = await UserManager.GetUserAsync(User);
-    var base64 = Convert.ToBase64String(user?.Avatar ?? new byte[0]);
-    var avatarImage = string.Format($"data:image/jpeg;base64,{base64}");
+//var user = await UserManager.GetUserAsync(User);
+//var avatar =
+//    Url.Action(
+//        "Get",
+//        "Files",
+//        new { id = user.Avatar });
 }
 
 <nav id="custom-header-wrapper"

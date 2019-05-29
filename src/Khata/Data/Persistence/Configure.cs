@@ -46,7 +46,7 @@ namespace Data.Persistence
                     break;
             }
 
-            services.AddDefaultIdentity<ApplicationUser>(config =>
+            services.AddDefaultIdentity<User>(config =>
             {
                 config.SignIn.RequireConfirmedEmail = true;
             }).AddRoles<IdentityRole>()
@@ -120,6 +120,9 @@ namespace Data.Persistence
                     BackupRestoreRepository>();
             #endregion
 
+            services.AddTransient<
+                IFileRepository, 
+                FileRepository>();
 
             return services;
         }

@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-
+﻿using System.IO;
+using System.Threading.Tasks;
+using Business.Abstractions;
 using Domain;
 
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +9,13 @@ using static Domain.Role;
 
 namespace WebUI
 {
-    public static class SeedUsers
+    public static class Seeder
     {
-        public static async Task Seed(
+        public static async Task SeedUsers(
             RoleManager<IdentityRole> roleManager, 
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager)
         {
-            var user = new ApplicationUser();
+            var user = new User();
             var x = await roleManager.RoleExistsAsync(Admin.ToString());
             if (!x)
             {
@@ -22,7 +23,7 @@ namespace WebUI
                 await roleManager.CreateAsync(role);
 
                 //Here we create a Admin super user who will maintain the website
-                user = new ApplicationUser
+                user = new User
                 {
                     FirstName      = "Admin",
                     LastName       = "Brotal",
@@ -71,15 +72,39 @@ namespace WebUI
             }
 
             // creating Creating User role     
-            x = await roleManager.RoleExistsAsync(User.ToString());
+            x = await roleManager.RoleExistsAsync(Role.User.ToString());
             if (!x)
             {
-                var role = new IdentityRole {Name = User.ToString()};
+                var role = new IdentityRole {Name = Role.User.ToString()};
                 await roleManager.CreateAsync(role);
                 await userManager.AddToRoleAsync(
                     user, 
-                    User.ToString());
+                    Role.User.ToString());
             }
+        }
+
+        public static void SeedImages(IFileService store)
+        {
+            using (var stream = GetFileAsStream(@"Images/user.png"))
+            {
+                store.Save(
+                    "user.png", 
+                    stream
+                );
+            }
+        }
+
+        private static Stream GetFileAsStream(string path)
+        {
+            var ms = new MemoryStream();
+            using (var sr = File.OpenRead(path))
+            {
+                sr.Position = 0;
+                sr.CopyTo(ms);
+            }
+
+            ms.Position = 0;
+            return ms;
         }
     }
 }

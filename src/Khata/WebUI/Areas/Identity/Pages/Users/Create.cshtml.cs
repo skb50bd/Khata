@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-
+using Business.Abstractions;
 using Domain;
 
 using Microsoft.AspNetCore.Authorization;
@@ -18,19 +19,24 @@ namespace WebUI.Areas.Identity.Pages.Users
     [Authorize(Policy = "AdminRights")]
     public class CreateModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<CreateModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IFileService _fs;
+        private readonly IImageProcessor _ip;
 
         public CreateModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<User> userManager,
             ILogger<CreateModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            IFileService fs, 
+            IImageProcessor ip)
         {
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
-
+            _fs = fs;
+            _ip = ip;
         }
 
         [BindProperty]
@@ -49,7 +55,7 @@ namespace WebUI.Areas.Identity.Pages.Users
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var user = new User
                 {
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
@@ -63,7 +69,17 @@ namespace WebUI.Areas.Identity.Pages.Users
                     using (var memoryStream = new MemoryStream())
                     {
                         await Input.Avatar.CopyToAsync(memoryStream);
-                        user.Avatar = memoryStream.ToArray();
+                        var ext      = Path.GetExtension(Input.Avatar.FileName);
+                        var fileName = Guid.NewGuid() + ext;
+
+                        var resizedImage =
+                            _ip.Resize(
+                                memoryStream,
+                                300,
+                                300);
+
+                        _fs.Save(fileName, resizedImage);
+                        user.Avatar = fileName;
                     }
                 }
 

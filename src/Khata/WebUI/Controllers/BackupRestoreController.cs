@@ -23,11 +23,17 @@ namespace WebUI.Controllers
 
         // GET: api/BackupRestore
         [HttpGet]
-        public async Task<IActionResult> Get() =>
-            File(await _brs.GetJsonDump(), 
-                "application/octet-stream", 
+        public async Task<IActionResult> Get()
+        {
+            var stream = await _brs.GetJsonDump();
+            var file = File(
+                stream,
+                "application/octet-stream",
                 $"backup-{Clock.Now.Timestamp()}.zip");
-
+            //stream.Close();
+            //stream.Dispose();
+            return file;
+        }
         //// POST api/BackupRestore
         //[HttpPost]
         //public void Post([FromBody]IFormFile backupFile)

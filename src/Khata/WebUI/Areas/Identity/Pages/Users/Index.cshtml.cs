@@ -12,15 +12,15 @@ namespace WebUI.Areas.Identity.Pages.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
         public IndexModel(
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
         }
 
-        public IList<ApplicationUser> AppUsers;
+        public IList<User> AppUsers;
 
         public async Task<IActionResult> OnGetAsync()
         {

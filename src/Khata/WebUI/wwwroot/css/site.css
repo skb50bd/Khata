@@ -208,3 +208,7 @@ a.navbar-brand {
 .pie-chart {
     height: 150px;
 }
+
+td {
+    vertical-align: middle !important;
+}

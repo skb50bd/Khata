@@ -4,14 +4,16 @@ using Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Persistence.Migrations.SQLServer
 {
     [DbContext(typeof(KhataContext))]
-    partial class KhataContextModelSnapshot : ModelSnapshot
+    [Migration("20190509120346_AddedDateFieldsToPayments")]
+    partial class AddedDateFieldsToPayments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -921,11 +923,11 @@ namespace Data.Persistence.Migrations.SQLServer
                     b.HasDiscriminator().HasValue("Vouchar");
                 });
 
-            modelBuilder.Entity("Domain.User", b =>
+            modelBuilder.Entity("Domain.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Avatar");
+                    b.Property<byte[]>("Avatar");
 
                     b.Property<string>("FirstName");
 
@@ -933,7 +935,7 @@ namespace Data.Persistence.Migrations.SQLServer
 
                     b.Property<int>("Role");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Domain.CashRegister", b =>

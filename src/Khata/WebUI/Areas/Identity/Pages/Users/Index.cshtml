@@ -17,6 +17,7 @@
     <table class="table table-sm table-hover table-striped">
         <thead class="thead-dark">
             <tr>
+                <th></th>
                 <th>
                     First Name
                 </th>
@@ -28,7 +29,7 @@
                 <th>
                     Email
                 </th>
-                
+
                 <th class="text-right">
                     Email Confirmed
                 </th>
@@ -40,7 +41,7 @@
                 <th class="text-right">
                     Role
                 </th>
-                
+
                 <th class="text-right"></th>
             </tr>
         </thead>
@@ -49,6 +50,15 @@
             @foreach (var user in Model.AppUsers)
             {
                 <tr>
+                    <td class="p-0 m-0">
+                        <img src="@Url.Action(
+                                      "Get",
+                                      "Files", 
+                                      new {id = user.Avatar})"
+                             class="rounded-circle p-0 m-0 ml-2"
+                             alt="avatar"
+                             width="35">
+                    </td>
                     <td>
                         @user.FirstName
                     </td>
@@ -60,7 +70,7 @@
                     <td>
                         @user.Email
                     </td>
-                    
+
                     <td class="text-right">
                         @user.EmailConfirmed
                     </td>
@@ -72,15 +82,15 @@
                     <td class="text-right">
                         @user.Role
                     </td>
-                    
+
                     <td class="text-right">
                         <a class="btn btn-sm btn-danger text-white js-remove-item"
                            data-href="@Url.Action(
-                                          "Delete", 
-                                          "Users", 
-                                          new { user.Id })"
+                                          "Delete",
+                                          "Users",
+                                          new {user.Id})"
                            data-returnUrl="@Url.Page(
-                                               "/Users/Index", 
+                                               "/Users/Index",
                                                new {area = "Identity"})">
                             Delete
                         </a>

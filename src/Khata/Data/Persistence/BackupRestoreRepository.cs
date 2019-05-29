@@ -182,7 +182,7 @@ namespace Data.Persistence
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 NullValueHandling     = NullValueHandling.Ignore,
-                Formatting            = Formatting.None
+                Formatting            = Formatting.Indented
             };
 
             var items = new List<ZipItem>

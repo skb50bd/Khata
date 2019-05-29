@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
+﻿using Brotal;
 using Business.PageFilterSort;
 using DTOs;
+using System;
+using System.Threading.Tasks;
 using ViewModels;
 
 namespace Business.Abstractions

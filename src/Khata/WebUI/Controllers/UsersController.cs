@@ -19,10 +19,10 @@ namespace WebUI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
         public UsersController(
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
         }

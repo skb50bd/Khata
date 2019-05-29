@@ -20,13 +20,16 @@
   <ItemGroup>
     <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.cs" />
     <Compile Include="Persistence\Migrations\SQLServer\20190310160415_Initial_Create_V_0_1.Designer.cs" />
-    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.cs" />
-    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments - Copy.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190509120346_AddedDateFieldsToPayments - Copy.Designer.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190529125943_ImagesRemovedFromSQLDatabase.cs" />
+    <Compile Include="Persistence\Migrations\SQLServer\20190529125943_ImagesRemovedFromSQLDatabase.designer.cs" />
     <Compile Include="Persistence\Migrations\SQLServer\KhataContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BrotalLib" Version="0.1.2" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
 
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
 

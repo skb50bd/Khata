@@ -34,6 +34,10 @@ namespace Business
             services.AddTransient<BackupRestoreService>();
 
             services.AddTransient<IEmailSender, Sender>();
+
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IImageProcessor, ImageProcessor>();
+
             return services;
         }
     }

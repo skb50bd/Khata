@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "src\Khata\WebUI\We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerMigrator", "src\Khata\SQLServerMigrator\SQLServerMigrator.csproj", "{2B11913B-59C0-4283-BAAF-B99160034262}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI", "BlazorUI\BlazorUI.csproj", "{C8D717E5-04C8-4DEA-8DFC-464A629E5DEF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{2B11913B-59C0-4283-BAAF-B99160034262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B11913B-59C0-4283-BAAF-B99160034262}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B11913B-59C0-4283-BAAF-B99160034262}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8D717E5-04C8-4DEA-8DFC-464A629E5DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8D717E5-04C8-4DEA-8DFC-464A629E5DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8D717E5-04C8-4DEA-8DFC-464A629E5DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8D717E5-04C8-4DEA-8DFC-464A629E5DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

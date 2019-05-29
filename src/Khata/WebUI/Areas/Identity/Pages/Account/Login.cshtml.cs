@@ -17,11 +17,11 @@ namespace WebUI.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(
-            SignInManager<ApplicationUser> signInManager,
+            SignInManager<User> signInManager,
             ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
