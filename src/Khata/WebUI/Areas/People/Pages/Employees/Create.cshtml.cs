@@ -8,44 +8,43 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using ViewModels;
 
-namespace WebUI.Areas.People.Pages.Employees
+namespace WebUI.Areas.People.Pages.Employees;
+
+[Authorize]
+public class CreateModel : PageModel
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    private readonly IEmployeeService _employees;
+
+    public CreateModel(IEmployeeService employees)
     {
-        private readonly IEmployeeService _employees;
+        _employees = employees;
+    }
 
-        public CreateModel(IEmployeeService employees)
-        {
-            _employees = employees;
-        }
+    public IActionResult OnGet()
+    {
+        EmployeeVm = new EmployeeViewModel();
+        return Page();
+    }
 
-        public IActionResult OnGet()
+    [BindProperty]
+    public EmployeeViewModel EmployeeVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            EmployeeVm = new EmployeeViewModel();
             return Page();
         }
 
-        [BindProperty]
-        public EmployeeViewModel EmployeeVm { get; set; }
+        var employee = await _employees.Add(EmployeeVm);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
+        Message = $"Employee: {employee.Id} - {employee.FullName} created!";
+        MessageType = "success";
 
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var employee = await _employees.Add(EmployeeVm);
-
-            Message = $"Employee: {employee.Id} - {employee.FullName} created!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

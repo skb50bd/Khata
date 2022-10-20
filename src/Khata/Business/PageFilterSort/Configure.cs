@@ -1,15 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.PageFilterSort
+namespace Business.PageFilterSort;
+
+public static class Configure
 {
-    public static class Configure
+    public static IServiceCollection ConfigureSieve(
+        this IServiceCollection services)
     {
-        public static IServiceCollection ConfigureSieve(
-            this IServiceCollection services)
-        {
-            services.AddScoped<PfService>();
-            return services;
-        }
+        services.AddScoped<PfService>();
+        return services;
     }
 }

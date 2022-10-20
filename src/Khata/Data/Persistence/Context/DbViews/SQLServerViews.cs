@@ -3,27 +3,26 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 // ReSharper disable InconsistentNaming
 
-namespace Data.Persistence.DbViews
-{
-    public static class SQLServerViews
-    {
-        public static DatabaseFacade CreateAllSQLServerViews(
-            this DatabaseFacade db) =>
-            db.AssetReport()
-              .LiabilityReport()
-              .PerDayReport()
-              .IncomeReport()
-              .ExpenseReport()
-              .PayableReport()
-              .ReceivableReport();
+namespace Data.Persistence.DbViews;
 
-        private static DatabaseFacade AssetReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
-                DROP VIEW IF EXISTS Asset
-            ");
-            db.ExecuteSqlCommand(@"
+public static class SQLServerViews
+{
+    public static DatabaseFacade CreateAllSQLServerViews(
+        this DatabaseFacade db) =>
+        db.AssetReport()
+            .LiabilityReport()
+            .PerDayReport()
+            .IncomeReport()
+            .ExpenseReport()
+            .PayableReport()
+            .ReceivableReport();
+
+    private static DatabaseFacade AssetReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"DROP VIEW IF EXISTS Asset").Wait();
+        
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW Asset AS
                     SELECT *
                     FROM
@@ -37,18 +36,20 @@ namespace Data.Persistence.DbViews
                                 ROUND(COALESCE(SUM(Debt), 0), 2) AS 'TotalDue'
                          FROM Customers WHERE IsRemoved = 'FALSE' AND Debt > 0) c
 
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
+    }
 
-        private static DatabaseFacade LiabilityReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade LiabilityReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS Liability
-            ");
-            db.ExecuteSqlCommand(@"
+            ").Wait();
+        
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW Liability AS
                     SELECT *
                     FROM (
@@ -61,18 +62,21 @@ namespace Data.Persistence.DbViews
                                ROUND(COALESCE(SUM(Payable), 0), 2) AS 'TotalDue'
                         FROM Suppliers WHERE IsRemoved = 'FALSE' AND Payable > 0
                     ) s
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
+    }
 
-        private static DatabaseFacade PerDayReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade PerDayReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS PerDayReport
-            ");
-            db.ExecuteSqlCommand(@"
+            ")
+            .Wait();
+        
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW PerDayReport AS
                     SELECT TOP(30) * FROM (
                         SELECT  TOP(30) 
@@ -90,14 +94,16 @@ namespace Data.Persistence.DbViews
                         GROUP BY CAST(m.CreationTime AS DATE)
                         ORDER BY 'Date' DESC
                     ) SQ ORDER BY 'Date' ASC
-            ");
-            return db;
-        }
+            ")
+            .Wait();
+        
+        return db;
+    }
 
-        private static DatabaseFacade IncomeReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade IncomeReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 CREATE OR ALTER FUNCTION dbo.inflowReport (
                         @fromDate DATETIMEOFFSET(7),
                         @toDate DATETIMEOFFSET(7))
@@ -131,28 +137,31 @@ namespace Data.Persistence.DbViews
                                                         ON sl.MetadataId = m.Id AND sl.IsRemoved = 'False'
                         WHERE m.CreationTime BETWEEN @fromDate AND @toDate
                     )
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS PeriodicalInflow
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW PeriodicalInflow AS
                     SELECT * FROM dbo.inflowReport(CAST(GETDATE() AS DATE), GETDATE())
                     UNION ALL
                     SELECT * FROM dbo.inflowReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     UNION ALL
                     SELECT * FROM dbo.inflowReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
+    }
 
-        private static DatabaseFacade ExpenseReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade ExpenseReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 CREATE OR ALTER FUNCTION dbo.outflowReport (
                         @fromDate DATETIMEOFFSET(7), 
                         @toDate DATETIMEOFFSET(7))
@@ -183,27 +192,31 @@ namespace Data.Persistence.DbViews
                         FULL JOIN Withdrawals w					ON w.MetadataId = m.Id AND w.TableName = 'Withdrawal'
                         WHERE m.CreationTime BETWEEN @fromDate AND @toDate
                     )
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS PeriodicalOutflow
-            ");
-            db.ExecuteSqlCommand(@"
+            ")
+            .Wait();
+        
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW PeriodicalOutflow AS
                     SELECT * FROM dbo.outflowReport(CAST(GETDATE() AS DATE), GETDATE())
                     UNION ALL            
                     SELECT * FROM dbo.outflowReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     UNION ALL            
                     SELECT * FROM dbo.outflowReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
+    }
 
-        private static DatabaseFacade PayableReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade PayableReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 CREATE OR ALTER FUNCTION dbo.payableReport (
                         @fromDate DATETIMEOFFSET(7), 
                         @toDate DATETIMEOFFSET(7))
@@ -246,28 +259,31 @@ namespace Data.Persistence.DbViews
                             AND dp.DebtBefore - dp.Amount < 0
                         WHERE m.CreationTime BETWEEN @fromDate AND @toDate
                     )
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS PeriodicalPayableReport
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW PeriodicalPayableReport AS
                     SELECT * FROM dbo.payableReport(CAST(GETDATE() AS DATE), GETDATE())
                     UNION ALL                    
                     SELECT * FROM dbo.payableReport(DATEADD(day, -7, CAST(GETDATE() AS DATE)), GETDATE())
                     UNION ALL
                     SELECT * FROM dbo.payableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
+    }
 
-        private static DatabaseFacade ReceivableReport(
-            this DatabaseFacade db)
-        {
-            db.ExecuteSqlCommand(@"
+    private static DatabaseFacade ReceivableReport(
+        this DatabaseFacade db)
+    {
+        db.ExecuteSqlRawAsync(@"
                 CREATE OR ALTER FUNCTION dbo.receivableReport (
                         @fromDate DATETIMEOFFSET(7), 
                         @toDate DATETIMEOFFSET(7))
@@ -320,22 +336,24 @@ namespace Data.Persistence.DbViews
                             AND ep.BalanceBefore - ep.Amount < 0
                         WHERE m.CreationTime BETWEEN @fromDate AND @toDate
                     )
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 DROP VIEW IF EXISTS PeriodicalReceivableReport
-            ");
+            ")
+            .Wait();
 
-            db.ExecuteSqlCommand(@"
+        db.ExecuteSqlRawAsync(@"
                 CREATE VIEW PeriodicalReceivableReport AS
                     SELECT * FROM dbo.receivableReport(CAST(GETDATE() AS DATE), GETDATE())
                     UNION ALL
                     SELECT * FROM dbo.receivableReport(DATEADD(day, -7,CAST(GETDATE() AS DATE)), GETDATE())
                     UNION ALL
                     SELECT * FROM dbo.receivableReport(DATEADD(day, -30, CAST(GETDATE() AS DATE)), GETDATE())
-            ");
+            ")
+            .Wait();
 
-            return db;
-        }
+        return db;
     }
 }

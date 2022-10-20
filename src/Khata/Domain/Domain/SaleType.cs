@@ -1,8 +1,7 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public enum SaleType
 {
-    public enum SaleType
-    {
-        Bulk = 1,
-        Retail = 2
-    }
+    Bulk = 1,
+    Retail = 2
 }

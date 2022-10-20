@@ -1,16 +1,15 @@
 ﻿
 using Domain;
 
-namespace ViewModels
+namespace ViewModels;
+
+public class LineItemViewModel
 {
-    public class LineItemViewModel
-    {
-        public string Name { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal NetPrice { get; set; }
+    public string Name { get; set; }
+    public decimal Quantity { get; set; }
+    public decimal NetPrice { get; set; }
 
-        public int ItemId { get; set; }
+    public int ItemId { get; set; }
 
-        public LineItemType Type { get; set; }
-    }
+    public LineItemType Type { get; set; }
 }

@@ -11,68 +11,67 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using ViewModels;
 
-namespace WebUI.Areas.Outgoing.Pages.Purchases
+namespace WebUI.Areas.Outgoing.Pages.Purchases;
+
+[Authorize]
+public class CreateModel : PageModel
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    private readonly IPurchaseService _purchases;
+
+    public CreateModel(IPurchaseService purchases)
     {
-        private readonly IPurchaseService _purchases;
+        PurchaseVm = new PurchaseViewModel();
+        _purchases = purchases;
+    }
 
-        public CreateModel(IPurchaseService purchases)
-        {
-            PurchaseVm = new PurchaseViewModel();
-            _purchases = purchases;
-        }
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
 
-        public IActionResult OnGet()
+    [BindProperty]
+    public PurchaseViewModel PurchaseVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        [BindProperty]
-        public PurchaseViewModel PurchaseVm { get; set; }
-
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnPostAsync()
+        PurchaseDto purchase;
+        try
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            PurchaseDto purchase;
-            try
-            {
-                purchase = await _purchases.Add(PurchaseVm);
-
-            }
-            catch (Exception e)
-            {
-                if (e.Message == "Invalid Operation")
-                {
-                    MessageType = "danger";
-                    Message = "Nothing to Create";
-                    return Page();
-                }
-                else
-                    throw;
-            }
-
-            MessageType = "success";
-            if (purchase.Id > 0)
-            {
-                Message = $"Purchase: {purchase.Id} - {purchase.Supplier.FullName} created!";
-                return RedirectToPage("./Index");
-            }
-            else
-            {
-                Message = $"Supplier-Payment paid to {purchase.Supplier.FullName}!";
-                return RedirectToPage("../SupplierPayments/Index");
-            }
+            purchase = await _purchases.Add(PurchaseVm);
 
         }
+        catch (Exception e)
+        {
+            if (e.Message == "Invalid Operation")
+            {
+                MessageType = "danger";
+                Message = "Nothing to Create";
+                return Page();
+            }
+            else
+                throw;
+        }
+
+        MessageType = "success";
+        if (purchase.Id > 0)
+        {
+            Message = $"Purchase: {purchase.Id} - {purchase.Supplier.FullName} created!";
+            return RedirectToPage("./Index");
+        }
+        else
+        {
+            Message = $"Supplier-Payment paid to {purchase.Supplier.FullName}!";
+            return RedirectToPage("../SupplierPayments/Index");
+        }
+
     }
 }

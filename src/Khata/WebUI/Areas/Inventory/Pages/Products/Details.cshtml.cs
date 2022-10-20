@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Inventory.Pages.Products
+namespace WebUI.Areas.Inventory.Pages.Products;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IProductService _products;
+    public DetailsModel(IProductService products)
     {
-        private readonly IProductService _products;
-        public DetailsModel(IProductService products)
+        _products = products;
+    }
+
+    public ProductDto Product { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id is null)
         {
-            _products = products;
+            return NotFound();
         }
 
-        public ProductDto Product { get; set; }
+        Product = await _products.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Product is null)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            Product = await _products.Get((int)id);
-
-            if (Product is null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

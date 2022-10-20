@@ -14,264 +14,263 @@ using Microsoft.AspNetCore.Mvc;
 
 using ViewModels;
 
-namespace WebUI.Controllers
+namespace WebUI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class SalesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SalesController : ControllerBase
+    private readonly ISaleService _sales;
+    private readonly IProductService _products;
+    private readonly IServiceService _services;
+    private readonly PfService _pfService;
+
+    public SalesController(ISaleService sales,
+        IProductService products,
+        IServiceService services,
+        PfService pfService)
     {
-        private readonly ISaleService _sales;
-        private readonly IProductService _products;
-        private readonly IServiceService _services;
-        private readonly PfService _pfService;
+        _sales = sales;
+        _products = products;
+        _services = services;
+        _pfService = pfService;
+    }
 
-        public SalesController(ISaleService sales,
-            IProductService products,
-            IServiceService services,
-            PfService pfService)
-        {
-            _sales = sales;
-            _products = products;
-            _services = services;
-            _pfService = pfService;
-        }
+    // GET: api/Sales
+    [HttpGet]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IEnumerable<SaleDto>> Get(
+        int? outletId,
+        string searchString = "",
+        int pageSize = 0,
+        int pageIndex = 1)
+        => await _sales.Get(
+            outletId ?? 0,
+            _pfService.CreateNewPf(
+                searchString, pageIndex, pageSize));
 
-        // GET: api/Sales
-        [HttpGet]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IEnumerable<SaleDto>> Get(
-            int? outletId,
-            string searchString = "",
-            int pageSize = 0,
-            int pageIndex = 1)
-            => await _sales.Get(
-                outletId ?? 0,
-                _pfService.CreateNewPf(
-                    searchString, pageIndex, pageSize));
+    // GET: api/Sales/5
+    [HttpGet("{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> Get([FromRoute]int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        // GET: api/Sales/5
-        [HttpGet("{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> Get([FromRoute]int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        if (!(await Exists(id)))
+            return NotFound();
 
-            if (!(await Exists(id)))
-                return NotFound();
-
-            return Ok(await _sales.Get(id));
-        }
+        return Ok(await _sales.Get(id));
+    }
 
 
-        // GET: api/Sales/Ids
-        [HttpGet("Ids/")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> GetIds([FromQuery]string term)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var customers = await Get(0, searchString: term, 50, 1);
-            return Ok(customers.Select(s =>
-                new
-                {
-                    label = $"{s.Id}({s.InvoiceId}) - {s.Customer.FullName}",
-                    id = s.Id
-                }));
-        }
-
-
-        // GET: api/Sales/LineItems
-        [HttpGet("LineItems/")]
-        [Authorize(Policy = "UserRights")]
-        public async Task<IActionResult> GetLineItems(
-            [FromQuery]int outletId,
-            [FromQuery]string term)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            IList<object> results = new List<object>();
-            IEnumerable<ProductDto> products = await _products.Get(
-                outletId,
-                _pfService.CreateNewPf(term, 1, 100)
-            );
-
-            var emptyProducts = products.Where(p => p.InventoryTotalStock == 0);
-            products = products.Except(emptyProducts).Union(emptyProducts);
-            products = products.OrderBy(p => p.Name);
-
-            var services = await _services.Get(
-                outletId,
-                _pfService.CreateNewPf(term, 1, 50)
-            );
-
-            products.ForEach(p => results.Add(new
+    // GET: api/Sales/Ids
+    [HttpGet("Ids/")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> GetIds([FromQuery]string term)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var customers = await Get(0, searchString: term, 50, 1);
+        return Ok(customers.Select(s =>
+            new
             {
-                Name = p.Id.ToString().PadLeft(4, '0') + " - " + p.Name,
-                Available = p.InventoryTotalStock,
-                UnitPriceRetail = p.PriceRetail,
-                UnitPriceBulk = p.PriceBulk,
-                MinimumPrice = p.PriceMargin,
-                ItemId = p.Id,
-                Category = "Product"
+                label = $"{s.Id}({s.InvoiceId}) - {s.Customer.FullName}",
+                id = s.Id
             }));
+    }
 
-            services.ForEach(s => results.Add(new
-            {
-                Name = s.Id.ToString().PadLeft(4, '0') + " - " + s.Name,
-                Available = -1,
-                UnitPriceRetail = s.Price,
-                UnitPriceBulk = s.Price,
-                MinimumPrice = 0,
-                ItemId = s.Id,
-                Category = "Service"
-            }));
 
-            return Ok(results);
-        }
+    // GET: api/Sales/LineItems
+    [HttpGet("LineItems/")]
+    [Authorize(Policy = "UserRights")]
+    public async Task<IActionResult> GetLineItems(
+        [FromQuery]int outletId,
+        [FromQuery]string term)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        // POST: api/Sales
-        [HttpPost]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> Post(
-            [FromBody] SaleViewModel model)
+        IList<object> results = new List<object>();
+        IEnumerable<ProductDto> products = await _products.Get(
+            outletId,
+            _pfService.CreateNewPf(term, 1, 100)
+        );
+
+        var emptyProducts = products.Where(p => p.InventoryTotalStock == 0);
+        products = products.Except(emptyProducts).Union(emptyProducts);
+        products = products.OrderBy(p => p.Name);
+
+        var services = await _services.Get(
+            outletId,
+            _pfService.CreateNewPf(term, 1, 50)
+        );
+
+        products.ForEach(p => results.Add(new
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            Name = p.Id.ToString().PadLeft(4, '0') + " - " + p.Name,
+            Available = p.InventoryTotalStock,
+            UnitPriceRetail = p.PriceRetail,
+            UnitPriceBulk = p.PriceBulk,
+            MinimumPrice = p.PriceMargin,
+            ItemId = p.Id,
+            Category = "Product"
+        }));
 
-            var dto = await _sales.Add(model);
-
-            if (dto == null)
-                return BadRequest();
-
-            return CreatedAtAction(nameof(Get),
-                new { id = dto.Id },
-                dto);
-        }
-
-        // PUT: api/Sales/5
-        [HttpPut("{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> Put(
-            [FromRoute]int id,
-            [FromBody]SaleViewModel vm)
+        services.ForEach(s => results.Add(new
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            Name = s.Id.ToString().PadLeft(4, '0') + " - " + s.Name,
+            Available = -1,
+            UnitPriceRetail = s.Price,
+            UnitPriceBulk = s.Price,
+            MinimumPrice = 0,
+            ItemId = s.Id,
+            Category = "Service"
+        }));
 
-            if (id != vm.Id)
-                return BadRequest();
+        return Ok(results);
+    }
 
-            if (!(await Exists(id)))
-                return NotFound();
+    // POST: api/Sales
+    [HttpPost]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> Post(
+        [FromBody] SaleViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            var dto = await _sales.Update(vm);
+        var dto = await _sales.Add(model);
 
-            if (dto == null)
-                return BadRequest();
+        if (dto == null)
+            return BadRequest();
 
-            return Ok(dto);
-        }
+        return CreatedAtAction(nameof(Get),
+            new { id = dto.Id },
+            dto);
+    }
 
-        // DELETE: api/Sales/5
-        [HttpDelete("{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> Remove(int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+    // PUT: api/Sales/5
+    [HttpPut("{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> Put(
+        [FromRoute]int id,
+        [FromBody]SaleViewModel vm)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            var dto = await _sales.Remove(id);
+        if (id != vm.Id)
+            return BadRequest();
 
-            if (dto == null)
-                return BadRequest();
+        if (!(await Exists(id)))
+            return NotFound();
 
-            dto.Outlet = null;
+        var dto = await _sales.Update(vm);
 
-            return Ok(dto);
-        }
+        if (dto == null)
+            return BadRequest();
 
-        // DELETE: api/Sales/Permanent/5
-        [HttpDelete("Permanent/{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        return Ok(dto);
+    }
 
-            if (!(await Exists(id)))
-                return NotFound();
+    // DELETE: api/Sales/5
+    [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> Remove(int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            var dto = await _sales.Delete(id);
+        var dto = await _sales.Remove(id);
 
-            if (dto == null)
-                return BadRequest();
+        if (dto == null)
+            return BadRequest();
 
-            dto.Outlet = null;
+        dto.Outlet = null;
 
-            return Ok(dto);
-        }
+        return Ok(dto);
+    }
 
-        private async Task<bool> Exists(int id) =>
-            await _sales.Exists(id);
+    // DELETE: api/Sales/Permanent/5
+    [HttpDelete("Permanent/{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        // POST: api/Sales/Saved
-        [HttpPost("Saved/")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> PostSaved(
-                    [FromBody] SaleViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        if (!(await Exists(id)))
+            return NotFound();
 
-            var dto = await _sales.Save(model);
+        var dto = await _sales.Delete(id);
 
-            if (dto == null)
-                return BadRequest();
+        if (dto == null)
+            return BadRequest();
 
-            return CreatedAtAction(nameof(GetSaved),
-                new { id = dto.Id },
-                dto);
-        }
+        dto.Outlet = null;
 
-        // GET: api/Sales/Saved
-        [HttpGet("Saved/")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IEnumerable<SaleDto>> GetSaved()
-            => await _sales.GetSaved();
+        return Ok(dto);
+    }
 
-        // GET: api/Sales/Saved/5
-        [HttpGet("Saved/{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> GetSaved([FromRoute]int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+    private async Task<bool> Exists(int id) =>
+        await _sales.Exists(id);
 
-            if (!(await Exists(id)))
-                return NotFound();
+    // POST: api/Sales/Saved
+    [HttpPost("Saved/")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> PostSaved(
+        [FromBody] SaleViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            return Ok(await _sales.GetSaved(id));
-        }
+        var dto = await _sales.Save(model);
 
-        // DELETE: api/Sales/Saved/5
-        [HttpDelete("Saved/{id}")]
-        [Authorize(Policy = "AdminRights")]
-        public async Task<IActionResult> DeleteSaved(int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        if (dto == null)
+            return BadRequest();
 
-            if (!(await Exists(id)))
-                return NotFound();
+        return CreatedAtAction(nameof(GetSaved),
+            new { id = dto.Id },
+            dto);
+    }
 
-            var dto = await _sales.DeleteSaved(id);
+    // GET: api/Sales/Saved
+    [HttpGet("Saved/")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IEnumerable<SaleDto>> GetSaved()
+        => await _sales.GetSaved();
 
-            if (dto == null)
-                return BadRequest();
+    // GET: api/Sales/Saved/5
+    [HttpGet("Saved/{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> GetSaved([FromRoute]int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            return Ok(dto);
-        }
+        if (!(await Exists(id)))
+            return NotFound();
+
+        return Ok(await _sales.GetSaved(id));
+    }
+
+    // DELETE: api/Sales/Saved/5
+    [HttpDelete("Saved/{id}")]
+    [Authorize(Policy = "AdminRights")]
+    public async Task<IActionResult> DeleteSaved(int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (!(await Exists(id)))
+            return NotFound();
+
+        var dto = await _sales.DeleteSaved(id);
+
+        if (dto == null)
+            return BadRequest();
+
+        return Ok(dto);
     }
 }

@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outgoing.Pages.SalaryPayments
+namespace WebUI.Areas.Outgoing.Pages.SalaryPayments;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly ISalaryPaymentService _salaryPayments;
+    public DetailsModel(ISalaryPaymentService salaryPayments)
     {
-        private readonly ISalaryPaymentService _salaryPayments;
-        public DetailsModel(ISalaryPaymentService salaryPayments)
+        _salaryPayments = salaryPayments;
+    }
+
+    public SalaryPaymentDto SalaryPayment { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _salaryPayments = salaryPayments;
+            return NotFound();
         }
 
-        public SalaryPaymentDto SalaryPayment { get; set; }
+        SalaryPayment = await _salaryPayments.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (SalaryPayment == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            SalaryPayment = await _salaryPayments.Get((int)id);
-
-            if (SalaryPayment == null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

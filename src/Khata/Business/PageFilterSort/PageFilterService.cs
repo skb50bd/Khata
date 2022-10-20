@@ -2,24 +2,23 @@
 
 using Microsoft.Extensions.Options;
 
-namespace Business.PageFilterSort
+namespace Business.PageFilterSort;
+
+public class PfService
 {
-    public class PfService
+    public OutletOptions Options { get; set; }
+
+    public PfService(IOptionsMonitor<OutletOptions> monitor)
     {
-        public OutletOptions Options { get; set; }
+        Options = monitor.CurrentValue;
+    }
 
-        public PfService(IOptionsMonitor<OutletOptions> monitor)
+    public PageFilter CreateNewPf(string filter, int index = 1, int size = 0)
+    {
+        if (size == 0)
         {
-            Options = monitor.CurrentValue;
+            size = Options.DefaultPageSize;
         }
-
-        public PageFilter CreateNewPf(string filter, int index = 1, int size = 0)
-        {
-            if (size == 0)
-            {
-                size = Options.DefaultPageSize;
-            }
-            return new PageFilter(filter, index, size);
-        }
+        return new PageFilter(filter, index, size);
     }
 }

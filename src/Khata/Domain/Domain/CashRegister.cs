@@ -1,7 +1,6 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public class CashRegister : Document
 {
-    public class CashRegister : Document
-    {
-        public decimal Balance { get; set; } = 0;
-    }
+    public decimal Balance { get; set; } = 0;
 }

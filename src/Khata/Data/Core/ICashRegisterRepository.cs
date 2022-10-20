@@ -2,10 +2,9 @@
 
 using Domain;
 
-namespace Data.Core
+namespace Data.Core;
+
+public interface ICashRegisterRepository
 {
-    public interface ICashRegisterRepository
-    {
-        Task<CashRegister> Get();
-    }
+    Task<CashRegister> Get();
 }

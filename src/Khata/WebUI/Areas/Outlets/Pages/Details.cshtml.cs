@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outlets.Pages
+namespace WebUI.Areas.Outlets.Pages;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IOutletService _outlets;
+    public DetailsModel(IOutletService outlets)
     {
-        private readonly IOutletService _outlets;
-        public DetailsModel(IOutletService outlets)
+        _outlets = outlets;
+    }
+
+    public OutletDto Outlet { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id is null)
         {
-            _outlets = outlets;
+            return NotFound();
         }
 
-        public OutletDto Outlet { get; set; }
+        Outlet = await _outlets.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Outlet is null)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            Outlet = await _outlets.Get((int)id);
-
-            if (Outlet is null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

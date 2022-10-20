@@ -4,25 +4,24 @@ using Data.Core;
 
 using Domain;
 
-namespace Data.Persistence.Repositories
-{
-    public class DepositRepository : Repository<Deposit>, IRepository<Deposit>
-    {
-        public DepositRepository(KhataContext context) : base(context) { }
-        public override void Add(Deposit item)
-        {
-            Context.Deposits.Add(item);
-            Context.CashRegister.FirstOrDefault().Balance += item.Amount;
-        }
-    }
+namespace Data.Persistence.Repositories;
 
-    public class WithdrawalRepository : Repository<Withdrawal>, IRepository<Withdrawal>
+public class DepositRepository : Repository<Deposit>, IRepository<Deposit>
+{
+    public DepositRepository(KhataContext context) : base(context) { }
+    public override void Add(Deposit item)
     {
-        public WithdrawalRepository(KhataContext context) : base(context) { }
-        public override void Add(Withdrawal item)
-        {
-            Context.Withdrawals.Add(item);
-            Context.CashRegister.FirstOrDefault().Balance -= item.Amount;
-        }
+        Context.Deposits.Add(item);
+        Context.CashRegister.FirstOrDefault().Balance += item.Amount;
+    }
+}
+
+public class WithdrawalRepository : Repository<Withdrawal>, IRepository<Withdrawal>
+{
+    public WithdrawalRepository(KhataContext context) : base(context) { }
+    public override void Add(Withdrawal item)
+    {
+        Context.Withdrawals.Add(item);
+        Context.CashRegister.FirstOrDefault().Balance -= item.Amount;
     }
 }

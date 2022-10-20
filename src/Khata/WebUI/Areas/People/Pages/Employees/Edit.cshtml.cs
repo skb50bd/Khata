@@ -12,76 +12,75 @@ using Microsoft.EntityFrameworkCore;
 
 using ViewModels;
 
-namespace WebUI.Areas.People.Pages.Employees
-{
-    public class EditModel : PageModel
-    {
-        private readonly IEmployeeService _employees;
-        private readonly IMapper _mapper;
+namespace WebUI.Areas.People.Pages.Employees;
 
-        public EditModel(IEmployeeService employees, IMapper mapper)
+public class EditModel : PageModel
+{
+    private readonly IEmployeeService _employees;
+    private readonly IMapper _mapper;
+
+    public EditModel(IEmployeeService employees, IMapper mapper)
+    {
+        _employees = employees;
+        _mapper = mapper;
+    }
+
+    [BindProperty]
+    public EmployeeViewModel EmployeeVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _employees = employees;
-            _mapper = mapper;
+            return NotFound();
         }
 
-        [BindProperty]
-        public EmployeeViewModel EmployeeVm { get; set; }
+        var employee = await _employees.Get((int)id);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (employee == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var employee = await _employees.Get((int)id);
+        EmployeeVm = _mapper.Map<EmployeeViewModel>(employee);
+        return Page();
+    }
 
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            EmployeeVm = _mapper.Map<EmployeeViewModel>(employee);
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
-
-        public async Task<IActionResult> OnPostAsync()
+        EmployeeDto employee;
+        try
         {
-            if (!ModelState.IsValid)
+            employee = await _employees.Update(EmployeeVm);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await EmployeeExists((int)EmployeeVm.Id))
             {
-                return Page();
+                return NotFound();
             }
-            EmployeeDto employee;
-            try
+            else
             {
-                employee = await _employees.Update(EmployeeVm);
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await EmployeeExists((int)EmployeeVm.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            Message = $"Employee: {employee.Id} - {employee.FullName} updated!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
         }
 
-        private async Task<bool> EmployeeExists(int id)
-        {
-            return await _employees.Exists(id);
-        }
+        Message = $"Employee: {employee.Id} - {employee.FullName} updated!";
+        MessageType = "success";
+
+        return RedirectToPage("./Index");
+    }
+
+    private async Task<bool> EmployeeExists(int id)
+    {
+        return await _employees.Exists(id);
     }
 }

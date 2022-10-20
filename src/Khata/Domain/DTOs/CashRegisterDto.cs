@@ -1,7 +1,6 @@
-﻿namespace DTOs
+﻿namespace DTOs;
+
+public class CashRegisterDto
 {
-    public class CashRegisterDto
-    {
-        public decimal Balance { get; set; }
-    }
+    public decimal Balance { get; set; }
 }

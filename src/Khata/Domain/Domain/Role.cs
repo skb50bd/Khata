@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace Domain
+namespace Domain;
+
+[Flags]
+public enum Role
 {
-    [Flags]
-    public enum Role
-    {
-        Admin = 0,
-        User,
-        Manager,
-        Employee,
-        Guest
-    }
+    Admin = 0,
+    User,
+    Manager,
+    Employee,
+    Guest
 }

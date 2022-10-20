@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Domain.Reports;
 
-namespace Business.Reports
+namespace Business.Reports;
+
+public interface ISendEmailReport
 {
-    public interface ISendEmailReport
-    {
-        Task<bool> Send(string subject, string body);
-        Task<Summary> GetReport();
-    }
+    Task<bool> Send(string subject, string body);
+    Task<Summary> GetReport();
 }

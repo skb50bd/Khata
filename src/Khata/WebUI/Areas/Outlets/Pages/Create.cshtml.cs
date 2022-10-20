@@ -8,43 +8,42 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using ViewModels;
 
-namespace WebUI.Areas.Outlets.Pages
-{
-    [Authorize]
-    public class CreateModel : PageModel
-    {
-        private readonly IOutletService _outlets;
-        public CreateModel(IOutletService outlets)
-        {
-            OutletVm = new OutletViewModel();
-            _outlets = outlets;
-        }
+namespace WebUI.Areas.Outlets.Pages;
 
-        public IActionResult OnGet()
+[Authorize]
+public class CreateModel : PageModel
+{
+    private readonly IOutletService _outlets;
+    public CreateModel(IOutletService outlets)
+    {
+        OutletVm = new OutletViewModel();
+        _outlets = outlets;
+    }
+
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
+
+    [BindProperty]
+    public OutletViewModel OutletVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
             return Page();
         }
+        var outlet = await _outlets.Add(OutletVm);
 
-        [BindProperty]
-        public OutletViewModel OutletVm { get; set; }
-
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
+        Message = $"Outlet: {outlet.Id} - {outlet.Title} created!";
+        MessageType = "success";
 
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-            var outlet = await _outlets.Add(OutletVm);
-
-            Message = $"Outlet: {outlet.Id} - {outlet.Title} created!";
-            MessageType = "success";
-
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

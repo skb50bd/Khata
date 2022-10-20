@@ -10,38 +10,37 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.People.Pages.Customers
+namespace WebUI.Areas.People.Pages.Customers;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly ICustomerService _customers;
+    private readonly PfService _pfService;
+    public IndexModel(ICustomerService customers, PfService pfService)
     {
-        private readonly ICustomerService _customers;
-        private readonly PfService _pfService;
-        public IndexModel(ICustomerService customers, PfService pfService)
-        {
-            _customers = customers;
-            _pfService = pfService;
-            Customers = new PagedList<CustomerDto>();
-        }
+        _customers = customers;
+        _pfService = pfService;
+        Customers = new PagedList<CustomerDto>();
+    }
 
-        public IPagedList<CustomerDto> Customers { get; set; }
-        public PageFilter Pf { get; set; }
+    public IPagedList<CustomerDto> Customers { get; set; }
+    public PageFilter Pf { get; set; }
 
-        #region TempData
-        [TempData]
-        public string Message { get; set; }
+    #region TempData
+    [TempData]
+    public string Message { get; set; }
 
-        [TempData]
-        public string MessageType { get; set; }
-        #endregion
+    [TempData]
+    public string MessageType { get; set; }
+    #endregion
 
-        public async Task<IActionResult> OnGetAsync(
-            string searchString = "",
-            int pageSize = 0,
-            int pageIndex = 1)
-        {
-            Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            Customers = await _customers.Get(Pf);
-            return Page();
-        }
+    public async Task<IActionResult> OnGetAsync(
+        string searchString = "",
+        int pageSize = 0,
+        int pageIndex = 1)
+    {
+        Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
+        Customers = await _customers.Get(Pf);
+        return Page();
     }
 }

@@ -3,36 +3,42 @@ using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Persistence
+namespace Data.Persistence;
+
+public static class QueryBuilder
 {
-    public static class QueryBuilder
-    {
-        public static ModelBuilder BuildQueries(
-            this ModelBuilder builder,
-            KhataContext db)
-        {
-            builder.Query<Asset>()       
-                   .ToView("Asset");
+       public static ModelBuilder BuildQueries(
+              this ModelBuilder builder,
+              KhataContext db)
+       {
+              builder.Entity<Asset>()       
+                     .HasNoKey()
+                     .ToView("Asset");
 
-            builder.Query<Liability>()
-                   .ToView("Liability");
+              builder.Entity<Liability>()
+                     .HasNoKey()
+                     .ToView("Liability");
 
-            builder.Query<PerDayReport>()
-                   .ToView("PerDayReport");
+              builder.Entity<PerDayReport>()
+                     .HasNoKey()
+                     .ToView("PerDayReport");
 
-            builder.Query<Inflow>()
-                   .ToView("PeriodicalInflow");
+              builder.Entity<Inflow>()
+                     .HasNoKey()
+                     .ToView("PeriodicalInflow");
 
-            builder.Query<Outflow>()
-                   .ToView("PeriodicalOutflow");
+              builder.Entity<Outflow>()
+                     .HasNoKey()
+                     .ToView("PeriodicalOutflow");
 
-            builder.Query<Payable>()
-                   .ToView("PeriodicalPayableReport");
+              builder.Entity<Payable>()
+                     .HasNoKey()
+                     .ToView("PeriodicalPayableReport");
 
-            builder.Query<Receivable>()
-                   .ToView("PeriodicalReceivableReport");
+              builder.Entity<Receivable>()
+                     .HasNoKey()
+                     .ToView("PeriodicalReceivableReport");
 
-            return builder;
-        }
-    }
+              return builder;
+       }
 }

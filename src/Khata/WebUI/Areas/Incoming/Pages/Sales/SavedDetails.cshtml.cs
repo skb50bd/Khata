@@ -7,32 +7,31 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Incoming.Pages.Sales
+namespace WebUI.Areas.Incoming.Pages.Sales;
+
+public class SavedDetailsModel : PageModel
 {
-    public class SavedDetailsModel : PageModel
+    private readonly ISaleService _sales;
+    public SavedDetailsModel(ISaleService sales)
     {
-        private readonly ISaleService _sales;
-        public SavedDetailsModel(ISaleService sales)
+        _sales = sales;
+    }
+
+    public SaleDto Sale { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _sales = sales;
+            return NotFound();
         }
 
-        public SaleDto Sale { get; set; }
+        Sale = await _sales.GetSaved((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Sale == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Sale = await _sales.GetSaved((int)id);
-
-            if (Sale == null)
-            {
-                return NotFound();
-            }
-            return Page();
+            return NotFound();
         }
+        return Page();
     }
 }

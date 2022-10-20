@@ -12,78 +12,77 @@ using Microsoft.EntityFrameworkCore;
 
 using ViewModels;
 
-namespace WebUI.Areas.Outlets.Pages
-{
-    public class EditModel : PageModel
-    {
-        private readonly IOutletService _outlets;
-        private readonly IMapper _mapper;
+namespace WebUI.Areas.Outlets.Pages;
 
-        public EditModel(IOutletService outlets, IMapper mapper)
+public class EditModel : PageModel
+{
+    private readonly IOutletService _outlets;
+    private readonly IMapper _mapper;
+
+    public EditModel(IOutletService outlets, IMapper mapper)
+    {
+        _outlets = outlets;
+        _mapper = mapper;
+    }
+
+    [BindProperty]
+    public OutletViewModel OutletVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id is null)
         {
-            _outlets = outlets;
-            _mapper = mapper;
+            return NotFound();
         }
 
-        [BindProperty]
-        public OutletViewModel OutletVm { get; set; }
+        var outlet = await _outlets.Get((int)id);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (outlet is null)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var outlet = await _outlets.Get((int)id);
+        OutletVm = _mapper.Map<OutletViewModel>(outlet);
+        return Page();
+    }
 
-            if (outlet is null)
-            {
-                return NotFound();
-            }
-
-            OutletVm = _mapper.Map<OutletViewModel>(outlet);
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        OutletDto outlet;
+
+        try
         {
-            if (!ModelState.IsValid)
+            outlet = await _outlets.Update(OutletVm);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await OutletExists(OutletVm.Id))
             {
-                return Page();
+                return NotFound();
             }
-
-            OutletDto outlet;
-
-            try
+            else
             {
-                outlet = await _outlets.Update(OutletVm);
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await OutletExists(OutletVm.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            Message = $"Outlet: {outlet.Id} - {outlet.Title} updated!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
         }
 
-        private async Task<bool> OutletExists(int id)
-        {
-            return await _outlets.Exists(id);
-        }
+        Message = $"Outlet: {outlet.Id} - {outlet.Title} updated!";
+        MessageType = "success";
+
+        return RedirectToPage("./Index");
+    }
+
+    private async Task<bool> OutletExists(int id)
+    {
+        return await _outlets.Exists(id);
     }
 }

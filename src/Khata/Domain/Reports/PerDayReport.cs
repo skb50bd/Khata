@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace Domain.Reports
-{
-    public class PerDayReport : Report
-    {
-        public DateTime Date { get; set; }
+namespace Domain.Reports;
 
-        public decimal CashIn { get; set; }
-        public decimal CashOut { get; set; }
-        public decimal NewReceivable { get; set; }
-        public decimal NewPayable { get; set; }
-    }
+public class PerDayReport : Report
+{
+    public DateTime Date { get; set; }
+
+    public decimal CashIn { get; set; }
+    public decimal CashOut { get; set; }
+    public decimal NewReceivable { get; set; }
+    public decimal NewPayable { get; set; }
 }

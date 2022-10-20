@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outgoing.Pages.Expenses
+namespace WebUI.Areas.Outgoing.Pages.Expenses;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IExpenseService _expenses;
+    public DetailsModel(IExpenseService expenses)
     {
-        private readonly IExpenseService _expenses;
-        public DetailsModel(IExpenseService expenses)
+        _expenses = expenses;
+    }
+
+    public ExpenseDto Expense { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _expenses = expenses;
+            return NotFound();
         }
 
-        public ExpenseDto Expense { get; set; }
+        Expense = await _expenses.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Expense == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Expense = await _expenses.Get((int)id);
-
-            if (Expense == null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outgoing.Pages.SupplierPayments
+namespace WebUI.Areas.Outgoing.Pages.SupplierPayments;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly ISupplierPaymentService _supplierPayments;
+    public DetailsModel(ISupplierPaymentService supplierPayments)
     {
-        private readonly ISupplierPaymentService _supplierPayments;
-        public DetailsModel(ISupplierPaymentService supplierPayments)
+        _supplierPayments = supplierPayments;
+    }
+
+    public SupplierPaymentDto SupplierPayment { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _supplierPayments = supplierPayments;
+            return NotFound();
         }
 
-        public SupplierPaymentDto SupplierPayment { get; set; }
+        SupplierPayment = await _supplierPayments.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (SupplierPayment == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            SupplierPayment = await _supplierPayments.Get((int)id);
-
-            if (SupplierPayment == null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public class Document : Entity
 {
-    public class Document : Entity
-    {
-        public Metadata Metadata { get; set; }
-    }
+    public Metadata Metadata { get; set; }
 }

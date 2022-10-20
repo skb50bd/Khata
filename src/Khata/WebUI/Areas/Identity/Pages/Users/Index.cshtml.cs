@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,31 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebUI.Areas.Identity.Pages.Users
+namespace WebUI.Areas.Identity.Pages.Users;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public IndexModel(
+        UserManager<ApplicationUser> userManager)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        _userManager = userManager;
+    }
 
-        public IndexModel(
-            UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
+    public IList<ApplicationUser> AppUsers;
 
-        public IList<ApplicationUser> AppUsers;
+    public async Task<IActionResult> OnGetAsync()
+    {
+        AppUsers = await _userManager.Users.ToListAsync();
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            AppUsers = await _userManager.Users.ToListAsync();
+        var defaultAdmin =
+            AppUsers.FirstOrDefault(
+                u => u.UserName == "brotal");
 
-            var defaultAdmin =
-                AppUsers.FirstOrDefault(
-                    u => u.UserName == "brotal");
+        AppUsers.Remove(defaultAdmin);
 
-            AppUsers.Remove(defaultAdmin);
-
-            return Page();
-        }
+        return Page();
     }
 }

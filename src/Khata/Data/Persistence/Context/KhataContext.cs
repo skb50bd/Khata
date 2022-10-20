@@ -4,7 +4,7 @@ using System.Linq;
 using Data.Persistence.DbViews;
 
 using Domain;
-
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,54 +12,53 @@ using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
 
-namespace Data.Persistence
+namespace Data.Persistence;
+
+public sealed partial class KhataContext : IdentityDbContext<ApplicationUser>
 {
-    public sealed partial class KhataContext : IdentityDbContext
+    private readonly ILogger<KhataContext> _logger;
+    private readonly KhataSettings _settings;
+    public KhataContext(
+        DbContextOptions<KhataContext> options,
+        ILogger<KhataContext> logger, 
+        IOptionsMonitor<KhataSettings> settings) : base(options)
     {
-        private readonly ILogger<KhataContext> _logger;
-        private readonly KhataSettings _settings;
-        public KhataContext(
-            DbContextOptions<KhataContext> options,
-            ILogger<KhataContext> logger, 
-            IOptionsMonitor<KhataSettings> settings) : base(options)
+        _logger = logger;
+        _settings = settings.CurrentValue; 
+        var pm = Database.GetPendingMigrations();
+
+        try
         {
-            _logger = logger;
-            _settings = settings.CurrentValue; 
-            var pm = Database.GetPendingMigrations();
+            if (!pm.Any()) return;
 
-            try
+            if (_settings.DbProvider == DbProvider.SQLServer)
             {
-                if (!pm.Any()) return;
-
-                if (_settings.DbProvider == DbProvider.SQLServer)
-                {
-                    Database.CreateAllSQLServerViews();
-                }
-
-                Database.Migrate();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(
-                    "Could not apply Migrations"
-                  + JsonConvert.SerializeObject(pm));
-                _logger.LogError(e.Message);
+                Database.CreateAllSQLServerViews();
             }
 
-            Database.EnsureCreated();
+            Database.Migrate();
         }
-
-        //public KhataContext(
-        //    DbContextOptions<KhataContext> options)
-        //    : base(options) {}
-
-        protected override void OnModelCreating(
-            ModelBuilder builder)
+        catch (Exception e)
         {
-            base.OnModelCreating(builder);
-
-            builder.BuildEntities()
-                   .BuildQueries(this);
+            _logger.LogError(
+                "Could not apply Migrations"
+                + JsonConvert.SerializeObject(pm));
+            _logger.LogError(e.Message);
         }
+
+        Database.EnsureCreated();
+    }
+
+    //public KhataContext(
+    //    DbContextOptions<KhataContext> options)
+    //    : base(options) {}
+
+    protected override void OnModelCreating(
+        ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.BuildEntities()
+            .BuildQueries(this);
     }
 }

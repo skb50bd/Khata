@@ -2,10 +2,9 @@
 
 using Domain;
 
-namespace Business.Abstractions
+namespace Business.Abstractions;
+
+public interface ICashRegisterService
 {
-    public interface ICashRegisterService
-    {
-        Task<CashRegister> Get();
-    }
+    Task<CashRegister> Get();
 }

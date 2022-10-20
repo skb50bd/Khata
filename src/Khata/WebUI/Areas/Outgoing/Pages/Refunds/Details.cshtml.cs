@@ -7,33 +7,32 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outgoing.Pages.Refunds
+namespace WebUI.Areas.Outgoing.Pages.Refunds;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IRefundService _refunds;
+    public DetailsModel(IRefundService refunds)
     {
-        private readonly IRefundService _refunds;
-        public DetailsModel(IRefundService refunds)
+        _refunds = refunds;
+    }
+
+    public RefundDto Refund { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _refunds = refunds;
+            return NotFound();
         }
 
-        public RefundDto Refund { get; set; }
+        Refund = await _refunds.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Refund == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Refund = await _refunds.Get((int)id);
-
-            if (Refund == null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

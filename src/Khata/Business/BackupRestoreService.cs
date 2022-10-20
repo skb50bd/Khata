@@ -3,21 +3,20 @@ using System.Threading.Tasks;
 
 using Data.Core;
 
-namespace Business
+namespace Business;
+
+public class BackupRestoreService
 {
-    public class BackupRestoreService
+    private readonly IBackupRestoreRepository _repo;
+
+    public BackupRestoreService(
+        IBackupRestoreRepository repo)
     {
-        private readonly IBackupRestoreRepository _repo;
+        _repo = repo;
+    }
 
-        public BackupRestoreService(
-            IBackupRestoreRepository repo)
-        {
-            _repo = repo;
-        }
-
-        public async Task<Stream> GetJsonDump()
-        {
-            return await _repo.GetJsonDump();
-        }
+    public async Task<Stream> GetJsonDump()
+    {
+        return await _repo.GetJsonDump();
     }
 }

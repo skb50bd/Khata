@@ -11,14 +11,11 @@ using Data.Persistence;
 using Domain;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -26,170 +23,126 @@ using Swashbuckle.AspNetCore.Swagger;
 
 using WebUI.Hubs;
 
-namespace WebUI
+namespace WebUI;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+        CultureInfo.DefaultThreadCurrentCulture =
+            Configuration.GetValue<CultureInfo>("OutletOptions:Culture");
+    }
+
+    private IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.Configure<CookiePolicyOptions>(options =>
         {
-            Configuration = configuration;
-            CultureInfo.DefaultThreadCurrentCulture =
-                Configuration.GetValue<CultureInfo>("OutletOptions:Culture");
-        }
+            options.CheckConsentNeeded = _ => true;
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+        });
 
-        public IConfiguration Configuration { get; }
+        var dbProvider = 
+            Configuration
+                .GetValue<DbProvider>(
+                    "Settings:DbProvider");
 
-        public void ConfigureServices(IServiceCollection services)
+        var connectionString = dbProvider switch
         {
-            services.Configure<CookiePolicyOptions>(options =>
+            DbProvider.SQLServer  => Configuration.GetConnectionString("SQLServerConnection"),
+            DbProvider.PostgreSQL => Configuration.GetConnectionString("PostgreSQLConnection"),
+            DbProvider.SQLite     => Configuration.GetConnectionString("SQLiteConnection"),
+            _                     => Configuration.GetConnectionString("SQLiteConnection")
+        };
+
+        services.ConfigureData(dbProvider, connectionString);
+
+        services.ConfigureSieve();
+
+        services.AddReports();
+
+        services.ConfigureMapper();
+
+        services.ConfigureCrudServices();
+
+        services.AddPolicies();
+
+        services.AddMvc()
+            .AddNewtonsoftJson(options =>
             {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+                options.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver();
 
-            var dbProvider = 
-                Configuration
-                   .GetValue<DbProvider>(
-                        "Settings:DbProvider");
+                options.SerializerSettings.DefaultValueHandling =
+                    DefaultValueHandling.Include;
 
-            string connectionString;
-            switch (dbProvider)
-            {
-                case DbProvider.SQLServer:
-                    connectionString =
-                        Configuration
-                           .GetConnectionString(
-                                "SQLServerConnection");
-                    break;
-                case DbProvider.PostgreSQL:
-                    connectionString =
-                        Configuration
-                           .GetConnectionString(
-                                "PostgreSQLConnection");
-                    break;
-                case DbProvider.SQLite:
-                    connectionString =
-                        Configuration
-                           .GetConnectionString(
-                                "SQLiteConnection");
-                    break;
-                default:
-                    connectionString =
-                        Configuration
-                           .GetConnectionString(
-                                "SQLiteConnection");
-                    break;
+                options.SerializerSettings.ReferenceLoopHandling =
+                    ReferenceLoopHandling.Serialize;
 
-            }
+                options.SerializerSettings.NullValueHandling =
+                    NullValueHandling.Ignore;
+            })
+            .AddAuthorizationDefinition();
 
-            services.ConfigureData(dbProvider, connectionString);
+        services.AddHttpContextAccessor();
 
-            services.ConfigureSieve();
+        services.AddSwaggerGen();
 
-            services.AddReports();
+        services.AddSignalR();
 
-            services.ConfigureMapper();
+        services.Configure<OutletOptions>(
+            Configuration.GetSection("OutletOptions"));
 
-            services.ConfigureCrudServices();
+        services.Configure<KhataSettings>(
+            Configuration.GetSection("Settings"));
 
-            services.AddPolicies();
+        services
+            .AddTransient<
+                IRazorViewToStringRenderer,
+                RazorViewToStringRenderer>();
 
-            services.AddWebOptimizer();
-            services.AddMvc()
-                .AddJsonOptions(options =>
-                     {
-                         options.SerializerSettings.ContractResolver =
-                            new CamelCasePropertyNamesContractResolver();
+        services.Configure<Settings>(
+            Configuration.GetSection("EmailSettings"));
+    }
 
-                         options.SerializerSettings.DefaultValueHandling =
-                            DefaultValueHandling.Include;
-
-                         options.SerializerSettings.ReferenceLoopHandling =
-                             ReferenceLoopHandling.Serialize;
-
-                         options.SerializerSettings.NullValueHandling =
-                             NullValueHandling.Ignore;
-                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddAuthorizationDefinition();
-
-            services.AddHttpContextAccessor();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",
-                    new Info
-                    {
-                        Title = "Khata_API",
-                        Version = "v1"
-                    });
-            }
-            );
-
-            services.AddSignalR();
-
-            services.Configure<OutletOptions>(
-                Configuration.GetSection("OutletOptions"));
-
-            services.Configure<KhataSettings>(
-                Configuration.GetSection("Settings"));
-
-            services
-               .AddTransient<
-                    IRazorViewToStringRenderer,
-                    RazorViewToStringRenderer>();
-
-            services.Configure<Settings>(
-                Configuration.GetSection("EmailSettings"));
-        }
-
-        public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+    public void Configure(IApplicationBuilder app,
+        IHostEnvironment env,
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager)
+    {
+        if (env.IsDevelopment())
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-                app.UseWebOptimizer();
-                app.UseHttpsRedirection();
-                app.UseCookiePolicy();
-            }
-
-            app.UseStaticFiles();
-
-            app.UseAuthentication();
-
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<ReportsHub>("/Reports");
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapSpaFallbackRoute(
-                    "spa-fallback",
-                    new
-                    {
-                        controller = "Home",
-                        action = "Index"
-                    });
-            });
-
-            app.UseSwagger().UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json",
-                    "Khata_API");
-            });
-
-            SeedUsers.Seed(roleManager, userManager)
-                     .Wait();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
+            app.UseHttpsRedirection();
+            app.UseCookiePolicy();
+        }
+        
+
+        app.UseStaticFiles();
+        
+        app.UseAuthentication();
+
+        app.UseRouting();
+
+        app.UseEndpoints(
+            builder =>
+            {
+                builder.MapControllers();
+                builder.MapRazorPages();
+                builder.MapHub<ReportsHub>("/Reports");
+            });
+
+        SeedUsers
+            .Seed(roleManager, userManager)
+            .Wait();
     }
 }

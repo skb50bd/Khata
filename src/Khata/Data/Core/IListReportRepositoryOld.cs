@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using Domain.Reports;
 
-namespace Data.Core
+namespace Data.Core;
+
+public interface IListReportRepositoryOld<TReport> where TReport : Report
 {
-    public interface IListReportRepositoryOld<TReport> where TReport : Report
-    {
-        //Task<int> Count();
-        Task<IEnumerable<TReport>> Get();
-    }
+    //Task<int> Count();
+    Task<IEnumerable<TReport>> Get();
 }

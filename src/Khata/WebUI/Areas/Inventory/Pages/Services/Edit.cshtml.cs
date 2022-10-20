@@ -12,67 +12,66 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using ViewModels;
 
-namespace WebUI.Areas.Inventory.Pages.Services
-{
-    public class EditModel : PageModel
-    {
-        private readonly IServiceService _services;
-        private readonly IOutletService _outlets;
-        private readonly IMapper _mapper;
+namespace WebUI.Areas.Inventory.Pages.Services;
 
-        public EditModel(
-            IServiceService services,
-            IOutletService outlets,
-            IMapper mapper)
+public class EditModel : PageModel
+{
+    private readonly IServiceService _services;
+    private readonly IOutletService _outlets;
+    private readonly IMapper _mapper;
+
+    public EditModel(
+        IServiceService services,
+        IOutletService outlets,
+        IMapper mapper)
+    {
+        _services = services;
+        _outlets = outlets;
+        _mapper = mapper;
+    }
+
+    [BindProperty]
+    public ServiceViewModel ServiceVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _services = services;
-            _outlets = outlets;
-            _mapper = mapper;
+            return NotFound();
         }
 
-        [BindProperty]
-        public ServiceViewModel ServiceVm { get; set; }
+        ViewData["Outlets"] = new SelectList(
+            await _outlets.Get(),
+            nameof(Outlet.Id),
+            nameof(Outlet.Title)
+        );
+        ServiceVm = _mapper.Map<ServiceViewModel>(
+            await _services.Get((int)id));
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (ServiceVm == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            ViewData["Outlets"] = new SelectList(
-                await _outlets.Get(),
-                nameof(Outlet.Id),
-                nameof(Outlet.Title)
-            );
-            ServiceVm = _mapper.Map<ServiceViewModel>(
-                await _services.Get((int)id));
+        return Page();
+    }
 
-            if (ServiceVm == null)
-            {
-                return NotFound();
-            }
-
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+        var service = await _services.Update(ServiceVm);
 
-            var service = await _services.Update(ServiceVm);
+        Message = $"Service: {service.Id} - {service.Name} updated!";
+        MessageType = "success";
 
-            Message = $"Service: {service.Id} - {service.Name} updated!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

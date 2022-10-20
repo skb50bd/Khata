@@ -1,8 +1,7 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public enum LineItemType
 {
-    public enum LineItemType
-    {
-        Product = 1,
-        Service = 2
-    }
+    Product = 1,
+    Service = 2
 }

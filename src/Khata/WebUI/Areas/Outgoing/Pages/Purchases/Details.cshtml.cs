@@ -8,49 +8,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace WebUI.Areas.Outgoing.Pages.Purchases
+namespace WebUI.Areas.Outgoing.Pages.Purchases;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IPurchaseService _purchases;
+
+    public DetailsModel(IPurchaseService purchases)
     {
-        private readonly IPurchaseService _purchases;
+        _purchases = purchases;
+    }
 
-        public DetailsModel(IPurchaseService purchases)
+    public PurchaseDto Purchase { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _purchases = purchases;
+            return NotFound();
         }
 
-        public PurchaseDto Purchase { get; set; }
+        Purchase = await _purchases.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Purchase == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Purchase = await _purchases.Get((int)id);
-
-            if (Purchase == null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
-        {
-            var purchase = await _purchases.Get(id);
+        return Page();
+    }
 
-            if (purchase is null)
-            {
-                return NotFound();
-            }
-            return new PartialViewResult
-            {
-                ViewName = "_PurchaseBriefing",
-                ViewData = new ViewDataDictionary<PurchaseDto>(ViewData, purchase)
-            };
+    public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
+    {
+        var purchase = await _purchases.Get(id);
+
+        if (purchase is null)
+        {
+            return NotFound();
         }
+        return new PartialViewResult
+        {
+            ViewName = "_PurchaseBriefing",
+            ViewData = new ViewDataDictionary<PurchaseDto>(ViewData, purchase)
+        };
     }
 }

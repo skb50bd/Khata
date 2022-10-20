@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ViewModels
+namespace ViewModels;
+
+public class SalaryIssueViewModel
 {
-    public class SalaryIssueViewModel
-    {
-        public int Id { get; set; }
-        public int EmployeeId { get; set; }
+    public int Id { get; set; }
+    public int EmployeeId { get; set; }
 
-        [Display(Name = "Amount Issued", ShortName = "Amount")]
-        [DataType(DataType.Currency)]
-        public decimal Amount { get; set; }
+    [Display(Name = "Amount Issued", ShortName = "Amount")]
+    [DataType(DataType.Currency)]
+    public decimal Amount { get; set; }
 
-        [MaxLength(200)]
-        public string Description { get; set; }
-    }
+    [MaxLength(200)]
+    public string Description { get; set; }
 }

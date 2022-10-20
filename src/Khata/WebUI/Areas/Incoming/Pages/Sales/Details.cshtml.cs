@@ -8,47 +8,46 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace WebUI.Areas.Incoming.Pages.Sales
+namespace WebUI.Areas.Incoming.Pages.Sales;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly ISaleService _sales;
+    public DetailsModel(ISaleService sales)
     {
-        private readonly ISaleService _sales;
-        public DetailsModel(ISaleService sales)
+        _sales = sales;
+    }
+
+    public SaleDto Sale { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _sales = sales;
+            return NotFound();
         }
 
-        public SaleDto Sale { get; set; }
+        Sale = await _sales.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Sale == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Sale = await _sales.Get((int)id);
-
-            if (Sale == null)
-            {
-                return NotFound();
-            }
-            return Page();
+            return NotFound();
         }
+        return Page();
+    }
 
-        public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
+    public async Task<IActionResult> OnGetBriefAsync([FromQuery]int id)
+    {
+        var sale = await _sales.Get(id);
+
+        if (sale is null)
         {
-            var sale = await _sales.Get(id);
-
-            if (sale is null)
-            {
-                return NotFound();
-            }
-            return new PartialViewResult
-            {
-                ViewName = "_SaleBriefing",
-                ViewData = new ViewDataDictionary<SaleDto>(ViewData, sale)
-            };
+            return NotFound();
         }
+        return new PartialViewResult
+        {
+            ViewName = "_SaleBriefing",
+            ViewData = new ViewDataDictionary<SaleDto>(ViewData, sale)
+        };
     }
 }

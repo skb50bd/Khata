@@ -11,53 +11,52 @@ using Domain;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Persistence.Repositories
+namespace Data.Persistence.Repositories;
+
+public class PurchaseRepository : TrackingRepository<Purchase>, ITrackingRepository<Purchase>
 {
-    public class PurchaseRepository : TrackingRepository<Purchase>, ITrackingRepository<Purchase>
+    public PurchaseRepository(KhataContext context) : base(context) { }
+
+    public override async Task<IPagedList<Purchase>> Get<T>(
+        Expression<Func<Purchase, bool>> predicate,
+        Expression<Func<Purchase, T>> order,
+        int pageIndex,
+        int pageSize,
+        DateTime? from = null,
+        DateTime? to = null)
     {
-        public PurchaseRepository(KhataContext context) : base(context) { }
+        predicate = predicate.And(
+            i => !i.IsRemoved
+                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
+                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
 
-        public override async Task<IPagedList<Purchase>> Get<T>(
-            Expression<Func<Purchase, bool>> predicate,
-            Expression<Func<Purchase, T>> order,
-            int pageIndex,
-            int pageSize,
-            DateTime? from = null,
-            DateTime? to = null)
+        var res = new PagedList<Purchase>()
         {
-            predicate = predicate.And(
-                i => !i.IsRemoved
-                    && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                    && i.Metadata.CreationTime <= (to ?? Clock.Max));
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            ResultCount =
+                await Context.Purchases
+                    .AsNoTracking()
+                    .Where(predicate)
+                    .CountAsync()
+        };
 
-            var res = new PagedList<Purchase>()
-            {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                ResultCount =
-                    await Context.Purchases
-                        .AsNoTracking()
-                        .Where(predicate)
-                        .CountAsync()
-            };
+        res.AddRange(await Context.Purchases
+            .AsNoTracking()
+            .Include(s => s.Cart)
+            .Include(s => s.Supplier)
+            .Where(predicate)
+            .OrderByDescending(order)
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize > 0 ? pageSize : int.MaxValue)
+            .ToListAsync());
 
-            res.AddRange(await Context.Purchases
-                .AsNoTracking()
-                .Include(s => s.Cart)
-                .Include(s => s.Supplier)
-                .Where(predicate)
-                .OrderByDescending(order)
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize > 0 ? pageSize : int.MaxValue)
-                .ToListAsync());
+        return res;
+    }
 
-            return res;
-        }
-
-        public override async Task<Purchase> GetById(int id)
-            => await Context.Purchases
+    public override async Task<Purchase> GetById(int id)
+        => await Context.Purchases
             .Include(s => s.Supplier)
             .Include(s => s.Cart)
             .FirstOrDefaultAsync(s => s.Id == id);
-    }
 }

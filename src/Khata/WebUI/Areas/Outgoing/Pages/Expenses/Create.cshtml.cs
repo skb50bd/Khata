@@ -8,45 +8,44 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using ViewModels;
 
-namespace WebUI.Areas.Outgoing.Pages.Expenses
+namespace WebUI.Areas.Outgoing.Pages.Expenses;
+
+[Authorize]
+public class CreateModel : PageModel
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    private readonly IExpenseService _expenses;
+
+    public CreateModel(IExpenseService expenses)
     {
-        private readonly IExpenseService _expenses;
+        _expenses = expenses;
+    }
 
-        public CreateModel(IExpenseService expenses)
-        {
-            _expenses = expenses;
-        }
+    public IActionResult OnGet()
+    {
+        ExpenseVm = new ExpenseViewModel();
+        return Page();
+    }
 
-        public IActionResult OnGet()
+    [BindProperty]
+    public ExpenseViewModel ExpenseVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            ExpenseVm = new ExpenseViewModel();
             return Page();
         }
 
-        [BindProperty]
-        public ExpenseViewModel ExpenseVm { get; set; }
+        var expense = await _expenses.Add(ExpenseVm);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var expense = await _expenses.Add(ExpenseVm);
-
-            Message = $"Expense: {expense.Id} - {expense.Name} created!";
-            MessageType = "success";
+        Message = $"Expense: {expense.Id} - {expense.Name} created!";
+        MessageType = "success";
 
 
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

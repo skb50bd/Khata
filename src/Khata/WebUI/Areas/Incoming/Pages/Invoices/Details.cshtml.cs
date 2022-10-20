@@ -8,34 +8,33 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Incoming.Pages.Invoices
+namespace WebUI.Areas.Incoming.Pages.Invoices;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly ICustomerInvoiceService _invoices;
+    private readonly IOutletService _outlets;
+
+    public DetailsModel(
+        ICustomerInvoiceService invoices, 
+        IOutletService outlets)
     {
-        private readonly ICustomerInvoiceService _invoices;
-        private readonly IOutletService _outlets;
+        _invoices = invoices;
+        _outlets = outlets;
+    }
 
-        public DetailsModel(
-            ICustomerInvoiceService invoices, 
-            IOutletService outlets)
-        {
-            _invoices = invoices;
-            _outlets = outlets;
-        }
+    public CustomerInvoiceDto Invoice;
 
-        public CustomerInvoiceDto Invoice;
+    public async Task<IActionResult> OnGetAsync(int id)
+    {
+        Invoice = await _invoices.Get(id);
 
-        public async Task<IActionResult> OnGetAsync(int id)
-        {
-            Invoice = await _invoices.Get(id);
+        if (Invoice == null)
+            return NotFound();
 
-            if (Invoice == null)
-                return NotFound();
+        if (Invoice.Outlet is null)
+            Invoice.Outlet = (await _outlets.Get()).FirstOrDefault();
 
-            if (Invoice.Outlet is null)
-                Invoice.Outlet = (await _outlets.Get()).FirstOrDefault();
-
-            return Page();
-        }
+        return Page();
     }
 }

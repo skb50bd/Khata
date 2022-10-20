@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using Domain;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Mapper
+namespace Business.Mapper;
+
+public static class Configure
 {
-    public static class Configure
+    public static IServiceCollection ConfigureMapper(
+        this IServiceCollection services)
     {
-        public static IServiceCollection ConfigureMapper(
-            this IServiceCollection services)
-        {
-            _ = services.AddAutoMapper();
-            //AutoMapper.Mapper.Configuration.AssertConfigurationIsValid();
-            return services;
-        }
+        services.AddAutoMapper(typeof(MappingProfile).Assembly);
+        return services;
     }
 }

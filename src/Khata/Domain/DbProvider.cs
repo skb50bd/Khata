@@ -1,10 +1,9 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace Domain
+namespace Domain;
+
+public enum DbProvider
 {
-    public enum DbProvider
-    {
-        SQLServer,
-        SQLite,
-        PostgreSQL
-    }
+    SQLServer,
+    SQLite,
+    PostgreSQL
 }

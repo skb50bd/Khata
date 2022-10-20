@@ -12,76 +12,75 @@ using Microsoft.EntityFrameworkCore;
 
 using ViewModels;
 
-namespace WebUI.Areas.People.Pages.Customers
-{
-    public class EditModel : PageModel
-    {
-        private readonly ICustomerService _customers;
-        private readonly IMapper _mapper;
+namespace WebUI.Areas.People.Pages.Customers;
 
-        public EditModel(ICustomerService customers, IMapper mapper)
+public class EditModel : PageModel
+{
+    private readonly ICustomerService _customers;
+    private readonly IMapper _mapper;
+
+    public EditModel(ICustomerService customers, IMapper mapper)
+    {
+        _customers = customers;
+        _mapper = mapper;
+    }
+
+    [BindProperty]
+    public CustomerViewModel CustomerVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _customers = customers;
-            _mapper = mapper;
+            return NotFound();
         }
 
-        [BindProperty]
-        public CustomerViewModel CustomerVm { get; set; }
+        var customer = await _customers.Get((int)id);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (customer == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var customer = await _customers.Get((int)id);
+        CustomerVm = _mapper.Map<CustomerViewModel>(customer);
+        return Page();
+    }
 
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            CustomerVm = _mapper.Map<CustomerViewModel>(customer);
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
-
-        public async Task<IActionResult> OnPostAsync()
+        CustomerDto customer;
+        try
         {
-            if (!ModelState.IsValid)
+            customer = await _customers.Update(CustomerVm);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await CustomerExists((int)CustomerVm.Id))
             {
-                return Page();
+                return NotFound();
             }
-            CustomerDto customer;
-            try
+            else
             {
-                customer = await _customers.Update(CustomerVm);
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await CustomerExists((int)CustomerVm.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            Message = $"Customer: {customer.Id} - {customer.FullName} updated!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
         }
 
-        private async Task<bool> CustomerExists(int id)
-        {
-            return await _customers.Exists(id);
-        }
+        Message = $"Customer: {customer.Id} - {customer.FullName} updated!";
+        MessageType = "success";
+
+        return RedirectToPage("./Index");
+    }
+
+    private async Task<bool> CustomerExists(int id)
+    {
+        return await _customers.Exists(id);
     }
 }

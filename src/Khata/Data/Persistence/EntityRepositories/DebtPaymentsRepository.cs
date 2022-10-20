@@ -11,51 +11,50 @@ using Domain;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Persistence.Repositories
+namespace Data.Persistence.Repositories;
+
+public class DebtPaymentRepository : TrackingRepository<DebtPayment>, ITrackingRepository<DebtPayment>
 {
-    public class DebtPaymentRepository : TrackingRepository<DebtPayment>, ITrackingRepository<DebtPayment>
+    public DebtPaymentRepository(KhataContext context) : base(context) { }
+
+    public override async Task<IPagedList<DebtPayment>> Get<T>(
+        Expression<Func<DebtPayment, bool>> predicate,
+        Expression<Func<DebtPayment, T>> order,
+        int pageIndex,
+        int pageSize,
+        DateTime? from = null,
+        DateTime? to = null)
     {
-        public DebtPaymentRepository(KhataContext context) : base(context) { }
 
-        public override async Task<IPagedList<DebtPayment>> Get<T>(
-            Expression<Func<DebtPayment, bool>> predicate,
-            Expression<Func<DebtPayment, T>> order,
-            int pageIndex,
-            int pageSize,
-            DateTime? from = null,
-            DateTime? to = null)
+        predicate = predicate.And(i => !i.IsRemoved
+                                       && i.Metadata.CreationTime >= (from ?? Clock.Min)
+                                       && i.Metadata.CreationTime <= (to ?? Clock.Max));
+
+        var res = new PagedList<DebtPayment>()
         {
-
-            predicate = predicate.And(i => !i.IsRemoved
-                            && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                            && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-            var res = new PagedList<DebtPayment>()
-            {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                ResultCount = await Context.DebtPayments
-                    .AsNoTracking()
-                    .Include(d => d.Customer)
-                    .Where(predicate)
-                    .CountAsync()
-            };
-
-            res.AddRange(await Context.DebtPayments
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            ResultCount = await Context.DebtPayments
                 .AsNoTracking()
-                .Include(s => s.Customer)
+                .Include(d => d.Customer)
                 .Where(predicate)
-                .OrderByDescending(order)
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize > 0 ? pageSize : int.MaxValue)
-                .ToListAsync());
+                .CountAsync()
+        };
 
-            return res;
-        }
+        res.AddRange(await Context.DebtPayments
+            .AsNoTracking()
+            .Include(s => s.Customer)
+            .Where(predicate)
+            .OrderByDescending(order)
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize > 0 ? pageSize : int.MaxValue)
+            .ToListAsync());
 
-        public override async Task<DebtPayment> GetById(int id)
-            => await Context.DebtPayments
+        return res;
+    }
+
+    public override async Task<DebtPayment> GetById(int id)
+        => await Context.DebtPayments
             .Include(s => s.Customer)
             .FirstOrDefaultAsync(s => s.Id == id);
-    }
 }

@@ -10,38 +10,37 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Outgoing.Pages.SalaryIssues
+namespace WebUI.Areas.Outgoing.Pages.SalaryIssues;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly ISalaryIssueService _salaryIssues;
+    private readonly PfService _pfService;
+    public IndexModel(ISalaryIssueService salaryIssues, PfService pfService)
     {
-        private readonly ISalaryIssueService _salaryIssues;
-        private readonly PfService _pfService;
-        public IndexModel(ISalaryIssueService salaryIssues, PfService pfService)
-        {
-            _salaryIssues = salaryIssues;
-            _pfService = pfService;
-            SalaryIssues = new PagedList<SalaryIssueDto>();
-        }
+        _salaryIssues = salaryIssues;
+        _pfService = pfService;
+        SalaryIssues = new PagedList<SalaryIssueDto>();
+    }
 
-        public IPagedList<SalaryIssueDto> SalaryIssues { get; set; }
-        public PageFilter Pf { get; set; }
+    public IPagedList<SalaryIssueDto> SalaryIssues { get; set; }
+    public PageFilter Pf { get; set; }
 
-        #region TempData
-        [TempData]
-        public string Message { get; set; }
+    #region TempData
+    [TempData]
+    public string Message { get; set; }
 
-        [TempData]
-        public string MessageType { get; set; }
-        #endregion
+    [TempData]
+    public string MessageType { get; set; }
+    #endregion
 
-        public async Task<IActionResult> OnGetAsync(
-            string searchString = "",
-            int pageSize = 0,
-            int pageIndex = 1)
-        {
-            Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
-            SalaryIssues = await _salaryIssues.Get(Pf);
-            return Page();
-        }
+    public async Task<IActionResult> OnGetAsync(
+        string searchString = "",
+        int pageSize = 0,
+        int pageIndex = 1)
+    {
+        Pf = _pfService.CreateNewPf(searchString, pageIndex, pageSize);
+        SalaryIssues = await _salaryIssues.Get(Pf);
+        return Page();
     }
 }

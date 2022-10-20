@@ -12,108 +12,107 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace WebUI.Areas.People.Pages.Suppliers
+namespace WebUI.Areas.People.Pages.Suppliers;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly ISupplierService _suppliers;
+    private readonly IPurchaseService _purchases;
+    private readonly ISupplierPaymentService _supplierPayments;
+    private readonly IPurchaseReturnService _purchaseReturns;
+    private readonly IIndividualReportService<SupplierReport> _reports;
+
+    public DetailsModel(
+        ISupplierService suppliers,
+        IPurchaseService purchases,
+        ISupplierPaymentService supplierPayments,
+        IPurchaseReturnService purchaseReturns,
+        IIndividualReportService<SupplierReport> reports)
     {
-        private readonly ISupplierService _suppliers;
-        private readonly IPurchaseService _purchases;
-        private readonly ISupplierPaymentService _supplierPayments;
-        private readonly IPurchaseReturnService _purchaseReturns;
-        private readonly IIndividualReportService<SupplierReport> _reports;
+        _suppliers = suppliers;
+        _purchases = purchases;
+        _supplierPayments = supplierPayments;
+        _purchaseReturns = purchaseReturns;
+        _reports = reports;
+    }
 
-        public DetailsModel(
-            ISupplierService suppliers,
-            IPurchaseService purchases,
-            ISupplierPaymentService supplierPayments,
-            IPurchaseReturnService purchaseReturns,
-            IIndividualReportService<SupplierReport> reports)
+    public SupplierDto Supplier { get; set; }
+    public SupplierReport Report { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id is null)
         {
-            _suppliers = suppliers;
-            _purchases = purchases;
-            _supplierPayments = supplierPayments;
-            _purchaseReturns = purchaseReturns;
-            _reports = reports;
+            return NotFound();
         }
 
-        public SupplierDto Supplier { get; set; }
-        public SupplierReport Report { get; set; }
+        Supplier = await _suppliers.Get((int)id);
+        Report = await _reports.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Supplier is null)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            Supplier = await _suppliers.Get((int)id);
-            Report = await _reports.Get((int)id);
-
-            if (Supplier is null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnGetPurchasesAsync(int id)
+        return Page();
+    }
+
+    public async Task<IActionResult> OnGetPurchasesAsync(int id)
+    {
+        if (!await _suppliers.Exists(id))
         {
-            if (!await _suppliers.Exists(id))
-            {
-                return NotFound();
-            }
-            var purchases = await _purchases.GetSupplierPurchases(id);
-
-            return new PartialViewResult
-            {
-                ViewName = "~/Areas/Outgoing/Pages/Shared/_PurchasesList.cshtml",
-                ViewData = new ViewDataDictionary<IEnumerable<PurchaseDto>>(ViewData, purchases)
-            };
+            return NotFound();
         }
+        var purchases = await _purchases.GetSupplierPurchases(id);
 
-        public async Task<IActionResult> OnGetSupplierPaymentsAsync(int id)
+        return new PartialViewResult
         {
-            if (!await _suppliers.Exists(id))
-            {
-                return NotFound();
-            }
-            var supplierPayments = await _supplierPayments.GetSupplierPayments(id);
+            ViewName = "~/Areas/Outgoing/Pages/Shared/_PurchasesList.cshtml",
+            ViewData = new ViewDataDictionary<IEnumerable<PurchaseDto>>(ViewData, purchases)
+        };
+    }
 
-            return new PartialViewResult
-            {
-                ViewName = "~/Areas/Outgoing/Pages/Shared/_SupplierPaymentsList.cshtml",
-                ViewData = new ViewDataDictionary<IEnumerable<SupplierPaymentDto>>(ViewData, supplierPayments)
-            };
-        }
-
-        public async Task<IActionResult> OnGetPurchaseReturnsAsync(int id)
+    public async Task<IActionResult> OnGetSupplierPaymentsAsync(int id)
+    {
+        if (!await _suppliers.Exists(id))
         {
-            if (!await _suppliers.Exists(id))
-            {
-                return NotFound();
-            }
-            var purchaseReturns = await _purchaseReturns.GetSupplierPurchaseReturns(id);
-
-            return new PartialViewResult
-            {
-                ViewName = "~/Areas/Incoming/Pages/Shared/_PurchaseReturnsList.cshtml",
-                ViewData = new ViewDataDictionary<IEnumerable<PurchaseReturnDto>>(ViewData, purchaseReturns)
-            };
+            return NotFound();
         }
+        var supplierPayments = await _supplierPayments.GetSupplierPayments(id);
 
-        public async Task<IActionResult> OnGetBriefAsync(int supplierId)
+        return new PartialViewResult
         {
-            if (!await _suppliers.Exists(supplierId))
-            {
-                return NotFound();
-            }
-            var supplier = await _suppliers.Get(supplierId);
-            return new PartialViewResult
-            {
-                ViewName = "_SupplierBriefInfo",
-                ViewData = new ViewDataDictionary<SupplierDto>(ViewData, supplier)
-            };
+            ViewName = "~/Areas/Outgoing/Pages/Shared/_SupplierPaymentsList.cshtml",
+            ViewData = new ViewDataDictionary<IEnumerable<SupplierPaymentDto>>(ViewData, supplierPayments)
+        };
+    }
+
+    public async Task<IActionResult> OnGetPurchaseReturnsAsync(int id)
+    {
+        if (!await _suppliers.Exists(id))
+        {
+            return NotFound();
         }
+        var purchaseReturns = await _purchaseReturns.GetSupplierPurchaseReturns(id);
+
+        return new PartialViewResult
+        {
+            ViewName = "~/Areas/Incoming/Pages/Shared/_PurchaseReturnsList.cshtml",
+            ViewData = new ViewDataDictionary<IEnumerable<PurchaseReturnDto>>(ViewData, purchaseReturns)
+        };
+    }
+
+    public async Task<IActionResult> OnGetBriefAsync(int supplierId)
+    {
+        if (!await _suppliers.Exists(supplierId))
+        {
+            return NotFound();
+        }
+        var supplier = await _suppliers.Get(supplierId);
+        return new PartialViewResult
+        {
+            ViewName = "_SupplierBriefInfo",
+            ViewData = new ViewDataDictionary<SupplierDto>(ViewData, supplier)
+        };
     }
 }

@@ -12,76 +12,75 @@ using Microsoft.EntityFrameworkCore;
 
 using ViewModels;
 
-namespace WebUI.Areas.People.Pages.Suppliers
-{
-    public class EditModel : PageModel
-    {
-        private readonly ISupplierService _suppliers;
-        private readonly IMapper _mapper;
+namespace WebUI.Areas.People.Pages.Suppliers;
 
-        public EditModel(ISupplierService suppliers, IMapper mapper)
+public class EditModel : PageModel
+{
+    private readonly ISupplierService _suppliers;
+    private readonly IMapper _mapper;
+
+    public EditModel(ISupplierService suppliers, IMapper mapper)
+    {
+        _suppliers = suppliers;
+        _mapper = mapper;
+    }
+
+    [BindProperty]
+    public SupplierViewModel SupplierVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _suppliers = suppliers;
-            _mapper = mapper;
+            return NotFound();
         }
 
-        [BindProperty]
-        public SupplierViewModel SupplierVm { get; set; }
+        var supplier = await _suppliers.Get((int)id);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (supplier == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var supplier = await _suppliers.Get((int)id);
+        SupplierVm = _mapper.Map<SupplierViewModel>(supplier);
+        return Page();
+    }
 
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-
-            SupplierVm = _mapper.Map<SupplierViewModel>(supplier);
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
-
-        public async Task<IActionResult> OnPostAsync()
+        SupplierDto supplier;
+        try
         {
-            if (!ModelState.IsValid)
+            supplier = await _suppliers.Update(SupplierVm);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await SupplierExists((int)SupplierVm.Id))
             {
-                return Page();
+                return NotFound();
             }
-            SupplierDto supplier;
-            try
+            else
             {
-                supplier = await _suppliers.Update(SupplierVm);
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await SupplierExists((int)SupplierVm.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            Message = $"Supplier: {supplier.Id} - {supplier.FullName} updated!";
-            MessageType = "success";
-
-            return RedirectToPage("./Index");
         }
 
-        private async Task<bool> SupplierExists(int id)
-        {
-            return await _suppliers.Exists(id);
-        }
+        Message = $"Supplier: {supplier.Id} - {supplier.FullName} updated!";
+        MessageType = "success";
+
+        return RedirectToPage("./Index");
+    }
+
+    private async Task<bool> SupplierExists(int id)
+    {
+        return await _suppliers.Exists(id);
     }
 }

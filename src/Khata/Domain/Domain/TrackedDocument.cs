@@ -1,7 +1,6 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public class TrackedDocument : Document
 {
-    public class TrackedDocument : Document
-    {
-        public bool IsRemoved { get; set; }
-    }
+    public bool IsRemoved { get; set; }
 }

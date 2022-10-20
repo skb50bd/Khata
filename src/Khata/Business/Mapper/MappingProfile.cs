@@ -12,136 +12,136 @@ using DTOs;
 
 using ViewModels;
 
-namespace Business.Mapper
+namespace Business.Mapper;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<string, string>()
-                .ConvertUsing(s => s ?? string.Empty);
+        CreateMap<string, string>()
+            .ConvertUsing(s => s ?? string.Empty);
 
-            #region Cash Register Mapping
+        #region Cash Register Mapping
 
-            CreateMap<CashRegisterViewModel, CashRegister>();
-            CreateMap<CashRegister, CashRegisterDto>();
-            CreateMap<CashRegisterDto, CashRegisterViewModel>();
+        CreateMap<CashRegisterViewModel, CashRegister>();
+        CreateMap<CashRegister, CashRegisterDto>();
+        CreateMap<CashRegisterDto, CashRegisterViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Outlet Mapping
+        #region Outlet Mapping
 
-            CreateMap<OutletViewModel, Outlet>();
-            CreateMap<Outlet, OutletDto>();
-            CreateMap<OutletDto, OutletViewModel>();
+        CreateMap<OutletViewModel, Outlet>();
+        CreateMap<Outlet, OutletDto>();
+        CreateMap<OutletDto, OutletViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Product Mapping
-            CreateMap<ProductViewModel, Product>()
-               .ForMember(
-                    dest => dest.Inventory,
-                    opt => opt.MapFrom(
-                        src => new Inventory
-                        {
-                            Stock = src.InventoryStock,
-                            Warehouse = src.InventoryWarehouse,
-                            AlertAt = src.InventoryAlertAt
-                        })
-                ).ForMember(
-                    dest => dest.Price,
-                    opt => opt.MapFrom(
-                        src => new Pricing
-                        {
-                            Retail = src.PriceRetail,
-                            Bulk = src.PriceBulk,
-                            Margin = src.PriceMargin,
-                            Purchase = src.PricePurchase
-                        }    
-                    )
-                );
-
-            CreateMap<Product, ProductDto>()
-                .ForMember(
-                    dest => dest.InventoryStockStatus,
-                    opt => opt.MapFrom(
-                        src => src.Inventory.Status)
-                );
-            CreateMap<ProductDto, ProductViewModel>();
-            #endregion
-
-            #region Service Mapping
-            CreateMap<ServiceViewModel, Service>();
-            CreateMap<Service, ServiceDto>();
-            CreateMap<ServiceDto, ServiceViewModel>();
-            #endregion
-
-            #region Person Mapping
-
-            CreateMap<PersonViewModel, Person>();
-            CreateMap<Person, PersonDto>();
-            CreateMap<PersonDto, PersonViewModel>();
-
-            #endregion
-
-            #region Customer Mapping
-            CreateMap<CustomerViewModel, Customer>();
-            CreateMap<Customer, CustomerDto>();
-            CreateMap<CustomerDto, CustomerViewModel>();
-            #endregion
-
-            #region Transactions Mapping
-
-            CreateMap<DepositViewModel, Deposit>();
-            CreateMap<WithdrawalViewModel, Withdrawal>();
-
-            #endregion
-
-            #region Debt Payment Mapping
-
-            CreateMap<DebtPaymentViewModel, DebtPayment>()
-               .ForMember(
-                    dest => dest.PaymentDate,
-                    opt => opt.MapFrom(
-                        src => src.PaymentDate.ParseDate()
-                    )
-                );
-            CreateMap<DebtPayment, DebtPaymentDto>();
-            CreateMap<DebtPaymentDto, DebtPaymentViewModel>();
-
-            #endregion
-
-            #region Sale Mapping
-
-            CreateMap<LineItemViewModel, SaleLineItem>();
-            CreateMap<SaleLineItem, LineItemViewModel>();
-            CreateMap<PaymentInfoViewModel, PaymentInfo>();
-
-            CreateMap<Sale, SaleDto>();
-            CreateMap<SaleViewModel, Sale>()
-                .ForMember(
-                    dest => dest.SaleDate,
-                    opt => opt.MapFrom(
-                        src => src.SaleDate.ParseDate()
-                   )
-                );
-            CreateMap<SaleDto, SaleViewModel>().ForMember(
-                dest => dest.SaleDate,
-                opt => opt.MapFrom(src => src.SaleDate.LocalDate())
+        #region Product Mapping
+        CreateMap<ProductViewModel, Product>()
+            .ForMember(
+                dest => dest.Inventory,
+                opt => opt.MapFrom(
+                    src => new Inventory
+                    {
+                        Stock = src.InventoryStock,
+                        Warehouse = src.InventoryWarehouse,
+                        AlertAt = src.InventoryAlertAt
+                    })
+            ).ForMember(
+                dest => dest.Price,
+                opt => opt.MapFrom(
+                    src => new Pricing
+                    {
+                        Retail = src.PriceRetail,
+                        Bulk = src.PriceBulk,
+                        Margin = src.PriceMargin,
+                        Purchase = src.PricePurchase
+                    }    
+                )
             );
 
-            CreateMap<SavedSale, SaleDto>();
-            CreateMap<SaleViewModel, SavedSale>()
-                .ForMember(
-                    dest => dest.SaleDate,
-                    opt => opt.MapFrom(
-                        src => src.SaleDate.ParseDate()
-                   )
-                );
+        CreateMap<Product, ProductDto>()
+            .ForMember(
+                dest => dest.InventoryStockStatus,
+                opt => opt.MapFrom(
+                    src => src.Inventory.Status)
+            );
+        CreateMap<ProductDto, ProductViewModel>();
+        #endregion
 
-            CreateMap<SaleLineItem, InvoiceLineItem>();
+        #region Service Mapping
+        CreateMap<ServiceViewModel, Service>();
+        CreateMap<Service, ServiceDto>();
+        CreateMap<ServiceDto, ServiceViewModel>();
+        #endregion
 
-            CreateMap<SaleViewModel, CustomerInvoice>()
+        #region Person Mapping
+
+        CreateMap<PersonViewModel, Person>();
+        CreateMap<Person, PersonDto>();
+        CreateMap<PersonDto, PersonViewModel>();
+
+        #endregion
+
+        #region Customer Mapping
+        CreateMap<CustomerViewModel, Customer>();
+        CreateMap<Customer, CustomerDto>();
+        CreateMap<CustomerDto, CustomerViewModel>();
+        #endregion
+
+        #region Transactions Mapping
+
+        CreateMap<DepositViewModel, Deposit>();
+        CreateMap<WithdrawalViewModel, Withdrawal>();
+
+        #endregion
+
+        #region Debt Payment Mapping
+
+        CreateMap<DebtPaymentViewModel, DebtPayment>()
+            .ForMember(
+                dest => dest.PaymentDate,
+                opt => opt.MapFrom(
+                    src => src.PaymentDate.ParseDate()
+                )
+            );
+        CreateMap<DebtPayment, DebtPaymentDto>();
+        CreateMap<DebtPaymentDto, DebtPaymentViewModel>();
+
+        #endregion
+
+        #region Sale Mapping
+
+        CreateMap<LineItemViewModel, SaleLineItem>();
+        CreateMap<SaleLineItem, LineItemViewModel>();
+        CreateMap<PaymentInfoViewModel, PaymentInfo>();
+
+        CreateMap<Sale, SaleDto>();
+        CreateMap<SaleViewModel, Sale>()
+            .ForMember(
+                dest => dest.SaleDate,
+                opt => opt.MapFrom(
+                    src => src.SaleDate.ParseDate()
+                )
+            );
+        CreateMap<SaleDto, SaleViewModel>().ForMember(
+            dest => dest.SaleDate,
+            opt => opt.MapFrom(src => src.SaleDate.LocalDate())
+        );
+
+        CreateMap<SavedSale, SaleDto>();
+        CreateMap<SaleViewModel, SavedSale>()
+            .ForMember(
+                dest => dest.SaleDate,
+                opt => opt.MapFrom(
+                    src => src.SaleDate.ParseDate()
+                )
+            );
+
+        CreateMap<SaleLineItem, InvoiceLineItem>();
+
+        CreateMap<SaleViewModel, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -159,7 +159,7 @@ namespace Business.Mapper
                 opt => opt.MapFrom(src => src.Cart.Sum(li => li.NetPrice))
             );
 
-            CreateMap<Sale, CustomerInvoice>()
+        CreateMap<Sale, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -177,7 +177,7 @@ namespace Business.Mapper
                 opt => opt.MapFrom(src => src)
             );
 
-            CreateMap<DebtPayment, CustomerInvoice>()
+        CreateMap<DebtPayment, CustomerInvoice>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -206,23 +206,23 @@ namespace Business.Mapper
                 dest => dest.DebtPayment,
                 opt => opt.MapFrom(src => src)
             );
-            #endregion
+        #endregion
 
-            #region Purchase 
+        #region Purchase 
 
-            CreateMap<LineItemViewModel, PurchaseLineItem>()
-                .ForMember(
-                    dest => dest.UnitPurchasePrice,
-                    opt => opt.MapFrom(src => src.NetPrice / src.Quantity)
-                )
-                .ForMember(
-                    dest => dest.ProductId,
-                    opt => opt.MapFrom(src => src.ItemId)
-                );
-            CreateMap<PurchaseLineItem, LineItemViewModel>()
+        CreateMap<LineItemViewModel, PurchaseLineItem>()
             .ForMember(
-                    dest => dest.NetPrice,
-                    opt => opt.MapFrom(src => src.NetPurchasePrice)
+                dest => dest.UnitPurchasePrice,
+                opt => opt.MapFrom(src => src.NetPrice / src.Quantity)
+            )
+            .ForMember(
+                dest => dest.ProductId,
+                opt => opt.MapFrom(src => src.ItemId)
+            );
+        CreateMap<PurchaseLineItem, LineItemViewModel>()
+            .ForMember(
+                dest => dest.NetPrice,
+                opt => opt.MapFrom(src => src.NetPurchasePrice)
             )
             .ForMember(
                 dest => dest.ItemId,
@@ -233,29 +233,29 @@ namespace Business.Mapper
                 opt => opt.MapFrom(src => LineItemType.Product)
             );
 
-            CreateMap<PurchaseLineItem, InvoiceLineItem>()
-                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPurchasePrice))
-                .ForMember(dest => dest.NetPrice, opt => opt.MapFrom(src => src.NetPurchasePrice));
+        CreateMap<PurchaseLineItem, InvoiceLineItem>()
+            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPurchasePrice))
+            .ForMember(dest => dest.NetPrice, opt => opt.MapFrom(src => src.NetPurchasePrice));
 
-            CreateMap<Purchase, PurchaseDto>();
-            CreateMap<PurchaseViewModel, Purchase>()
-                .ForMember(
-                    dest => dest.PurchaseDate,
-                    opt => opt.MapFrom(
-                        src => DateTimeOffset.ParseExact(
-                            src.PurchaseDate,
-                            @"dd/MM/yyyy",
-                            CultureInfo.InvariantCulture.DateTimeFormat
-                        )
-                   )
-                );
-
-            CreateMap<PurchaseDto, PurchaseViewModel>().ForMember(
+        CreateMap<Purchase, PurchaseDto>();
+        CreateMap<PurchaseViewModel, Purchase>()
+            .ForMember(
                 dest => dest.PurchaseDate,
-                opt => opt.MapFrom(src => src.PurchaseDate.ToString("dd/MM/yyyy"))
+                opt => opt.MapFrom(
+                    src => DateTimeOffset.ParseExact(
+                        src.PurchaseDate,
+                        @"dd/MM/yyyy",
+                        CultureInfo.InvariantCulture.DateTimeFormat
+                    )
+                )
             );
 
-            CreateMap<Purchase, Vouchar>()
+        CreateMap<PurchaseDto, PurchaseViewModel>().ForMember(
+            dest => dest.PurchaseDate,
+            opt => opt.MapFrom(src => src.PurchaseDate.ToString("dd/MM/yyyy"))
+        );
+
+        CreateMap<Purchase, Vouchar>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -273,7 +273,7 @@ namespace Business.Mapper
                 opt => opt.MapFrom(src => src)
             );
 
-            CreateMap<SupplierPayment, Vouchar>()
+        CreateMap<SupplierPayment, Vouchar>()
             .ForMember(
                 dest => dest.Id,
                 opt => opt.Ignore()
@@ -294,82 +294,81 @@ namespace Business.Mapper
                 dest => dest.SupplierPayment,
                 opt => opt.MapFrom(src => src)
             );
-            #endregion
+        #endregion
 
-            #region Expense Mapping
+        #region Expense Mapping
 
-            CreateMap<ExpenseViewModel, Expense>();
-            CreateMap<Expense, ExpenseDto>();
-            CreateMap<ExpenseDto, ExpenseViewModel>();
+        CreateMap<ExpenseViewModel, Expense>();
+        CreateMap<Expense, ExpenseDto>();
+        CreateMap<ExpenseDto, ExpenseViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Supplier Mapping
+        #region Supplier Mapping
 
-            CreateMap<SupplierViewModel, Supplier>();
-            CreateMap<Supplier, SupplierDto>();
-            CreateMap<SupplierDto, SupplierViewModel>();
+        CreateMap<SupplierViewModel, Supplier>();
+        CreateMap<Supplier, SupplierDto>();
+        CreateMap<SupplierDto, SupplierViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Supplier Payment Mapping
+        #region Supplier Payment Mapping
 
-            CreateMap<SupplierPaymentViewModel, SupplierPayment>()
-               .ForMember(
-                    dest => dest.PaymentDate,
-                    opt => opt.MapFrom(
-                        src => src.PaymentDate.ParseDate()
-                    )
-                );
-            CreateMap<SupplierPayment, SupplierPaymentDto>();
-            CreateMap<SupplierPaymentDto, SupplierPaymentViewModel>();
+        CreateMap<SupplierPaymentViewModel, SupplierPayment>()
+            .ForMember(
+                dest => dest.PaymentDate,
+                opt => opt.MapFrom(
+                    src => src.PaymentDate.ParseDate()
+                )
+            );
+        CreateMap<SupplierPayment, SupplierPaymentDto>();
+        CreateMap<SupplierPaymentDto, SupplierPaymentViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Employee Mapping
+        #region Employee Mapping
 
-            CreateMap<EmployeeViewModel, Employee>();
-            CreateMap<Employee, EmployeeDto>();
-            CreateMap<EmployeeDto, EmployeeViewModel>();
+        CreateMap<EmployeeViewModel, Employee>();
+        CreateMap<Employee, EmployeeDto>();
+        CreateMap<EmployeeDto, EmployeeViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Salary Issue and Payment Mapping
+        #region Salary Issue and Payment Mapping
 
-            CreateMap<SalaryIssueViewModel, SalaryIssue>();
-            CreateMap<SalaryIssue, SalaryIssueDto>();
-            CreateMap<SalaryIssueDto, SalaryIssueViewModel>();
+        CreateMap<SalaryIssueViewModel, SalaryIssue>();
+        CreateMap<SalaryIssue, SalaryIssueDto>();
+        CreateMap<SalaryIssueDto, SalaryIssueViewModel>();
 
-            CreateMap<SalaryPaymentViewModel, SalaryPayment>()
-               .ForMember(
-                    dest => dest.PaymentDate,
-                    opt => opt.MapFrom(
-                        src => src.PaymentDate.ParseDate()
-                    )
-                );
-            CreateMap<SalaryPayment, SalaryPaymentDto>();
-            CreateMap<SalaryPaymentDto, SalaryPaymentViewModel>();
+        CreateMap<SalaryPaymentViewModel, SalaryPayment>()
+            .ForMember(
+                dest => dest.PaymentDate,
+                opt => opt.MapFrom(
+                    src => src.PaymentDate.ParseDate()
+                )
+            );
+        CreateMap<SalaryPayment, SalaryPaymentDto>();
+        CreateMap<SalaryPaymentDto, SalaryPaymentViewModel>();
 
-            #endregion
+        #endregion
 
-            #region Invoice / Vouchar Mapping
+        #region Invoice / Vouchar Mapping
 
-            CreateMap<InvoiceLineItem, InvoiceLineItemDto>();
-            CreateMap<Invoice, InvoiceDto>();
-            CreateMap<CustomerInvoice, CustomerInvoiceDto>();
-            CreateMap<Vouchar, VoucharDto>();
+        CreateMap<InvoiceLineItem, InvoiceLineItemDto>();
+        CreateMap<Invoice, InvoiceDto>();
+        CreateMap<CustomerInvoice, CustomerInvoiceDto>();
+        CreateMap<Vouchar, VoucharDto>();
 
-            #endregion
+        #endregion
 
-            #region Refund / Purchase Return Mapping
+        #region Refund / Purchase Return Mapping
 
-            CreateMap<Refund, RefundDto>();
-            CreateMap<RefundViewModel, Refund>();
+        CreateMap<Refund, RefundDto>();
+        CreateMap<RefundViewModel, Refund>();
 
-            CreateMap<PurchaseReturn, PurchaseReturnDto>();
-            CreateMap<PurchaseReturnViewModel, PurchaseReturn>();
+        CreateMap<PurchaseReturn, PurchaseReturnDto>();
+        CreateMap<PurchaseReturnViewModel, PurchaseReturn>();
 
-            #endregion
-        }
+        #endregion
     }
 }

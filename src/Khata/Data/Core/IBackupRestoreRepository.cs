@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace Data.Core
+namespace Data.Core;
+
+public interface IBackupRestoreRepository
 {
-    public interface IBackupRestoreRepository
-    {
-        Task<Stream> GetJsonDump();
-        Task<bool> RestoreFromJson(string dump);
-    }
+    Task<Stream> GetJsonDump();
+    Task<bool> RestoreFromJson(string dump);
 }

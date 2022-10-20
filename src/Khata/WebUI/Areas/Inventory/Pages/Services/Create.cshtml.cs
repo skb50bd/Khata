@@ -11,53 +11,52 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using ViewModels;
 
-namespace WebUI.Areas.Inventory.Pages.Services
+namespace WebUI.Areas.Inventory.Pages.Services;
+
+[Authorize]
+public class CreateModel : PageModel
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    private readonly IServiceService _services;
+    private readonly IOutletService _outlets;
+
+    public CreateModel(IServiceService services,
+        IOutletService outlets)
     {
-        private readonly IServiceService _services;
-        private readonly IOutletService _outlets;
+        _services = services;
+        _outlets = outlets;
+        ServiceVm = new ServiceViewModel();
+    }
 
-        public CreateModel(IServiceService services,
-            IOutletService outlets)
-        {
-            _services = services;
-            _outlets = outlets;
-            ServiceVm = new ServiceViewModel();
-        }
+    public async Task<IActionResult> OnGetAsync()
+    {
+        ViewData["Outlets"] = new SelectList(
+            await _outlets.Get(),
+            nameof(Outlet.Id),
+            nameof(Outlet.Title)
+        );
+        return Page();
+    }
 
-        public async Task<IActionResult> OnGetAsync()
+    [BindProperty]
+    public ServiceViewModel ServiceVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            ViewData["Outlets"] = new SelectList(
-                await _outlets.Get(),
-                nameof(Outlet.Id),
-                nameof(Outlet.Title)
-            );
             return Page();
         }
 
-        [BindProperty]
-        public ServiceViewModel ServiceVm { get; set; }
+        var dto = await _services.Add(ServiceVm);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var dto = await _services.Add(ServiceVm);
-
-            Message = $"Service: {dto.Id} - {dto.Name} created!";
-            MessageType = "success";
+        Message = $"Service: {dto.Id} - {dto.Name} created!";
+        MessageType = "success";
 
 
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

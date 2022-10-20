@@ -7,34 +7,33 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebUI.Areas.Inventory.Pages.Services
+namespace WebUI.Areas.Inventory.Pages.Services;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IServiceService _services;
+
+    public DetailsModel(IServiceService services)
     {
-        private readonly IServiceService _services;
+        _services = services;
+    }
 
-        public DetailsModel(IServiceService services)
+    public ServiceDto Service { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id is null)
         {
-            _services = services;
+            return NotFound();
         }
 
-        public ServiceDto Service { get; set; }
+        Service = await _services.Get((int)id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (Service is null)
         {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            Service = await _services.Get((int)id);
-
-            if (Service is null)
-            {
-                return NotFound();
-            }
-
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

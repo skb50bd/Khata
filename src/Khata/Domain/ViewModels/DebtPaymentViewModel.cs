@@ -1,24 +1,22 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ViewModels
+namespace ViewModels;
+
+public class DebtPaymentViewModel
 {
-    public class DebtPaymentViewModel
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        [Display(Name = "Date")]
-        [DataType(DataType.Date)]
-        public string PaymentDate { get; set; }
+    [Display(Name = "Date")]
+    [DataType(DataType.Date)]
+    public string PaymentDate { get; set; }
 
-        public int CustomerId { get; set; }
-        public int InvoiceId { get; set; }
+    public int CustomerId { get; set; }
+    public int InvoiceId { get; set; }
 
-        [Display(Name = "Amount Paid", ShortName = "Amount")]
-        [DataType(DataType.Currency)]
-        public decimal Amount { get; set; }
+    [Display(Name = "Amount Paid", ShortName = "Amount")]
+    [DataType(DataType.Currency)]
+    public decimal Amount { get; set; }
 
-        [MaxLength(200)]
-        public string Description { get; set; }
-    }
+    [MaxLength(200)]
+    public string Description { get; set; }
 }

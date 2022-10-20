@@ -8,45 +8,44 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using ViewModels;
 
-namespace WebUI.Areas.Outgoing.Pages.SalaryIssues
+namespace WebUI.Areas.Outgoing.Pages.SalaryIssues;
+
+[Authorize]
+public class CreateModel : PageModel
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    private readonly ISalaryIssueService _salaryIssues;
+
+    public CreateModel(ISalaryIssueService salaryIssues)
     {
-        private readonly ISalaryIssueService _salaryIssues;
+        _salaryIssues = salaryIssues;
+    }
 
-        public CreateModel(ISalaryIssueService salaryIssues)
-        {
-            _salaryIssues = salaryIssues;
-        }
+    public IActionResult OnGet()
+    {
+        SalaryIssueVm = new SalaryIssueViewModel();
+        return Page();
+    }
 
-        public IActionResult OnGet()
+    [BindProperty]
+    public SalaryIssueViewModel SalaryIssueVm { get; set; }
+
+    [TempData] public string Message { get; set; }
+    [TempData] public string MessageType { get; set; }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            SalaryIssueVm = new SalaryIssueViewModel();
             return Page();
         }
 
-        [BindProperty]
-        public SalaryIssueViewModel SalaryIssueVm { get; set; }
+        var salaryIssue = await _salaryIssues.Add(SalaryIssueVm);
 
-        [TempData] public string Message { get; set; }
-        [TempData] public string MessageType { get; set; }
-
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var salaryIssue = await _salaryIssues.Add(SalaryIssueVm);
-
-            Message = $"Debt Issue: {salaryIssue.Id} - {salaryIssue.EmployeeFullName} - {salaryIssue.Amount} created!";
-            MessageType = "success";
+        Message = $"Debt Issue: {salaryIssue.Id} - {salaryIssue.EmployeeFullName} - {salaryIssue.Amount} created!";
+        MessageType = "success";
 
 
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+public enum StockStatus
 {
-    public enum StockStatus
-    {
-        Negative     = 0,
-        Empty        = 1,
-        LowStock     = 2,
-        LimitedStock = 3,
-        InStock      = 4,
-    }
+    Negative     = 0,
+    Empty        = 1,
+    LowStock     = 2,
+    LimitedStock = 3,
+    InStock      = 4,
 }
