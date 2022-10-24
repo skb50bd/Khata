@@ -77,7 +77,7 @@ public class ExpenseService : IExpenseService
     {
         var newExpense = _mapper.Map<Expense>(vm);
         var originalExpense = await _db.Expenses.GetById(newExpense.Id);
-        var meta = originalExpense.Metadata.Modified(CurrentUser);
+        var meta = originalExpense.Metadata.ModifiedBy(CurrentUser);
         originalExpense.SetValuesFrom(newExpense);
         originalExpense.Metadata = meta;
 

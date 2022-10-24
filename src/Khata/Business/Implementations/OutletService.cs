@@ -138,7 +138,7 @@ public class OutletService : IOutletService
     {
         var newDm = _mapper.Map<Outlet>(vm);
         var originalDm = await _db.Outlets.GetById(newDm.Id);
-        var meta = originalDm.Metadata.Modified(CurrentUser);
+        var meta = originalDm.Metadata.ModifiedBy(CurrentUser);
         originalDm.SetValuesFrom(newDm);
         originalDm.Metadata = meta;
 

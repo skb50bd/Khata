@@ -80,7 +80,7 @@ public class ProductService : IProductService
         var newProduct = _mapper.Map<Product>(vm);
         newProduct.Outlet = await _db.Outlets.GetById(vm.OutletId);
         var originalProduct = await _db.Products.GetById(newProduct.Id);
-        var meta = originalProduct.Metadata.Modified(CurrentUser);
+        var meta = originalProduct.Metadata.ModifiedBy(CurrentUser);
         originalProduct.SetValuesFrom(newProduct);
         originalProduct.Metadata = meta;
 

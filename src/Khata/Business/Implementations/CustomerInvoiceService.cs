@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using Brotal;
 using Business.Abstractions;
 using Business.PageFilterSort;
 using Data.Core;
@@ -18,7 +17,7 @@ public class InvoiceService : ICustomerInvoiceService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _db;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private string CurrentUser => _httpContextAccessor.HttpContext.User.Identity.Name;
+    private string? CurrentUser => _httpContextAccessor.HttpContext?.User.Identity?.Name;
 
     public InvoiceService(
         IUnitOfWork db,
@@ -34,15 +33,26 @@ public class InvoiceService : ICustomerInvoiceService
         DateTime? from = null,
         DateTime? to = null)
     {
-        var predicate = string.IsNullOrEmpty(pf.Filter)
-            ? (Expression<Func<CustomerInvoice, bool>>)(p => true)
-            : p => p.Id.ToString() == pf.Filter
-                   || p.Customer.FullName.ToLowerInvariant().Contains(pf.Filter)
-                   || p.Customer.CompanyName.ToLowerInvariant().Contains(pf.Filter)
-                   || p.Customer.Phone.Contains(pf.Filter)
-                   || p.Customer.Email.Contains(pf.Filter);
-        var res = await _db.Invoices.Get(predicate, p => p.Id, pf.PageIndex, pf.PageSize, from, to);
-        return res.CastList(c => _mapper.Map<CustomerInvoiceDto>(c));
+        var predicate = 
+            string.IsNullOrEmpty(pf.Filter)
+                ? (Expression<Func<CustomerInvoice, bool>>)(p => true)
+                : p => p.Id.ToString() == pf.Filter
+                       || p.Customer.FirstName.ToLowerInvariant().Contains(pf.Filter)
+                       || p.Customer.LastName.ToLowerInvariant().Contains(pf.Filter)
+                       || p.Customer.CompanyName.ToLowerInvariant().Contains(pf.Filter)
+                       || p.Customer.Phone.Contains(pf.Filter)
+                       || p.Customer.Email.Contains(pf.Filter);
+        
+        var res = 
+            await _db.Invoices.Get(
+                predicate, 
+                p => p.Id, 
+                pf.PageIndex, 
+                pf.PageSize, 
+                from, 
+                to);
+        
+        return _mapper.Map<IPagedList<CustomerInvoiceDto>>(res);
     }
 
     public async Task<CustomerInvoiceDto> Get(int id)
@@ -53,7 +63,7 @@ public class InvoiceService : ICustomerInvoiceService
     public async Task<CustomerInvoiceDto> Add(CustomerInvoice model)
     {
         model.Metadata = Metadata.CreatedNew(CurrentUser);
-        _db.Invoices.Add(model);
+        await _db.Invoices.Add(model, false);
         await _db.CompleteAsync();
 
         return _mapper.Map<CustomerInvoiceDto>(model);

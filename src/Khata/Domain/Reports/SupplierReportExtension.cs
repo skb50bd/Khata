@@ -1,11 +1,9 @@
-﻿using System.Linq;
-
-namespace Domain.Reports;
+﻿namespace Domain.Reports;
 
 public static class SupplierReportExtension
 {
     public static SupplierReport GetReport(this Supplier supplier) =>
-        new SupplierReport
+        new()
         {
             Id       = supplier.Id,
             FullName = supplier.FullName,

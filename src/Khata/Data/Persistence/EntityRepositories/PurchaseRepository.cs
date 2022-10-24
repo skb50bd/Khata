@@ -1,61 +1,37 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
 
 public class PurchaseRepository : TrackingRepository<Purchase>, ITrackingRepository<Purchase>
 {
-    public PurchaseRepository(KhataContext context) : base(context) { }
+    public PurchaseRepository(
+            KhataContext context,
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
 
     public override async Task<IPagedList<Purchase>> Get<T>(
-        Expression<Func<Purchase, bool>> predicate,
-        Expression<Func<Purchase, T>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-    {
-        predicate = predicate.And(
-            i => !i.IsRemoved
-                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-        var res = new PagedList<Purchase>()
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            ResultCount =
-                await Context.Purchases
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .CountAsync()
-        };
-
-        res.AddRange(await Context.Purchases
+            Expression<Func<Purchase, bool>> predicate,
+            Expression<Func<Purchase, T>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) =>
+        await Context.Set<Purchase>()
             .AsNoTracking()
+            .OrderByDescending(order)
+            .Where(predicate.AddTrackedDocumentFilter(from, to))
             .Include(s => s.Cart)
             .Include(s => s.Supplier)
-            .Where(predicate)
-            .OrderByDescending(order)
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize > 0 ? pageSize : int.MaxValue)
-            .ToListAsync());
+            .ToPagedListAsync(pageIndex, pageSize);
 
-        return res;
-    }
-
-    public override async Task<Purchase> GetById(int id)
-        => await Context.Purchases
+    public override async Task<Purchase?> GetById(int id) => 
+        await Context.Set<Purchase>()
             .Include(s => s.Supplier)
             .Include(s => s.Cart)
             .FirstOrDefaultAsync(s => s.Id == id);

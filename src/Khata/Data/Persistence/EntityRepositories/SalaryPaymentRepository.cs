@@ -1,60 +1,36 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
 
-public class SalaryPaymentRepository : TrackingRepository<SalaryPayment>, ITrackingRepository<SalaryPayment>
+public class SalaryPaymentRepository : TrackingRepository<SalaryPayment>
 {
-    public SalaryPaymentRepository(KhataContext context) : base(context) { }
+    public SalaryPaymentRepository(
+            KhataContext context,
+            IDateTimeProvider dateTimeProvider) 
+        : base(context, dateTimeProvider)
+    { }
 
     public override async Task<IPagedList<SalaryPayment>> Get<T>(
-        Expression<Func<SalaryPayment, bool>> predicate,
-        Expression<Func<SalaryPayment, T>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-    {
-        predicate = predicate.And(
-            i => !i.IsRemoved
-                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-        var res = new PagedList<SalaryPayment>()
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            ResultCount =
-                await Context.SalaryPayments
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .CountAsync()
-        };
-
-        res.AddRange(await Context.SalaryPayments
+            Expression<Func<SalaryPayment, bool>> predicate,
+            Expression<Func<SalaryPayment, T>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) => 
+        await Context.Set<SalaryPayment>()
             .AsNoTracking()
-            .Include(s => s.Employee)
-            .Where(predicate)
             .OrderByDescending(order)
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize > 0 ? pageSize : int.MaxValue)
-            .ToListAsync());
-
-        return res;
-    }
-
-    public override async Task<SalaryPayment> GetById(int id)
-        => await Context.SalaryPayments
+            .Where(predicate.AddTrackedDocumentFilter(from, to))
+            .Include(s => s.Employee)
+            .ToPagedListAsync(pageIndex, pageSize);        
+    
+    public override async Task<SalaryPayment?> GetById(int id)
+        => await Context.Set<SalaryPayment>()
             .Include(s => s.Employee)
             .FirstOrDefaultAsync(s => s.Id == id);
 }

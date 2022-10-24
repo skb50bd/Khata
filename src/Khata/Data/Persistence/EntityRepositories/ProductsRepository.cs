@@ -1,60 +1,36 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
 
 public class ProductRepository : TrackingRepository<Product>, ITrackingRepository<Product>
 {
-    public ProductRepository(KhataContext context) : base(context) { }
+    public ProductRepository(
+            KhataContext context,
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
 
     public override async Task<IPagedList<Product>> Get<T>(
-        Expression<Func<Product, bool>> predicate,
-        Expression<Func<Product, T>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-    {
-        predicate = predicate.And(
-            i => !i.IsRemoved
-                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-        var res = new PagedList<Product>()
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            ResultCount =
-                await Context.Products
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .CountAsync()
-        };
-
-        res.AddRange(await Context.Products
+            Expression<Func<Product, bool>> predicate,
+            Expression<Func<Product, T>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) =>
+        await Context.Set<Product>()
             .AsNoTracking()
+            .Where(predicate.AddTrackedDocumentFilter(from, to))
             .Include(s => s.Outlet)
-            .Where(predicate)
             .OrderByDescending(order)
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize > 0 ? pageSize : int.MaxValue)
-            .ToListAsync());
+            .ToPagedListAsync(pageIndex, pageSize);
 
-        return res;
-    }
-
-    public override async Task<Product> GetById(int id)
-        => await Context.Products
+    public override async Task<Product?> GetById(int id) => 
+        await Context.Set<Product>()
             .Include(s => s.Outlet)
             .FirstOrDefaultAsync(s => s.Id == id);
 }

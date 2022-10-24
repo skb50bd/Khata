@@ -1,4 +1,5 @@
 ﻿using Data.Core;
+using Data.Persistence.Context.EntityConfigs;
 using Data.Persistence.Reports;
 using Data.Persistence.Repositories;
 
@@ -8,6 +9,7 @@ using Domain.Reports;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Data.Persistence;
 
@@ -58,7 +60,7 @@ public static class Configure
         services.AddTransient<ITrackingRepository<DebtPayment>, DebtPaymentRepository>();
         services.AddTransient<ISaleRepository, SaleRepository>();
         services.AddTransient<ITrackingRepository<CustomerInvoice>, InvoiceRepository>();
-        services.AddTransient<ITrackingRepository<Vouchar>, VoucharRepository>();
+        services.AddTransient<ITrackingRepository<Vouchar>, VoucherRepository>();
         services.AddTransient<ITrackingRepository<Expense>, TrackingRepository<Expense>>();
         services.AddTransient<ITrackingRepository<Supplier>, TrackingRepository<Supplier>>();
         services.AddTransient<ITrackingRepository<SupplierPayment>, SupplierPaymentRepository>();
@@ -110,12 +112,15 @@ public static class Configure
         services.AddTransient<
             IListReportRepository<PerDayReport>,
             PerDayReportRepository>();
-
-        services
-            .AddTransient<
-                IBackupRestoreRepository, 
-                BackupRestoreRepository>();
+        
+        services.TryAddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
         #endregion
+        
+        services.TryAddSingleton<
+            CurrentDateTimeOffsetValueGenerator>();
+        
+        services.TryAddScoped<
+            CurrentUserNameValueGenerator>();
 
         return services;
     }

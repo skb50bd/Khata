@@ -89,7 +89,7 @@ public class SupplierPaymentService : ISupplierPaymentService
     {
         var newSupplierPayment = _mapper.Map<SupplierPayment>(vm);
         var originalSupplierPayment = await _db.SupplierPayments.GetById(newSupplierPayment.Id);
-        var meta = originalSupplierPayment.Metadata.Modified(CurrentUser);
+        var meta = originalSupplierPayment.Metadata.ModifiedBy(CurrentUser);
         originalSupplierPayment.SetValuesFrom(newSupplierPayment);
         originalSupplierPayment.Metadata = meta;
 

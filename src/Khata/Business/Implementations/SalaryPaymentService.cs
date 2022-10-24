@@ -85,7 +85,7 @@ public class SalaryPaymentService : ISalaryPaymentService
     {
         var newSalaryPayment = _mapper.Map<SalaryPayment>(vm);
         var originalSalaryPayment = await _db.SalaryPayments.GetById(newSalaryPayment.Id);
-        var meta = originalSalaryPayment.Metadata.Modified(CurrentUser);
+        var meta = originalSalaryPayment.Metadata.ModifiedBy(CurrentUser);
         originalSalaryPayment.SetValuesFrom(newSalaryPayment);
         originalSalaryPayment.Metadata = meta;
 

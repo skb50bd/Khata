@@ -38,7 +38,7 @@ public static class SeedUsers
                     user, 
                     userPwd);
 
-            //Add default User to Role Admin    
+            // Add default User to Role Admin    
             if (chkUser.Succeeded)
             {
                 await userManager.AddToRoleAsync(

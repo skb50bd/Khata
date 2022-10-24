@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Domain.Reports;
+﻿using Domain.Reports;
 
 namespace Data.Core;
 

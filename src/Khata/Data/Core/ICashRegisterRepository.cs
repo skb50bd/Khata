@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-
-using Domain;
+﻿using Domain;
 
 namespace Data.Core;
 
 public interface ICashRegisterRepository
 {
-    Task<CashRegister> Get();
+    Task<CashRegister?> Get();
 }

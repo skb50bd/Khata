@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Domain;
+﻿using Domain;
 
 namespace Data.Core;
 
@@ -10,5 +7,4 @@ public interface ITrackingRepository<T> : IRepository<T> where T : TrackedDocume
     Task Remove(int id);
     Task<IList<T>> GetRemovedItems();
     Task<bool> IsRemoved(int id);
-
 }

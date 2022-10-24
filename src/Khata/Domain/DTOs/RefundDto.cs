@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Domain;
 
@@ -17,7 +16,7 @@ public class RefundDto
 
     public SaleDto Sale { get; set; }
 
-    public ICollection<SaleLineItem> Cart { get; set; }
+    public ICollection<SaleCartItem> Cart { get; set; }
 
     public decimal TotalPrice { get; set; }
 

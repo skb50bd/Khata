@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Domain;
 
@@ -14,8 +12,8 @@ public class InvoiceDto
 
     public DateTimeOffset Date { get; set; }
 
-    public virtual ICollection<InvoiceLineItemDto> Cart { get; set; } 
-        = new List<InvoiceLineItemDto>();
+    public virtual ICollection<InvoiceCartItemDto> Cart { get; set; } 
+        = new List<InvoiceCartItemDto>();
 
     [DataType(DataType.Currency)]
     public decimal PreviousDue { get; set; }

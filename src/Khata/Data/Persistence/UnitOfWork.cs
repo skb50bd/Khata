@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 

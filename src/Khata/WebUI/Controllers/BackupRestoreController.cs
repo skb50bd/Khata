@@ -1,11 +1,5 @@
 ﻿using System.Threading.Tasks;
-
-using Brotal.Extensions;
-
 using Business;
-
-using Domain;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

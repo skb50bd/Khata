@@ -1,4 +1,5 @@
 ﻿@page
+@inject IDateTimeProvider _dateTime
 @model IndexModel
 
 @{
@@ -14,19 +15,19 @@
                   class="form-inline">
                 <input type="text"
                        class="form-control daterange mb-2" 
-                       value="@Clock.Today.LocalDate() - @Clock.Today.LocalDate()"/>
+                       value="@_dateTime.Today.LocalDate() - @_dateTime.Today.LocalDate()"/>
 
                 <input asp-for="FromText"
                        type="text"
                        name="fromText"
                        id="from-text"
-                       value="@Clock.Today.LocalDate()"
+                       value="@_dateTime.Today.LocalDate()"
                        required hidden />
 
                 <input asp-for="ToText"
                        type="text"
                        name="toText"
-                       value="@Clock.Now.LocalDate()"
+                       value="@_dateTime.Now.LocalDate()"
                        id="to-text"
                        required hidden />
 

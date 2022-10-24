@@ -1,11 +1,10 @@
-﻿using System.Linq;
-
-namespace Domain.Reports;
+﻿namespace Domain.Reports;
 
 public static class CustomerReportExtension {
-    public static CustomerReport GetReport(this Customer customer) =>
-        customer == null ? new CustomerReport() : 
-            new CustomerReport
+    public static CustomerReport? GetReport(this Customer? customer) =>
+        customer is null 
+            ? null
+            : new CustomerReport
             {
                 Id         = customer.Id,
                 FullName   = customer.FullName,

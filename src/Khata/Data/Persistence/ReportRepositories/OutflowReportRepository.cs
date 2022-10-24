@@ -1,14 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Brotal.Extensions;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 using Domain.Reports;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -19,69 +13,96 @@ namespace Data.Persistence.Reports;
 public class OutflowReportRepository 
     : IReportRepository<PeriodicalReport<Outflow>>
 {
+    private readonly IDateTimeProvider _dateTime;
     private readonly KhataContext  _db;
     private readonly KhataSettings _settings;
 
     public OutflowReportRepository(
-        KhataContext                   db,
-        IOptionsMonitor<KhataSettings> settings)
+        KhataContext db,
+        IOptionsMonitor<KhataSettings> settings, 
+        IDateTimeProvider dateTime)
     {
         _db       = db;
+        _dateTime = dateTime;
         _settings = settings.CurrentValue;
     }
 
-    private async Task<Outflow> GetOutflow(DateTime fromDate)
+    private Task<Outflow?> GetOutflow(DateOnly fromDate) =>
+        GetOutflow(fromDate.ToDateTime(TimeOnly.MinValue));
+    
+    private async Task<Outflow?> GetOutflow(DateTime fromDate)
     {
-        var expenses =
-            await _db.Expenses.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && !e.IsRemoved)
-                .ToListAsync();
+        var expensesQuery =
+            _db.Set<Expense>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.IsRemoved == false);
 
-        var purchases =
-            await _db.Purchases.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && !e.IsRemoved)
-                .ToListAsync();
+        var expensesCountTask = expensesQuery.CountAsync();
+        var expensesSumTask   = expensesQuery.SumAsync(x => x.Amount);
+        
+        var purchasesQuery =
+            _db.Set<Purchase>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.IsRemoved == false);
 
-        var salaryPayments =
-            await _db.SalaryPayments.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && !e.IsRemoved)
-                .ToListAsync();
+        var purchasesCountTask = purchasesQuery.CountAsync();
+        var purchasesSumTask   = purchasesQuery.SumAsync(x => x.Payment.Paid);
+        
+        var salaryPaymentsQuery =
+            _db.Set<SalaryPayment>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.IsRemoved == false);
+        
+        var salaryPaymentsCountTask = salaryPaymentsQuery.CountAsync();
+        var salaryPaymentsSumTask   = salaryPaymentsQuery.SumAsync(x => x.Amount);
+        
+        var supplierPaymentsQuery =
+            _db.Set<SupplierPayment>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.IsRemoved == false);
 
-        var supplierPayments =
-            await _db.SupplierPayments.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && !e.IsRemoved)
-                .ToListAsync();
+        var supplierPaymentsCountTask = supplierPaymentsQuery.CountAsync();
+        var supplierPaymentsSumTask   = supplierPaymentsQuery.SumAsync(x => x.Amount);
+        
+        var refundsQuery =
+            _db.Set<Refund>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.IsRemoved == false);
 
-        var refunds =
-            await _db.Refunds.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && !e.IsRemoved)
-                .ToListAsync();
+        var refundsCountTask = refundsQuery.CountAsync();
+        var refundsSumTask = refundsQuery.SumAsync(x => x.CashBack);
 
-        var withdrawals =
-            await _db.Withdrawals.Include(e => e.Metadata)
-                .Where(e => e.Metadata.CreationTime > fromDate
-                            && e.TableName == nameof(Domain.Withdrawal))
-                .ToListAsync();
+        var withdrawalsQuery =
+            _db.Set<Withdrawal>()
+                .Where(e => e.Metadata.CreationTime > fromDate && e.TableName == nameof(Withdrawal));
 
+        var withdrawalsCountTask = withdrawalsQuery.CountAsync();
+        var withdrawalsSumTask = withdrawalsQuery.SumAsync(x => x.Amount);
+        
+        await Task.WhenAll(
+            expensesSumTask,
+            expensesCountTask,
+            purchasesSumTask,
+            purchasesCountTask,
+            salaryPaymentsSumTask,
+            salaryPaymentsCountTask,
+            supplierPaymentsCountTask,
+            supplierPaymentsSumTask,
+            refundsCountTask,
+            refundsSumTask,
+            withdrawalsCountTask,
+            withdrawalsSumTask
+        );
+        
         return new Outflow
         {
-            EmployeePaymentCount  = salaryPayments.Count,
-            EmployeePaymentAmount = Round(salaryPayments.Sum(sp => sp.Amount), 2),
-            ExpenseCount          = expenses.Count,
-            ExpenseAmount         = Round(expenses.Sum(e => e.Amount), 2),
-            PurchaseCount         = purchases.Count,
-            PurchasePaid          = Round(purchases.Sum(p => p.Payment.Paid), 2),
-            SupplierPaymentCount  = supplierPayments.Count,
-            SupplierPaymentAmount = Round(supplierPayments.Sum(sp => sp.Amount), 2),
-            RefundCount           = refunds.Count,
-            RefundAmount          = Round(refunds.Sum(r => r.CashBack), 2),
-            WithdrawalCount       = withdrawals.Count,
-            WithdrawalAmount      = Round(withdrawals.Sum(w => w.Amount), 2)
+            EmployeePaymentCount  = await salaryPaymentsCountTask,
+            EmployeePaymentAmount = Round(await salaryPaymentsSumTask, 2),
+            ExpenseCount          = await expensesCountTask,
+            ExpenseAmount         = Round(await expensesSumTask, 2),
+            PurchaseCount         = await purchasesCountTask,
+            PurchasePaid          = Round(await purchasesSumTask, 2),
+            SupplierPaymentCount  = await supplierPaymentsCountTask,
+            SupplierPaymentAmount = Round(await supplierPaymentsSumTask, 2),
+            RefundCount           = await refundsCountTask,
+            RefundAmount          = Round(await refundsSumTask, 2),
+            WithdrawalCount       = await withdrawalsCountTask,
+            WithdrawalAmount      = Round(await withdrawalsSumTask, 2)
         };
     }
 
@@ -90,8 +111,8 @@ public class OutflowReportRepository
         if (_settings.DbProvider == DbProvider.SQLServer)
         {
             var outflows =
-                await _db.Set<Outflow>()
-                    .ToListAsync();
+                await _db.Set<Outflow>().ToListAsync();
+            
             return new PeriodicalReport<Outflow>
             {
                 Daily   = outflows[0],
@@ -100,10 +121,10 @@ public class OutflowReportRepository
             };
         }
 
-        var today   = Clock.Today;
+        var today   = _dateTime.Today;
         var daily   = await GetOutflow(today);
-        var weekly  = await GetOutflow(today.StartOfWeek(DayOfWeek.Saturday));
-        var monthly = await GetOutflow(today.FirstDayOfMonth());
+        var weekly  = await GetOutflow(today.StartOfTheWeek(DayOfWeek.Saturday));
+        var monthly = await GetOutflow(today.StartOfTheMonth());
 
         return new PeriodicalReport<Outflow>
         {
@@ -113,5 +134,4 @@ public class OutflowReportRepository
             Monthly    = monthly
         };
     }
-
 }

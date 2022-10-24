@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace Data.Persistence.Migrations.SQLite
 {
     [DbContext(typeof(KhataContext))]
@@ -13,18 +15,95 @@ namespace Data.Persistence.Migrations.SQLite
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.0-rc.2.22472.11");
+
+            modelBuilder.Entity("Domain.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("Avatar")
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
 
             modelBuilder.Entity("Domain.CashRegister", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -36,28 +115,38 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("CompanyName");
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Debt")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -69,25 +158,32 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.DebtPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("DebtBefore")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("InvoiceId");
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("PaymentDate");
+                    b.Property<DateTimeOffset>("PaymentDate")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -104,18 +200,23 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Deposit", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RowId");
+                    b.Property<int?>("RowId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("TableName");
+                    b.Property<string>("TableName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -127,30 +228,41 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Employee", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Designation");
+                    b.Property<string>("Designation")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("NIdNumber");
+                    b.Property<string>("NIdNumber")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18, 6)");
@@ -165,18 +277,23 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Expense", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -188,16 +305,21 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Invoice", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("Date");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Discriminator")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("PaymentDiscountCash")
                         .HasColumnType("decimal(18, 6)");
@@ -218,20 +340,27 @@ namespace Data.Persistence.Migrations.SQLite
                     b.ToTable("Invoice");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Invoice");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Metadata", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("CreationTime");
+                    b.Property<DateTimeOffset>("CreationTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Creator");
+                    b.Property<string>("Creator")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("ModificationTime");
+                    b.Property<DateTimeOffset>("ModificationTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Modifier");
+                    b.Property<string>("Modifier")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -241,21 +370,29 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Outlet", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Slogan");
+                    b.Property<string>("Slogan")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -267,19 +404,26 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("OutletId");
+                    b.Property<int>("OutletId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -293,19 +437,26 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Purchase", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("PurchaseDate");
+                    b.Property<DateTimeOffset>("PurchaseDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("SupplierId");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("VoucharId");
+                    b.Property<int>("VoucharId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -322,15 +473,20 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.PurchaseLineItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ProductId");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("PurchaseId");
+                    b.Property<int?>("PurchaseId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("PurchaseReturnId");
+                    b.Property<int?>("PurchaseReturnId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18, 6)");
@@ -352,7 +508,8 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.PurchaseReturn", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("CashBack")
                         .HasColumnType("decimal(18, 6)");
@@ -360,15 +517,20 @@ namespace Data.Persistence.Migrations.SQLite
                     b.Property<decimal>("DebtRollback")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("PurchaseId");
+                    b.Property<int>("PurchaseId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SupplierId");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -385,23 +547,29 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Refund", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("CashBack")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("DebtRollback")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SaleId");
+                    b.Property<int>("SaleId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -415,10 +583,225 @@ namespace Data.Persistence.Migrations.SQLite
                     b.ToTable("Refunds");
                 });
 
+            modelBuilder.Entity("Domain.Reports.Asset", b =>
+                {
+                    b.Property<decimal>("Cash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DueCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InventoryCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("InventoryWorth")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalDue")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("Asset", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.Inflow", b =>
+                {
+                    b.Property<int>("DebtPaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("DebtReceived")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("DepositAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DepositsCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PurchaseReturnsCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("PurchaseReturnsReceived")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SaleCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SaleProfit")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("SaleReceived")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PeriodicalInflow", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.Liability", b =>
+                {
+                    b.Property<int>("DueCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalDue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("UnpaidAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UnpaidEmployees")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("Liability", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.Outflow", b =>
+                {
+                    b.Property<decimal>("EmployeePaymentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EmployeePaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ExpenseAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ExpenseCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PurchaseCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("PurchasePaid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("RefundAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RefundCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SupplierPaymentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SupplierPaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("WithdrawalAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WithdrawalCount")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PeriodicalOutflow", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.Payable", b =>
+                {
+                    b.Property<decimal>("DebtOverPaymentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DebtOverPaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PurchaseDueAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PurchaseDueCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SalaryIssueAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SalaryIssueCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PeriodicalPayableReport", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.PerDayReport", b =>
+                {
+                    b.Property<decimal>("CashIn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("CashOut")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("NewPayable")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("NewReceivable")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PerDayReport", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Reports.Receivable", b =>
+                {
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("SalaryOverPaymentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SalaryOverPaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SalesDueAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SalesDueCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SupplierOverPaymentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SupplierOverPaymentCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("PeriodicalReceivableReport", (string)null);
+                });
+
             modelBuilder.Entity("Domain.SalaryIssue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -426,13 +809,17 @@ namespace Data.Persistence.Migrations.SQLite
                     b.Property<decimal>("BalanceBefore")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("EmployeeId");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -446,7 +833,8 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.SalaryPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
@@ -454,15 +842,20 @@ namespace Data.Persistence.Migrations.SQLite
                     b.Property<decimal>("BalanceBefore")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("EmployeeId");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("PaymentDate");
+                    b.Property<DateTimeOffset>("PaymentDate")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -476,23 +869,32 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Sale", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("InvoiceId");
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("OutletId");
+                    b.Property<int>("OutletId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("SaleDate");
+                    b.Property<DateTimeOffset>("SaleDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -511,22 +913,29 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.SaleLineItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ItemId");
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<int?>("RefundId");
+                    b.Property<int?>("RefundId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SaleId");
+                    b.Property<int?>("SaleId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SavedSaleId");
+                    b.Property<int?>("SavedSaleId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18, 6)");
@@ -548,21 +957,29 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.SavedSale", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("OutletId");
+                    b.Property<int>("OutletId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("SaleDate");
+                    b.Property<DateTimeOffset>("SaleDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -574,17 +991,23 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Service", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("OutletId");
+                    b.Property<int>("OutletId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 6)");
@@ -601,28 +1024,38 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Supplier", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("CompanyName");
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Payable")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -634,25 +1067,32 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.SupplierPayment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsRemoved");
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("PayableBefore")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<DateTimeOffset>("PaymentDate");
+                    b.Property<DateTimeOffset>("PaymentDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("SupplierId");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("VoucharId");
+                    b.Property<int>("VoucharId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -669,18 +1109,23 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Domain.Withdrawal", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 6)");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MetadataId");
+                    b.Property<int?>("MetadataId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RowId");
+                    b.Property<int?>("RowId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("TableName");
+                    b.Property<string>("TableName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -692,182 +1137,149 @@ namespace Data.Persistence.Migrations.SQLite
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RoleId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.CustomerInvoice", b =>
                 {
                     b.HasBaseType("Domain.Invoice");
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DebtPaymentId");
+                    b.Property<int?>("DebtPaymentId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OutletId");
+                    b.Property<int?>("OutletId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SaleId");
+                    b.Property<int?>("SaleId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Type");
+                    b.Property<int?>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.HasIndex("CustomerId");
 
@@ -880,30 +1292,18 @@ namespace Data.Persistence.Migrations.SQLite
                 {
                     b.HasBaseType("Domain.Invoice");
 
-                    b.Property<int?>("PurchaseId");
+                    b.Property<int?>("PurchaseId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SupplierId");
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SupplierPaymentId");
+                    b.Property<int?>("SupplierPaymentId")
+                        .HasColumnType("INTEGER");
 
                     b.HasIndex("SupplierId");
 
                     b.HasDiscriminator().HasValue("Vouchar");
-                });
-
-            modelBuilder.Entity("Domain.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<byte[]>("Avatar");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<int>("Role");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Domain.CashRegister", b =>
@@ -911,6 +1311,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Customer", b =>
@@ -918,6 +1320,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.DebtPayment", b =>
@@ -925,16 +1329,24 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("DebtPayments")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.CustomerInvoice", "Invoice")
                         .WithOne("DebtPayment")
                         .HasForeignKey("Domain.DebtPayment", "InvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Deposit", b =>
@@ -942,6 +1354,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
@@ -949,6 +1363,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Expense", b =>
@@ -956,6 +1372,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Invoice", b =>
@@ -967,11 +1385,14 @@ namespace Data.Persistence.Migrations.SQLite
                     b.OwnsMany("Domain.InvoiceLineItem", "Cart", b1 =>
                         {
                             b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
 
-                            b1.Property<int>("InvoiceId");
+                            b1.Property<int>("InvoiceId")
+                                .HasColumnType("INTEGER");
 
-                            b1.Property<string>("Name");
+                            b1.Property<string>("Name")
+                                .HasColumnType("TEXT");
 
                             b1.Property<decimal>("NetPrice")
                                 .HasColumnType("decimal(18, 6)");
@@ -988,11 +1409,13 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("InvoiceLineItem");
 
-                            b1.HasOne("Domain.Invoice")
-                                .WithMany("Cart")
-                                .HasForeignKey("InvoiceId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("InvoiceId");
                         });
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Outlet", b =>
@@ -1000,6 +1423,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
@@ -1011,11 +1436,13 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Outlet", "Outlet")
                         .WithMany("Products")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.Inventory", "Inventory", b1 =>
                         {
-                            b1.Property<int>("ProductId");
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("INTEGER");
 
                             b1.Property<decimal>("AlertAt")
                                 .HasColumnType("decimal(18, 6)");
@@ -1030,15 +1457,14 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("Products");
 
-                            b1.HasOne("Domain.Product")
-                                .WithOne("Inventory")
-                                .HasForeignKey("Domain.Inventory", "ProductId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
                         });
 
                     b.OwnsOne("Domain.Pricing", "Price", b1 =>
                         {
-                            b1.Property<int>("ProductId");
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("INTEGER");
 
                             b1.Property<decimal>("Bulk")
                                 .HasColumnType("decimal(18, 6)");
@@ -1056,11 +1482,17 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("Products");
 
-                            b1.HasOne("Domain.Product")
-                                .WithOne("Price")
-                                .HasForeignKey("Domain.Pricing", "ProductId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
                         });
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("Domain.Purchase", b =>
@@ -1072,16 +1504,19 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Supplier", "Supplier")
                         .WithMany("Purchases")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Vouchar", "Vouchar")
                         .WithOne("Purchase")
                         .HasForeignKey("Domain.Purchase", "VoucharId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("PurchaseId");
+                            b1.Property<int>("PurchaseId")
+                                .HasColumnType("INTEGER");
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");
@@ -1096,11 +1531,17 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("Purchases");
 
-                            b1.HasOne("Domain.Purchase")
-                                .WithOne("Payment")
-                                .HasForeignKey("Domain.PaymentInfo", "PurchaseId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("PurchaseId");
                         });
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("Vouchar");
                 });
 
             modelBuilder.Entity("Domain.PurchaseLineItem", b =>
@@ -1108,15 +1549,18 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Domain.Purchase")
+                    b.HasOne("Domain.Purchase", null)
                         .WithMany("Cart")
                         .HasForeignKey("PurchaseId");
 
-                    b.HasOne("Domain.PurchaseReturn")
+                    b.HasOne("Domain.PurchaseReturn", null)
                         .WithMany("Cart")
                         .HasForeignKey("PurchaseReturnId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.PurchaseReturn", b =>
@@ -1128,12 +1572,20 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Purchase", "Purchase")
                         .WithOne()
                         .HasForeignKey("Domain.PurchaseReturn", "PurchaseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Supplier", "Supplier")
                         .WithMany("PurchaseReturns")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Purchase");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Domain.Refund", b =>
@@ -1141,7 +1593,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("Refunds")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
@@ -1150,7 +1603,14 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Sale", "Sale")
                         .WithOne()
                         .HasForeignKey("Domain.Refund", "SaleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("Domain.SalaryIssue", b =>
@@ -1158,11 +1618,16 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Employee", "Employee")
                         .WithMany("SalaryIssues")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.SalaryPayment", b =>
@@ -1170,11 +1635,16 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Employee", "Employee")
                         .WithMany("SalaryPayments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.Sale", b =>
@@ -1182,12 +1652,14 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("Purchases")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.CustomerInvoice", "Invoice")
                         .WithOne("Sale")
                         .HasForeignKey("Domain.Sale", "InvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
@@ -1196,11 +1668,13 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Outlet", "Outlet")
                         .WithMany("Sales")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("SaleId");
+                            b1.Property<int>("SaleId")
+                                .HasColumnType("INTEGER");
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");
@@ -1215,24 +1689,32 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("Sales");
 
-                            b1.HasOne("Domain.Sale")
-                                .WithOne("Payment")
-                                .HasForeignKey("Domain.PaymentInfo", "SaleId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("SaleId");
                         });
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Domain.SaleLineItem", b =>
                 {
-                    b.HasOne("Domain.Refund")
+                    b.HasOne("Domain.Refund", null)
                         .WithMany("Cart")
                         .HasForeignKey("RefundId");
 
-                    b.HasOne("Domain.Sale")
+                    b.HasOne("Domain.Sale", null)
                         .WithMany("Cart")
                         .HasForeignKey("SaleId");
 
-                    b.HasOne("Domain.SavedSale")
+                    b.HasOne("Domain.SavedSale", null)
                         .WithMany("Cart")
                         .HasForeignKey("SavedSaleId");
                 });
@@ -1245,7 +1727,8 @@ namespace Data.Persistence.Migrations.SQLite
 
                     b.OwnsOne("Domain.PaymentInfo", "Payment", b1 =>
                         {
-                            b1.Property<int>("SavedSaleId");
+                            b1.Property<int>("SavedSaleId")
+                                .HasColumnType("INTEGER");
 
                             b1.Property<decimal>("DiscountCash")
                                 .HasColumnType("decimal(18, 6)");
@@ -1260,11 +1743,13 @@ namespace Data.Persistence.Migrations.SQLite
 
                             b1.ToTable("SavedSales");
 
-                            b1.HasOne("Domain.SavedSale")
-                                .WithOne("Payment")
-                                .HasForeignKey("Domain.PaymentInfo", "SavedSaleId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("SavedSaleId");
                         });
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Domain.Service", b =>
@@ -1276,7 +1761,12 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Outlet", "Outlet")
                         .WithMany("Services")
                         .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Outlet");
                 });
 
             modelBuilder.Entity("Domain.Supplier", b =>
@@ -1284,6 +1774,8 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Domain.SupplierPayment", b =>
@@ -1295,12 +1787,20 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Supplier", "Supplier")
                         .WithMany("Payments")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Vouchar", "Vouchar")
                         .WithOne("SupplierPayment")
                         .HasForeignKey("Domain.SupplierPayment", "VoucharId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Metadata");
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("Vouchar");
                 });
 
             modelBuilder.Entity("Domain.Withdrawal", b =>
@@ -1308,51 +1808,59 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Metadata", "Metadata")
                         .WithMany()
                         .HasForeignKey("MetadataId");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.CustomerInvoice", b =>
@@ -1360,11 +1868,16 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Outlet", "Outlet")
                         .WithMany()
                         .HasForeignKey("OutletId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Outlet");
                 });
 
             modelBuilder.Entity("Domain.Vouchar", b =>
@@ -1372,7 +1885,83 @@ namespace Data.Persistence.Migrations.SQLite
                     b.HasOne("Domain.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("Domain.Customer", b =>
+                {
+                    b.Navigation("DebtPayments");
+
+                    b.Navigation("Purchases");
+
+                    b.Navigation("Refunds");
+                });
+
+            modelBuilder.Entity("Domain.Employee", b =>
+                {
+                    b.Navigation("SalaryIssues");
+
+                    b.Navigation("SalaryPayments");
+                });
+
+            modelBuilder.Entity("Domain.Outlet", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("Sales");
+
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Domain.PurchaseReturn", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Domain.Refund", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Domain.Sale", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Domain.SavedSale", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Domain.Supplier", b =>
+                {
+                    b.Navigation("Payments");
+
+                    b.Navigation("PurchaseReturns");
+
+                    b.Navigation("Purchases");
+                });
+
+            modelBuilder.Entity("Domain.CustomerInvoice", b =>
+                {
+                    b.Navigation("DebtPayment");
+
+                    b.Navigation("Sale");
+                });
+
+            modelBuilder.Entity("Domain.Vouchar", b =>
+                {
+                    b.Navigation("Purchase");
+
+                    b.Navigation("SupplierPayment");
                 });
 #pragma warning restore 612, 618
         }

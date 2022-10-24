@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 using Business.Abstractions;
 using Business.PageFilterSort;
-
-using Domain;
-
 using DTOs;
 
 using Microsoft.AspNetCore.Mvc;

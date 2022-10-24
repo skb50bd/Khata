@@ -18,9 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-
-using Swashbuckle.AspNetCore.Swagger;
-
 using WebUI.Hubs;
 
 namespace WebUI;
@@ -115,8 +112,8 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            // app.UseSwagger();
+            // app.UseSwaggerUI();
         }
         else
         {
@@ -126,13 +123,13 @@ public class Startup
             app.UseCookiePolicy();
         }
         
-
         app.UseStaticFiles();
         
-        app.UseAuthentication();
-
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+        
         app.UseEndpoints(
             builder =>
             {

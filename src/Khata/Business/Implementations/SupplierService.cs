@@ -71,7 +71,7 @@ public class SupplierService : ISupplierService
     {
         var newSupplier = _mapper.Map<Supplier>(vm);
         var originalSupplier = await _db.Suppliers.GetById(newSupplier.Id);
-        var meta = originalSupplier.Metadata.Modified(CurrentUser);
+        var meta = originalSupplier.Metadata.ModifiedBy(CurrentUser);
         originalSupplier.SetValuesFrom(newSupplier);
         originalSupplier.Metadata = meta;
 

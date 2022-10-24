@@ -69,7 +69,7 @@ public class RefundService : IRefundService
         var sale = await _db.Sales.GetById(model.SaleId);
         dm.Customer = await _db.Customers.GetById(sale.CustomerId);
 
-        dm.Cart = new List<SaleLineItem>();
+        dm.Cart = new List<SaleCartItem>();
         if (model.Cart?.Count > 0)
         {
             dm.Cart = await Task.WhenAll(
@@ -108,7 +108,7 @@ public class RefundService : IRefundService
     {
         var newRefund = _mapper.Map<Refund>(vm);
         var originalRefund = await _db.Refunds.GetById(newRefund.Id);
-        var meta = originalRefund.Metadata.Modified(CurrentUser);
+        var meta = originalRefund.Metadata.ModifiedBy(CurrentUser);
         originalRefund.SetValuesFrom(newRefund);
         originalRefund.Metadata = meta;
 
@@ -140,14 +140,14 @@ public class RefundService : IRefundService
         return _mapper.Map<RefundDto>(dto);
     }
 
-    private async Task<SaleLineItem> Returned(int productId,
+    private async Task<SaleCartItem> Returned(int productId,
         decimal quantity,
         decimal netPrice)
     {
         var product = await _db.Products.GetById(productId);
         product.Inventory.Stock += quantity;
 
-        return new SaleLineItem(product, quantity, netPrice);
+        return new SaleCartItem(product, quantity, netPrice);
     }
 
     public async Task<int> Count(DateTime? from = null, DateTime? to = null)

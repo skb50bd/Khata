@@ -113,8 +113,8 @@ public class MappingProfile : Profile
 
         #region Sale Mapping
 
-        CreateMap<LineItemViewModel, SaleLineItem>();
-        CreateMap<SaleLineItem, LineItemViewModel>();
+        CreateMap<LineItemViewModel, SaleCartItem>();
+        CreateMap<SaleCartItem, LineItemViewModel>();
         CreateMap<PaymentInfoViewModel, PaymentInfo>();
 
         CreateMap<Sale, SaleDto>();
@@ -139,7 +139,7 @@ public class MappingProfile : Profile
                 )
             );
 
-        CreateMap<SaleLineItem, InvoiceLineItem>();
+        CreateMap<SaleCartItem, InvoiceCartItem>();
 
         CreateMap<SaleViewModel, CustomerInvoice>()
             .ForMember(
@@ -210,7 +210,7 @@ public class MappingProfile : Profile
 
         #region Purchase 
 
-        CreateMap<LineItemViewModel, PurchaseLineItem>()
+        CreateMap<LineItemViewModel, PurchaseCartItem>()
             .ForMember(
                 dest => dest.UnitPurchasePrice,
                 opt => opt.MapFrom(src => src.NetPrice / src.Quantity)
@@ -219,7 +219,7 @@ public class MappingProfile : Profile
                 dest => dest.ProductId,
                 opt => opt.MapFrom(src => src.ItemId)
             );
-        CreateMap<PurchaseLineItem, LineItemViewModel>()
+        CreateMap<PurchaseCartItem, LineItemViewModel>()
             .ForMember(
                 dest => dest.NetPrice,
                 opt => opt.MapFrom(src => src.NetPurchasePrice)
@@ -233,7 +233,7 @@ public class MappingProfile : Profile
                 opt => opt.MapFrom(src => LineItemType.Product)
             );
 
-        CreateMap<PurchaseLineItem, InvoiceLineItem>()
+        CreateMap<PurchaseCartItem, InvoiceCartItem>()
             .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPurchasePrice))
             .ForMember(dest => dest.NetPrice, opt => opt.MapFrom(src => src.NetPurchasePrice));
 
@@ -354,7 +354,7 @@ public class MappingProfile : Profile
 
         #region Invoice / Vouchar Mapping
 
-        CreateMap<InvoiceLineItem, InvoiceLineItemDto>();
+        CreateMap<InvoiceCartItem, InvoiceCartItemDto>();
         CreateMap<Invoice, InvoiceDto>();
         CreateMap<CustomerInvoice, CustomerInvoiceDto>();
         CreateMap<Vouchar, VoucharDto>();

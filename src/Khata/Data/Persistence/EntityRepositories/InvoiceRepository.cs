@@ -1,63 +1,37 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
 
 public class InvoiceRepository : TrackingRepository<CustomerInvoice>, ITrackingRepository<CustomerInvoice>
 {
-    public InvoiceRepository(KhataContext context) : base(context) { }
+    public InvoiceRepository(
+            KhataContext context,
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
 
     public override async Task<IPagedList<CustomerInvoice>> Get<T>(
-        Expression<Func<CustomerInvoice, bool>> predicate,
-        Expression<Func<CustomerInvoice, T>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-    {
-        predicate = predicate.And(
-            i => !i.IsRemoved
-                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-        var res = new PagedList<CustomerInvoice>()
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            ResultCount =
-                await Context.Invoices
-                    .AsNoTracking()
-                    .Include(d => d.Customer)
-                    .Include(d => d.Outlet)
-                    .Where(predicate)
-                    .CountAsync()
-        };
-
-        res.AddRange(await Context.Invoices
+            Expression<Func<CustomerInvoice, bool>> predicate,
+            Expression<Func<CustomerInvoice, T>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) =>
+        await Context.Set<CustomerInvoice>()
             .AsNoTracking()
-            .Include(s => s.Customer)
+            .Where(predicate.AddTrackedDocumentFilter(from, to))
+            .Include(d => d.Customer)
             .Include(d => d.Outlet)
-            .Where(predicate)
             .OrderByDescending(order)
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize > 0 ? pageSize : int.MaxValue)
-            .ToListAsync());
+            .ToPagedListAsync(pageIndex, pageSize);
 
-        return res;
-    }
-
-    public override async Task<CustomerInvoice> GetById(int id)
-        => await Context.Invoices
+    public override async Task<CustomerInvoice?> GetById(int id) => 
+        await Context.Set<CustomerInvoice>()
             .Include(s => s.Customer)
             .Include(d => d.Outlet)
             .FirstOrDefaultAsync(s => s.Id == id);

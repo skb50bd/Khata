@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
+using Throw;
 
 namespace Data.Persistence.Repositories;
 
@@ -13,25 +11,29 @@ namespace Data.Persistence.Repositories;
 /// this allows the business layer to ignore the 
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class AtomicRepository<T> : Repository<T>, IRepository<T> where T : Document
+public class AtomicRepository<T> : Repository<T> where T : Document
 {
-    public AtomicRepository(KhataContext context) : base(context) { }
+    public AtomicRepository(
+            KhataContext context, 
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
 
-    public override async void Add(T item)
+    public override async Task Add(T item, bool saveChanges = true)
     {
-        base.Add(item);
-        await Context.SaveChangesAsync();
+        saveChanges.Throw().IfFalse();
+        await base.Add(item, saveChanges);
     }
 
-    public override async void AddAll(IEnumerable<T> items)
+    public override async Task AddAll(IEnumerable<T> items, bool saveChanges = true)
     {
-        base.AddAll(items);
-        await Context.SaveChangesAsync();
+        saveChanges.Throw().IfFalse();
+        await base.AddAll(items, saveChanges);
     }
 
-    public override async Task Delete(int id)
+    public override async Task Delete(int id, bool saveChanges = true)
     {
-        await base.Delete(id);
-        await Context.SaveChangesAsync();
+        saveChanges.Throw().IfFalse();
+        await base.Delete(id, saveChanges);
     }
 }

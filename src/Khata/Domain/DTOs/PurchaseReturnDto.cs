@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Domain;
 
@@ -17,7 +16,7 @@ public class PurchaseReturnDto
 
     public PurchaseDto Purchase { get; set; }
 
-    public ICollection<PurchaseLineItem> Cart { get; set; }
+    public ICollection<PurchaseCartItem> Cart { get; set; }
 
     [DataType(DataType.Currency)]
     [Display(Name = "Cash Back")]

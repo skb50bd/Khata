@@ -28,7 +28,7 @@ public class CashRegisterService : ICashRegisterService
 
     public async Task<CashRegister> Update(CashRegister model)
     {
-        model.Metadata.Modified(CurrentUser);
+        model.Metadata.ModifiedBy(CurrentUser);
         await _db.CompleteAsync();
 
         return model;

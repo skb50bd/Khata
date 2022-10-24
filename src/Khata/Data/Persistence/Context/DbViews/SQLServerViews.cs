@@ -35,7 +35,6 @@ public static class SQLServerViews
                         (SELECT COUNT(Id) AS 'DueCount',
                                 ROUND(COALESCE(SUM(Debt), 0), 2) AS 'TotalDue'
                          FROM Customers WHERE IsRemoved = 'FALSE' AND Debt > 0) c
-
             ")
             .Wait();
 

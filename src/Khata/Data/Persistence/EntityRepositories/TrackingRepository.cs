@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
@@ -24,17 +17,21 @@ namespace Data.Persistence.Repositories;
 /// <typeparam name="T"></typeparam>
 public class TrackingRepository<T> : Repository<T>, ITrackingRepository<T> where T : TrackedDocument
 {
-    public TrackingRepository(KhataContext context) : base(context) { }
+    public TrackingRepository(
+        KhataContext context,
+        IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
 
     public override async Task<IPagedList<T>> Get<T2>(
-        Expression<Func<T, bool>> predicate,
-        Expression<Func<T, T2>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-        => await base.Get(
-            predicate.And(i => !i.IsRemoved),
+            Expression<Func<T, bool>> predicate,
+            Expression<Func<T, T2>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) => 
+        await base.Get(
+            predicate.And(i => i.IsRemoved == false),
             order,
             pageIndex,
             pageSize,

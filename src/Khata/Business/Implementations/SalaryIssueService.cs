@@ -76,7 +76,7 @@ public class SalaryIssueService : ISalaryIssueService
     {
         var newSalaryIssue = _mapper.Map<SalaryIssue>(vm);
         var originalSalaryIssue = await _db.SalaryIssues.GetById(newSalaryIssue.Id);
-        var meta = originalSalaryIssue.Metadata.Modified(CurrentUser);
+        var meta = originalSalaryIssue.Metadata.ModifiedBy(CurrentUser);
         originalSalaryIssue.SetValuesFrom(newSalaryIssue);
         originalSalaryIssue.Metadata = meta;
 

@@ -100,7 +100,7 @@ public class SaleService : ISaleService
         if (model.RegisterNewCustomer)
             dm.Customer.Metadata = Metadata.CreatedNew(CurrentUser);
 
-        dm.Cart = new List<SaleLineItem>();
+        dm.Cart = new List<SaleCartItem>();
         if (model.Cart?.Count > 0)
         {
             dm.Cart = await Task.WhenAll(
@@ -189,7 +189,7 @@ public class SaleService : ISaleService
     {
         var newSale = _mapper.Map<Sale>(vm);
         var originalSale = await _db.Sales.GetById(newSale.Id);
-        var meta = originalSale.Metadata.Modified(CurrentUser);
+        var meta = originalSale.Metadata.ModifiedBy(CurrentUser);
         originalSale.SetValuesFrom(newSale);
         originalSale.Metadata = meta;
 
@@ -228,7 +228,7 @@ public class SaleService : ISaleService
         return dto;
     }
 
-    private async Task<SaleLineItem> Sold(
+    private async Task<SaleCartItem> Sold(
         int productId,
         decimal quantity,
         decimal netPrice)
@@ -236,24 +236,24 @@ public class SaleService : ISaleService
         var product = await _db.Products.GetById(productId);
         product.Inventory.Stock -= quantity;
 
-        return new SaleLineItem(product, quantity, netPrice);
+        return new SaleCartItem(product, quantity, netPrice);
     }
 
-    private async Task<SaleLineItem> Added(
+    private async Task<SaleCartItem> Added(
         int productId,
         decimal quantity,
         decimal netPrice)
     {
         var product = await _db.Products.GetById(productId);
-        return new SaleLineItem(product, quantity, netPrice);
+        return new SaleCartItem(product, quantity, netPrice);
     }
 
-    private async Task<SaleLineItem> Sold(
+    private async Task<SaleCartItem> Sold(
         int serviceId,
         decimal price)
-        => new SaleLineItem(await _db.Services.GetById(serviceId), price);
+        => new SaleCartItem(await _db.Services.GetById(serviceId), price);
 
-    private async Task<SaleLineItem> Added(
+    private async Task<SaleCartItem> Added(
         int serviceId,
         decimal price)
         => await Sold(serviceId, price);
@@ -281,7 +281,7 @@ public class SaleService : ISaleService
             customer.Metadata = Metadata.CreatedNew(CurrentUser);
 
         dm.CustomerId = customer.Id;
-        dm.Cart = new List<SaleLineItem>();
+        dm.Cart = new List<SaleCartItem>();
         if (model.Cart?.Count > 0)
         {
             dm.Cart = await Task.WhenAll(
@@ -303,10 +303,10 @@ public class SaleService : ISaleService
     }
 
     public async Task<SaleDto> GetSaved(int id)
-        => _mapper.Map<SaleDto>(await _db.Sales.GetSaved(id));
+        => _mapper.Map<SaleDto>(await _db.Sales.GetSavedSale(id));
 
     public async Task<IEnumerable<SaleDto>> GetSaved()
-        => (await _db.Sales.GetSaved())
+        => (await _db.Sales.GetSavedSales())
             .Select(s => 
                 _mapper.Map<SaleDto>(s))
             .ToList();
@@ -316,7 +316,7 @@ public class SaleService : ISaleService
         if (await GetSaved(id) is null)
             return null;
 
-        var dto = _mapper.Map<SaleDto>(await _db.Sales.GetSaved(id));
+        var dto = _mapper.Map<SaleDto>(await _db.Sales.GetSavedSale(id));
         await _db.Sales.DeleteSaved(id);
         await _db.CompleteAsync();
         return _mapper.Map<SaleDto>(dto);

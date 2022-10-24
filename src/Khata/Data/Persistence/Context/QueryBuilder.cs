@@ -11,7 +11,7 @@ public static class QueryBuilder
               this ModelBuilder builder,
               KhataContext db)
        {
-              builder.Entity<Asset>()       
+              builder.Entity<Asset>()
                      .HasNoKey()
                      .ToView("Asset");
 

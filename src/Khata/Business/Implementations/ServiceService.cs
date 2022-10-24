@@ -85,7 +85,7 @@ public class ServiceService : IServiceService
         var newService = _mapper.Map<Service>(vm);
         newService.Outlet = await _db.Outlets.GetById(vm.OutletId);
         var originalService = await _db.Services.GetById(newService.Id);
-        var meta = originalService.Metadata.Modified(CurrentUser);
+        var meta = originalService.Metadata.ModifiedBy(CurrentUser);
         originalService.SetValuesFrom(newService);
         originalService.Metadata = meta;
 

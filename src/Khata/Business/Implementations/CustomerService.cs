@@ -2,8 +2,6 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using Brotal;
-using Brotal.Extensions;
 using Business.Abstractions;
 using Business.PageFilterSort;
 using Data.Core;
@@ -57,7 +55,7 @@ public class CustomerService : ICustomerService
                 from, 
                 to);
 
-        return res.CastList(c => _mapper.Map<CustomerDto>(c));
+        return _mapper.Map<IPagedList<CustomerDto>>(res);
     }
 
     public async Task<CustomerDto> Get(int id)
@@ -69,7 +67,7 @@ public class CustomerService : ICustomerService
     {
         var dm = _mapper.Map<Customer>(model);
         dm.Metadata = Metadata.CreatedNew(CurrentUser);
-        _db.Customers.Add(dm);
+        await _db.Customers.Add(dm, false);
         await _db.CompleteAsync();
             
         return _mapper.Map<CustomerDto>(dm);
@@ -79,8 +77,7 @@ public class CustomerService : ICustomerService
     {
         var newCustomer = _mapper.Map<Customer>(vm);
         var originalCustomer = await _db.Customers.GetById(newCustomer.Id);
-
-        var meta = originalCustomer.Metadata.Modified(CurrentUser);
+        var meta = originalCustomer.Metadata.ModifiedBy(CurrentUser);
         originalCustomer.SetValuesFrom(newCustomer);
         originalCustomer.Metadata = meta;
 

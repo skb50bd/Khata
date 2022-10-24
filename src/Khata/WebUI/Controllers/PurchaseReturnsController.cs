@@ -7,9 +7,6 @@ using Brotal.Extensions;
 
 using Business.Abstractions;
 using Business.PageFilterSort;
-
-using Domain;
-
 using DTOs;
 
 using Microsoft.AspNetCore.Authorization;

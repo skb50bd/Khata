@@ -29,7 +29,7 @@ public class ReportsController : ControllerBase
 
         //var report = new Summary();
 
-        var subject = $"{report.Type} Report: {report.GeneratedOn:M}";
+        var subject = $"{report.Span} Report: {report.GeneratedOn:M}";
         var body = 
             await _renderer.RenderViewToStringAsync(
                 "ReportSummary",

@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using Brotal.Extensions;
 
 using Business.Abstractions;
-
-using Domain;
-
 using DTOs;
 
 using Microsoft.AspNetCore.Mvc;

@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 using Domain.Reports;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Throw;
 
 namespace Data.Persistence.Reports;
 
@@ -51,32 +49,57 @@ public class AssetReportRepository : IReportRepository<Asset>
     //    };
 
 
-    public async Task<Asset> Get()
+    public async Task<Asset?> Get()
     {
         if (_settings.DbProvider == DbProvider.SQLServer)
-            return await _db.Set<Asset>()
-                .FirstOrDefaultAsync();
+        {
+            return await _db.Set<Asset>().FirstOrDefaultAsync();
+        }
+
         var debts = 
-            _db.Customers
+            _db.Set<Customer>()
                 .Where(c => c.Debt > 0 && !c.IsRemoved)
                 .Select(c => c.Debt);
+
+        var debtsSumTask = debts.SumAsync();
+        var debtsCountTask = debts.CountAsync();
+        
         var inventory =
-            _db.Products
-                .Where(
-                    p => p.Inventory.Stock + p.Inventory.Warehouse > 0
-                         && !p.IsRemoved)
-                .Select(
-                    p => p.Price.Purchase * (p.Inventory.Stock + p.Inventory.Warehouse)
+            _db.Set<Product>()
+                .Where(p => 
+                    p.Inventory.Stock + p.Inventory.Warehouse > 0
+                    && p.IsRemoved == false)
+                .Select(p => 
+                    p.Price.Purchase 
+                    * (
+                        p.Inventory.Stock 
+                        + p.Inventory.Warehouse
+                    )
                 );
 
-        return await _db.CashRegister.Select(
-            c => new Asset
-            {
-                Cash           = c.Balance,
-                DueCount       = debts.Count(),
-                TotalDue       = debts.Sum(),
-                InventoryCount = inventory.Count(),
-                InventoryWorth = inventory.Sum()
-            }).FirstOrDefaultAsync();
+        var inventorySumTask = inventory.SumAsync();
+        var inventoryCountTask = inventory.CountAsync();
+
+        var cashTask = _db.Set<CashRegister>().FirstOrDefaultAsync();
+        
+        await Task.WhenAll(
+            debtsSumTask, 
+            debtsCountTask, 
+            inventorySumTask, 
+            inventoryCountTask,
+            cashTask
+        );
+
+        var cash = await cashTask;
+        cash.ThrowIfNull();
+
+        return new Asset
+        {
+            Cash           = cash.Balance,
+            DueCount       = await debtsCountTask,
+            TotalDue       = await debtsSumTask,
+            InventoryCount = await inventoryCountTask,
+            InventoryWorth = await inventorySumTask
+        };
     }
 }

@@ -74,7 +74,7 @@ public class PurchaseService : IPurchaseService
         if (model.RegisterNewSupplier)
             dm.Supplier.Metadata = Metadata.CreatedNew(CurrentUser);
 
-        dm.Cart = new List<PurchaseLineItem>();
+        dm.Cart = new List<PurchaseCartItem>();
         if (model.Cart?.Count > 0)
         {
             dm.Cart = await Task.WhenAll(
@@ -163,7 +163,7 @@ public class PurchaseService : IPurchaseService
     {
         var newPurchase = _mapper.Map<Purchase>(vm);
         var originalPurchase = await _db.Purchases.GetById(newPurchase.Id);
-        var meta = originalPurchase.Metadata.Modified(CurrentUser);
+        var meta = originalPurchase.Metadata.ModifiedBy(CurrentUser);
         originalPurchase.SetValuesFrom(newPurchase);
         originalPurchase.Metadata = meta;
 
@@ -195,7 +195,7 @@ public class PurchaseService : IPurchaseService
         return _mapper.Map<PurchaseDto>(dto);
     }
 
-    private async Task<PurchaseLineItem> Purchased(int productId,
+    private async Task<PurchaseCartItem> Purchased(int productId,
         decimal quantity,
         decimal netPrice)
     {
@@ -206,7 +206,7 @@ public class PurchaseService : IPurchaseService
         product.Inventory.Stock += quantity;
         product.Price.Purchase = newPurchasePrice;
 
-        return new PurchaseLineItem(product, quantity, netPrice);
+        return new PurchaseCartItem(product, quantity, netPrice);
     }
 
     public async Task<int> Count(DateTime? from = null, DateTime? to = null)

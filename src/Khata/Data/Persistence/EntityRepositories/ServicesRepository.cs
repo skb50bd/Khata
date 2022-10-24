@@ -1,60 +1,42 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Brotal;
-using Brotal.Extensions;
-
+﻿using System.Linq.Expressions;
 using Data.Core;
 
 using Domain;
-
+using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Persistence.Repositories;
 
 public class ServiceRepository : TrackingRepository<Service>, ITrackingRepository<Service>
 {
-    public ServiceRepository(KhataContext context) : base(context) { }
+    public ServiceRepository(
+            KhataContext context,
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime)
+    { }
 
     public override async Task<IPagedList<Service>> Get<T>(
-        Expression<Func<Service, bool>> predicate,
-        Expression<Func<Service, T>> order,
-        int pageIndex,
-        int pageSize,
-        DateTime? from = null,
-        DateTime? to = null)
-    {
-        predicate = predicate.And(
-            i => !i.IsRemoved
-                 && i.Metadata.CreationTime >= (from ?? Clock.Min)
-                 && i.Metadata.CreationTime <= (to ?? Clock.Max));
-
-        var res = new PagedList<Service>()
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            ResultCount =
-                await Context.Services
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .CountAsync()
-        };
-
-        res.AddRange(await Context.Services
+            Expression<Func<Service, bool>> predicate,
+            Expression<Func<Service, T>> order,
+            int pageIndex,
+            int pageSize,
+            DateTime? from = null,
+            DateTime? to = null) =>
+        await Context.Set<Service>()
             .AsNoTracking()
-            .Include(s => s.Outlet)
-            .Where(predicate)
             .OrderByDescending(order)
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize > 0 ? pageSize : int.MaxValue)
-            .ToListAsync());
+            .Where(
+                predicate.And(i =>
+                    i.IsRemoved == false
+                    && (from == null || i.Metadata.CreationTime >= from)
+                    && (to == null || i.Metadata.CreationTime <= to)
+                )
+            )
+            .Include(s => s.Outlet)
+            .ToPagedListAsync(pageIndex, pageSize);
 
-        return res;
-    }
-
-    public override async Task<Service> GetById(int id)
-        => await Context.Services
+    public override async Task<Service?> GetById(int id) => 
+        await Context.Set<Service>()
             .Include(s => s.Outlet)
             .FirstOrDefaultAsync(s => s.Id == id);
 }

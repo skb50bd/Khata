@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Domain;
 
@@ -27,7 +25,7 @@ public class SaleDto
     public int CustomerId { get; set; }
     public CustomerDto Customer { get; set; }
 
-    public ICollection<SaleLineItem> Cart { get; set; }
+    public ICollection<SaleCartItem> Cart { get; set; }
 
     [Display(Name = "Subtotal")]
     [DataType(DataType.Currency)]

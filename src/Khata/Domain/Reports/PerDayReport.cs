@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Domain.Reports;
+﻿namespace Domain.Reports;
 
 public class PerDayReport : Report
 {

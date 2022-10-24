@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 using Domain.Reports;
@@ -16,103 +12,87 @@ namespace Data.Persistence.Reports;
 
 public class PerDayReportRepository : IListReportRepository<PerDayReport>
 {
+    private readonly IDateTimeProvider _dateTime;
     private readonly KhataContext  _db;
     private readonly KhataSettings _settings;
 
     public PerDayReportRepository(
-        KhataContext                   db,
-        IOptionsMonitor<KhataSettings> settings)
+        KhataContext db,
+        IOptionsMonitor<KhataSettings> settings, 
+        IDateTimeProvider dateTime)
     {
         _db       = db;
+        _dateTime = dateTime;
         _settings = settings.CurrentValue;
     }
 
     public async Task<IEnumerable<PerDayReport>> Get()
-
     {
         if (_settings.DbProvider == DbProvider.SQLServer)
-            return await _db.Set<PerDayReport>()
-                .ToListAsync();
+        {
+            return await _db.Set<PerDayReport>().ToListAsync();
+        }
 
         const int days = 30;
+
         var deposits =
-            await _db.Deposits.Include(d => d.Metadata)
-                .Where(d =>
-                    d.Metadata.CreationTime >=
-                    Clock.Today.AddDays(-days + 1))
-                .Select(
-                    d => new PerDayReport
-                    {
-                        Date = d
-                            .Metadata.CreationTime
-                            .Date,
-                        CashIn = d.Amount
-                    }).ToListAsync();
+            _db.Set<Deposit>()
+                .Include(d => d.Metadata)
+                .Where(d => d.Metadata.CreationTime >= _dateTime.TodayAsDateTime.AddDays(-days + 1))
+                .Select(d => new PerDayReport
+                {
+                    Date = d.Metadata.CreationTime.Date,
+                    CashIn = d.Amount
+                });
 
         var withdrawals =
-            await _db.Withdrawals.Include(w => w.Metadata)
-                .Where(d =>
-                    d.Metadata.CreationTime >=
-                    Clock.Today.AddDays(
-                        -days + 1))
-                .Select(
-                    w => new PerDayReport
-                    {
-                        Date = w
-                            .Metadata
-                            .CreationTime
-                            .Date,
-                        CashOut = w.Amount
-                    }).ToListAsync();
+            _db.Set<Withdrawal>()
+                .Include(w => w.Metadata)
+                .Where(d => d.Metadata.CreationTime >= _dateTime.TodayAsDateTime.AddDays(-days + 1))
+                .Select(w => new PerDayReport
+                {
+                    Date = w.Metadata.CreationTime.Date,
+                    CashOut = w.Amount
+                });
 
         var sales =
-            await _db.Sales.Include(s => s.Metadata)
+            _db.Set<Sale>()
+                .Include(s => s.Metadata)
                 .Where(d =>
-                    d.Metadata.CreationTime >=
-                    Clock.Today.AddDays(-days + 1) &&
-                    !d.IsRemoved)
-                .Select(
-                    s => new PerDayReport
-                    {
-                        Date =
-                            s.Metadata.CreationTime.Date,
-                        NewReceivable = s.Payment.Due
-                    }).ToListAsync();
+                    d.Metadata.CreationTime >= _dateTime.TodayAsDateTime.AddDays(-days + 1) 
+                    && d.IsRemoved == false)
+                .Select(s => new PerDayReport
+                {
+                    Date = s.Metadata.CreationTime.Date,
+                    NewReceivable = s.Payment.Due
+                });
 
         var purchases =
-            await _db.Purchases.Include(p => p.Metadata)
+            _db.Set<Purchase>()
+                .Include(p => p.Metadata)
                 .Where(d =>
-                    d.Metadata.CreationTime >=
-                    Clock.Today.AddDays(
-                        -days + 1) &&
-                    !d.IsRemoved)
-                .Select(
-                    p => new PerDayReport
-                    {
-                        Date =
-                            p.Metadata.CreationTime
-                                .Date,
-                        NewPayable = p.Payment.Due
-                    }).ToListAsync();
+                    d.Metadata.CreationTime >= _dateTime.TodayAsDateTime.AddDays(-days + 1) 
+                    && d.IsRemoved == false)
+                .Select(p => new PerDayReport
+                {
+                    Date = p.Metadata.CreationTime
+                            .Date,
+                    NewPayable = p.Payment.Due
+                });
 
         var salaryIssues =
-            await _db.SalaryIssues.Include(si => si.Metadata)
+            _db.Set<SalaryIssue>()
+                .Include(si => si.Metadata)
                 .Where(d =>
-                    d.Metadata.CreationTime >=
-                    Clock.Today.AddDays(
-                        -days + 1) &&
-                    !d.IsRemoved)
-                .Select(
-                    si => new PerDayReport
-                    {
-                        Date = si
-                            .Metadata
-                            .CreationTime
-                            .Date,
-                        NewPayable = si.Amount
-                    }).ToListAsync();
+                    d.Metadata.CreationTime >= _dateTime.TodayAsDateTime.AddDays(-days + 1) 
+                    && d.IsRemoved == false)
+                .Select(si => new PerDayReport
+                {
+                    Date = si.Metadata.CreationTime.Date,
+                    NewPayable = si.Amount
+                });
 
-        return deposits
+        return await deposits
             .Union(withdrawals)
             .Union(sales)
             .Union(purchases)
@@ -132,6 +112,7 @@ public class PerDayReportRepository : IListReportRepository<PerDayReport>
                     NewPayable = Round(
                         g.Sum(r => r.NewPayable), 2)
                 })
-            .OrderByDescending(i => i.Date);
+            .OrderByDescending(i => i.Date)
+            .ToListAsync();
     }
 }

@@ -104,7 +104,7 @@ public class DebtPaymentService : IDebtPaymentService
     {
         var newDebtPayment = _mapper.Map<DebtPayment>(vm);
         var originalDebtPayment = await _db.DebtPayments.GetById(newDebtPayment.Id);
-        var meta = originalDebtPayment.Metadata.Modified(CurrentUser);
+        var meta = originalDebtPayment.Metadata.ModifiedBy(CurrentUser);
         originalDebtPayment.SetValuesFrom(newDebtPayment);
         originalDebtPayment.Metadata = meta;
 

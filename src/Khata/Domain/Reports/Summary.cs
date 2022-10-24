@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Reports;
 
@@ -9,14 +8,14 @@ public class Summary: Report
 
     public DateTimeOffset EndTime { get; set; }
 
-    public SummaryType Type =>
+    public SummarySpan Span =>
         StartTime.Date == EndTime.Date
-            ? SummaryType.Daily
+            ? SummarySpan.Daily
             : EndTime - StartTime >= TimeSpan.FromDays(7)
-                ? SummaryType.Weekly
-                : SummaryType.Monthly;
+                ? SummarySpan.Weekly
+                : SummarySpan.Monthly;
 
-    public DateTimeOffset GeneratedOn { get; set; } = Clock.Now;
+    public DateTimeOffset GeneratedOn { get; set; }
 
     [DataType(DataType.Currency)]
     [Display(Name = "Cash In")]
@@ -62,7 +61,7 @@ public class Summary: Report
     public decimal TotalExpense { get; set; }
 }
 
-public enum SummaryType
+public enum SummarySpan
 {
     Daily,
     Weekly,

@@ -1,64 +1,68 @@
-﻿using System;
-using System.Linq;
-
-using Data.Persistence.DbViews;
+﻿using Data.Persistence.DbViews;
 
 using Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
 using Newtonsoft.Json;
 
 namespace Data.Persistence;
 
-public sealed partial class KhataContext : IdentityDbContext<ApplicationUser>
+public sealed class KhataContext : IdentityDbContext<ApplicationUser>
 {
-    private readonly ILogger<KhataContext> _logger;
-    private readonly KhataSettings _settings;
     public KhataContext(
-        DbContextOptions<KhataContext> options,
-        ILogger<KhataContext> logger, 
-        IOptionsMonitor<KhataSettings> settings) : base(options)
+            DbContextOptions<KhataContext> options,
+            ILogger<KhataContext> logger
+        ) : base(options)
     {
-        _logger = logger;
-        _settings = settings.CurrentValue; 
         var pm = Database.GetPendingMigrations();
 
         try
         {
             if (!pm.Any()) return;
 
-            if (_settings.DbProvider == DbProvider.SQLServer)
+            if (Database.ProviderName is "Microsoft.EntityFrameworkCore.SqlServer")
             {
                 Database.CreateAllSQLServerViews();
             }
 
-            Database.Migrate();
+            // Database.Migrate();
         }
         catch (Exception e)
         {
-            _logger.LogError(
-                "Could not apply Migrations"
+            logger.LogError(
+                "Could not apply Migrations "
                 + JsonConvert.SerializeObject(pm));
-            _logger.LogError(e.Message);
+            
+            logger.LogError(e.Message);
         }
 
-        Database.EnsureCreated();
+        // Database.EnsureCreated();
     }
 
     //public KhataContext(
     //    DbContextOptions<KhataContext> options)
     //    : base(options) {}
 
-    protected override void OnModelCreating(
-        ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.BuildEntities()
-            .BuildQueries(this);
+        builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+        var decimalColumns =
+            builder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(decimal));
+        
+        foreach (var property in decimalColumns)
+        {
+            property.SetColumnType("decimal(18, 6)");
+        }
+        
+        if (Database.ProviderName is "Microsoft.EntityFrameworkCore.SqlServer")
+        {
+            builder.BuildQueries(this);
+        }
     }
 }

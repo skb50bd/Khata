@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 using Domain.Reports;
@@ -43,28 +40,52 @@ public class LiabilityReportRepository : IReportRepository<Liability>
     //                       .SumAsync(p => p.Balance), 2)
     //    };
 
-    public async Task<Liability> Get()
+    public async Task<Liability?> Get()
     {
         if (_settings.DbProvider == DbProvider.SQLServer)
-            return await _db.Set<Liability>()
-                .FirstOrDefaultAsync();
+        {
+            return await _db.Set<Liability>().FirstOrDefaultAsync();
+        }
 
-        var due = _db.Suppliers.Where(s => s.Payable > 0 && !s.IsRemoved)
-            .Select(s => s.Payable);
-        var unpaidEmployees =
-            _db.Employees.Where(e => e.Balance > 0 && !e.IsRemoved)
+        var dueQuery = 
+            _db.Set<Supplier>()
+                .Where(s => 
+                    s.Payable > 0 
+                    && s.IsRemoved == false
+                )
+                .Select(s => s.Payable);
+
+        var dueCountTask = dueQuery.CountAsync();
+        var dueTotalTask = dueQuery.SumAsync();
+        
+        var unpaidEmployeesQuery =
+            _db.Set<Employee>()
+                .Where(e => 
+                    e.Balance > 0 
+                    && e.IsRemoved == false
+                )
                 .Select(e => e.Balance);
 
-        var c =
-            await _db.CashRegister
-                .Select(
-                    cr => new Liability
-                    {
-                        TotalDue        = due.Sum(),
-                        DueCount        = due.Count(),
-                        UnpaidAmount    = unpaidEmployees.Sum(),
-                        UnpaidEmployees = unpaidEmployees.Count()
-                    }).FirstOrDefaultAsync();
-        return c;
+        var unpaidEmployeesCountTask = unpaidEmployeesQuery.CountAsync();
+        var unpaidSalarySumTask = unpaidEmployeesQuery.SumAsync();
+
+        var cashTask = 
+            _db.Set<CashRegister>().FirstOrDefaultAsync();
+        
+        await Task.WhenAll(
+            dueCountTask,
+            dueTotalTask,
+            unpaidEmployeesCountTask,
+            unpaidSalarySumTask,
+            cashTask
+        );
+        
+        return new Liability
+        {
+            TotalDue        = await dueTotalTask,
+            DueCount        = await dueCountTask,
+            UnpaidAmount    = await unpaidSalarySumTask,
+            UnpaidEmployees = await unpaidEmployeesCountTask
+        };
     }
 }

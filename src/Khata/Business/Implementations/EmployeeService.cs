@@ -72,7 +72,7 @@ public class EmployeeService : IEmployeeService
     {
         var newEmployee = _mapper.Map<Employee>(vm);
         var originalEmployee = await _db.Employees.GetById(newEmployee.Id);
-        var meta = originalEmployee.Metadata.Modified(CurrentUser);
+        var meta = originalEmployee.Metadata.ModifiedBy(CurrentUser);
         originalEmployee.SetValuesFrom(newEmployee);
         originalEmployee.Metadata = meta;
 

@@ -1,27 +1,52 @@
-﻿using System.Linq;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
+using Microsoft.EntityFrameworkCore;
+using Throw;
 
 namespace Data.Persistence.Repositories;
 
 public class DepositRepository : Repository<Deposit>, IRepository<Deposit>
 {
-    public DepositRepository(KhataContext context) : base(context) { }
-    public override void Add(Deposit item)
+    public DepositRepository(
+            KhataContext context,
+            IDateTimeProvider dateTimeProvider) 
+        : base(context, dateTimeProvider) 
+    { }
+    
+    public override async Task Add(Deposit item, bool saveChanges = true)
     {
-        Context.Deposits.Add(item);
-        Context.CashRegister.FirstOrDefault().Balance += item.Amount;
+        Context.Set<Deposit>().Add(item);
+        var cashRegister = await Context.Set<CashRegister>().FirstOrDefaultAsync();
+        cashRegister.ThrowIfNull();
+        cashRegister.Balance += item.Amount;
+
+        if (saveChanges)
+        {
+            await Context.SaveChangesAsync();
+        }
     }
 }
 
 public class WithdrawalRepository : Repository<Withdrawal>, IRepository<Withdrawal>
 {
-    public WithdrawalRepository(KhataContext context) : base(context) { }
-    public override void Add(Withdrawal item)
+    public WithdrawalRepository(
+            KhataContext context,
+            IDateTimeProvider dateTime) 
+        : base(context, dateTime) 
+    { }
+    
+    public override async Task Add(Withdrawal item, bool saveChanges = true)
     {
-        Context.Withdrawals.Add(item);
-        Context.CashRegister.FirstOrDefault().Balance -= item.Amount;
+        Context.Set<Withdrawal>().Add(item);
+        
+        var cashRegister = await Context.Set<CashRegister>().FirstOrDefaultAsync();
+        cashRegister.ThrowIfNull();
+        cashRegister.Balance -= item.Amount;
+
+        if (saveChanges)
+        {
+            await Context.SaveChangesAsync();
+        }
     }
 }

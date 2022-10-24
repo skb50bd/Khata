@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Brotal.Extensions;
-
-using Data.Core;
+﻿using Data.Core;
 
 using Domain;
 using Domain.Reports;
-
+using Domain.Utils;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -19,49 +14,72 @@ namespace Data.Persistence.Reports;
 public class InflowReportRepository 
     : IReportRepository<PeriodicalReport<Inflow>>
 {
+    private readonly IDateTimeProvider _dateTime;
     private readonly KhataContext _db;
     private readonly KhataSettings _settings;
 
     public InflowReportRepository(
         KhataContext db,
-        IOptionsMonitor<KhataSettings> settings)
+        IOptionsMonitor<KhataSettings> settings, 
+        IDateTimeProvider dateTime)
     {
         _db       = db;
+        _dateTime = dateTime;
         _settings = settings.CurrentValue;
     }
 
-    private async Task<Inflow> GetInflow(DateTime fromDate)
+    private Task<Inflow?> GetInflow(DateOnly date) =>
+        GetInflow(date.ToDateTime(TimeOnly.MinValue));
+    
+    private async Task<Inflow?> GetInflow(DateTime fromDate)
     {
-        var sales =
-            await _db.Sales.Include(s => s.Cart)
-                .Include(s => s.Metadata)
-                .Where(
-                    s => s.Metadata.CreationTime >= fromDate
-                         && !s.IsRemoved)
+        var salesTask =
+            _db.Set<Sale>()
+                .Where(s => 
+                    s.Metadata.CreationTime >= fromDate
+                    && s.IsRemoved == false
+                )
                 .ToListAsync();
 
-        var debtPayments =
-            await _db.DebtPayments.Include(d => d.Metadata)
-                .Where(
-                    d => d.Metadata.CreationTime >= fromDate
-                         && !d.IsRemoved)
+        var debtPaymentsTask =
+            _db.Set<DebtPayment>()
+                .Where(d => 
+                    d.Metadata.CreationTime >= fromDate
+                    && d.IsRemoved == false
+                )
+                .Select(d => new { d.Id, d.Amount })
                 .ToListAsync();
 
-        var purchaseReturns =
-            await _db.PurchaseReturns.Include(p => p.Metadata)
-                .Where(
-                    pr => pr.Metadata.CreationTime >= fromDate
-                          && !pr.IsRemoved)
+        var purchaseReturnsTask =
+            _db.Set<PurchaseReturn>()
+                .Where(pr => 
+                    pr.Metadata.CreationTime >= fromDate
+                    && pr.IsRemoved == false
+                )
+                .Select(pr => new { pr.Id, pr.CashBack })
                 .ToListAsync();
 
-        var deposits =
-            await _db.Deposits.Include(d => d.Metadata)
+        var depositsTask =
+            _db.Set<Deposit>()
                 .Where(d =>
                     d.Metadata.CreationTime >= fromDate
-                    && d.TableName == nameof(Domain.Deposit))
+                    && d.TableName == nameof(Deposit)
+                )
+                .Select(d => new { d.Id, d.Amount })
                 .ToListAsync();
 
+        await Task.WhenAll(
+            salesTask, 
+            debtPaymentsTask, 
+            purchaseReturnsTask, 
+            depositsTask
+        );
 
+        var sales           = await salesTask;
+        var debtPayments    = await debtPaymentsTask;
+        var purchaseReturns = await purchaseReturnsTask;
+        var deposits        = await depositsTask;
+        
         return new Inflow
         {
             DebtPaymentCount        = debtPayments.Count,
@@ -76,13 +94,13 @@ public class InflowReportRepository
         };
     }
 
-    public async Task<PeriodicalReport<Inflow>> Get()
+    public async Task<PeriodicalReport<Inflow>?> Get()
     {
-        if (_settings.DbProvider == DbProvider.SQLServer)
+        if (_settings.DbProvider is DbProvider.SQLServer)
         {
             var inflows =
-                await _db.Set<Inflow>()
-                    .ToListAsync();
+                await _db.Set<Inflow>().ToListAsync();
+            
             return new PeriodicalReport<Inflow>
             {
                 Daily   = inflows[0],
@@ -91,18 +109,19 @@ public class InflowReportRepository
             };
         }
 
-        var today   = Clock.Today;
-        var daily   = await GetInflow(today);
-        var weekly  = await GetInflow(today.StartOfWeek(DayOfWeek.Saturday));
-        var monthly = await GetInflow(today.FirstDayOfMonth());
+        var today       = _dateTime.Today;
+        var dailyTask   = GetInflow(today);
+        var weeklyTask  = GetInflow(today.StartOfTheWeek(DayOfWeek.Saturday));
+        var monthlyTask = GetInflow(today.StartOfTheMonth());
+
+        await Task.WhenAll(dailyTask, weeklyTask, monthlyTask);
 
         return new PeriodicalReport<Inflow>
         {
             ReportDate = today,
-            Daily = daily,
-            Weekly  = weekly,
-            Monthly = monthly
+            Daily      = await dailyTask,
+            Weekly     = await weeklyTask,
+            Monthly    = await monthlyTask
         };
     }
-            
 }

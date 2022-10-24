@@ -2,14 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Brotal.Extensions;
-
 using Business.Abstractions;
 using Business.PageFilterSort;
-
-using Domain;
-
 using DTOs;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -69,7 +69,7 @@ public class PurchaseReturnService : IPurchaseReturnService
         var purchase = await _db.Purchases.GetById(model.PurchaseId);
         dm.Supplier = await _db.Suppliers.GetById(purchase.SupplierId);
 
-        dm.Cart = new List<PurchaseLineItem>();
+        dm.Cart = new List<PurchaseCartItem>();
         if (model.Cart?.Count > 0)
         {
             dm.Cart = await Task.WhenAll(
@@ -108,7 +108,7 @@ public class PurchaseReturnService : IPurchaseReturnService
     {
         var newPurchaseReturn = _mapper.Map<PurchaseReturn>(vm);
         var originalPurchaseReturn = await _db.PurchaseReturns.GetById(newPurchaseReturn.Id);
-        var meta = originalPurchaseReturn.Metadata.Modified(CurrentUser);
+        var meta = originalPurchaseReturn.Metadata.ModifiedBy(CurrentUser);
         originalPurchaseReturn.SetValuesFrom(newPurchaseReturn);
         originalPurchaseReturn.Metadata = meta;
 
@@ -140,14 +140,14 @@ public class PurchaseReturnService : IPurchaseReturnService
         return _mapper.Map<PurchaseReturnDto>(dto);
     }
 
-    private async Task<PurchaseLineItem> Returned(int productId,
+    private async Task<PurchaseCartItem> Returned(int productId,
         decimal quantity,
         decimal netPrice)
     {
         var product = await _db.Products.GetById(productId);
         product.Inventory.Stock -= quantity;
 
-        return new PurchaseLineItem(product, quantity, netPrice);
+        return new PurchaseCartItem(product, quantity, netPrice);
     }
 
     public async Task<int> Count(DateTime? from = null, DateTime? to = null)
